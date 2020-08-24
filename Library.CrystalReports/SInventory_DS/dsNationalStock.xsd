@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsNationalStock" targetNamespace="http://tempuri.org/dsNationalStock.xsd" xmlns:mstns="http://tempuri.org/dsNationalStock.xsd" xmlns="http://tempuri.org/dsNationalStock.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsNationalStock" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsNationalStock" msprop:Generator_UserDSName="dsNationalStock">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="NationalStockReportData" msprop:Generator_TableClassName="NationalStockReportDataDataTable" msprop:Generator_TableVarName="tableNationalStockReportData" msprop:Generator_RowChangedName="NationalStockReportDataRowChanged" msprop:Generator_TablePropName="NationalStockReportData" msprop:Generator_RowDeletingName="NationalStockReportDataRowDeleting" msprop:Generator_RowChangingName="NationalStockReportDataRowChanging" msprop:Generator_RowEvHandlerName="NationalStockReportDataRowChangeEventHandler" msprop:Generator_RowDeletedName="NationalStockReportDataRowDeleted" msprop:Generator_RowClassName="NationalStockReportDataRow" msprop:Generator_UserTableName="NationalStockReportData" msprop:Generator_RowEvArgName="NationalStockReportDataRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompanyName" msprop:Generator_ColumnVarNameInTable="columnCompanyName" msprop:Generator_ColumnPropNameInRow="CompanyName" msprop:Generator_ColumnPropNameInTable="CompanyNameColumn" msprop:Generator_UserColumnName="CompanyName" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductCode" msprop:Generator_ColumnVarNameInTable="columnProductCode" msprop:Generator_ColumnPropNameInRow="ProductCode" msprop:Generator_ColumnPropNameInTable="ProductCodeColumn" msprop:Generator_UserColumnName="ProductCode" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductName" msprop:Generator_ColumnVarNameInTable="columnProductName" msprop:Generator_ColumnPropNameInRow="ProductName" msprop:Generator_ColumnPropNameInTable="ProductNameColumn" msprop:Generator_UserColumnName="ProductName" type="xs:string" minOccurs="0" />
+              <xs:element name="PackSize" msprop:Generator_ColumnVarNameInTable="columnPackSize" msprop:Generator_ColumnPropNameInRow="PackSize" msprop:Generator_ColumnPropNameInTable="PackSizeColumn" msprop:Generator_UserColumnName="PackSize" type="xs:string" minOccurs="0" />
+              <xs:element name="AQty" msprop:Generator_ColumnVarNameInTable="columnAQty" msprop:Generator_ColumnPropNameInRow="AQty" msprop:Generator_ColumnPropNameInTable="AQtyColumn" msprop:Generator_UserColumnName="AQty" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BookFDel" msprop:Generator_ColumnVarNameInTable="columnBookFDel" msprop:Generator_ColumnPropNameInRow="BookFDel" msprop:Generator_ColumnPropNameInTable="BookFDelColumn" msprop:Generator_UserColumnName="BookFDel" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Tqty" msprop:Generator_ColumnVarNameInTable="columnTqty" msprop:Generator_ColumnPropNameInRow="Tqty" msprop:Generator_ColumnPropNameInTable="TqtyColumn" msprop:Generator_UserColumnName="Tqty" type="xs:decimal" minOccurs="0" />
+              <xs:element name="RQty" msprop:Generator_ColumnVarNameInTable="columnRQty" msprop:Generator_ColumnPropNameInRow="RQty" msprop:Generator_ColumnPropNameInTable="RQtyColumn" msprop:Generator_UserColumnName="RQty" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BQty" msprop:Generator_ColumnVarNameInTable="columnBQty" msprop:Generator_ColumnPropNameInRow="BQty" msprop:Generator_ColumnPropNameInTable="BQtyColumn" msprop:Generator_UserColumnName="BQty" type="xs:decimal" minOccurs="0" />
+              <xs:element name="WHQty" msprop:Generator_ColumnVarNameInTable="columnWHQty" msprop:Generator_ColumnPropNameInRow="WHQty" msprop:Generator_ColumnPropNameInTable="WHQtyColumn" msprop:Generator_UserColumnName="WHQty" type="xs:string" minOccurs="0" />
+              <xs:element name="AvialableValue" msprop:Generator_ColumnVarNameInTable="columnAvialableValue" msprop:Generator_ColumnPropNameInRow="AvialableValue" msprop:Generator_ColumnPropNameInTable="AvialableValueColumn" msprop:Generator_UserColumnName="AvialableValue" type="xs:decimal" minOccurs="0" />
+              <xs:element name="RestrictedValue" msprop:Generator_ColumnVarNameInTable="columnRestrictedValue" msprop:Generator_ColumnPropNameInRow="RestrictedValue" msprop:Generator_ColumnPropNameInTable="RestrictedValueColumn" msprop:Generator_UserColumnName="RestrictedValue" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TransitValue" msprop:Generator_ColumnVarNameInTable="columnTransitValue" msprop:Generator_ColumnPropNameInRow="TransitValue" msprop:Generator_ColumnPropNameInTable="TransitValueColumn" msprop:Generator_UserColumnName="TransitValue" type="xs:decimal" minOccurs="0" />
+              <xs:element name="BlockedValue" msprop:Generator_ColumnVarNameInTable="columnBlockedValue" msprop:Generator_ColumnPropNameInRow="BlockedValue" msprop:Generator_ColumnPropNameInTable="BlockedValueColumn" msprop:Generator_UserColumnName="BlockedValue" type="xs:decimal" minOccurs="0" />
+              <xs:element name="WhStockValue" msprop:Generator_ColumnVarNameInTable="columnWhStockValue" msprop:Generator_ColumnPropNameInRow="WhStockValue" msprop:Generator_ColumnPropNameInTable="WhStockValueColumn" msprop:Generator_UserColumnName="WhStockValue" type="xs:decimal" minOccurs="0" />
+              <xs:element name="GrandTotal" msprop:Generator_ColumnVarNameInTable="columnGrandTotal" msprop:Generator_ColumnPropNameInRow="GrandTotal" msprop:Generator_ColumnPropNameInTable="GrandTotalColumn" msprop:Generator_UserColumnName="GrandTotal" type="xs:decimal" minOccurs="0" />
+              <xs:element name="TotalQty" msprop:Generator_ColumnVarNameInTable="columnTotalQty" msprop:Generator_ColumnPropNameInRow="TotalQty" msprop:Generator_ColumnPropNameInTable="TotalQtyColumn" msprop:Generator_UserColumnName="TotalQty" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

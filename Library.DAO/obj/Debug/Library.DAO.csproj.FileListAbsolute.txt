@@ -1,0 +1,237 @@
+D:\MY ERP Solution\ERPSolution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\MY ERP Solution\ERPSolution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working File\Solution1208\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working File\Solution1208\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working File\Solution1208\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working File\Solution1208\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Project-10\Solution1208\Solution1208\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Project-10\Solution1208\Solution1208\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Adob Dreamwavwe\1408\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Adob Dreamwavwe\1408\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Adob Dreamwavwe\1408\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Adob Dreamwavwe\1408\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working File\New Sulution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working File\New Sulution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working File\New Sulution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working File\New Sulution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working folder\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working folder\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working folder\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working folder\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working folder\0829\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working folder\0829\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working folder\0829\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working folder\0829\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\MY ERP Solution\salesInvent\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\MY ERP Solution\salesInvent\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working folder\31102013\31102013\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working folder\31102013\31102013\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working folder\31102013\31102013\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working folder\31102013\31102013\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.DAO\obj\Debug\ResolveAssemblyReference.cache
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working folder\SSI_Sulation\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working folder\SSI_Sulation\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working folder\SSI_Sulation\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working folder\SSI_Sulation\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Working folder\Project\S&I\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Working folder\Project\S&I\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Working folder\Project\S&I\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Working folder\Project\S&I\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\Project-10\S&I\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\Project-10\S&I\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\Project-10\S&I\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\Project-10\S&I\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\SS&I\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\SS&I\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\SS&I\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\SS&I\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CreatrixProjects\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CreatrixProjects\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CreatrixProjects\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CreatrixProjects\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CreatrixProjects\Nasa\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CreatrixProjects\Nasa\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CreatrixProjects\Nasa\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CreatrixProjects\Nasa\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CreatrixProjects\ADL\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CreatrixProjects\ADL\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CreatrixProjects\ADL\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CreatrixProjects\ADL\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\ADLADL\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\ADLADL\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\ADLADL\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\ADLADL\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CSTL Projects\ADL\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\ADL\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\ADL\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CSTL Projects\ADL\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\CSTL Projects\ADL\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\ADL\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\ADL\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\CSTL Projects\ADL\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\solu\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\solu\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\solu\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\solu\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\SMC ERP\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\SMC ERP\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\SMC ERP\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\SMC ERP\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC V-1.0\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC V-1.0\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC V-1.0\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC V-1.0\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final Version\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final Version\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+E:\JEWEL\ZAS\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+E:\JEWEL\ZAS\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+E:\JEWEL\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+E:\JEWEL\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+E:\JEWEL\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.pdb
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.DAO\bin\Debug\Library.DAO.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.DAO\bin\Debug\Library.DAO.pdb
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.DAO\obj\Debug\Library.DAO.pdb

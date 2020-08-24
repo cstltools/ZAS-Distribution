@@ -1,0 +1,565 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Library.BLL.SInventory_BLL;
+using Library.DAO.SInventory_Entities;
+
+public partial class SInventory_UI_CustomerPayment : System.Web.UI.Page
+{
+    private CustPaymentBLL aCustPaymentBll = new CustPaymentBLL();
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            DropDownList();
+            //paymentDtTextBox.Text = Convert.ToDateTime(DateTime.Now).ToString("dd-MMM-yyyy");
+            SetPaymentDivStatus();
+            SaveButtonVisibility();
+        }
+    }
+
+    private void Clear()
+    {
+        orderGridView.DataSource = null;
+        orderGridView.DataBind();
+
+        manufacDropDownList.SelectedValue = "";
+        invoiceDateTextBox.Text = "";
+        //delDropDownList.SelectedValue = "";
+        //dateTextBox.Text = "";
+        //batchDropDownList.Items.Clear();
+        customerDropDownList.SelectedValue = "";
+        //paymentAmountTextBox.Text = string.Empty;
+        //refDtTextBox.Text = string.Empty;
+        refNameTextBox.Text = string.Empty;
+        dcDropDownList.Items.Clear();
+        //payTypeDDL.SelectedIndex = 1;
+        //customerTextBox.Text = string.Empty;
+
+        SetPaymentDivStatus();
+        SaveButtonVisibility();
+        //paymentAmountTextBox.Text = "";
+
+
+    }
+
+
+    private void DropDownList()
+    {
+        InvoiceBatchBLL aInvoiceBatchBll = new InvoiceBatchBLL();
+        OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
+
+        aOrderInfoBll.LoadManufac(manufacDropDownList);
+        //aInvoiceBatchBll.LoadDeliveryMan(delDropDownList);
+        aCustPaymentBll.PaymentTypeLoadBLL(payTypeDDL);
+        aCustPaymentBll.CustomerInfoLoad(customerDropDownList);
+
+    }
+
+
+    //protected void customerTextBox_TextChanged(object sender, EventArgs e)
+    //{
+    //    CustomerMaster aCustomerMaster;
+    //    var CustomerID = CustomerId(out aCustomerMaster);
+    //    DataTable dt = aCustPaymentBll.LoadInvoiceNew(batchDropDownList.SelectedValue,CustomerID.ToString());
+
+    //    if (dt.Rows.Count > 0)
+    //    {
+    //        orderGridView.DataSource = dt;
+    //        orderGridView.DataBind();
+
+    //    }
+
+    //    else
+    //    {
+    //        orderGridView.DataSource = null;
+    //        orderGridView.DataBind();
+    //        ShowMessageBox("No Invoice Found!!");
+    //    }
+    //}
+
+    //private int CustomerId(out CustomerMaster aCustomerMaster)
+    //{
+    //    int CustomerID = 0;
+    //    aCustomerMaster = new CustomerMaster();
+    //    aCustomerMaster = aCustPaymentBll.CustomerLoad(customerTextBox.Text.Trim());
+    //    CustomerID = aCustomerMaster.CustomerMasterId;
+    //    return CustomerID;
+    //}
+
+    protected void customerDropDownList_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+
+
+    private void ShowMessageBox(string message)
+    {
+        string sScript;
+        message = message.Replace("'", "\'");
+        sScript = String.Format("alert('{0}');", message);
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", sScript, true);
+    }
+
+    protected void chkSelectAll_CheckedChanged(object sender, EventArgs e)
+    {
+        CheckBox ChkBoxHeader = (CheckBox)orderGridView.HeaderRow.FindControl("chkSelectAll");
+
+        for (int i = 0; i < orderGridView.Rows.Count; i++)
+        {
+            CheckBox ChkBoxRows = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
+            if (ChkBoxHeader.Checked == true)
+            {
+                ChkBoxRows.Checked = true;
+            }
+            else
+            {
+                ChkBoxRows.Checked = false;
+            }
+        }
+
+        SaveButtonVisibility();
+    }
+
+    private void SaveButtonVisibility()
+    {
+        //CheckBox ChkBoxHeader = (CheckBox)orderGridView.HeaderRow.FindControl("chkSelectAll");
+        Int32 count = 0;
+
+        for (int i = 0; i < orderGridView.Rows.Count; i++)
+        {
+            CheckBox ChkBoxRows = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
+
+            if (ChkBoxRows.Checked)
+            {
+                count++;
+            }
+            if (count > 0)
+            {
+                break;
+            }
+        }
+
+        if (count > 0)
+        {
+            saveButton.Enabled = true;
+        }
+        else
+        {
+            saveButton.Enabled = false;
+        }
+    }
+
+    //protected void dateTextBox_TextChanged(object sender, EventArgs e)
+    //{
+    //    FindBatchInfo();
+    //}
+
+    private bool Validation()
+    {
+        int CK = 0;
+        for (int j = 0; j < orderGridView.Rows.Count; j++)
+        {
+            CheckBox cbReject = (CheckBox)orderGridView.Rows[j].FindControl("chkSelect");
+            if (cbReject.Checked)
+            {
+                CK = CK + 1;
+            }
+        }
+        if (CK == 0)
+        {
+            ShowMessageBox("Please Select Invoice from List!!");
+            return false;
+        }
+        int count = 0;
+        if (orderGridView.Rows.Count > 0)
+        {
+            for (int i = 0; i < orderGridView.Rows.Count; i++)
+            {
+
+                if (((CheckBox)orderGridView.Rows[i].Cells[1].FindControl("chkSelect")).Checked)
+                {
+                    if (((TextBox)orderGridView.Rows[i].FindControl("payAmountTextBox")).Text == "")
+                    {
+                        ShowMessageBox("Please fill out Pay Amount !!");
+                        return false;
+                    }
+                    count++;
+                }
+            }
+        }
+
+        //if (paymentAmountTextBox.Text.Trim() == "")
+        //{
+        //    ShowMessageBox("Please Select Payment Amount!!");
+        //    return false;
+        //}
+
+        decimal totalamount = 0;
+        for (int i = 0; i < orderGridView.Rows.Count; i++)
+        {
+            CheckBox cbReject = (CheckBox)orderGridView.Rows[i].FindControl("chkSelect");
+            if (cbReject.Checked)
+            {
+                TextBox payAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
+                totalamount += Convert.ToDecimal((payAmountTextBox.Text));
+            }
+
+        }
+        //if (totalamount != Convert.ToDecimal((paymentAmountTextBox.Text)))
+        //{
+        //    ShowMessageBox("Total Invoice Payment Amount Must Be Equel To Payment Amount");
+        //    return false;
+        //}
+        if (payTypeDDL.SelectedValue == "")
+        {
+            ShowMessageBox("Please Select Payment Type!!");
+            return false;
+        }
+        //if (paymentDtTextBox.Text == "")
+        //{
+        //    ShowMessageBox("Please Select Payment Date!!");
+        //    return false;
+        //}
+        if (customerDropDownList.SelectedIndex == 0)
+        {
+            ShowMessageBox("Please Select Customer!!");
+            return false;
+        }
+
+        return true;
+    }
+
+    protected void saveButton_Click(object sender, EventArgs e)
+    {
+        if (Validation())
+        {
+            CustomerMaster aCustomerMaster;
+            CustPayment aCustPayment = new CustPayment();
+            aCustPayment.CustomerMasterId = Convert.ToInt32(customerDropDownList.SelectedValue);
+
+            aCustPayment.PaymentDate = Convert.ToDateTime(DateTime.Now);
+            //aCustPayment.PaymentAmount = Convert.ToDecimal(paymentAmountTextBox.Text);
+            aCustPayment.PayType = payTypeDDL.SelectedItem.Text;
+            aCustPayment.RefNo = refNameTextBox.Text;
+            //if (refDtTextBox.Text != "")
+            //{
+            //    aCustPayment.RefDate = Convert.ToDateTime(refDtTextBox.Text);
+            //}
+            aCustPayment.CreateBy = Session["LoginName"].ToString();
+            aCustPayment.CreateDate = DateTime.Now;
+
+
+            List<CustPaymentDetail> aCustPaymentDetails = new List<CustPaymentDetail>();
+            for (int i = 0; i < orderGridView.Rows.Count; i++)
+            {
+                CheckBox ChkBoxRows = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
+                TextBox payAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
+                decimal prevamount = 0;
+                if (orderGridView.Rows[i].Cells[6].Text != "&nbsp;")
+                {
+                    prevamount = Convert.ToDecimal(orderGridView.Rows[i].Cells[6].Text);
+                }
+
+                if (ChkBoxRows.Checked)
+                {
+
+                    if ((Convert.ToDecimal(payAmountTextBox.Text) + prevamount) ==
+                        Convert.ToDecimal(orderGridView.Rows[i].Cells[5].Text))
+                    {
+                        decimal totalamount = 0;
+                        totalamount = (Convert.ToDecimal(payAmountTextBox.Text) + prevamount);
+                        aCustPaymentBll.UpdateInvoicePaymentAmount(totalamount.ToString(), "Full",
+                            orderGridView.DataKeys[i][0].ToString());
+                    }
+                    else
+                    {
+                        decimal totalamount = 0;
+                        totalamount = (Convert.ToDecimal(payAmountTextBox.Text) + prevamount);
+                        aCustPaymentBll.UpdateInvoicePaymentAmount(totalamount.ToString(), "Partial",
+                            orderGridView.DataKeys[i][0].ToString());
+                    }
+                    CustPaymentDetail aCustPaymentDetail = new CustPaymentDetail()
+                    {
+                        InvoiceId = Convert.ToInt32(orderGridView.DataKeys[i]["InvoiceId"].ToString()),
+                        PaymentAmount = Convert.ToDecimal(payAmountTextBox.Text),
+
+
+                    };
+                    aCustPaymentDetails.Add(aCustPaymentDetail);
+                }
+            }
+            if (aCustPaymentBll.SaveCustPayment(aCustPayment, aCustPaymentDetails))
+            {
+                ShowMessageBox("Data Saved Successfully !!!!!");
+                Clear();
+            }
+        }
+    }
+    protected void payAmountTextBox_TextChanged(object sender, EventArgs e)
+    {
+        TextBox qtyTextBox = (TextBox)sender;
+        GridViewRow currentRow = (GridViewRow)qtyTextBox.Parent.Parent;
+        int rowindex = 0;
+        rowindex = currentRow.RowIndex;
+        decimal prevamount = 0;
+        TextBox payAmountTextBox = (TextBox)orderGridView.Rows[rowindex].Cells[7].FindControl("payAmountTextBox");
+        decimal mainamount = string.IsNullOrEmpty(payAmountTextBox.Text) ? 0 : Convert.ToDecimal(payAmountTextBox.Text);
+        decimal delamount = Convert.ToDecimal(orderGridView.Rows[rowindex].Cells[5].Text);
+
+        if (orderGridView.Rows[rowindex].Cells[6].Text != "&nbsp;")
+        {
+            prevamount = Convert.ToDecimal(orderGridView.Rows[rowindex].Cells[6].Text);
+        }
+
+
+        if ((mainamount + prevamount) > delamount)
+        {
+            payAmountTextBox.Text = "0";
+            ShowMessageBox("Cannot Be Greater then Invoice Quantity ");
+
+        }
+
+        ClaculatePaymentAmount();
+
+    }
+
+
+    //protected void batchDropDownList_SelectedIndexChanged(object sender, EventArgs e)
+    //{
+    //    if (batchDropDownList.SelectedValue != "")
+    //    {
+    //        aCustPaymentBll.LoadCustomer(customerDropDownList, batchDropDownList.SelectedValue);
+    //    }
+    //    else
+    //    {
+    //        customerDropDownList.Items.Clear();
+    //    }
+
+    //}
+
+
+    //protected void Button1_Click1(object sender, EventArgs e)
+    //{
+    //    CustomerMaster aCustomerMaster;
+    //    var CustomerID = CustomerId(out aCustomerMaster);
+    //    DataTable dt = aCustPaymentBll.LoadInvoiceNew(batchDropDownList.SelectedValue,
+    //     CustomerID.ToString());
+
+    //    if (dt.Rows.Count > 0)
+    //    {
+    //        orderGridView.DataSource = dt;
+    //        orderGridView.DataBind();
+
+    //    }
+
+    //    else
+    //    {
+    //        orderGridView.DataSource = null;
+    //        orderGridView.DataBind();
+    //        ShowMessageBox("No Invoice Found!!");
+    //    }
+    //}
+    protected void Button1_Click2(object sender, EventArgs e)
+    {
+
+        if (CheckValidation())
+        {
+            DataTable dt = aCustPaymentBll.LoadCustomerPaymentDueNew(GenerateParameter());
+
+            if (dt.Rows.Count > 0)
+            {
+                orderGridView.DataSource = dt;
+                orderGridView.DataBind();
+
+            }
+
+            else
+            {
+                orderGridView.DataSource = null;
+                orderGridView.DataBind();
+                ShowMessageBox("No Invoice Found!!");
+            }
+        }
+        SetPaymentDivStatus();
+
+        //if (invoiceDateTextBox.Text != "")
+        //{
+        //    CustomerMaster aCustomerMaster;
+        //    //var CustomerID = CustomerId(out aCustomerMaster);
+
+        //    //DataTable dt = aCustPaymentBll.LoadInvoiceNew(batchDropDownList.SelectedValue, customerDropDownList.SelectedValue);
+           
+        //}
+        //else
+        //{
+        //    ShowMessageBox("Please Select Invoice Date !!!");
+        //}
+
+            
+    }
+
+    private bool CheckValidation()
+    {
+        if (invoiceDateTextBox.Text == "")
+        {
+            ShowMessageBox("Please select invoice date !!");
+            return false;
+        }
+
+
+        if (manufacDropDownList.SelectedValue == "")
+        {
+            ShowMessageBox("Please select a company !!");
+            return false;
+        }
+
+        if (customerDropDownList.SelectedValue == "")
+        {
+            ShowMessageBox("Please select a customer !!");
+            return false;
+        }
+
+        return true;
+    }
+
+    private string GenerateParameter()
+    {
+        string parameter = "";
+
+        if (dcDropDownList.SelectedValue != "")
+        {
+            parameter = parameter + "AND tblInvoice.ComUnitId = '" + dcDropDownList.SelectedValue + "'";
+        }
+
+        if (customerDropDownList.SelectedValue != "")
+        {
+            parameter = parameter + "AND tblInvoice.CustomerMasterId = '" + customerDropDownList.SelectedValue + "'";
+        }
+
+        if (invoiceDateTextBox.Text != "" )
+        {
+            parameter = parameter + "AND tblInvoice.InvoiceDate = '" + Convert.ToDateTime(invoiceDateTextBox.Text.Trim()) + "'";
+        }
+
+
+        return parameter;
+    }
+
+    private void SetPaymentDivStatus()
+    {
+        if (orderGridView.Rows.Count > 0)
+        {
+            Payment.Visible = true;
+            payTypeDDL.SelectedValue = 1.ToString(CultureInfo.InvariantCulture);
+        }
+        else
+        {
+            Payment.Visible = false;
+        }
+    }
+
+    protected void clearButton_OnClick(object sender, EventArgs e)
+    {
+        Clear();
+    }
+
+    protected void delDropDownList_OnTextChanged(object sender, EventArgs e)
+    {
+        //FindBatchInfo();
+    }
+
+    //private void FindBatchInfo()
+    //{
+    //    //if (manufacDropDownList.SelectedValue != "")
+    //    //{
+    //    if (delDropDownList.SelectedValue != "")
+    //    {
+    //        if (dateTextBox.Text != "")
+    //        {
+    //            OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
+
+    //            //aOrderInfoBll.BatchNoLoad(batchDropDownList, manufacDropDownList.SelectedValue, dateTextBox.Text, delDropDownList.SelectedValue);
+    //            aOrderInfoBll.BatchNoLoad(batchDropDownList, dateTextBox.Text, delDropDownList.SelectedValue);
+    //        }
+    //        else
+    //        {
+    //            dateTextBox.Text = "";
+    //            ShowMessageBox("Batch Creation Date Is Required !!!!");
+    //        }
+    //    }
+    //    else
+    //    {
+    //        ShowMessageBox("Please Select Delivery Man !!!!");
+    //    }
+    //    //}
+    //    //else
+    //    //{
+    //    //    ShowMessageBox("Please Select company !!!!");
+    //    //}
+    //}
+
+    protected void manufacDropDownList_OnSelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (manufacDropDownList.SelectedValue != "")
+        {
+          
+            aCustPaymentBll.LoadDcInfo(dcDropDownList, manufacDropDownList.SelectedValue);
+        }
+        else
+        {
+            dcDropDownList.Items.Clear();
+        }
+
+        //FindBatchInfo();
+    }
+
+    protected void chkSelect_CheckedChanged(object sender, EventArgs e)
+    {
+        int selRowIndex = ((GridViewRow)(((CheckBox)sender).Parent.Parent)).RowIndex;
+        CheckBox cb = (CheckBox)orderGridView.Rows[selRowIndex].Cells[0].FindControl("chkSelect");
+        if (cb.Checked)
+        {
+            ClaculatePaymentAmount();
+        }
+
+    }
+
+    private void ClaculatePaymentAmount()
+    {
+        decimal paymentAmount = 0;
+
+        for (int i = 0; i < orderGridView.Rows.Count; i++)
+        {
+            CheckBox ChkBoxRows = (CheckBox) orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
+            TextBox amountBox = (TextBox) orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
+            decimal amount = 0;
+
+            if (ChkBoxRows.Checked)
+            {
+                if (amountBox.Text != "")
+                {
+                    paymentAmount = paymentAmount + Convert.ToDecimal(amountBox.Text.Trim());
+                }
+                else
+                {
+                    amountBox.Focus();
+                    ShowMessageBox("Payment amount is required !!");
+                }
+            }
+        }
+
+        //    if (paymentAmount > 0)
+        //    {
+        //        paymentAmountTextBox.Text = paymentAmount.ToString(CultureInfo.InvariantCulture);
+        //    }
+        //}
+
+    }
+}

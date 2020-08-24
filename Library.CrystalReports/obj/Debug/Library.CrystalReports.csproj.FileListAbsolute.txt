@@ -1,0 +1,199 @@
+D:\MY ERP Solution\ERPSolution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\MY ERP Solution\ERPSolution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\MY ERP Solution\ERPSolution\MAIN\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\MY ERP Solution\ERPSolution\MAIN\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\MY ERP Solution\ERPSolution\MAIN\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\MY ERP Solution\ERPSolution\MAIN\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\MY ERP Solution\ERPSolution\MAIN\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\MY ERP Solution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\MY ERP Solution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\MY ERP Solution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\MY ERP Solution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\MY ERP Solution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\MY ERP Solution\salesInvent\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\MY ERP Solution\salesInvent\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\MY ERP Solution\salesInvent\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\Working folder\31102013\31102013\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\Working folder\31102013\31102013\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\Working folder\31102013\31102013\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\Working folder\31102013\31102013\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\Working folder\31102013\31102013\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.CrystalReports\obj\Debug\ResolveAssemblyReference.cache
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\Working folder\SSI_Sulation\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\Working folder\SSI_Sulation\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\Working folder\SSI_Sulation\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\Working folder\SSI_Sulation\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\Working folder\SSI_Sulation\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\Working folder\Project\S&I\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\Working folder\Project\S&I\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\Working folder\Project\S&I\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\Working folder\Project\S&I\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\Working folder\Project\S&I\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\Project-10\S&I\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\Project-10\S&I\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\Project-10\S&I\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\Project-10\S&I\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\Project-10\S&I\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\SS&I\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\SS&I\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\SS&I\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\SS&I\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\SS&I\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\CreatrixProjects\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\CreatrixProjects\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\CreatrixProjects\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\CreatrixProjects\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\CreatrixProjects\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\CreatrixProjects\ADL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\CreatrixProjects\ADL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\CreatrixProjects\ADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\CreatrixProjects\ADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\CreatrixProjects\ADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\ADLADL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\ADLADL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\ADLADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\ADLADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\ADLADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\ADL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\ADL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\ADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\ADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\ADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\ADL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\ADL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\ADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\ADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\ADL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\solu\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\solu\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\solu\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\solu\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\solu\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\SMC ERP\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\SMC ERP\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\SMC ERP\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\SMC ERP\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\SMC ERP\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final Version\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final Version\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final Version\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\JEWEL\ZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+E:\JEWEL\ZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+E:\JEWEL\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+E:\JEWEL\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+E:\JEWEL\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\bin\Debug\Library.CrystalReports.pdb
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb

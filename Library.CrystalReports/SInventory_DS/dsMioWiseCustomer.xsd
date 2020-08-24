@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsMioWiseCustomer" targetNamespace="http://tempuri.org/dsMioWiseCustomer.xsd" xmlns:mstns="http://tempuri.org/dsMioWiseCustomer.xsd" xmlns="http://tempuri.org/dsMioWiseCustomer.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsMioWiseCustomer" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsMioWiseCustomer" msprop:Generator_UserDSName="dsMioWiseCustomer">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="MioWiseCustomerTable" msprop:Generator_TableClassName="MioWiseCustomerTableDataTable" msprop:Generator_TableVarName="tableMioWiseCustomerTable" msprop:Generator_RowChangedName="MioWiseCustomerTableRowChanged" msprop:Generator_TablePropName="MioWiseCustomerTable" msprop:Generator_RowDeletingName="MioWiseCustomerTableRowDeleting" msprop:Generator_RowChangingName="MioWiseCustomerTableRowChanging" msprop:Generator_RowEvHandlerName="MioWiseCustomerTableRowChangeEventHandler" msprop:Generator_RowDeletedName="MioWiseCustomerTableRowDeleted" msprop:Generator_RowClassName="MioWiseCustomerTableRow" msprop:Generator_UserTableName="MioWiseCustomerTable" msprop:Generator_RowEvArgName="MioWiseCustomerTableRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Company" msprop:Generator_ColumnVarNameInTable="columnCompany" msprop:Generator_ColumnPropNameInRow="Company" msprop:Generator_ColumnPropNameInTable="CompanyColumn" msprop:Generator_UserColumnName="Company" type="xs:string" minOccurs="0" />
+              <xs:element name="Code" msprop:Generator_ColumnVarNameInTable="columnCode" msprop:Generator_ColumnPropNameInRow="Code" msprop:Generator_ColumnPropNameInTable="CodeColumn" msprop:Generator_UserColumnName="Code" type="xs:string" minOccurs="0" />
+              <xs:element name="Customer" msprop:Generator_ColumnVarNameInTable="columnCustomer" msprop:Generator_ColumnPropNameInRow="Customer" msprop:Generator_ColumnPropNameInTable="CustomerColumn" msprop:Generator_UserColumnName="Customer" type="xs:string" minOccurs="0" />
+              <xs:element name="MarketCode" msprop:Generator_ColumnVarNameInTable="columnMarketCode" msprop:Generator_ColumnPropNameInRow="MarketCode" msprop:Generator_ColumnPropNameInTable="MarketCodeColumn" msprop:Generator_UserColumnName="MarketCode" type="xs:string" minOccurs="0" />
+              <xs:element name="Market" msprop:Generator_ColumnVarNameInTable="columnMarket" msprop:Generator_ColumnPropNameInRow="Market" msprop:Generator_ColumnPropNameInTable="MarketColumn" msprop:Generator_UserColumnName="Market" type="xs:string" minOccurs="0" />
+              <xs:element name="TerritoryCode" msprop:Generator_ColumnVarNameInTable="columnTerritoryCode" msprop:Generator_ColumnPropNameInRow="TerritoryCode" msprop:Generator_ColumnPropNameInTable="TerritoryCodeColumn" msprop:Generator_UserColumnName="TerritoryCode" type="xs:string" minOccurs="0" />
+              <xs:element name="Territory" msprop:Generator_ColumnVarNameInTable="columnTerritory" msprop:Generator_ColumnPropNameInRow="Territory" msprop:Generator_ColumnPropNameInTable="TerritoryColumn" msprop:Generator_UserColumnName="Territory" type="xs:string" minOccurs="0" />
+              <xs:element name="AreaCode" msprop:Generator_ColumnVarNameInTable="columnAreaCode" msprop:Generator_ColumnPropNameInRow="AreaCode" msprop:Generator_ColumnPropNameInTable="AreaCodeColumn" msprop:Generator_UserColumnName="AreaCode" type="xs:string" minOccurs="0" />
+              <xs:element name="Area" msprop:Generator_ColumnVarNameInTable="columnArea" msprop:Generator_ColumnPropNameInRow="Area" msprop:Generator_ColumnPropNameInTable="AreaColumn" msprop:Generator_UserColumnName="Area" type="xs:string" minOccurs="0" />
+              <xs:element name="RegionCode" msprop:Generator_ColumnVarNameInTable="columnRegionCode" msprop:Generator_ColumnPropNameInRow="RegionCode" msprop:Generator_ColumnPropNameInTable="RegionCodeColumn" msprop:Generator_UserColumnName="RegionCode" type="xs:string" minOccurs="0" />
+              <xs:element name="Region" msprop:Generator_ColumnVarNameInTable="columnRegion" msprop:Generator_ColumnPropNameInRow="Region" msprop:Generator_ColumnPropNameInTable="RegionColumn" msprop:Generator_UserColumnName="Region" type="xs:string" minOccurs="0" />
+              <xs:element name="MIOCode" msprop:Generator_ColumnVarNameInTable="columnMIOCode" msprop:Generator_ColumnPropNameInRow="MIOCode" msprop:Generator_ColumnPropNameInTable="MIOCodeColumn" msprop:Generator_UserColumnName="MIOCode" type="xs:string" minOccurs="0" />
+              <xs:element name="MIO" msprop:Generator_ColumnVarNameInTable="columnMIO" msprop:Generator_ColumnPropNameInRow="MIO" msprop:Generator_ColumnPropNameInTable="MIOColumn" msprop:Generator_UserColumnName="MIO" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" msprop:Generator_ColumnVarNameInTable="columnAddress" msprop:Generator_ColumnPropNameInRow="Address" msprop:Generator_ColumnPropNameInTable="AddressColumn" msprop:Generator_UserColumnName="Address" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

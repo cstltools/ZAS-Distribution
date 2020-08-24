@@ -1,0 +1,137 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master" AutoEventWireup="true" CodeFile="MiaTargetView.aspx.cs" Inherits="SInventory_UI_MiaTargetView" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    
+          <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <div>
+                <table width="100%" class="TableWorkArea">
+                    <tr>
+                        <td colspan="6" class="TableHeading">
+                            Mia Target Information View</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td width="13%" class="TDLeft"  style="text-align: right; padding-right: 10px;">
+                            Add New </td>
+                        <td width="20%" class="TDRight">
+                            <asp:ImageButton ID="miaTargetInfoNewImageButton" runat="server" 
+                                ImageUrl="~/images/Add.png" onclick="miaTargetNewImageButton_Click" />
+                        </td>
+                        <td width="13%" class="TDLeft">
+                        </td>
+                        <td width="20%" class="TDRight">
+                        </td>
+                        <td width="13%" class="TDLeft"  style="text-align: right; padding-right: 10px;">
+                            Reload</td>
+                        <td width="20%" class="TDRight">
+                            <asp:ImageButton ID="miaTargetInfoReloadImageButton" runat="server" 
+                                ImageUrl="~/images/refresh.png" 
+                                onclick="miaTargetReloadImageButton_Click" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+
+                        <td width="20%" class="TDRight" colspan="6">
+                            <div id="gridContainer1" style="height: 400px; overflow: auto; width: 97%; margin: 0 auto;">
+                            <asp:GridView ID="loadGridView" runat="server" AutoGenerateColumns="False" 
+                                CssClass="gridview" DataKeyNames="MiaTargetId" 
+                                onrowcommand="loadGridView_RowCommand" >
+                                <Columns>
+                                    <asp:BoundField DataField="CompanyName" HeaderText="Company" />
+                                    <asp:BoundField DataField="MiaCode" HeaderText="Mia Code" />
+                                    <asp:BoundField DataField="MiaName" HeaderText="Mia Name" />
+                                    <asp:BoundField DataField="MiaTargetAmount" HeaderText="Mia Target Amount " />
+                                    <asp:BoundField DataField="Period" HeaderText="Period" />
+                                    <asp:TemplateField HeaderText="Edit">
+                                        <ItemTemplate>
+                                            <asp:ImageButton ID="editImageButton" runat="server" 
+                                                CommandArgument="<%# Container.DataItemIndex %>" CommandName="EditData" 
+                                                ImageUrl="~/images/edit.png" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+                           </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td width="13%" class="TDLeft">
+                        </td>
+                        <td width="20%" class="TDRight">
+                        </td>
+                        <td width="13%" class="TDLeft">
+                        </td>
+                        <td width="20%" class="TDRight">
+                        </td>
+                        <td width="13%" class="TDLeft">
+                        </td>
+                        <td width="20%" class="TDRight">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="13%" class="TDLeft">
+                        </td>
+                        <td width="20%" class="TDRight">
+                            &nbsp;
+                        </td>
+                        <td width="13%" class="TDLeft">
+                        </td>
+                        <td width="20%" class="TDRight">
+                        </td>
+                        <td width="13%" class="TDLeft">
+                            &nbsp;
+                        </td>
+                        <td width="20%" class="TDRight">
+                        </td>
+                    </tr>
+                    
+                    
+                </table>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    
+     <asp:UpdateProgress ID="UpdateProgress1" runat="server" ClientIDMode="Static" DisplayAfter="0" DynamicLayout="true">
+        <ProgressTemplate>
+            <div class="divWaiting">
+                <asp:Image ID="imgWait" CssClass="position-set" runat="server" ImageAlign="Middle" ImageUrl="~/images/progress-bar-opt.gif"
+                    Height="80" Width="80" />
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+
+
+</asp:Content>
+

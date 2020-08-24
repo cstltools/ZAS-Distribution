@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsFreezeStockInfo" targetNamespace="http://tempuri.org/dsFreezeStockInfo.xsd" xmlns:mstns="http://tempuri.org/dsFreezeStockInfo.xsd" xmlns="http://tempuri.org/dsFreezeStockInfo.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsFreezeStockInfo" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsFreezeStockInfo" msprop:Generator_UserDSName="dsFreezeStockInfo">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="FreezeStockTable" msprop:Generator_TableClassName="FreezeStockTableDataTable" msprop:Generator_TableVarName="tableFreezeStockTable" msprop:Generator_RowChangedName="FreezeStockTableRowChanged" msprop:Generator_TablePropName="FreezeStockTable" msprop:Generator_RowDeletingName="FreezeStockTableRowDeleting" msprop:Generator_RowChangingName="FreezeStockTableRowChanging" msprop:Generator_RowEvHandlerName="FreezeStockTableRowChangeEventHandler" msprop:Generator_RowDeletedName="FreezeStockTableRowDeleted" msprop:Generator_RowClassName="FreezeStockTableRow" msprop:Generator_UserTableName="FreezeStockTable" msprop:Generator_RowEvArgName="FreezeStockTableRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ComUnitName" msprop:Generator_ColumnVarNameInTable="columnComUnitName" msprop:Generator_ColumnPropNameInRow="ComUnitName" msprop:Generator_ColumnPropNameInTable="ComUnitNameColumn" msprop:Generator_UserColumnName="ComUnitName" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductCode" msprop:Generator_ColumnVarNameInTable="columnProductCode" msprop:Generator_ColumnPropNameInRow="ProductCode" msprop:Generator_ColumnPropNameInTable="ProductCodeColumn" msprop:Generator_UserColumnName="ProductCode" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductName" msprop:Generator_ColumnVarNameInTable="columnProductName" msprop:Generator_ColumnPropNameInRow="ProductName" msprop:Generator_ColumnPropNameInTable="ProductNameColumn" msprop:Generator_UserColumnName="ProductName" type="xs:string" minOccurs="0" />
+              <xs:element name="BatchNo" msprop:Generator_ColumnVarNameInTable="columnBatchNo" msprop:Generator_ColumnPropNameInRow="BatchNo" msprop:Generator_ColumnPropNameInTable="BatchNoColumn" msprop:Generator_UserColumnName="BatchNo" type="xs:string" minOccurs="0" />
+              <xs:element name="StockQty" msprop:Generator_ColumnVarNameInTable="columnStockQty" msprop:Generator_ColumnPropNameInRow="StockQty" msprop:Generator_ColumnPropNameInTable="StockQtyColumn" msprop:Generator_UserColumnName="StockQty" type="xs:decimal" minOccurs="0" />
+              <xs:element name="StockCondition" msprop:Generator_ColumnVarNameInTable="columnStockCondition" msprop:Generator_ColumnPropNameInRow="StockCondition" msprop:Generator_ColumnPropNameInTable="StockConditionColumn" msprop:Generator_UserColumnName="StockCondition" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

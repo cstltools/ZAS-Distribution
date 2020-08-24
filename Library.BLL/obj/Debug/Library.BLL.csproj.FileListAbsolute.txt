@@ -1,0 +1,691 @@
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\MY ERP Solution\ERPSolution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working File\Solution1208\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working File\Solution1208\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working File\Solution1208\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working File\Solution1208\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working File\Solution1208\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working File\Solution1208\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working File\Solution1208\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working File\Solution1208\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working File\Solution1208\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working File\Solution1208\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working File\Solution1208\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working File\Solution1208\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Project-10\Solution1208\Solution1208\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working File\Solution0813\Solution0813\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\MY ERP Solution\ERPSolution\SolutionNew\SolutionNew\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Adob Dreamwavwe\1408\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working File\New Sulution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working File\New Sulution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working File\New Sulution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working File\New Sulution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working File\New Sulution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working File\New Sulution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working File\New Sulution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working File\New Sulution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working File\New Sulution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working File\New Sulution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working File\New Sulution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working File\New Sulution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working folder\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working folder\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working folder\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working folder\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working folder\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working folder\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working folder\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working folder\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working folder\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working folder\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working folder\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working folder\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working File\New Sulution\S\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working folder\0829\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working folder\0829\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working folder\0829\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working folder\0829\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working folder\0829\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working folder\0829\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working folder\0829\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working folder\0829\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working folder\0829\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working folder\0829\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working folder\0829\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working folder\0829\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working File\New Sulution\01.09\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working folder\SSI_Sulation\Sales&Inventory\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working File\Sales&Inventory\SSI\Solution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working File\Sales&Inventory\Sales&Inventory\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\MY ERP Solution\salesInvent\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working folder\31102013\31102013\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working folder\31102013\31102013\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working folder\31102013\31102013\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working folder\31102013\31102013\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working folder\31102013\31102013\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working folder\31102013\31102013\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working folder\31102013\31102013\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working folder\31102013\31102013\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working folder\31102013\31102013\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working folder\31102013\31102013\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working folder\31102013\31102013\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working folder\31102013\31102013\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\obj\Debug\ResolveAssemblyReference.cache
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working File\Sales&Inventory\SSI1\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working folder\SSI_Sulation\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Working folder\Project\S&I\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Working folder\Project\S&I\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Working folder\Project\S&I\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Working folder\Project\S&I\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Working folder\Project\S&I\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Working folder\Project\S&I\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Working folder\Project\S&I\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Working folder\Project\S&I\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Working folder\Project\S&I\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Working folder\Project\S&I\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Working folder\Project\S&I\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Working folder\Project\S&I\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\Project-10\S&I\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\Project-10\S&I\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\Project-10\S&I\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\Project-10\S&I\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\Project-10\S&I\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\Project-10\S&I\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\Project-10\S&I\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+E:\Project-10\S&I\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\Project-10\S&I\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\Project-10\S&I\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\Project-10\S&I\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\Project-10\S&I\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\SS&I\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\SS&I\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\SS&I\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\SS&I\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\SS&I\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\SS&I\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\SS&I\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\SS&I\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\SS&I\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\SS&I\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\SS&I\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\SS&I\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\Project-10\S&I\SSI-24-07-2017\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CreatrixProjects\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CreatrixProjects\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CreatrixProjects\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CreatrixProjects\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CreatrixProjects\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CreatrixProjects\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CreatrixProjects\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\CreatrixProjects\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CreatrixProjects\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CreatrixProjects\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CreatrixProjects\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CreatrixProjects\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\HRM_Project\ADLSSI\8-2-17\Solution (1)\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CreatrixProjects\Nasa\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CreatrixProjects\ADL\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CreatrixProjects\ADL\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CreatrixProjects\ADL\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CreatrixProjects\ADL\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CreatrixProjects\ADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CreatrixProjects\ADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CreatrixProjects\ADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\CreatrixProjects\ADL\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CreatrixProjects\ADL\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CreatrixProjects\ADL\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CreatrixProjects\ADL\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CreatrixProjects\ADL\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\ADLADL\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\ADLADL\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\ADLADL\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\ADLADL\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\ADLADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\ADLADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\ADLADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\ADLADL\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\ADLADL\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\ADLADL\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\ADLADL\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\ADLADL\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\ADL\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\ADL\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CSTL Projects\ADL\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+E:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\CSTL Projects\ADL\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\ADL\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\ADL\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\CSTL Projects\ADL\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\solu\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\solu\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\solu\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\solu\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\solu\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\solu\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\solu\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+E:\solu\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\solu\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\solu\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\solu\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\solu\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\SMC ERP\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\SMC ERP\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\SMC ERP\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\SMC ERP\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\SMC ERP\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\SMC ERP\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\SMC ERP\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\SMC ERP\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\SMC ERP\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\SMC ERP\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\SMC ERP\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final V-Alfa\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final V-Alfa\SMC V-1.0\SMC V-1.0\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final Version\SMC Final Version\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC Final Version\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\CSTL Projects\SMC Final Version\17  tarik\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\SMC SALES & DISTRIBUTION\SMCPharmaDistribution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\ZAS CORPORATION\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\ZAS CORPORATION\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\ZAS CORPORATION\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\ZAS CORPORATION\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\ZAS CORPORATION\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\ZAS CORPORATION\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\ZAS CORPORATION\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\ZAS CORPORATION\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\ZAS CORPORATION\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\ZAS CORPORATION FINAL VERSION\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\ZAS CORPORATION FINAL VERSION\GIT CONTROL\NEW VersionZAS\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\CSTL Solutions\ZAS\Salesroll\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\Project\Project\Project 10\ZASSalesroll\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\SHUVO Projects\CSTL Solutuion\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\CSTL Solutions\CSTL SOLUTIONS\ZAS\Salesroll With Accounts\ZAS_Shuvo_Solution\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+D:\Project\Project 10\ZAS Salesroll\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+E:\JEWEL\ZAS\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+E:\JEWEL\ZAS\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+E:\JEWEL\ZAS\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+E:\JEWEL\ZAS\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+E:\JEWEL\ZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\JEWEL\ZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\JEWEL\ZAS\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+E:\JEWEL\ZAS\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+E:\JEWEL\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+E:\JEWEL\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+E:\JEWEL\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\bin\Debug\Library.BLL.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\bin\Debug\Library.DAL.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\bin\Debug\Library.DAO.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.dll
+F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.pdb

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsCustomerTotalDue" targetNamespace="http://tempuri.org/dsCustomerTotalDue.xsd" xmlns:mstns="http://tempuri.org/dsCustomerTotalDue.xsd" xmlns="http://tempuri.org/dsCustomerTotalDue.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsCustomerTotalDue" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsCustomerTotalDue" msprop:Generator_UserDSName="dsCustomerTotalDue">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="CustomerTotalDueReportData" msprop:Generator_TableClassName="CustomerTotalDueReportDataDataTable" msprop:Generator_TableVarName="tableCustomerTotalDueReportData" msprop:Generator_TablePropName="CustomerTotalDueReportData" msprop:Generator_RowDeletingName="CustomerTotalDueReportDataRowDeleting" msprop:Generator_RowChangingName="CustomerTotalDueReportDataRowChanging" msprop:Generator_RowEvHandlerName="CustomerTotalDueReportDataRowChangeEventHandler" msprop:Generator_RowDeletedName="CustomerTotalDueReportDataRowDeleted" msprop:Generator_UserTableName="CustomerTotalDueReportData" msprop:Generator_RowChangedName="CustomerTotalDueReportDataRowChanged" msprop:Generator_RowEvArgName="CustomerTotalDueReportDataRowChangeEvent" msprop:Generator_RowClassName="CustomerTotalDueReportDataRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompanyName" msprop:Generator_ColumnVarNameInTable="columnCompanyName" msprop:Generator_ColumnPropNameInRow="CompanyName" msprop:Generator_ColumnPropNameInTable="CompanyNameColumn" msprop:Generator_UserColumnName="CompanyName" type="xs:string" minOccurs="0" />
+              <xs:element name="ComUnitName" msprop:Generator_ColumnVarNameInTable="columnComUnitName" msprop:Generator_ColumnPropNameInRow="ComUnitName" msprop:Generator_ColumnPropNameInTable="ComUnitNameColumn" msprop:Generator_UserColumnName="ComUnitName" type="xs:string" minOccurs="0" />
+              <xs:element name="CustomerCode" msprop:Generator_ColumnVarNameInTable="columnCustomerCode" msprop:Generator_ColumnPropNameInRow="CustomerCode" msprop:Generator_ColumnPropNameInTable="CustomerCodeColumn" msprop:Generator_UserColumnName="CustomerCode" type="xs:string" minOccurs="0" />
+              <xs:element name="CustomerName" msprop:Generator_ColumnVarNameInTable="columnCustomerName" msprop:Generator_ColumnPropNameInRow="CustomerName" msprop:Generator_ColumnPropNameInTable="CustomerNameColumn" msprop:Generator_UserColumnName="CustomerName" type="xs:string" minOccurs="0" />
+              <xs:element name="DUE" msprop:Generator_ColumnVarNameInTable="columnDUE" msprop:Generator_ColumnPropNameInRow="DUE" msprop:Generator_ColumnPropNameInTable="DUEColumn" msprop:Generator_UserColumnName="DUE" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Receiveable" msprop:Generator_ColumnVarNameInTable="columnReceiveable" msprop:Generator_ColumnPropNameInRow="Receiveable" msprop:Generator_ColumnPropNameInTable="ReceiveableColumn" msprop:Generator_UserColumnName="Receiveable" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Collection" msprop:Generator_ColumnVarNameInTable="columnCollection" msprop:Generator_ColumnPropNameInRow="Collection" msprop:Generator_ColumnPropNameInTable="CollectionColumn" msprop:Generator_UserColumnName="Collection" type="xs:decimal" minOccurs="0" />
+              <xs:element name="UptoDate" msprop:Generator_ColumnVarNameInTable="columnUptoDate" msprop:Generator_ColumnPropNameInRow="UptoDate" msprop:Generator_ColumnPropNameInTable="UptoDateColumn" msprop:Generator_UserColumnName="UptoDate" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

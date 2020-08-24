@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{41D64757-EE79-4D94-8162-FA9B70785771}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Library.DAO</RootNamespace>
+    <AssemblyName>Library.DAO</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Panal_Entities\ObjActionPageWiseStep.cs" />
+    <Compile Include="Panal_Entities\ObjUserWiseApprovalPermission.cs" />
+    <Compile Include="SInventory_Entities\ASMInfoDao.cs" />
+    <Compile Include="SInventory_Entities\CampaignDAO.cs" />
+    <Compile Include="SInventory_Entities\CampaignDetailDAO.cs" />
+    <Compile Include="SInventory_Entities\ChalanDetail.cs" />
+    <Compile Include="SInventory_Entities\ChalanInfo.cs" />
+    <Compile Include="SInventory_Entities\CoaDAO.cs" />
+    <Compile Include="SInventory_Entities\CompanyWiseDepositDao.cs" />
+    <Compile Include="SInventory_Entities\ConsumerCustomerDAO.cs" />
+    <Compile Include="SInventory_Entities\CreditAdjustmentDao.cs" />
+    <Compile Include="SInventory_Entities\CreditLimitDAO.cs" />
+    <Compile Include="SInventory_Entities\CustFixedDiscountDao.cs" />
+    <Compile Include="SInventory_Entities\CustomerReturnDetailDAO.cs" />
+    <Compile Include="SInventory_Entities\CustomerReturnMasterDAO.cs" />
+    <Compile Include="SInventory_Entities\CustPayment.cs" />
+    <Compile Include="SInventory_Entities\CustPaymentDetail.cs" />
+    <Compile Include="SInventory_Entities\DCPicking.cs" />
+    <Compile Include="SInventory_Entities\DCPickingDetail.cs" />
+    <Compile Include="SInventory_Entities\DCStockNew.cs" />
+    <Compile Include="SInventory_Entities\DCStore.cs" />
+    <Compile Include="SInventory_Entities\CurrentStock.cs" />
+    <Compile Include="SInventory_Entities\DCStoreFreezeDAO.cs" />
+    <Compile Include="SInventory_Entities\DcWiseAreaAloDao.cs" />
+    <Compile Include="SInventory_Entities\DeliveryPersonDAO.cs" />
+    <Compile Include="SInventory_Entities\Designation.cs" />
+    <Compile Include="SInventory_Entities\DestroyProductDao.cs" />
+    <Compile Include="SInventory_Entities\DirectStockOutDao.cs" />
+    <Compile Include="SInventory_Entities\EmpGeneralInfo.cs" />
+    <Compile Include="SInventory_Entities\Ingridents.cs" />
+    <Compile Include="SInventory_Entities\Invoice.cs" />
+    <Compile Include="SInventory_Entities\InvoiceBatchDAO.cs" />
+    <Compile Include="SInventory_Entities\InvoiceDetail.cs" />
+    <Compile Include="SInventory_Entities\CentralStore.cs" />
+    <Compile Include="SInventory_Entities\Manufacturer.cs" />
+    <Compile Include="SInventory_Entities\MigoMasterDAO.cs" />
+    <Compile Include="SInventory_Entities\MIOSetupDao.cs" />
+    <Compile Include="SInventory_Entities\NonTranscationalInvoiceDetailDao.cs" />
+    <Compile Include="SInventory_Entities\OrderInfoDetail.cs" />
+    <Compile Include="SInventory_Entities\OrderInfoMaster.cs" />
+    <Compile Include="SInventory_Entities\OrderListMasterDAO.cs" />
+    <Compile Include="SInventory_Entities\PackSize.cs" />
+    <Compile Include="SInventory_Entities\PaymentTranscationDetailDao.cs" />
+    <Compile Include="SInventory_Entities\PaymentTranscationMasterDao.cs" />
+    <Compile Include="SInventory_Entities\ProductDiscount.cs" />
+    <Compile Include="SInventory_Entities\ProductSQ.cs" />
+    <Compile Include="SInventory_Entities\ProType.cs" />
+    <Compile Include="SInventory_Entities\Requesition.cs" />
+    <Compile Include="SInventory_Entities\RequsitionChild.cs" />
+    <Compile Include="SInventory_Entities\RSMSetupDao.cs" />
+    <Compile Include="SInventory_Entities\ShippingCartonSize.cs" />
+    <Compile Include="SInventory_Entities\SlaveInformation.cs" />
+    <Compile Include="SInventory_Entities\StockConditionFreezeDAO.cs" />
+    <Compile Include="SInventory_Entities\StockConditionPermissionDao.cs" />
+    <Compile Include="SInventory_Entities\StockInTransfar.cs" />
+    <Compile Include="SInventory_Entities\StockUOM.cs" />
+    <Compile Include="SInventory_Entities\SupplierInformation.cs" />
+    <Compile Include="SInventory_Entities\tblNonTranscationalInvoiceMasterDao.cs" />
+    <Compile Include="SInventory_Entities\TerritoryInfoDao.cs" />
+    <Compile Include="SInventory_Entities\UserCompanyUnit.cs" />
+    <Compile Include="SInventory_Entities\UserCompanyUnitDao.cs" />
+    <Compile Include="SInventory_Entities\UserInformation.cs" />
+    <Compile Include="Panal_Entities\ObjPanal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SInventory_Entities\AreaInfo.cs" />
+    <Compile Include="SInventory_Entities\CompanyInformation.cs" />
+    <Compile Include="SInventory_Entities\CustomerCategory.cs" />
+    <Compile Include="SInventory_Entities\CustomerMaster.cs" />
+    <Compile Include="SInventory_Entities\Department.cs" />
+    <Compile Include="SInventory_Entities\DistrictInfo.cs" />
+    <Compile Include="SInventory_Entities\MarketInfo.cs" />
+    <Compile Include="SInventory_Entities\MiaInformation.cs" />
+    <Compile Include="SInventory_Entities\MiaTarget.cs" />
+    <Compile Include="SInventory_Entities\Product.cs" />
+    <Compile Include="SInventory_Entities\ProductCategory.cs" />
+    <Compile Include="SInventory_Entities\ProductUnitPrice.cs" />
+    <Compile Include="SInventory_Entities\RegionInfo.cs" />
+    <Compile Include="SInventory_Entities\CompanyUnit.cs" />
+    <Compile Include="SInventory_Entities\WarehouseStockInMasterDao.cs" />
+    <Compile Include="SInventory_Entities\WharehouseStockInDetailsDao.cs" />
+    <Compile Include="SInventory_Entities\WhStockConditionFreezeDao.cs" />
+    <Compile Include="SInventory_Entities\WHStockInToCenteralStore.cs" />
+    <Compile Include="SInventory_Entities\WhStoreFreezeDao.cs" />
+    <Compile Include="SInventory_Entities\ZoneInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

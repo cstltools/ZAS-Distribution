@@ -1,0 +1,397 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master"
+    AutoEventWireup="true" CodeFile="CustomerDueReport.aspx.cs" Inherits="SInventory_UI_CustomerDueReport" %>
+
+<%@ Register TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.0.20820.28364, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
+            <div>
+                <table width="100%" class="TableWorkArea">
+                    <tr>
+                        <td colspan="6" class="TableHeading">
+                            Customer Due Report
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                           <td class="TDLeft" style="text-align: right; padding-right: 10px;" width="13%">
+                                Group Name:
+                            </td>
+                            <td class="TDRight" width="20%">
+                                <asp:DropDownList ID="groupDropDownList" runat="server" AutoPostBack="True" CssClass="DropDown"
+                                >
+                                </asp:DropDownList>
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                             <td class="TDLeft" style="text-align: right; padding-right: 10px;" width="13%">
+                                Company Name:
+                            </td>
+                            <td class="TDRight" width="20%">
+                                <asp:DropDownList ID="companyNameDropDownList" runat="server" AutoPostBack="True"
+                                    CssClass="DropDown" OnSelectedIndexChanged="companyNameDropDownList_SelectedIndexChanged"
+                                    >
+                                </asp:DropDownList>
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+
+                         <tr runat="server" Visible="False">
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" style="text-align: right; padding-right: 10px;" width="13%">
+                                Distribution Center:
+                            </td>
+                            <td class="TDRight" width="20%">
+                                <asp:DropDownList ID="dcDropDownList" runat="server" CssClass="DropDown" >
+                                </asp:DropDownList>
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+
+                         <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" style="text-align: right; padding-right: 10px;" width="13%">
+                                    Customer Name: <span class="star-mark"></span>
+                                </td>
+                                <td class="TDLeft" width="20%">
+                                    <asp:DropDownList ID="customerDropDownList" runat="server" AutoPostBack="True" CssClass="DropDown"
+                                       >
+                                    </asp:DropDownList>
+                                </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+
+                         <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                <asp:Button ID="submitButton" runat="server" OnClick="submitButton_Click" Text="View Report" />
+                                <asp:Button ID="clearButton" runat="server" BackColor="#E8BC31" CssClass="clearButton"
+                                    OnClick="clearButton_OnClick" Text="Clear" />
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                            <td class="TDLeft" width="13%">
+                                &nbsp;
+                            </td>
+                            <td class="TDRight" width="20%">
+                                &nbsp;
+                            </td>
+                        </tr>
+                    </tr>
+                </table>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+</asp:Content>
