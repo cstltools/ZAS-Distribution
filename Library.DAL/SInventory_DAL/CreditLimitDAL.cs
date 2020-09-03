@@ -24,10 +24,14 @@ namespace Library.DAL.SInventory_DAL
                                       DayLimit ,
                                       IsActive ,
                                       EntryBy ,
-                                      EntryDate ,ActionStatus
+                                      EntryDate,
+                                      StartDate,
+                                      EndDate,
+                                      ActionStatus
                                     )
-                            VALUES  ( '"+aCreditLimitDao.CompanyId+"' ,'"+aCreditLimitDao.CustomerMasterId+"' ,'"+aCreditLimitDao.LimitAmount+"', " +
-                                 "   '"+aCreditLimitDao.DayLimit+"' , '"+aCreditLimitDao.IsActive+"' ,'"+aCreditLimitDao.EntryBy+"' ,'"+aCreditLimitDao.EntryDate+"','Posted')";
+                            VALUES  ( '" + aCreditLimitDao.CompanyId+"' ,'"+aCreditLimitDao.CustomerMasterId+"' ,'"+aCreditLimitDao.LimitAmount+"', " +
+                                 "   '" + aCreditLimitDao.DayLimit + "' , '" + aCreditLimitDao.IsActive + "' ,'" + aCreditLimitDao.EntryBy + "' ,'" + aCreditLimitDao.EntryDate 
+                                 + "' ,'" + aCreditLimitDao.StartDate + "' ,'" + aCreditLimitDao.EndDate + "','Posted')";
 
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
@@ -66,10 +70,34 @@ namespace Library.DAL.SInventory_DAL
         {
             return approvalAction.LoadForApprovalByUserCondition(pageName, userName);
         }
-        //public void GetCustomerDropdownList(ComboBox ddl)
-        //{
-        //    const string queryStr = @"SELECT * FROM dbo.tblCustMaster";
-        //    aCommonInternalDal.LoadComboboxValue(ddl, "CustomerName", "CustomerMasterId", queryStr, "SSIDB");
-        //}
+        
+        public DataTable GetCustomerCreditInfo(string generateParam)
+        {
+            string query = @"SELECT CreditLimitId,CompanyName,CustomerCode,CustomerName,LimitAmount,StartDate,EndDate,ApprovedBy,tblCustomerCreditLimit.ApprovedDate,
+                             DATEDIFF(day, StartDate, EndDate) AS Validity,ActionStatus FROM dbo.tblCustomerCreditLimit
+                             INNER JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCustomerCreditLimit.CompanyId
+                             INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblCustomerCreditLimit.CustomerMasterId
+                             WHERE CreditLimitId IS NOT NULL " + generateParam + " ORDER BY CreditLimitId DESC";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetCustomerCreditInfoById(string creditId)
+        {
+            string query = @"SELECT * FROM dbo.tblCustomerCreditLimit
+                             INNER JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCustomerCreditLimit.CompanyId
+                             INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblCustomerCreditLimit.CustomerMasterId
+                             WHERE CreditLimitId = " + creditId;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public bool UpdateCreditLimit(CreditLimitDAO aCreditLimitDao)
+        {
+            string query = @"UPDATE tblCustomerCreditLimit SET CompanyId='" + aCreditLimitDao.CompanyId + "',CustomerMasterId='" + aCreditLimitDao.CustomerMasterId
+                + "',LimitAmount = '" + aCreditLimitDao.LimitAmount + "',StartDate='" + aCreditLimitDao.StartDate + "',EndDate='" + aCreditLimitDao.EndDate
+                + "',UpdateBy = '" + aCreditLimitDao.UpdateBy + "',UpdateDate = '" + aCreditLimitDao.UpdateDate + "',ActionStatus = 'Posted' WHERE CreditLimitId = " + aCreditLimitDao.CreditLimitId + "";
+            return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
+        }
     }
 }

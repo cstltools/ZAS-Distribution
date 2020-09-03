@@ -376,31 +376,31 @@ namespace Library.BLL.SInventory_BLL
 
             if (Id.Length == 1)
             {
-                Id = "0000000" + Id;
+                Id = "00000000" + Id;
             }
             if (Id.Length == 2)
             {
-                Id = "000000" + Id;
+                Id = "0000000" + Id;
             }
             if (Id.Length == 3)
             {
-                Id = "00000" + Id;
+                Id = "000000" + Id;
             }
             if (Id.Length == 4)
             {
-                Id = "0000" + Id;
+                Id = "00000" + Id;
             }
             if (Id.Length == 5)
             {
-                Id = "000" + Id;
+                Id = "0000" + Id;
             }
             if (Id.Length == 6)
             {
-                Id = "00" + Id;
+                Id = "000" + Id;
             }
             if (Id.Length == 7)
             {
-                Id = "0" + Id;
+                Id = "00" + Id;
             }
             code = "INV-" + comCode.Trim() + "-" + Id;
             return code;

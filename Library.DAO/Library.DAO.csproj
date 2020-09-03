@@ -84,6 +84,8 @@
     <Compile Include="SInventory_Entities\PackSize.cs" />
     <Compile Include="SInventory_Entities\PaymentTranscationDetailDao.cs" />
     <Compile Include="SInventory_Entities\PaymentTranscationMasterDao.cs" />
+    <Compile Include="SInventory_Entities\PettyCashDetailsDao.cs" />
+    <Compile Include="SInventory_Entities\PettyCashMasterDao.cs" />
     <Compile Include="SInventory_Entities\ProductDiscount.cs" />
     <Compile Include="SInventory_Entities\ProductSQ.cs" />
     <Compile Include="SInventory_Entities\ProType.cs" />

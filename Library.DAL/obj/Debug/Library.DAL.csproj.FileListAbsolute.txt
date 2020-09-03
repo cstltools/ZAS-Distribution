@@ -423,3 +423,10 @@ F:\AFTER CORONA BREAK\ZAS\Solution\Library.DAL\bin\Debug\Library.DAO.pdb
 F:\AFTER CORONA BREAK\ZAS\Solution\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
 F:\AFTER CORONA BREAK\ZAS\Solution\Library.DAL\obj\Debug\Library.DAL.dll
 F:\AFTER CORONA BREAK\ZAS\Solution\Library.DAL\obj\Debug\Library.DAL.pdb
+F:\GIT Project\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+F:\GIT Project\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.dll
+F:\GIT Project\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.pdb
+F:\GIT Project\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.dll
+F:\GIT Project\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.pdb
+F:\GIT Project\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.dll
+F:\GIT Project\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.pdb

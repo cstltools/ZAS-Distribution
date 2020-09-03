@@ -79,6 +79,7 @@
     <Compile Include="SInventory_DAL\DashboardInfoDal.cs" />
     <Compile Include="SInventory_DAL\NationalSalesProductWiseDal.cs" />
     <Compile Include="SInventory_DAL\PaymentTranscationDal.cs" />
+    <Compile Include="SInventory_DAL\PettyCashDaL.cs" />
     <Compile Include="SInventory_DAL\SampleInvoiceDal.cs" />
     <Compile Include="SInventory_DAL\SampleIssueDal.cs" />
     <Compile Include="SInventory_DAL\CustomerFixedDiscountDal.cs" />

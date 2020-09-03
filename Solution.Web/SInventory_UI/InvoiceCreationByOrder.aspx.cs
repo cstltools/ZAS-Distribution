@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -114,12 +115,41 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
 
     public void GridView(string parametr)
     {
-        DataTable aTable = new DataTable();
-        aTable = aOrderInfoBll.LoadOrderForOrderCreation(parametr);
-        orderGridView.DataSource = aTable;
-        orderGridView.DataBind();
-        Session["MarketId"] = marketDropDownList.SelectedValue;
+        DataTable aTable = aOrderInfoBll.LoadOrderForOrderCreation(parametr);
+
+        if (aTable.Rows.Count > 0)
+        {
+            orderGridView.DataSource = aTable;
+            orderGridView.DataBind();
+            Session["MarketId"] = marketDropDownList.SelectedValue;
+
+
+            for (int i = 0; i < aTable.Rows.Count; i++)
+            {
+                var gotoinvoiceButton = (Button)orderGridView.Rows[i].Cells[1].FindControl("gotoinvoiceButton");
+
+                if (orderGridView.DataKeys[i]["Permission"].ToString() == "1")
+                {
+                    gotoinvoiceButton.Enabled = true;
+                    gotoinvoiceButton.Text = "Generate Invoice";
+                    gotoinvoiceButton.ToolTip = "";
+                }
+                else
+                {
+                    gotoinvoiceButton.Enabled = false;
+                    gotoinvoiceButton.BackColor = Color.DarkRed;
+                    gotoinvoiceButton.Text = "Unable to Access";
+                    gotoinvoiceButton.ToolTip = "Credit limit extention required !!!";
+                }
+            }
+        }
+        else
+        {
+            orderGridView.DataSource = null;
+            orderGridView.DataBind();
+        }
     }
+
     public string GenerateParameter()
     {
         string param = "";

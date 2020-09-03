@@ -937,7 +937,8 @@ where I.ComUnitId= '" + Dcid + "' and tblD.ManufacId='" + ManufId + "' and tblMa
         {
             //string query = @"SELECT count(InvoiceNo) CountNo FROM dbo.tblInvoice WHERE ComUnitId ='" + comUnitId.Trim() + "'";
 
-            string query = @"SELECT  (ISNULL(MAX(CAST((SUBSTRING(InvoiceNo,10,11)) AS INT)),0)+1) CountNo FROM dbo.tblInvoice WHERE ComUnitId ='" + comUnitId.Trim() + "' AND Remarks != 'Due'";
+            string query = @"SELECT  CASE WHEN ComUnitId > 99  THEN (ISNULL(MAX(CAST((SUBSTRING(InvoiceNo,11,12)) AS INT)),0)+1) 
+                             ELSE (ISNULL(MAX(CAST((SUBSTRING(InvoiceNo,10,11)) AS INT)),0)+1) END CountNo FROM dbo.tblInvoice WHERE ComUnitId ='" + comUnitId.Trim() + "' AND Remarks != 'Due' GROUP BY ComUnitId";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
         public DataTable ReturnInvoiceNoCount(string comUnitId)

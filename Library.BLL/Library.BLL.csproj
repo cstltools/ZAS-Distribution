@@ -84,6 +84,7 @@
     <Compile Include="SInventory_BLL\OrderStatusBll.cs" />
     <Compile Include="SInventory_BLL\OtherStockActionBLL.cs" />
     <Compile Include="SInventory_BLL\PackSizeBLL.cs" />
+    <Compile Include="SInventory_BLL\PettyCashBLL.cs" />
     <Compile Include="SInventory_BLL\ProductBLL.cs" />
     <Compile Include="SInventory_BLL\ProductCategoriesBLL.cs" />
     <Compile Include="SInventory_BLL\ProductDiscountBLL.cs" />

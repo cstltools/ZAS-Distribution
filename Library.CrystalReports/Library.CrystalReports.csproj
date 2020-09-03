@@ -145,6 +145,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsCountryStock.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SInventory_DS\dsCreditCustomerLimit.Designer.cs" />
+    <Compile Include="SInventory_DS\dsCreditCustomerLimit1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsCreditCustomerLimit.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\dsCustomerDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -351,6 +357,18 @@
       <DependentUpon>dsNTInvoiceReturnTable.xsd</DependentUpon>
     </Compile>
     <Compile Include="SInventory_DS\dsOrderInformation.Designer.cs" />
+    <Compile Include="SInventory_DS\dsPettyCash.cs">
+      <DependentUpon>dsPettyCash.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SInventory_DS\dsPettyCash.designer.cs">
+      <DependentUpon>dsPettyCash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsPettyCash1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsPettyCash.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\dsPickingSlipInvoiceNo.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -360,6 +378,30 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsProductCostPrice.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsProductDiscountReport.cs">
+      <DependentUpon>dsProductDiscountReport.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SInventory_DS\dsProductDiscountReport.designer.cs">
+      <DependentUpon>dsProductDiscountReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsProductDiscountReport1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsProductDiscountReport.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\DsProductDiscountReports.cs">
+      <DependentUpon>DsProductDiscountReports.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SInventory_DS\DsProductDiscountReports.designer.cs">
+      <DependentUpon>DsProductDiscountReports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\DsProductDiscountReports1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DsProductDiscountReports.xsd</DependentUpon>
     </Compile>
     <Compile Include="SInventory_DS\dsProductPriceInfo.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1031,6 +1073,17 @@
     <None Include="SInventory_DS\dsCountryStock.xss">
       <DependentUpon>dsCountryStock.xsd</DependentUpon>
     </None>
+    <None Include="SInventory_DS\dsCreditCustomerLimit.xsc">
+      <DependentUpon>dsCreditCustomerLimit.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsCreditCustomerLimit.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsCreditCustomerLimit1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SInventory_DS\dsCreditCustomerLimit.xss">
+      <DependentUpon>dsCreditCustomerLimit.xsd</DependentUpon>
+    </None>
     <None Include="SInventory_DS\dsCustomerDataSet.xsc">
       <DependentUpon>dsCustomerDataSet.xsd</DependentUpon>
     </None>
@@ -1440,6 +1493,17 @@
     <None Include="SInventory_DS\dsOrderInformation.xss">
       <DependentUpon>dsOrderInformation.xsd</DependentUpon>
     </None>
+    <None Include="SInventory_DS\dsPettyCash.xsc">
+      <DependentUpon>dsPettyCash.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsPettyCash.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsPettyCash1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SInventory_DS\dsPettyCash.xss">
+      <DependentUpon>dsPettyCash.xsd</DependentUpon>
+    </None>
     <None Include="SInventory_DS\dsPickingSlipInvoiceNo.xsc">
       <DependentUpon>dsPickingSlipInvoiceNo.xsd</DependentUpon>
     </None>
@@ -1461,6 +1525,28 @@
     </None>
     <None Include="SInventory_DS\dsProductCostPrice.xss">
       <DependentUpon>dsProductCostPrice.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsProductDiscountReport.xsc">
+      <DependentUpon>dsProductDiscountReport.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsProductDiscountReport.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsProductDiscountReport1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SInventory_DS\dsProductDiscountReport.xss">
+      <DependentUpon>dsProductDiscountReport.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\DsProductDiscountReports.xsc">
+      <DependentUpon>DsProductDiscountReports.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\DsProductDiscountReports.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DsProductDiscountReports1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SInventory_DS\DsProductDiscountReports.xss">
+      <DependentUpon>DsProductDiscountReports.xsd</DependentUpon>
     </None>
     <None Include="SInventory_DS\dsProductPriceInfo.xsc">
       <DependentUpon>dsProductPriceInfo.xsd</DependentUpon>

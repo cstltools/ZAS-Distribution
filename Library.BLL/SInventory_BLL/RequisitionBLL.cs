@@ -445,5 +445,10 @@ namespace Library.BLL.SInventory_BLL
        {
            return aRequisitionDal.CheckDuplicateEntry(id);
        }
+
+      public bool UpdateTempReceiveId()
+      {
+          return aRequisitionDal.UpdateTempReceiveId();
+      }
     }
 }

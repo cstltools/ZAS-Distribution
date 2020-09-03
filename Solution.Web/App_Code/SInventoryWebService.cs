@@ -31,6 +31,93 @@ public class SInventoryWebService : System.Web.Services.WebService
         return "Hello World";
     }
 
+    [WebMethod(EnableSession = true)]
+    [System.Web.Script.Services.ScriptMethod]
+    public string[] GetPerticularaction(string prefixText)
+    {
+        //string param = "";
+        //if (Session["MOParam"] != null)
+        //{
+        //    param = Session["MOParam"].ToString();
+        //}
+        string sql = "";
+
+        sql = @"SELECT COA.AccountName + '~'+ CAST(COA.AccountId AS NVARCHAR) AS Name FROM ZAS_ACCDB..tblChartOfAccounts AS COA 
+                WHERE COA.BankAccountId IS NULL AND COA.CashAccountId IS NULL AND COA.AccountName + '~'+ CAST(COA.AccountId AS NVARCHAR) LIKE @prefixText";
+
+        SqlDataAdapter da = new SqlDataAdapter(sql, strConnectionString);
+        da.SelectCommand.Parameters.Add("@prefixText", System.Data.SqlDbType.VarChar, 50).Value = "%" + prefixText + "%";
+        DataTable DTLocal = new DataTable();
+        da.Fill(DTLocal);
+        string[] items = new string[DTLocal.Rows.Count];
+        int i = 0;
+        foreach (DataRow dr in DTLocal.Rows)
+        {
+            items.SetValue(dr["Name"].ToString(), i);
+            i++;
+        }
+        return items;
+    }
+
+    //web service for product discount page 
+
+    [WebMethod(EnableSession = true)]
+    [System.Web.Script.Services.ScriptMethod]
+    public string[] loadCustomerInfoforProductdiscount(string prefixText)
+    {
+        string param = "";
+        if (Session["MOParam"] != null)
+        {
+            param = Session["MOParam"].ToString();
+        }
+        string sql = "";
+
+        sql = @"SELECT  CAST(tblCustMaster.CustomerMasterId AS nvarchar(50))+':'+tblCustMaster.CustomerName As Name FROM dbo.tblCustMaster
+             WHERE (CAST(tblCustMaster.CustomerMasterId AS nvarchar(50))+' '+tblCustMaster.CustomerName) like @prefixText " + param + "";
+
+
+        SqlDataAdapter da = new SqlDataAdapter(sql, strConnectionString);
+        da.SelectCommand.Parameters.Add("@prefixText", System.Data.SqlDbType.VarChar, 50).Value = "%" + prefixText + "%";
+        DataTable DTLocal = new DataTable();
+        da.Fill(DTLocal);
+        string[] items = new string[DTLocal.Rows.Count];
+        int i = 0;
+        foreach (DataRow dr in DTLocal.Rows)
+        {
+            items.SetValue(dr["Name"].ToString(), i);
+            i++;
+        }
+        return items;
+    }
+
+    [WebMethod(EnableSession = true)]
+    [System.Web.Script.Services.ScriptMethod]
+    public string[] loadCustomernew(string prefixText)
+    {
+        string param = "";
+        if (Session["MOParam"] != null)
+        {
+            param = Session["MOParam"].ToString();
+        }
+        string sql = "";
+
+        sql = @"SELECT  CAST(tblCustMaster.CustomerMasterId AS nvarchar(50))+':'+tblCustMaster.CustomerName As Cust FROM dbo.tblCustMaster
+             WHERE (CAST(tblCustMaster.CustomerMasterId AS nvarchar(50))+' '+tblCustMaster.CustomerName) like @prefixText " + param + "";
+
+
+        SqlDataAdapter da = new SqlDataAdapter(sql, strConnectionString);
+        da.SelectCommand.Parameters.Add("@prefixText", System.Data.SqlDbType.VarChar, 50).Value = "%" + prefixText + "%";
+        DataTable DTLocal = new DataTable();
+        da.Fill(DTLocal);
+        string[] items = new string[DTLocal.Rows.Count];
+        int i = 0;
+        foreach (DataRow dr in DTLocal.Rows)
+        {
+            items.SetValue(dr["Cust"].ToString(), i);
+            i++;
+        }
+        return items;
+    }
 
     WebServiceDal aServiceDal = new WebServiceDal();
 

@@ -20,6 +20,8 @@ namespace Library.DAO.SInventory_Entities
         public string ApprovedBy { get; set; }
         public DateTime ApprovedDate { get; set; }
         public string ActionStatus { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
     }
 }

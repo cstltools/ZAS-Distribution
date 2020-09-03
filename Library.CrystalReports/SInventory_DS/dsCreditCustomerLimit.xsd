@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsCreditCustomerLimit" targetNamespace="http://tempuri.org/dsCreditCustomerLimit.xsd" xmlns:mstns="http://tempuri.org/dsCreditCustomerLimit.xsd" xmlns="http://tempuri.org/dsCreditCustomerLimit.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsCreditCustomerLimit" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsCreditCustomerLimit" msprop:Generator_UserDSName="dsCreditCustomerLimit">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="CreditCustomerTable" msprop:Generator_TableClassName="CreditCustomerTableDataTable" msprop:Generator_TableVarName="tableCreditCustomerTable" msprop:Generator_TablePropName="CreditCustomerTable" msprop:Generator_RowDeletingName="CreditCustomerTableRowDeleting" msprop:Generator_RowChangingName="CreditCustomerTableRowChanging" msprop:Generator_RowEvHandlerName="CreditCustomerTableRowChangeEventHandler" msprop:Generator_RowDeletedName="CreditCustomerTableRowDeleted" msprop:Generator_UserTableName="CreditCustomerTable" msprop:Generator_RowChangedName="CreditCustomerTableRowChanged" msprop:Generator_RowEvArgName="CreditCustomerTableRowChangeEvent" msprop:Generator_RowClassName="CreditCustomerTableRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CustomerID" msprop:Generator_ColumnVarNameInTable="columnCustomerID" msprop:Generator_ColumnPropNameInRow="CustomerID" msprop:Generator_ColumnPropNameInTable="CustomerIDColumn" msprop:Generator_UserColumnName="CustomerID" type="xs:string" minOccurs="0" />
+              <xs:element name="CustomerName" msprop:Generator_ColumnVarNameInTable="columnCustomerName" msprop:Generator_ColumnPropNameInRow="CustomerName" msprop:Generator_ColumnPropNameInTable="CustomerNameColumn" msprop:Generator_UserColumnName="CustomerName" type="xs:string" minOccurs="0" />
+              <xs:element name="Address" msprop:Generator_ColumnVarNameInTable="columnAddress" msprop:Generator_ColumnPropNameInRow="Address" msprop:Generator_ColumnPropNameInTable="AddressColumn" msprop:Generator_UserColumnName="Address" type="xs:string" minOccurs="0" />
+              <xs:element name="CompanyName" msprop:Generator_ColumnVarNameInTable="columnCompanyName" msprop:Generator_ColumnPropNameInRow="CompanyName" msprop:Generator_ColumnPropNameInTable="CompanyNameColumn" msprop:Generator_UserColumnName="CompanyName" type="xs:string" minOccurs="0" />
+              <xs:element name="DayLimit" msprop:Generator_ColumnVarNameInTable="columnDayLimit" msprop:Generator_ColumnPropNameInRow="DayLimit" msprop:Generator_ColumnPropNameInTable="DayLimitColumn" msprop:Generator_UserColumnName="DayLimit" type="xs:string" minOccurs="0" />
+              <xs:element name="ValueLimit" msprop:Generator_ColumnVarNameInTable="columnValueLimit" msprop:Generator_ColumnPropNameInRow="ValueLimit" msprop:Generator_ColumnPropNameInTable="ValueLimitColumn" msprop:Generator_UserColumnName="ValueLimit" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

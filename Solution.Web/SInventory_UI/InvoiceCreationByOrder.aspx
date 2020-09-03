@@ -228,7 +228,7 @@
                             <div id="gridContainer1" style="height: auto; overflow: auto; width: 97%; margin: 0 auto;">
                                 
                                 <asp:GridView ID="orderGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview"
-                                DataKeyNames="ComUnitId,ManufacId,OrderId">
+                                DataKeyNames="ComUnitId,ManufacId,OrderId,Permission">
                                 <Columns>
                                     <asp:BoundField DataField="OrderCode" HeaderText="Order No" />
                                     <asp:BoundField DataField="SubmissionDate" HeaderText="Order Date" DataFormatString="{0:dd-MMM-yyyy}" />
@@ -241,7 +241,7 @@
                                     <asp:BoundField DataField="MIOName" HeaderText="MIO Name" />
                                     <asp:TemplateField HeaderText="Go To Invoice">
                                         <ItemTemplate>
-                                            <asp:Button ID="gotoinvoiceButton" runat="server" Text="Go To Invoice" CssClass="button"
+                                            <asp:Button ID="gotoinvoiceButton" runat="server" Text="Go To Invoice" ToolTip="" CssClass="button"
                                                 OnClick="gotoinvoiceButton_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>

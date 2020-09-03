@@ -47,12 +47,17 @@ namespace Library.DAL.SInventory_DAL
         }
         public DataTable LoadOrderForOrderCreation(string parameter)
         {
-            string query = @"SELECT * FROM dbo.tblOrder
-            INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblOrder.CustomerMasterId
-            INNER JOIN dbo.tblMarket ON tblMarket.MarketId = tblOrder.MarketId
-            LEFT JOIN dbo.tblMIOInfo ON tblMIOInfo.MIOId = tblOrder.MIOId
-            INNER JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = dbo.tblOrder.ComUnitId
-            WHERE IsInvoice=0 AND ActionStatus='Accepted' " + parameter+"";
+            string query = @"SELECT *,CASE WHEN tblOrder.IsSpecialApproval = 1 AND CR.CreditLimitId IS NULL AND tblCustMaster.TermOfPayment = 'Credit' 
+                             THEN 0 ELSE 1 END AS Permission FROM dbo.tblOrder
+                             INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblOrder.CustomerMasterId
+                             INNER JOIN dbo.tblMarket ON tblMarket.MarketId = tblOrder.MarketId
+                             LEFT JOIN dbo.tblMIOInfo ON tblMIOInfo.MIOId = tblOrder.MIOId
+                             INNER JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = dbo.tblOrder.ComUnitId
+                             INNER JOIN tblCompanyInfo AS CI ON CI.CompanyId = tblCompanyUnit.CompanyId
+                             LEFT JOIN (SELECT CustomerMasterId,CreditLimitId,CompanyId FROM tblCustomerCreditLimit 
+                             WHERE GetDate() BETWEEN StartDate AND EndDate AND ActionStatus IN ('Accepted')) AS CR 
+                             ON tblOrder.CustomerMasterId = CR.CustomerMasterId AND  CI.CompanyId = CR.CompanyId
+                             WHERE IsInvoice = 0 AND ActionStatus = 'Accepted' " + parameter+"";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -363,6 +368,11 @@ namespace Library.DAL.SInventory_DAL
                             WHERE INV.CustomerMasterId  = " + customerMasterId  + "GROUP BY CI.CompanyName,UNT.ComUnitName,InvoiceNo,InvoiceDate,VC.CustomerMasterId HAVING SUM(DeliveryTpGrandTotal)- SUM(ISNULL(PaymentAmount,0)) > 0 ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable CheckCreditStatus(int comId, string customerCode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

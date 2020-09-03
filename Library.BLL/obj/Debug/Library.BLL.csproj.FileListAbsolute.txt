@@ -689,3 +689,14 @@ F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\bin\Debug\Library.DAO.pdb
 F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
 F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.dll
 F:\AFTER CORONA BREAK\ZAS\Solution\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\GIT Project\ZAS Sales\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+F:\GIT Project\ZAS Sales\Library.BLL\obj\Debug\Library.BLL.dll
+F:\GIT Project\ZAS Sales\Library.BLL\obj\Debug\Library.BLL.pdb
+F:\GIT Project\ZAS Sales\Library.BLL\bin\Debug\Library.BLL.dll
+F:\GIT Project\ZAS Sales\Library.BLL\bin\Debug\Library.BLL.pdb
+F:\GIT Project\ZAS Sales\Library.BLL\bin\Debug\Library.DAL.dll
+F:\GIT Project\ZAS Sales\Library.BLL\bin\Debug\Library.DAO.dll
+F:\GIT Project\ZAS Sales\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+F:\GIT Project\ZAS Sales\Library.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+F:\GIT Project\ZAS Sales\Library.BLL\bin\Debug\Library.DAL.pdb
+F:\GIT Project\ZAS Sales\Library.BLL\bin\Debug\Library.DAO.pdb

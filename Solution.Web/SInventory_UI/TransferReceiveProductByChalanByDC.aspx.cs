@@ -107,7 +107,9 @@ public partial class SInventory_UI_ReceiveProductByChalanByDC : System.Web.UI.Pa
             
         }
 
-        //DC Freez
+        // Update TempReceiveId 
+        aRequisitionBll.UpdateTempReceiveId();
+
         showMessageBox("Data Save Successfully!!");
         Popup(hdReqId.Value);
         Clear();

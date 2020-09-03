@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -427,6 +428,13 @@ WHERE tblUnitPrice.IsActive=1 AND tblDCStore.ReqId='" + reqId + "'";
        {
            string query = @"SELECT * FROM tblDCStore WHERE ReceiveDateTime BETWEEN DATEADD(MINUTE,-5,GETDATE()) AND  DATEADD(MINUTE,5,GETDATE()) AND (StockInTransfarId = " + id + " OR ChalanDetailsId = " + id + ")";
            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+       }
+
+       public bool UpdateTempReceiveId()
+       {
+           var aSqlParameterList = new List<SqlParameter>();
+
+           return aCommonInternalDal.UpdateAction("sp_UD_ReceiveIdInDc", aSqlParameterList);
        }
     }
 }

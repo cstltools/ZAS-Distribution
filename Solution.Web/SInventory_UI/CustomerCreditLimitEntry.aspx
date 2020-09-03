@@ -75,6 +75,19 @@
                         </td>
                     </tr>
                     <tr>
+                        <td width="13%" class="TDLeft" style="text-align: center"> View List</td>
+                        <td width="20%" class="TDRight">
+                            <asp:ImageButton ID="custMastListImageButton" runat="server" 
+                                ImageUrl="~/images/viewList11.png" 
+                                onclick="custMasterListImageButton_Click" Height="35px" Width="35px" /></td>
+                        <td width="13%" class="TDLeft"></td>
+                        <td width="20%" class="TDRight">
+                            &nbsp;</td>
+                        <td width="13%" class="TDLeft">&nbsp;</td>
+                        <td width="20%" class="TDRight">
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
                         <td class="TDLeft" width="13%">
                             &nbsp;
                         </td>
@@ -113,6 +126,7 @@
                         </td>
                         <td width="13%" class="TDLeft">
                             <asp:HiddenField ID="customeridHiddenField" runat="server" />
+                            <asp:HiddenField ID="creditHiddenField" runat="server" />
                         </td>
                         <td width="20%" class="TDRight">
                         </td>
@@ -149,6 +163,49 @@
                             &nbsp;
                         </td>
                         <td width="20%" class="TDRight">
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            Start Date: <span class="star-mark"> * </span>
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:TextBox ID="fromDateTextBox" runat="server" CssClass="TextBoxCalander"></asp:TextBox>
+                            <asp:ImageButton runat="server" AlternateText="Click to show calendar" ImageUrl="~/Images/Calendar_scheduleHS.png"
+                                TabIndex="4" ID="imgDate"></asp:ImageButton>
+                            <asp:CalendarExtender ID="Date" runat="server" Format="dd-MMM-yyyy" TargetControlID="fromDateTextBox"
+                                PopupButtonID="imgDate">
+                            </asp:CalendarExtender>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            End Date: <span class="star-mark"> * </span>
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:TextBox ID="toDateTextBox" runat="server" CssClass="TextBoxCalander"></asp:TextBox>
+                            <asp:ImageButton runat="server" AlternateText="Click to show calendar" ImageUrl="~/Images/Calendar_scheduleHS.png"
+                                TabIndex="4" ID="ImageButton1"></asp:ImageButton>
+                            <asp:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd-MMM-yyyy"
+                                TargetControlID="toDateTextBox" PopupButtonID="ImageButton1">
+                            </asp:CalendarExtender>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
                         </td>
                     </tr>
                     
