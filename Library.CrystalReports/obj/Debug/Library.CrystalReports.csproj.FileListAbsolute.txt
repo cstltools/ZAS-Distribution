@@ -197,3 +197,6 @@ F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\bin\Debug\Library.Crys
 F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
 F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
 F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\GIT Project\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\GIT Project\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
+F:\GIT Project\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb

@@ -252,8 +252,10 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
         if (productNameTextBox2.Text.Contains(':'))
         {
             string[] product = productNameTextBox2.Text.Split(':');
+            //txtIsactive.Text = product[2];
             productNameTextBox2.Text = product[1];
             productCodeTextBox.Text = product[0];
+
             GetProductInGrid(productCodeTextBox.Text);
         }
     }
@@ -268,7 +270,7 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
             if (aDataTable.Rows.Count > 0)
             {
                 productIdHiddenField.Value = aDataTable.Rows[0]["ProductId"].ToString();
-                
+                txtIsactive.Text = aDataTable.Rows[0]["UnitPrice"].ToString(); ;
             }
         }
     }

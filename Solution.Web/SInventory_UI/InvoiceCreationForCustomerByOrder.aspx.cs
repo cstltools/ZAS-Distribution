@@ -49,6 +49,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                     }
                     
                 }
+                payTypeDDL.Enabled = false;
             }
 
             

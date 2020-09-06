@@ -31,6 +31,25 @@ namespace Library.DAL.SInventory_DAL
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
 
+        public DataTable ProductDiscountViewDal()
+        {
+
+            string query = @"SELECT ProDis.DiscountId,com.CompanyName,cust.CustomerName, tblProduct.ProductName,ProDis.DiscountPercentage, ProDis.ActiveDate, ProDis.InactiveDate, ProDis.ActionStatus  from tblProductDiscount As ProDis
+            LEFT JOIN dbo.tblCustMaster As cust ON ProDis.CustomerMasterId= cust.CustomerMasterId
+            LEFT JOIN dbo.tblProduct ON ProDis.ProductId=dbo.tblProduct.ProductId
+			left join tblCompanyInfo As com On  tblProduct.CompanyId = com.CompanyId";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+              
+       }
+        public bool DeleteProductdiscountDal(string Id)
+        {
+            List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+            aSqlParameterlist.Add(new SqlParameter("@DiscountId", Id));
+            return aCommonInternalDal.DeleteAction("sp_DEL_ProductDiscount", aSqlParameterlist);
+        }
+
+
         public bool HasProductDiscountName(ProductDiscount aProductDiscount)
         {
             string query = "select * from tblProductDiscount where ProductId = '" + aProductDiscount.ProductId + "'";

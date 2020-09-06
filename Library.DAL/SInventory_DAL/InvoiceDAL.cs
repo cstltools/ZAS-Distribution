@@ -1116,7 +1116,7 @@ IVD.UnitVatAmount,SUM(IVD.TotalPrice) TotalPrice, IVD.TotalPriceVatAmount, (IVD.
 SUM(IVD.NetAmount) NetAmount,IVD.PackSize AS InvoiceId FROM dbo.tblInvoice AS IV 
 LEFT JOIN dbo.tblInvoiceDetail AS IVD ON IVD.InvoiceId = IV.InvoiceId
 LEFT JOIN dbo.tblProduct ON tblProduct.ProductCode = IVD.ProductCode
-LEFT JOIN dbo.tblProductDiscount PD ON PD.CustomerMasterId = IV.CustomerMasterId AND PD.ProductId = dbo.tblProduct.ProductId WHERE IV.InvoiceNo in (" + invNo.Trim() + ") GROUP BY IVD.ProductCode,IVD.ProductName, IVD.UnitPrice,IVD.UnitVatAmount, IVD.TotalPriceVatAmount, IVD.DiscountPercentage, PD.DiscountPercentage,IVD.PackSize ";
+LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductDiscount WHERE IsActive = 1) PD  ON PD.CustomerMasterId = IV.CustomerMasterId AND PD.ProductId = dbo.tblProduct.ProductId WHERE IV.InvoiceNo in (" + invNo.Trim() + ") GROUP BY IVD.ProductCode,IVD.ProductName, IVD.UnitPrice,IVD.UnitVatAmount, IVD.TotalPriceVatAmount, IVD.DiscountPercentage, PD.DiscountPercentage,IVD.PackSize ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -1230,7 +1230,7 @@ IVD.UnitVatAmount,IVD.DeliveryTotalPrice as TotalPrice,IVD.DeliveryTotalPriceVat
  LEFT JOIN dbo.tblInvoice IV ON IVD.InvoiceId = IV.InvoiceId   
  INNER JOIN dbo.tblInvoice I ON I.InvoiceId = IV.InvoiceId    
  LEFT JOIN dbo.tblProduct ON tblProduct.ProductCode = IVD.ProductCode    
- LEFT JOIN dbo.tblProductDiscount PD ON PD.CustomerMasterId = I.CustomerMasterId AND PD.ProductId = dbo.tblProduct.ProductId 
+ LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductDiscount WHERE IsActive = 1) PD ON PD.CustomerMasterId = I.CustomerMasterId AND PD.ProductId = dbo.tblProduct.ProductId 
                        WHERE IV.DelivaryInvoiceNo in (" + invNo.Trim() + ") and IVD.DeliveryStatus IN ('Full','Partial') ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");

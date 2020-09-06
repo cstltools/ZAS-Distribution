@@ -31,6 +31,17 @@ namespace Library.BLL.SInventory_BLL
             { }
         }
 
+        public DataTable ProductDiscountView()
+        {
+            return aProductDiscountDal.ProductDiscountViewDal();
+        }
+
+
+        public bool DeleteProductDiscount(string id)
+        {
+            return aProductDiscountDal.DeleteProductdiscountDal(id);
+        }
+
         public bool HasProductDiscountName(ProductDiscount aProductDiscount)
         {
             return aProductDiscountDal.HasProductDiscountName(aProductDiscount);

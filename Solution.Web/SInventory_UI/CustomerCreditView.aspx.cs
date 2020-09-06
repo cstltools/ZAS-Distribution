@@ -100,7 +100,7 @@ public partial class SInventory_UI_CustomerCreditView : System.Web.UI.Page
             int rowindex = Convert.ToInt32(e.CommandArgument);
             var dataKey = invoiceGridView.DataKeys[rowindex];
 
-            if (Session["LoginName"].ToString() == "rezaul")
+            if (Session["LoginName"].ToString() == "rezaul" || Session["LoginName"].ToString() == "Mehedi")
             {
                 if (dataKey != null)
                 {
@@ -114,7 +114,7 @@ public partial class SInventory_UI_CustomerCreditView : System.Web.UI.Page
             }
             else
             {
-                ShowMessageBox("Edit is not possible!!!");
+                ShowMessageBox("You don't have authorisation of this operation !!!");
                 viewRptButton_Click(null,null);
             }
         }

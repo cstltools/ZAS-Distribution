@@ -3,6 +3,47 @@
 
 <%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.0.20820.28364, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    
+    <style type="text/css">
+        /*AutoComplete flyout */
+        .autocomplete_completionListElement
+        {
+            margin: 0px !important;
+            background-color: White;
+            color: windowtext;
+            border: buttonshadow;
+            border-width: 1px;
+            border-style: solid;
+            cursor: default;
+            overflow: auto;
+            font-family: Calibri;
+            font-size: 12px;
+            text-align: left;
+            list-style-type: none;
+            margin-left: 0px;
+            padding-left: 0px;
+            max-height: 350px;
+            width: 40% !important;
+        }
+        
+        /* AutoComplete highlighted item */
+        
+        .autocomplete_highlightedListItem
+        {
+            background-color: yellow;
+            color: black;
+            padding: 1px;
+        }
+        
+        /* AutoComplete item */
+        
+        .autocomplete_listItem
+        {
+            background-color: white;
+            color: blue;
+            padding: 0px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
@@ -35,8 +76,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td width="13%" class="TDLeft">
-                            &nbsp;
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
+                            View Details &nbsp;
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:ImageButton ID="ListImageButton" runat="server" ImageUrl="~/images/viewList.png"
@@ -218,6 +259,7 @@
                             &nbsp;
                         </td>
                     </tr>
+               
                     <tr>
                         <td class="TDLeft" width="13%">
                         </td>
@@ -240,6 +282,23 @@
                         <td class="TDRight" width="20%">
                         </td>
                     </tr>
+                     <tr>
+                    <td class="TDLeft" width="13%">
+                    </td>
+                    <td class="TDRight" width="20%">
+                    </td>
+                    <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                        Unit Price: 
+                    </td>
+                    <td class="TDRight" width="20%">
+                        <asp:TextBox ID="txtIsactive" runat="server" ReadOnly="True"></asp:TextBox>
+                    </td>
+                    <td class="TDLeft" width="13%">
+                        &nbsp;
+                    </td>
+                    <td class="TDRight" width="20%">
+                    </td>
+                </tr>
                     <tr>
                         <td class="TDLeft" width="13%">
                             &nbsp;
