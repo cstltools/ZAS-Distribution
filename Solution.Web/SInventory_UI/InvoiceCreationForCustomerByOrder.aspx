@@ -3,6 +3,9 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+
+    <link href="../PopCss/default.css" rel="stylesheet" type="text/css" />
+    <link href="../PopCss/Styles.css" rel="stylesheet" type="text/css" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
@@ -10,40 +13,30 @@
             <div>
                 <table width="100%" class="TableWorkArea">
                     <tr>
-                        <td colspan="6" class="TableHeading">
-                            Proforma Invoice Creation
+                        <td colspan="6" class="TableHeading">Proforma Invoice Creation
                         </td>
                     </tr>
                     <tr>
-                        <td class="TDLeft" width="13%">
-                            
+                        <td class="TDLeft" width="13%"></td>
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;<asp:HiddenField ID="hdfCustomer" runat="server" />
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;<asp:HiddenField ID="hdfCustomer" runat="server" />
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
-                        </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Customer Code:
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Customer Code:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="custCodeTextBox" runat="server" AutoPostBack="True" ReadOnly="True"
                                 CssClass="TextBox" OnTextChanged="custCodeTextBox_TextChanged"></asp:Label>
                         </td>
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Customer Name:
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Customer Name:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="custNameTextBox" runat="server" CssClass="TextBox" ReadOnly="True"
@@ -56,71 +49,62 @@
                                 ShowOnlyCurrentWordInCompletionListItem="true">
                             </asp:AutoCompleteExtender>--%>
                         </td>
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Customer Address:
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Customer Address:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="custAddressTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
                     </tr>
                     <tr>
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Salse Center:
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Salse Center:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="comUnitNameTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            MIO Code:
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">MIO Code:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="miaCodeTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            MIO Name:
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">MIO Name:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="miaNameTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
                     </tr>
                     <tr>
-                    
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Territory Name:
+
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Territory Name:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="areaNameTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
-                        
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Merket:
+
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Merket:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="marketNameTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
-                        
-                        
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Invoice Date:
+
+
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Invoice Date:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="invDateTextBox" runat="server" CssClass="TextBoxCalander" ReadOnly="True"></asp:Label>
                         </td>
 
-                        
-                        
-                        
+
+
+
                     </tr>
                     <tr>
-                        
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Order No:
+
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Order No:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="orderNoTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Order Date:
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Order Date:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="orderDateTextBox" runat="server" CssClass="TextBoxCalander" ReadOnly="True"></asp:Label>
@@ -130,32 +114,28 @@
                                 PopupButtonID="imgorderDate">
                             </asp:CalendarExtender>--%>
                         </td>
-                        
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Customer Category:
+
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Customer Category:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="custCategoryTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
                     </tr>
                     <tr>
-                        
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Payment Type:
+
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Payment Type:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:DropDownList ID="payTypeDDL" runat="server" CssClass="DropDown">
                             </asp:DropDownList>
                         </td>
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Remarks:
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Remarks:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:TextBox ID="remarksTextBox" runat="server" CssClass="TextBox"></asp:TextBox>
                         </td>
-                        
-                         <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Delivery Person Name:&nbsp;<span class="star-mark"> * </span>
+
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Delivery Person Name:&nbsp;<span class="star-mark"> * </span>
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:DropDownList ID="deliverypersonNameTextBox" runat="server" CssClass="DropDown"
@@ -164,25 +144,20 @@
                         </td>
                     </tr>
                     <tr>
-                       
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            Delivery Person Mob.No:
+
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Delivery Person Mob.No:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:TextBox ID="deliverypersonMobileTextBox" runat="server" CssClass="TextBox"></asp:TextBox>
                         </td>
-                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
-                            
-                        </td>
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;"></td>
                         <td width="20%" class="TDRight">
                             <asp:Label ID="districtNameTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
-                        
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
@@ -190,20 +165,15 @@
                             <asp:HiddenField ID="orderIdHiddenField" runat="server" />
                             <asp:HiddenField ID="isVatApplicable" runat="server" />
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
@@ -283,8 +253,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="DP">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="dpTextBox" runat="server" CssClass="TextBoxMicroMini" Text='<%# Eval("DiscountPercentage")%>' ReadOnly="True"
-                                                    ></asp:TextBox>
+                                                <asp:TextBox ID="dpTextBox" runat="server" CssClass="TextBoxMicroMini" Text='<%# Eval("DiscountPercentage")%>' ReadOnly="True"></asp:TextBox>
                                                 <asp:FilteredTextBoxExtender ID="fdpTextBox" runat="server" TargetControlID="dpTextBox"
                                                     FilterType="Custom, Numbers" ValidChars="." />
                                             </ItemTemplate>
@@ -299,8 +268,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="SD">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="sdTextBox" runat="server" CssClass="TextBoxMicroMini" Text='<%# Eval("SpecialAmount")%>' AutoPostBack="True" OnTextChanged="sdTextBox_OnTextChanged"
-                                                    ></asp:TextBox>
+                                                <asp:TextBox ID="sdTextBox" ReadOnly="True" runat="server" CssClass="TextBoxMicroMini" Text='<%# Eval("SpecialAmount")%>' AutoPostBack="True" OnTextChanged="sdTextBox_OnTextChanged"></asp:TextBox>
                                                 <asp:FilteredTextBoxExtender ID="fsdTextBox" runat="server" TargetControlID="sdTextBox"
                                                     FilterType="Custom, Numbers" ValidChars="." />
                                             </ItemTemplate>
@@ -353,7 +321,7 @@
                             <br />
                         </td>
                     </tr>
-                    
+
                     <%--<tr>
                         <td class="TDLeft" width="13%">
                             &nbsp;
@@ -384,163 +352,155 @@
                         </td>
                     </tr>--%>
                     <tr>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%"  style="text-align: right; padding-right: 10px;">
-                            TP Total:
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">TP Total:
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="tpTptalTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%"  style="text-align: right; padding-right: 10px;">
-                            Discount Total:
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">Discount Total:
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="disTotalTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
                         <td class="TDRight" width="20%">
-                            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="InvoiceCreationByOrder.aspx"> &lt; &lt; &lt; Back to List </asp:HyperLink> &nbsp;
+                            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="InvoiceCreationByOrder.aspx"> &lt; &lt; &lt; Back to List </asp:HyperLink>
+                            &nbsp;
                         </td>
-                        <td class="TDLeft" width="13%"  style="text-align: right; padding-right: 10px;">
-                            Special Discount:
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">Special Discount:
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="pdTextBox" runat="server" CssClass="TextBox" ReadOnly="True" AutoPostBack="True" OnTextChanged="pdTextBox_OnTextChanged"></asp:TextBox>
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%"  style="text-align: right; padding-right: 10px;">
-                            VAT Total:
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">VAT Total:
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="vatTotalTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%"  style="text-align: right; padding-right: 10px;">
-                            Grand Total:
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">Grand Total:
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="grandTotalTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
-                    
+
                     <tr>
-                        <td class="TDLeft" width="13%">
+                        <td class="TDLeft" width="13%"></td>
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
-                        </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
-                    
-                     <tr>
-                        <td class="TDLeft" width="13%">
+
+                    <tr>
+                        <td class="TDLeft" width="13%"></td>
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
-                        </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
+                        <td class="TDRight" width="20%">&nbsp;
+                        </td>
+                        <td class="TDLeft" width="13%"></td>
                         <td class="TDRight" width="20%">
-                            &nbsp;
-                        </td>
-                        <td class="TDLeft" width="13%">
-                            
-                        </td>
-                        <td class="TDRight" width="20%">
-                           <asp:Button ID="saveButton" runat="server" Text="Invoice Generate" OnClientClick="return confirm('Are you sure you want to Save Invoice ?');"
-                                        OnClick="saveButton_Click" />
+                            <asp:Button ID="saveButton" runat="server" Text="Invoice Generate"
+                                OnClick="saveButton_Click" />
+                            <asp:ModalPopupExtender ID="ModalPopupExtender10" runat="server" TargetControlID="HiddenField10"
+                                PopupControlID="pnlModal" BackgroundCssClass="modalBackground">
+                            </asp:ModalPopupExtender>
+
+
+                            <asp:HiddenField ID="HiddenField10" runat="server" />
+                            <asp:Panel ID="pnlModal" runat="server" CssClass="modalPopup" Style="display: none;">
+                                <div class="popup_Titlebar" id="PopupHeader">
+                                    <div class="TitlebarLeft">Confirm Message</div>
+                                    <div class="TitlebarRight">
+                                        <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="../PopCss/Images/close.jpg" />
+                                    </div>
+                                </div>
+                                <div class="popup_Body" align="center">
+                                    <div class="mainLeft ">
+                                        <asp:Image ID="Image2" runat="server" ImageUrl="~/PopCss/Images/question.png" Width="30px" />
+                                    </div>
+                                    <div class="mainRight">
+                                        <p align="center">Are you want to save the invoice ? </p>
+                                         <asp:TextBox ID="invoiceNoTextBox" runat="server" CssClass="TextBox" ></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="popup_Buttons" align="center">
+                                    <div class="right_button">
+                                        <asp:Button ID="yesButton" runat="server" Text="Yes" BackColor="#1E90FF" Width="60px" Height="30px" OnClick="yesButton_Click" />
+                                    </div>
+
+                                    <div class="left_button">
+                                        <asp:Button ID="noButton" runat="server" Text="No" BackColor="red" Width="60px" Height="30px" OnClick="noButton_Click" />
+                                    </div>
+                                </div>
+                            </asp:Panel>
                         </td>
                         <td class="TDLeft" width="13%">
                             <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                                 <ContentTemplate>
-                                    
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                             <asp:UpdateProgress ID="UpdateProgress2" runat="server" AssociatedUpdatePanelID="UpdatePanel3"
@@ -552,59 +512,43 @@
                                 </ProgressTemplate>
                             </asp:UpdateProgress>
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
-                    
+
                     <tr>
-                        <td class="TDLeft" width="13%">
+                        <td class="TDLeft" width="13%"></td>
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
-                        </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
-                    
-                     <tr>
-                        <td class="TDLeft" width="13%">
+
+                    <tr>
+                        <td class="TDLeft" width="13%"></td>
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
-                        </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
-                            Print InvNo
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">Print InvNo
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:Label ID="invTextBox" runat="server" CssClass="TextBox"></asp:Label>
@@ -612,38 +556,36 @@
                         <td class="TDLeft" width="13%">
                             <asp:Button ID="printButton" BackColor="#cc6600" runat="server" OnClick="printButton_Click" Text="Print" />
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                     <tr>
                         <td class="TDLeft" width="13%">
                             <asp:HiddenField ID="hdCustomerMasterId" runat="server" />
                             <asp:HiddenField ID="hdComUnitId" runat="server" />
+                            <asp:HiddenField ID="hdgrossValue" runat="server" />
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:HiddenField ID="hdMiaId" runat="server" />
                             <asp:HiddenField ID="orderHiddenField" runat="server" />
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
-                        <td class="TDLeft" width="13%">
-                            &nbsp;
+                        <td class="TDLeft" width="13%">&nbsp;
                         </td>
-                        <td class="TDRight" width="20%">
-                            &nbsp;
+                        <td class="TDRight" width="20%">&nbsp;
                         </td>
                     </tr>
                 </table>
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    
-     <asp:UpdateProgress ID="UpdateProgress1" runat="server" ClientIDMode="Static" DisplayAfter="0" DynamicLayout="true">
+
+
+
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server" ClientIDMode="Static" DisplayAfter="0" DynamicLayout="true">
         <ProgressTemplate>
             <div class="divWaiting">
                 <asp:Image ID="imgWait" CssClass="position-set" runat="server" ImageAlign="Middle" ImageUrl="~/images/progress-bar-opt.gif"

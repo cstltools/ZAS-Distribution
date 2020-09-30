@@ -71,10 +71,28 @@
                             Payment Type:
                         </td>
                         <td class="TDRight" width="20%">
-                             <asp:RadioButtonList ID="paymentTypeRadioButtonList"  runat="server">
+                             <asp:RadioButtonList ID="paymentTypeRadioButtonList" RepeatDirection="Horizontal"  runat="server">
                                 <asp:ListItem Text="Cash" Value="Cash" />
                                 <asp:ListItem Text="Credit" Value="Credit" />
                             </asp:RadioButtonList>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                    </tr>
+                     <tr runat="server" Visible="False">
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            Adj. Invoice No:
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:DropdownList ID="ddlAdjustmentInv" runat="server" CssClass="TextBox"></asp:DropdownList>
                         </td>
                         <td class="TDLeft" width="13%">
                             &nbsp;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -250,6 +251,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         comUnitNameTextBox.Text = aTable.Rows[0]["ComUnitName"].ToString();
         hdComUnitId.Value = aTable.Rows[0]["ComUnitId"].ToString();
         isVatApplicable.Value = aTable.Rows[0].Field<bool>("IsVatApplicable").ToString(CultureInfo.InvariantCulture);
+        hdgrossValue.Value = aTable.Rows[0].Field<Decimal>("GrossValue").ToString(CultureInfo.InvariantCulture);
 
 
         //New
@@ -258,6 +260,20 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         miaNameTextBox.Text = aTable.Rows[0]["MIOName"].ToString();
         hdMiaId.Value = aTable.Rows[0]["MIOId"].ToString();
 
+        decimal discountPerRow = 0;
+        decimal percentagePerRow = 0;
+        if (aTable.Rows.Count > 0)
+        {
+            DataTable fixedDiscount = aInvoiceBll.GetFixedDiscount(hdCustomerMasterId.Value, hdComUnitId.Value);
+
+            if (fixedDiscount.Rows.Count > 0)
+            {
+                percentagePerRow =  fixedDiscount.Rows[0].Field<decimal>("DiscountParcentage") /  aTable.Rows.Count;
+                discountPerRow = (Convert.ToDecimal(hdgrossValue.Value) * fixedDiscount.Rows[0].Field<decimal>("DiscountParcentage") / 100) / aTable.Rows.Count; 
+            }
+            
+        }
+        
 
         for (int i = 0; i < aTable.Rows.Count; i++)
         {
@@ -270,12 +286,12 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
             cstock = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text);
             if (cstock < Convert.ToDecimal(aTable.Rows[i]["Quantity"].ToString()))
             {
-                GetQty(cstock,i);
+                GetQty(cstock, i, discountPerRow, percentagePerRow);
             }
             ///////////////////
             else
             {
-                GetQty(Convert.ToDecimal(aTable.Rows[i]["Quantity"].ToString()), i);    
+                GetQty(Convert.ToDecimal(aTable.Rows[i]["Quantity"].ToString()), i, discountPerRow, percentagePerRow);    
             }
             
 
@@ -394,7 +410,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                 /////////SMC Low Order Method//////////
                 //if (cstock != 0)
                 {
-                    GetQty(cstock, i);
+                    GetQty(cstock, i,0,0);
                 }
                 ///////////////////////
             }
@@ -517,7 +533,21 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
 
         // GetOrderDetailValue(orderId);
          GetDiscounttotalValue();
-            }
+
+            if (gridLineItemGridView.Rows.Count > 0)
+         {
+             if (Session["LoginName"].ToString() == "rezaul")
+             {
+                 for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
+                 {
+                     ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("sdTextBox")).ReadOnly = false;
+                 }
+             }    
+         }
+
+         
+        
+        }
         else
         {
             showMessageBox("Order Information already Exists !!");
@@ -1057,7 +1087,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", sScript, true);
     }
 
-    public void GetQty(decimal qty,int rowindex)
+    public void GetQty(decimal qty, int rowindex, decimal discountPerRow, decimal percentagePerRow)
     {
         
         TextBox qtyTextBox1 = (TextBox)gridLineItemGridView.Rows[rowindex].Cells[6].FindControl("qtyTextBox");
@@ -1076,18 +1106,23 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
 
         decimal discountPer = 0;
         discountPer = aInvoiceBll.ProductDiscount(codeTextBox.Text.Trim(), hdCustomerMasterId.Value,invDateTextBox.Text);
-
         TextBox dpTextBox = (TextBox)gridLineItemGridView.Rows[rowindex].Cells[9].FindControl("dpTextBox");
-        dpTextBox.Text = Convert.ToString(discountPer);
         TextBox dpAmtTextBox = (TextBox)gridLineItemGridView.Rows[rowindex].Cells[10].FindControl("dpAmtTextBox");
-        if (discountPer == 0)
+        DataTable fixedDiscount = aInvoiceBll.GetFixedDiscount(hdCustomerMasterId.Value, hdComUnitId.Value);
+
+
+        if (fixedDiscount.Rows.Count > 0)
         {
-            dpAmtTextBox.Text = "0";
+            dpAmtTextBox.Text = discountPerRow.ToString();
+            dpTextBox.Text = 0.ToString();
         }
         else
         {
-            dpAmtTextBox.Text = ((Convert.ToDecimal(unitPriceTextBox.Text.Trim()) / 100) * discountPer*qty).ToString("F");
+            dpTextBox.Text = Convert.ToString(discountPer);
+            dpAmtTextBox.Text = ((Convert.ToDecimal(unitPriceTextBox.Text.Trim()) / 100) * discountPer * qty).ToString("F");
         }
+
+       
 
         TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[rowindex].Cells[11].FindControl("npTextBox");
         npTextBox.Text = Convert.ToString((Convert.ToDecimal(tpTextBox.Text.Trim()) - Convert.ToDecimal(dpAmtTextBox.Text.Trim())) + Convert.ToDecimal(tpVatTextBox.Text.Trim()));
@@ -1316,7 +1351,11 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                                     OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
                                     aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
                                     Clear();
-                                    showMessageBox("Proforma Invoice Created Successsfully!!");
+
+                                    invoiceNoTextBox.Text = invTextBox.Text;
+                                    ModalPopupExtender10.Show();
+                                    
+                                    
                                 }
                                 
                             }
@@ -1588,6 +1627,8 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         disTotalTextBox.Text = disTotal.ToString();
         grandTotalTextBox.Text = gTotal.ToString();
         pdTextBox.Text = sptotatl.ToString();
+
+
         
     }
 
@@ -1659,4 +1700,27 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         CalculateGrandTotal();
     }
 
+    protected void yesButton_Click(object sender, EventArgs e)
+    {
+        ModalPopupExtender10.Hide();
+        showMessageBox("Proforma Invoice Created Successsfully!!");
+    }
+
+    protected void noButton_Click(object sender, EventArgs e)
+    {
+        ProformaOrInvoiceReturnBLL aInvoiceReturnBll = new ProformaOrInvoiceReturnBLL();
+        // Journal Posting
+
+        if (aInvoiceReturnBll.ProformaReturnPosting(invTextBox.Text.Trim()))
+        {
+            if (aInvoiceReturnBll.DeleteProforma(invTextBox.Text.Trim()) > 0)
+            {
+                ModalPopupExtender10.Hide();
+                Clear();
+                invTextBox.Text = "";
+                showMessageBox("Invoice Canceled Successfully !!");
+               
+            }
+        }
+    }
 }

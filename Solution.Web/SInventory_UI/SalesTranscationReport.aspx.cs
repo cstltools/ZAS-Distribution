@@ -131,7 +131,7 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
 
     private String GetPrameterList()
     {
-        string parameter = "WHERE INV.InvoiceNo IS NOT NULL";
+        string parameter = "WHERE INV.InvoiceNo IS NOT NULL AND INVD.Quantity > 0 ";
 
         if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
         {

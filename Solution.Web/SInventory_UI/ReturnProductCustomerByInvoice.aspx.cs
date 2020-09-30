@@ -82,11 +82,19 @@ public partial class SInventory_UI_ReturnProductCustomerByInvoice : System.Web.U
             orderDateTextBox.Text = Convert.ToDateTime(dtinvoice.Rows[0]["OrderDate"].ToString())
                 .ToString("dd-MMM-yyyy");
             invoiceHiddenField.Value = invoiceId;
-            //gridLineItemGridView.DataSource = dtinvoice;
-            //gridLineItemGridView.DataBind();
-            //TotalValueCalculation();
+
+            LoadAdjustableInvoiceNo(dtinvoice.Rows[0]["CustomerCode"].ToString());
+
         }
      
+    }
+
+    private void LoadAdjustableInvoiceNo(string customerCode)
+    {
+        if (customerCode != "")
+        {
+            aInvoiceBll.LoadAdjustableInvoiceNo(ddlAdjustmentInv,customerCode);
+        }
     }
 
     private bool Validation()
@@ -255,6 +263,7 @@ public partial class SInventory_UI_ReturnProductCustomerByInvoice : System.Web.U
             LoadInvoice(dt.Rows[0]["InvoiceId"].ToString());
             loadGridView.DataSource = dt;
             loadGridView.DataBind();
+
         }
         else
         {

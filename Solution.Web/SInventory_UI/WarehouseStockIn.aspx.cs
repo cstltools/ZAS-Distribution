@@ -541,6 +541,14 @@ public partial class SInventory_UI_WarehouseStockIn : System.Web.UI.Page
             return false;
         }
 
+        if (ddlSupplier.SelectedValue == "")
+        {
+            showMessageBox("Please Select supplier !!!");
+            ddlSupplier.Focus();
+            ddlSupplier.BackColor = Color.GhostWhite;
+            return false;
+        }
+
         if (stockInDateTextBox.Text == "")
         {
             showMessageBox("Please insert stock in date !!!");

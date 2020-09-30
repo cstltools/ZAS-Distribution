@@ -406,5 +406,12 @@ namespace Library.DAL.SInventory_DAL
             aSqlParameterList.Add(new SqlParameter("@IssueCode", invoiceNo));
             return aInternalDal.RunStoreProcedure("sp_DEL_SampleStockIssue", aSqlParameterList, "SSIDB");
         }
+
+        public bool PostJournal(int masterId)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+            aSqlParameterList.Add(new SqlParameter("@InvoiceId", masterId));
+            return aInternalDal.UpdateAction("sp_SampleInvoicePosting", aSqlParameterList);
+        }
     }
 }

@@ -69,6 +69,7 @@
     <Compile Include="SInventory_Entities\DestroyProductDao.cs" />
     <Compile Include="SInventory_Entities\DirectStockOutDao.cs" />
     <Compile Include="SInventory_Entities\EmpGeneralInfo.cs" />
+    <Compile Include="SInventory_Entities\FixedDiscountDao.cs" />
     <Compile Include="SInventory_Entities\Ingridents.cs" />
     <Compile Include="SInventory_Entities\Invoice.cs" />
     <Compile Include="SInventory_Entities\InvoiceBatchDAO.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="SInventory_Entities\Manufacturer.cs" />
     <Compile Include="SInventory_Entities\MigoMasterDAO.cs" />
     <Compile Include="SInventory_Entities\MIOSetupDao.cs" />
+    <Compile Include="SInventory_Entities\MIOTargetProductWise.cs" />
     <Compile Include="SInventory_Entities\NonTranscationalInvoiceDetailDao.cs" />
     <Compile Include="SInventory_Entities\OrderInfoDetail.cs" />
     <Compile Include="SInventory_Entities\OrderInfoMaster.cs" />

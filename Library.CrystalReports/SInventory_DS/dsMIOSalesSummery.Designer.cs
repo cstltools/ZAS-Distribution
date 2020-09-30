@@ -315,6 +315,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             private global::System.Data.DataColumn columnToDate;
             
+            private global::System.Data.DataColumn columnMiaTargetAmount;
+            
+            private global::System.Data.DataColumn columnAchivment;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public MIOSalesSummeryDataTable() {
@@ -494,6 +498,22 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MiaTargetAmountColumn {
+                get {
+                    return this.columnMiaTargetAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AchivmentColumn {
+                get {
+                    return this.columnAchivment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -547,7 +567,9 @@ namespace Library.CrystalReports.SInventory_DS {
                         string AreaName, 
                         string TerritoryName, 
                         string FromDate, 
-                        string ToDate) {
+                        string ToDate, 
+                        decimal MiaTargetAmount, 
+                        decimal Achivment) {
                 MIOSalesSummeryRow rowMIOSalesSummeryRow = ((MIOSalesSummeryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         CompanyName,
@@ -567,7 +589,9 @@ namespace Library.CrystalReports.SInventory_DS {
                         AreaName,
                         TerritoryName,
                         FromDate,
-                        ToDate};
+                        ToDate,
+                        MiaTargetAmount,
+                        Achivment};
                 rowMIOSalesSummeryRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowMIOSalesSummeryRow);
                 return rowMIOSalesSummeryRow;
@@ -608,6 +632,8 @@ namespace Library.CrystalReports.SInventory_DS {
                 this.columnTerritoryName = base.Columns["TerritoryName"];
                 this.columnFromDate = base.Columns["FromDate"];
                 this.columnToDate = base.Columns["ToDate"];
+                this.columnMiaTargetAmount = base.Columns["MiaTargetAmount"];
+                this.columnAchivment = base.Columns["Achivment"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -649,6 +675,10 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnFromDate);
                 this.columnToDate = new global::System.Data.DataColumn("ToDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnToDate);
+                this.columnMiaTargetAmount = new global::System.Data.DataColumn("MiaTargetAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMiaTargetAmount);
+                this.columnAchivment = new global::System.Data.DataColumn("Achivment", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAchivment);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1079,6 +1109,38 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal MiaTargetAmount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMIOSalesSummery.MiaTargetAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MiaTargetAmount\' in table \'MIOSalesSummery\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMIOSalesSummery.MiaTargetAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Achivment {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMIOSalesSummery.AchivmentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Achivment\' in table \'MIOSalesSummery\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMIOSalesSummery.AchivmentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCompanyNameNull() {
                 return this.IsNull(this.tableMIOSalesSummery.CompanyNameColumn);
             }
@@ -1291,6 +1353,30 @@ namespace Library.CrystalReports.SInventory_DS {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetToDateNull() {
                 this[this.tableMIOSalesSummery.ToDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMiaTargetAmountNull() {
+                return this.IsNull(this.tableMIOSalesSummery.MiaTargetAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMiaTargetAmountNull() {
+                this[this.tableMIOSalesSummery.MiaTargetAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAchivmentNull() {
+                return this.IsNull(this.tableMIOSalesSummery.AchivmentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAchivmentNull() {
+                this[this.tableMIOSalesSummery.AchivmentColumn] = global::System.Convert.DBNull;
             }
         }
         

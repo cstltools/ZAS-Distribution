@@ -307,6 +307,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             private global::System.Data.DataColumn columnFromDate;
             
+            private global::System.Data.DataColumn columnTargetQty;
+            
+            private global::System.Data.DataColumn columnAchivment;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public MioWiseProductSaleTableDataTable() {
@@ -454,6 +458,22 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TargetQtyColumn {
+                get {
+                    return this.columnTargetQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AchivmentColumn {
+                get {
+                    return this.columnAchivment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -489,7 +509,23 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public MioWiseProductSaleTableRow AddMioWiseProductSaleTableRow(string CompanyName, string MIO, string AreaName, string TerritoryName, string ProductCode, string ProductName, string PackSize, decimal Qty, decimal Value, string CompanyCode, string ComUnitCode, string ComUnitName, string ToDate, string FromDate) {
+            public MioWiseProductSaleTableRow AddMioWiseProductSaleTableRow(
+                        string CompanyName, 
+                        string MIO, 
+                        string AreaName, 
+                        string TerritoryName, 
+                        string ProductCode, 
+                        string ProductName, 
+                        string PackSize, 
+                        decimal Qty, 
+                        decimal Value, 
+                        string CompanyCode, 
+                        string ComUnitCode, 
+                        string ComUnitName, 
+                        string ToDate, 
+                        string FromDate, 
+                        decimal TargetQty, 
+                        decimal Achivment) {
                 MioWiseProductSaleTableRow rowMioWiseProductSaleTableRow = ((MioWiseProductSaleTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         CompanyName,
@@ -505,7 +541,9 @@ namespace Library.CrystalReports.SInventory_DS {
                         ComUnitCode,
                         ComUnitName,
                         ToDate,
-                        FromDate};
+                        FromDate,
+                        TargetQty,
+                        Achivment};
                 rowMioWiseProductSaleTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowMioWiseProductSaleTableRow);
                 return rowMioWiseProductSaleTableRow;
@@ -542,6 +580,8 @@ namespace Library.CrystalReports.SInventory_DS {
                 this.columnComUnitName = base.Columns["ComUnitName"];
                 this.columnToDate = base.Columns["ToDate"];
                 this.columnFromDate = base.Columns["FromDate"];
+                this.columnTargetQty = base.Columns["TargetQty"];
+                this.columnAchivment = base.Columns["Achivment"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -575,6 +615,10 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnToDate);
                 this.columnFromDate = new global::System.Data.DataColumn("FromDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnFromDate);
+                this.columnTargetQty = new global::System.Data.DataColumn("TargetQty", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTargetQty);
+                this.columnAchivment = new global::System.Data.DataColumn("Achivment", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAchivment);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -942,6 +986,38 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal TargetQty {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMioWiseProductSaleTable.TargetQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TargetQty\' in table \'MioWiseProductSaleTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMioWiseProductSaleTable.TargetQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Achivment {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMioWiseProductSaleTable.AchivmentColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Achivment\' in table \'MioWiseProductSaleTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMioWiseProductSaleTable.AchivmentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCompanyNameNull() {
                 return this.IsNull(this.tableMioWiseProductSaleTable.CompanyNameColumn);
             }
@@ -1106,6 +1182,30 @@ namespace Library.CrystalReports.SInventory_DS {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetFromDateNull() {
                 this[this.tableMioWiseProductSaleTable.FromDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTargetQtyNull() {
+                return this.IsNull(this.tableMioWiseProductSaleTable.TargetQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTargetQtyNull() {
+                this[this.tableMioWiseProductSaleTable.TargetQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAchivmentNull() {
+                return this.IsNull(this.tableMioWiseProductSaleTable.AchivmentColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAchivmentNull() {
+                this[this.tableMioWiseProductSaleTable.AchivmentColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -33,7 +33,7 @@ namespace Library.DAL.SInventory_DAL
             string query = @"SELECT NTP.ProductCode,PD.ProductName,PD.PackSize,SUM(NTP.DeliveryQuantity) AS SalesQuantity,SUM(NTP.Value) AS SalesValue FROM tblProduct AS PD 
                              LEFT JOIN (
                              SELECT INVD.ProductCode,INVD.DeliveryQuantity,cast(((((((INVD.UnitPrice*INVD.Quantity) - INVD.DelivarySpecialAmount))/INVD.Quantity)*INVD.DeliveryQuantity)) AS DECIMAL (16,2)) AS Value,INV.DelivarySpecialAmount FROM dbo.tblInvoice AS INV 
-                             LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INVD.InvoiceId = INV.InvoiceId WHERE INVD.DeliveryStatus IN ('Full','Partial') AND INV.InvoiceDate BETWEEN '" + fDate + "' AND '" + tdate + "') AS NTP ON NTP.ProductCode = PD.ProductCode WHERE PD.CompanyId = " + comId + " GROUP BY NTP.ProductCode,PD.PackSize,PD.ProductName HAVING NTP.ProductCode IS NOT NULL ORDER BY NTP.ProductCode";
+                             LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INVD.InvoiceId = INV.InvoiceId WHERE INVD.DeliveryStatus IN ('Full','Partial') AND INVD.Quantity > 0 AND  INV.InvoiceDate BETWEEN '" + fDate + "' AND '" + tdate + "') AS NTP ON NTP.ProductCode = PD.ProductCode WHERE PD.CompanyId = " + comId + " GROUP BY NTP.ProductCode,PD.PackSize,PD.ProductName HAVING NTP.ProductCode IS NOT NULL ORDER BY NTP.ProductCode";
 
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }
@@ -44,9 +44,11 @@ namespace Library.DAL.SInventory_DAL
                             CAST(ISNULL(SUM((((((INVD.UnitPrice*INVD.Quantity) - INVD.DelivarySpecialAmount))/INVD.Quantity)*INVD.DeliveryQuantity)),INV.DeliveryTpGrandTotal)  AS DECIMAL (16,2)) ActualSales,
                             CAST(ISNULL(SUM((((((INVD.UnitPrice*INVD.Quantity) - INVD.DelivarySpecialAmount))/INVD.Quantity)*(INVD.Quantity-INVD.DeliveryQuantity)) + ((INVD.DelivarySpecialAmount/INVD.Quantity)*(INVD.Quantity-INVD.DeliveryQuantity))),0) AS DECIMAL (16,2)) ReturnValue,
                             CAST(ISNULL( SUM((INVD.DelivarySpecialAmount / INVD.Quantity) * INVD.DeliveryQuantity),0) AS DECIMAL (16,2)) Discount, ISNULL(TNS.InTransit,0) InTransit, ISNULL(INV.PaymentAmount,0) AS PaymentAmount, 
-                            INV.DeliveryTpGrandTotal - ISNULL(INV.PaymentAmount,0) AS Due
+                            INV.DeliveryTpGrandTotal - ISNULL(INV.PaymentAmount,0) AS Due,EGI.EmpName AS MIO
                             FROM dbo.tblInvoice AS INV
-                            LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId  
+                            LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId
+                            LEFT JOIN dbo.tblMIOInfo AS MIO ON MIO.MIOId = INV.MiaId
+                            LEFT JOIN dbo.tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId  
                             LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId  
                             LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId
                             LEFT JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId 
@@ -56,7 +58,7 @@ namespace Library.DAL.SInventory_DAL
                             	WHERE tblInvoice.DeliveryInvoiceStatus IS NULL
                             	GROUP BY tblInvoice.InvoiceId
                             ) AS TNS ON TNS.InvoiceId = INV.InvoiceId " + parameter
-                            + " GROUP BY CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,CSTMR.CustomerCode,CSTMR.CustomerName,INV.InvoiceNo,INV.InvoiceDate,DeliveryTpGrandTotal,TNS.InTransit,INV.PaymentAmount ORDER BY CSTMR.CustomerCode";
+                            + " GROUP BY CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,CSTMR.CustomerCode,CSTMR.CustomerName,INV.InvoiceNo,INV.InvoiceDate,DeliveryTpGrandTotal,TNS.InTransit,INV.PaymentAmount,EGI.EmpName ORDER BY EGI.EmpName,CSTMR.CustomerCode";
 
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }

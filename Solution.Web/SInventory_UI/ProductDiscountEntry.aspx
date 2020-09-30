@@ -310,7 +310,37 @@
                             Discount Percentage: <span class="star-mark"> * </span>
                         </td>
                         <td class="TDRight" width="20%">
-                            <asp:TextBox ID="discountPerTextBox" runat="server"></asp:TextBox>
+                            <asp:TextBox ID="discountPerTextBox" AutoPostBack="True" OnTextChanged="discountPerTextBox_OnTextChanged" runat="server"></asp:TextBox>
+                            <asp:FilteredTextBoxExtender ID="freqQtyTextBox" runat="server"
+                                                    TargetControlID="discountPerTextBox"         
+                                                    FilterType="Custom, Numbers"
+                                                    ValidChars="." />
+                                                    
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            Discount Amount: <span class="star-mark"> * </span>
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:TextBox ID="discountAmountTextBox" AutoPostBack="True" OnTextChanged="discountAmountTextBox_OnTextChanged" runat="server"></asp:TextBox>
+                            <asp:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server"
+                                                    TargetControlID="discountAmountTextBox"         
+                                                    FilterType="Custom, Numbers"
+                                                    ValidChars="." />
                         </td>
                         <td class="TDLeft" width="13%">
                             &nbsp;

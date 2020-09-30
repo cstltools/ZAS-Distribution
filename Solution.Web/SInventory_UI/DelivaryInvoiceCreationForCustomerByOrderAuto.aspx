@@ -352,7 +352,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="DOD">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="dodTextBox" runat="server" CssClass="TextBoxMicroMini"
+                                                <asp:TextBox ID="dodTextBox" ReadOnly="True" runat="server" CssClass="TextBoxMicroMini"
                                                     AutoPostBack="True"
                                                     OnTextChanged="dodTextBox_TextChanged"></asp:TextBox>
                                                 <asp:FilteredTextBoxExtender ID="dodTextBox11" runat="server" TargetControlID="dodTextBox"

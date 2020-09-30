@@ -127,7 +127,7 @@ namespace Library.DAL.SInventory_DAL
             List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
 
             aSqlParameterlist.Add(new SqlParameter("@SupplierId", supplierId));
-            aSqlParameterlist.Add(new SqlParameter("@SubsidiaryLId", 35));
+            aSqlParameterlist.Add(new SqlParameter("@SubsidiaryLId", 11));
 
             return aCommonInternalDal.UpdateAction("sp_I_SupplierGl", aSqlParameterlist);
         }

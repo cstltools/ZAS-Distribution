@@ -83,6 +83,7 @@
                 <asp:BoundField DataField="ComUnitName" HeaderText="Unit Name" />
                 <asp:BoundField DataField="CustomerCode" HeaderText="Customer Code" />
                 <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
+                <asp:BoundField DataField="MIO" HeaderText="MIO Name" />
                 <asp:BoundField DataField="InvoiceNo" HeaderText="Invoice No" />
                 <asp:BoundField DataField="InvoiceDate" HeaderText="Invoice Date" DataFormatString="{0:dd-MMM-yyyy}" />
                 <asp:BoundField DataField="InvoiceValue" HeaderText="Invoice Value" />

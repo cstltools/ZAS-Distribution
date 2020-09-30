@@ -134,6 +134,7 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
             gridLineItemGridView.DataBind();
             TotalValueCalculation();
         }
+        
         for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
         {
             aInvoiceBll.ReturnReason(
@@ -150,6 +151,17 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                     Color.Green;
                 ((DropDownList)gridLineItemGridView.Rows[i].Cells[17].FindControl("reasonReturnDropDownList"))
                     .Enabled = false;
+            }
+        }
+
+        if (gridLineItemGridView.Rows.Count > 0)
+        {
+            if (Session["LoginName"].ToString() == "rezaul")
+            {
+                for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
+                {
+                    ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("dodTextBox")).ReadOnly = false;
+                }
             }
         }
     }
@@ -2467,7 +2479,7 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                     //Vat percent change 2 commentout//
                     TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
 
-                    npTextBox.Text = Math.Round((((tpValue - sdTotal)) - Convert.ToDecimal(tpVatTextBox.Text))).ToString(CultureInfo.InvariantCulture);
+                    npTextBox.Text = Math.Round((((tpValue - sdTotal)) + Convert.ToDecimal(tpVatTextBox.Text))).ToString(CultureInfo.InvariantCulture);
 
                     //npTextBox.Text = ((
                     //    Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -

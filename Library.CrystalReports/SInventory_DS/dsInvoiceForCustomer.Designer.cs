@@ -1436,7 +1436,7 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public detailDataTableRow AdddetailDataTableRow(string ProductCode, string Product, decimal BonusQuantity, decimal Quantity, decimal UnitPrice, decimal UnitVatAmount, decimal TotalPrice, decimal TotalPriceVatAmount, decimal DiscountPercentage, decimal DiscountAmount, decimal NetAmount, int InvoiceId) {
+            public detailDataTableRow AdddetailDataTableRow(string ProductCode, string Product, int BonusQuantity, decimal Quantity, decimal UnitPrice, decimal UnitVatAmount, decimal TotalPrice, decimal TotalPriceVatAmount, decimal DiscountPercentage, decimal DiscountAmount, decimal NetAmount, int InvoiceId) {
                 detailDataTableRow rowdetailDataTableRow = ((detailDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ProductCode,
@@ -1494,7 +1494,7 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnProductCode);
                 this.columnProduct = new global::System.Data.DataColumn("Product", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnProduct);
-                this.columnBonusQuantity = new global::System.Data.DataColumn("BonusQuantity", typeof(decimal), null, global::System.Data.MappingType.Element);
+                this.columnBonusQuantity = new global::System.Data.DataColumn("BonusQuantity", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBonusQuantity);
                 this.columnQuantity = new global::System.Data.DataColumn("Quantity", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQuantity);
@@ -2530,10 +2530,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public decimal BonusQuantity {
+            public int BonusQuantity {
                 get {
                     try {
-                        return ((decimal)(this[this.tabledetailDataTable.BonusQuantityColumn]));
+                        return ((int)(this[this.tabledetailDataTable.BonusQuantityColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'BonusQuantity\' in table \'detailDataTable\' is DBNull.", e);

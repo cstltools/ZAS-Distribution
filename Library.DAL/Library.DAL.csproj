@@ -77,6 +77,8 @@
     <Compile Include="SInventory_DAL\BatchWiseTransitReportDal.cs" />
     <Compile Include="SInventory_DAL\DashboardDal.cs" />
     <Compile Include="SInventory_DAL\DashboardInfoDal.cs" />
+    <Compile Include="SInventory_DAL\ErrorInvoiceDal.cs" />
+    <Compile Include="SInventory_DAL\FixedDiscountEntryDal.cs" />
     <Compile Include="SInventory_DAL\NationalSalesProductWiseDal.cs" />
     <Compile Include="SInventory_DAL\PaymentTranscationDal.cs" />
     <Compile Include="SInventory_DAL\PettyCashDaL.cs" />

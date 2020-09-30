@@ -66,7 +66,7 @@ namespace Library.DAL.SInventory_DAL
         {
 
             string query = @"SELECT CI.CompanyCode ,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,EmpName AS MIO,ARA.AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize,ISNULL(SUM(DeliveryTotalQuantity),0) AS Qty,
-                             SUM(INVD.DeliveryNetAmount) AS Value,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM dbo.tblInvoice AS INV "
+                             SUM(INVD.DeliveryNetAmount) AS Value,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,ISNULL(TG.TargetQty,0) TargetQty,CASE WHEN TG.TargetQty IS NOT NULL THEN (ISNULL(SUM(DeliveryTotalQuantity),0) * 100) / TG.TargetQty ELSE 0 END  AS Achivment FROM dbo.tblInvoice AS INV "
                              + " LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId "
                              + " LEFT JOIN dbo.tblCustMaster AS CSTMR ON  INV.CustomerMasterId = CSTMR.CustomerMasterId"
                              + " LEFT JOIN dbo.tblMIOInfo ON dbo.tblMIOInfo.MIOId=INV.MiaId"
@@ -75,7 +75,11 @@ namespace Library.DAL.SInventory_DAL
                              + " LEFT JOIN dbo.tblEmpGeneralInfo ON dbo.tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId"
                              + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId"
                              + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId"
-                             + parameter + " GROUP BY  CI.CompanyCode ,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,EmpName,ARA.AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize "
+                             + " LEFT JOIN (SELECT TGRT.MiaId,TGRT.TargetQty,PD.ProductCode FROM tblMIATargetProductWise AS TGRT "
+                             + "LEFT JOIN tblProduct AS PD ON TGRT.ProductId = PD.ProductId "
+                             + "WHERE TGRT.Year = DATENAME(year,'" + fromDate + "') AND (TGRT.Period = DATENAME(month,'" + fromDate + "'))) AS TG "
+                             + "ON tblMIOInfo.MIOId = TG.MiaId AND INVD.ProductCode = TG.ProductCode "
+                             + parameter + " GROUP BY  CI.CompanyCode ,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,EmpName,ARA.AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize,TG.TargetQty  "
                              + " HAVING SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END)) > 0";
 
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");

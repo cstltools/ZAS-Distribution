@@ -12,7 +12,7 @@
   <xs:element name="dsMIOSalesSummery" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsMIOSalesSummery" msprop:Generator_UserDSName="dsMIOSalesSummery">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="MIOSalesSummery" msprop:Generator_TableClassName="MIOSalesSummeryDataTable" msprop:Generator_TableVarName="tableMIOSalesSummery" msprop:Generator_TablePropName="MIOSalesSummery" msprop:Generator_RowDeletingName="MIOSalesSummeryRowDeleting" msprop:Generator_RowChangingName="MIOSalesSummeryRowChanging" msprop:Generator_RowEvHandlerName="MIOSalesSummeryRowChangeEventHandler" msprop:Generator_RowDeletedName="MIOSalesSummeryRowDeleted" msprop:Generator_UserTableName="MIOSalesSummery" msprop:Generator_RowChangedName="MIOSalesSummeryRowChanged" msprop:Generator_RowEvArgName="MIOSalesSummeryRowChangeEvent" msprop:Generator_RowClassName="MIOSalesSummeryRow">
+        <xs:element name="MIOSalesSummery" msprop:Generator_TableClassName="MIOSalesSummeryDataTable" msprop:Generator_TableVarName="tableMIOSalesSummery" msprop:Generator_RowChangedName="MIOSalesSummeryRowChanged" msprop:Generator_TablePropName="MIOSalesSummery" msprop:Generator_RowDeletingName="MIOSalesSummeryRowDeleting" msprop:Generator_RowChangingName="MIOSalesSummeryRowChanging" msprop:Generator_RowEvHandlerName="MIOSalesSummeryRowChangeEventHandler" msprop:Generator_RowDeletedName="MIOSalesSummeryRowDeleted" msprop:Generator_RowClassName="MIOSalesSummeryRow" msprop:Generator_UserTableName="MIOSalesSummery" msprop:Generator_RowEvArgName="MIOSalesSummeryRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="CompanyName" msprop:Generator_ColumnVarNameInTable="columnCompanyName" msprop:Generator_ColumnPropNameInRow="CompanyName" msprop:Generator_ColumnPropNameInTable="CompanyNameColumn" msprop:Generator_UserColumnName="CompanyName" type="xs:string" minOccurs="0" />
@@ -33,6 +33,8 @@
               <xs:element name="TerritoryName" msprop:Generator_ColumnVarNameInTable="columnTerritoryName" msprop:Generator_ColumnPropNameInRow="TerritoryName" msprop:Generator_ColumnPropNameInTable="TerritoryNameColumn" msprop:Generator_UserColumnName="TerritoryName" type="xs:string" minOccurs="0" />
               <xs:element name="FromDate" msprop:Generator_ColumnVarNameInTable="columnFromDate" msprop:Generator_ColumnPropNameInRow="FromDate" msprop:Generator_ColumnPropNameInTable="FromDateColumn" msprop:Generator_UserColumnName="FromDate" type="xs:string" minOccurs="0" />
               <xs:element name="ToDate" msprop:Generator_ColumnVarNameInTable="columnToDate" msprop:Generator_ColumnPropNameInRow="ToDate" msprop:Generator_ColumnPropNameInTable="ToDateColumn" msprop:Generator_UserColumnName="ToDate" type="xs:string" minOccurs="0" />
+              <xs:element name="MiaTargetAmount" msprop:Generator_ColumnVarNameInTable="columnMiaTargetAmount" msprop:Generator_ColumnPropNameInRow="MiaTargetAmount" msprop:Generator_ColumnPropNameInTable="MiaTargetAmountColumn" msprop:Generator_UserColumnName="MiaTargetAmount" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Achivment" msprop:Generator_ColumnVarNameInTable="columnAchivment" msprop:Generator_ColumnPropNameInRow="Achivment" msprop:Generator_ColumnPropNameInTable="AchivmentColumn" msprop:Generator_UserColumnName="Achivment" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

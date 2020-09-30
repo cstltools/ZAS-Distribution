@@ -369,10 +369,19 @@ namespace Library.BLL.SInventory_BLL
             DataTable aDataTable = new DataTable();
             aDataTable = aInvoiceDal.InvoiceNoCount(id.ToString());
 
-
-
             string code = string.Empty;
-            string Id = Convert.ToString(Convert.ToInt32(aDataTable.Rows[0][0].ToString().Trim())+1);
+            string Id = null;
+            if (aDataTable.Rows.Count > 0)
+            {
+                Id = Convert.ToString(Convert.ToInt32(aDataTable.Rows[0][0].ToString().Trim()) + 1);
+            }
+            else
+            {
+                Id = Convert.ToString(Convert.ToInt32(0) + 1);
+            }
+
+            
+           
 
             if (Id.Length == 1)
             {
@@ -846,6 +855,16 @@ namespace Library.BLL.SInventory_BLL
         public DataTable GetBonusCampaignInfo(string productCode, DateTime date, TimeSpan time,Int32 Qty)
         {
             return aInvoiceDal.GetBonusCampaignInfo(productCode, date, time, Qty);
+        }
+
+        public void LoadAdjustableInvoiceNo(DropDownList ddl,string customerCode)
+        {
+            aInvoiceDal.LoadAdjustableInvoiceNo(ddl, customerCode);
+        }
+
+        public DataTable GetFixedDiscount(string customerId, string unitId)
+        {
+            return aInvoiceDal.GetFixedDiscount(customerId, unitId);
         }
     }
 }

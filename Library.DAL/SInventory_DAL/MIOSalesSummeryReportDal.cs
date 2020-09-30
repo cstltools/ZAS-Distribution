@@ -50,7 +50,7 @@ namespace Library.DAL.SInventory_DAL
                             EGIM.EmpName AS MIO,EGIR.EmpMasterCode AS RSMId,EGIR.EmpName AS RSM,EGIA.EmpMasterCode AS ASMId,EGIA.EmpName AS ASM, 
                             SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END)) AS Sales,
                             ISNULL(TNZ.InTransit,0) AS InTransit,ISNULL(RTN.ReturnSales,0) AS ReturnSales,ISNULL(PMNT.SalesCollection,0) AS SalesCollection,ISNULL(D.Dues,0) AS Dues,
-                            RGN.RegionName,ARA.AreaName,TTR.TerritoryName,'"+ fromDate +"' AS FromDate, '"+ toDate +"' AS ToDate FROM dbo.tblInvoice AS INV " 
+                            RGN.RegionName,ARA.AreaName,TTR.TerritoryName,'"+ fromDate +"' AS FromDate, '"+ toDate +"' AS ToDate,ISNULL(TG.MiaTargetAmount,0) AS MiaTargetAmount, ISNULL((SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END))*100)/TG.MiaTargetAmount,0) AS Achivment FROM dbo.tblInvoice AS INV " 
                             +" LEFT JOIN tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId " 
                             +" LEFT JOIN dbo.tblOrder AS ODR ON INV.OrderId = ODR.OrderId" 
                             +" LEFT JOIN dbo.tblRSMInfo AS RSM ON ODR.RSMId = RSM.RSMId" 
@@ -64,6 +64,7 @@ namespace Library.DAL.SInventory_DAL
                             +" LEFT JOIN dbo.tblMIOInfo AS MIO ON INV.MiaId = MIO.MIOId "  
                             +" LEFT JOIN dbo.tblEmpGeneralInfo AS EGIM ON MIO.EmployeeId = EGIM.EmpInfoId"   
                             +" LEFT JOIN dbo.tblTerritory AS TTR ON MiO.TerritoryId = TTR.TerritoryId" 
+                            +" LEFT JOIN (SELECT TGRT.MiaId,TGRT.MiaTargetAmount FROM tblMIATarget AS TGRT WHERE TGRT.Year = DATENAME(year,'" + fromDate + "') AND  (TGRT.Period = DATENAME(month,'" + fromDate + "'))) AS TG ON MIO.MIOId = TG.MiaId "
                             +" LEFT JOIN (SELECT INV.MiaId," 
                             +" ISNULL(SUM(INVD.NetAmount),0)-ISNULL(SUM(CASE WHEN INVD.DeliveryNetAmount < 0 THEN 0 ELSE INVD.DeliveryNetAmount END),0)  ReturnSales  FROM dbo.tblInvoice AS INV "   
                             +" LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId "  
@@ -85,8 +86,7 @@ namespace Library.DAL.SInventory_DAL
                             + parameter + " GROUP BY INV.MiaId) AS D ON INV.MiaId = D.MiaId "
                             + " WHERE INV.DeliveryInvoiceStatus IN ('Full','Partial')  " + parameter 
                             +" GROUP BY CI.CompanyName,UNT.ComUnitName,INV.MiaId,EGIM.EmpMasterCode,EGIM.EmpName,EGIR.EmpMasterCode,EGIR.EmpName, "
-                            +" EGIA.EmpMasterCode,EGIA.EmpName,RTN.ReturnSales,PMNT.SalesCollection,D.Dues,TNZ.InTransit,RGN.RegionName,ARA.AreaName,TTR.TerritoryName "
-                            +" ORDER BY CI.CompanyName,UNT.ComUnitName,INV.MiaId";
+                            +" EGIA.EmpMasterCode,EGIA.EmpName,RTN.ReturnSales,PMNT.SalesCollection,D.Dues,TNZ.InTransit,RGN.RegionName,ARA.AreaName,TTR.TerritoryName,TG.MiaTargetAmount ORDER BY ISNULL((SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END))*100)/TG.MiaTargetAmount,0) DESC,CI.CompanyName,UNT.ComUnitName,INV.MiaId";
 
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }

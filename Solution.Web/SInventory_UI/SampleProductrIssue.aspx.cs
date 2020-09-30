@@ -949,14 +949,18 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
                 if (CheckDataSavedOrNot(masterId))
                 {
 
-                    DataTable aTable = aOrderCreationDal.GetSampleIssueCode(masterId);
-
-                    if (aTable.Rows.Count > 0)
+                    if (aOrderCreationDal.PostJournal(masterId))
                     {
-                        code.Text = aTable.Rows[0].Field<string>("OrderCode");
-                        ShowMessageBox("Sample Issued Successfully !!");
-                        Clear();
+                        DataTable aTable = aOrderCreationDal.GetSampleIssueCode(masterId);
+
+                        if (aTable.Rows.Count > 0)
+                        {
+                            code.Text = aTable.Rows[0].Field<string>("OrderCode");
+                            ShowMessageBox("Sample Issued Successfully !!");
+                            Clear();
+                        }
                     }
+                    
                 }
                 else
                 {
@@ -964,7 +968,6 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
                     ShowMessageBox("Error! Check Your Internet Conection !!");
                 }
             }
-
             
         }
     }
@@ -1111,8 +1114,6 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
             dcDropDownList.BackColor = Color.GhostWhite;
             return false;
         }
-
-
 
         if (orderDateTextBox.Text == "")
         {

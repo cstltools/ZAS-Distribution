@@ -1515,5 +1515,23 @@ where I.TpTotal>0 AND I.DelivaryInvoiceNo IS NULL    and I.InvoiceDate between '
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public void LoadAdjustableInvoiceNo(DropDownList ddl, string customerCode)
+        {
+            string query = @"SELECT A.* FROM dbo.tblArea A LEFT JOIN dbo.tblDistrict D ON A.DistrictId = D.DistrictId " +
+                               " LEFT JOIN dbo.tblCompanyUnit C ON D.ComUnitId = C.ComUnitId " +
+                               " WHERE C.ComUnitId='" + customerCode.Trim() + "'";
+            aCommonInternalDal.LoadDropDownValue(ddl, "AreaName", "AreaId", query, "SSIDB");
+        }
+
+        public DataTable GetFixedDiscount(string customerId, string unitId)
+        {
+            string query = @"SELECT DISTINCT DiscountParcentage FROM tblCustomerFixedDiscount AS FDC 
+                             LEFT JOIN tblCompanyInfo AS CI ON FDC.CompanyId = CI.CompanyId
+                             LEFT JOIN tblCompanyUnit AS UT ON UT.CompanyId = CI.CompanyId
+                             WHERE CustMasterId = " + customerId + " AND UT.ComUnitId = " + unitId + " AND IsActive = 1 AND ActionStatus = 'Accepted'";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
     }
 }

@@ -34,19 +34,27 @@ namespace Library.DAL.SInventory_DAL
         public DataTable ProductDiscountViewDal()
         {
 
-            string query = @"SELECT ProDis.DiscountId,com.CompanyName,cust.CustomerName, tblProduct.ProductName,ProDis.DiscountPercentage, ProDis.ActiveDate, ProDis.InactiveDate, ProDis.ActionStatus  from tblProductDiscount As ProDis
+            string query = @"SELECT ProDis.DiscountId,cust.CustomerCode,com.CompanyName,cust.CustomerName, tblProduct.ProductName,ProDis.DiscountPercentage, 
+            ProDis.ActiveDate, ProDis.InactiveDate, ProDis.ActionStatus  from tblProductDiscount As ProDis
             LEFT JOIN dbo.tblCustMaster As cust ON ProDis.CustomerMasterId= cust.CustomerMasterId
             LEFT JOIN dbo.tblProduct ON ProDis.ProductId=dbo.tblProduct.ProductId
-			left join tblCompanyInfo As com On  tblProduct.CompanyId = com.CompanyId";
+			left join tblCompanyInfo As com On  tblProduct.CompanyId = com.CompanyId WHERE ProDis.IsActive='1' AND ProDis.ActionStatus='Accepted'";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
               
        }
         public bool DeleteProductdiscountDal(string Id)
         {
+
             List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
             aSqlParameterlist.Add(new SqlParameter("@DiscountId", Id));
-            return aCommonInternalDal.DeleteAction("sp_DEL_ProductDiscount", aSqlParameterlist);
+
+            string query = @"DELETE FROM tblProductDiscount WHERE DiscountId=@DiscountId";
+            return aCommonInternalDal.UpdateDataByUpdateCommand(query, aSqlParameterlist, "SSIDB");
+            
+            //List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+            //aSqlParameterlist.Add(new SqlParameter("@DiscountId", Id));
+            //return aCommonInternalDal.DeleteAction("sp_DEL_ProductDiscount", aSqlParameterlist);
         }
 
 
@@ -221,6 +229,15 @@ namespace Library.DAL.SInventory_DAL
         {
             string query = @"UPDATE tblProductDiscount SET ProductId='" + aProductDiscount.ProductId + "',CustomerMasterId='" + aProductDiscount.CustomerMasterId + "',DiscountPercentage='" + aProductDiscount.DiscountPercentage + "',ActiveDate='" + aProductDiscount.ActiveDate + "',InactiveDate='" + aProductDiscount.InactiveDate + "',UpdateBy='" + aProductDiscount.UpdateBy + "',UpdateDate='" + aProductDiscount.UpdateDate + "' WHERE DiscountId=" + aProductDiscount.DiscountId + "";
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
+        }
+
+        public DataTable CheckDiscountExistOrNot(int customerId, string productCode)
+        {
+            string query = @"SELECT * FROM dbo.tblProductDiscount
+            LEFT JOIN dbo.tblProduct ON tblProduct.ProductId = tblProductDiscount.ProductId
+			LEFT JOIN tblCustMaster ON tblProductDiscount.CustomerMasterId = tblCustMaster.CustomerMasterId
+            WHERE ProductCode='" + productCode + "' AND CustomerCode ='" + customerId + "' AND ActionStatus IN ('Accepted','Posted')";
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
     }
 }

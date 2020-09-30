@@ -151,5 +151,10 @@ namespace Library.BLL.SInventory_BLL
         {
             aProductDiscountDal.MIOLoad(aDownList, areaId);
         }
+
+        public DataTable CheckDiscountExistOrNot(int customerId, string productCode)
+        {
+            return aProductDiscountDal.CheckDiscountExistOrNot(customerId, productCode);
+        }
     }
 }

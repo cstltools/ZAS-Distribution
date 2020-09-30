@@ -31,8 +31,7 @@ namespace Library.DAL.SInventory_DAL
                                         TotalQty,
                                         TotalAmount,
                                         EntryBy,
-                                        EntryDate,ActionStatus
-                                        
+                                        EntryDate,ActionStatus                                        
                                     )
                                     VALUES
                                     (   @InvoiceId,
@@ -75,7 +74,8 @@ namespace Library.DAL.SInventory_DAL
             LEFT JOIN (SELECT InvoiceDetailId,ISNULL(SUM(ReturnQty),0)Qty FROM dbo.tblCustomerReturnDetail GROUP BY InvoiceDetailId)AS  tbltemp
             ON tbltemp.InvoiceDetailId = tblInvoiceDetail.InvoiceDetailId
             LEFT JOIN (SELECT InvoiceId,SUM(PaymentAmount)Amnt FROM dbo.tblCustPayDetail GROUP BY InvoiceId) AS tbltemp2 ON tbltemp2.InvoiceId = tblInvoice.InvoiceId
-             WHERE DelivaryInvoiceNo='" + delinvno + "' AND (IsDirect IS NULL or IsDirect=0) AND tblInvoice.InvoiceId NOT IN (SELECT DISTINCT A.InvoiceId FROM dbo.tblCustomerReturnMaster A)";
+            WHERE DelivaryInvoiceNo='" + delinvno + "' AND (IsDirect IS NULL or IsDirect=0) AND tblInvoice.InvoiceId NOT IN (SELECT DISTINCT A.InvoiceId FROM dbo.tblCustomerReturnMaster A)";
+
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
         public DataTable LoadInvoiceNewConsumer(string delinvno)

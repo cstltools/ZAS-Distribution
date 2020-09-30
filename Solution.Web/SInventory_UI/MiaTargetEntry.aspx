@@ -11,7 +11,7 @@
                 <table width="100%" class="TableWorkArea">
                     <tr>
                         <td colspan="6" class="TableHeading">
-                           MIO Targete Entry
+                           MIO Target Entry
                         </td>
                     </tr>
                     

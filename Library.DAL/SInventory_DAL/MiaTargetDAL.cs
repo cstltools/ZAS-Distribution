@@ -98,5 +98,37 @@ namespace Library.DAL.SInventory_DAL
             aDataTableEmpInfo = aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
             return aDataTableEmpInfo;
         }
+
+        public DataTable GetActiveProduct(string companyId)
+        {
+            string query = @"SELECT PD.ProductId,PD.ProductCode,PD.ProductName,PD.PackSize FROM tblProduct AS PD 
+                             LEFT JOIN tblUnitPrice AS UP ON PD.ProductId = UP.ProductId
+                             WHERE UP.IsActive = 1 AND PD.CompanyId = " + companyId;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public bool SaveMiaTargetProductWise(MIOTargetProductWise aMiaTarget)
+        {
+            string insertQuery = @"INSERT INTO dbo.tblMIATargetProductWise (ProductId,MiaId,TargetQty,Period, Year,CompanyId) VALUES ( "
+                + aMiaTarget.ProductId + ",'" + aMiaTarget.MiaId + "','" + aMiaTarget.TargetQty + "','" + aMiaTarget.Period + "','" + aMiaTarget.Year + "','" + aMiaTarget.CompanyId + "')";
+            return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
+        }
+
+        public DataTable GetExistingData(string year, string month,string mioId)
+        {
+            string query = @"SELECT PDT.ProductId,TargetQty FROM tblMIATargetProductWise AS PDT
+                             WHERE PDT.MiaId = " + mioId + " AND PDT.Period = '" + month + "' AND PDT.Year = '" + year + "'";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public bool DeleteExistingData(string year, string month, string mioId)
+        {
+            string query = @"DELETE FROM tblMIATargetProductWise
+                             WHERE MiaId = " + mioId + " AND Period = '" + month + "' AND Year = '" + year + "'";
+
+            return aCommonInternalDal.DeleteDataByCommand(query, "SSIDB");
+        }
     }
 }

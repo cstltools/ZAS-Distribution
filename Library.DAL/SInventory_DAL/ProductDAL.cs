@@ -93,31 +93,31 @@ namespace Library.DAL.SInventory_DAL
         public void LoadCategoryName(DropDownList ddl)
         {
             ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
-            string queryStr = "select * from tblProCategory";
+            string queryStr = "select * from tblProCategory ORDER BY CategoryName";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "CategoryName", "CategoryId", queryStr);
         }
         public void LoadManufac(DropDownList ddl)
         {
             ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
-            string queryStr = "select * from tblManufacturer";
+            string queryStr = "select * from tblManufacturer ORDER BY ManufacName";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "ManufacName", "ManufacId", queryStr);
         }
         public void LoadPackSize(DropDownList ddl)
         {
             ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
-            string queryStr = "select * from tblPackSize";
+            string queryStr = "select * from tblPackSize ORDER BY PackSizeName";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "PackSizeName", "PackSizeId", queryStr);
         }
         public void LoadStockUOM(DropDownList ddl)
         {
             ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
-            string queryStr = "select * from tblStockUOM";
+            string queryStr = "select * from tblStockUOM ORDER BY StockUOMName";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "StockUOMName", "StockUOMId", queryStr);
         }
         public void LoadType(DropDownList ddl)
         {
             ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
-            string queryStr = "select * from tblProType";
+            string queryStr = "select * from tblProType ORDER BY ProTypeName";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "ProTypeName", "ProTypeId", queryStr);
         }
         public void LoadIngrident(DropDownList ddl)
@@ -129,13 +129,13 @@ namespace Library.DAL.SInventory_DAL
         public void LoadProductSQ(DropDownList ddl)
         {
             ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
-            string queryStr = "select * from tblProductSQ";
+            string queryStr = "select * from tblProductSQ ORDER BY ProductSQName";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "ProductSQName", "ProductBrandId", queryStr);
         }
         public void LoadShippingCartonSize(DropDownList ddl)
         {
             ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
-            const string queryStr = "select * from tblProductCase";
+            const string queryStr = "select * from tblProductCase ORDER BY PcsPerCase";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "PcsPerCase", "CaseId", queryStr);
         }
         public DataTable ProductPriceDetailWithCase(string productCode)

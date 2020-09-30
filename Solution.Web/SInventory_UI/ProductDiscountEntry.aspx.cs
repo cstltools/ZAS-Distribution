@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Security.Policy;
 using System.Web;
@@ -37,6 +38,9 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
         customerNameTextBox1.Text = string.Empty;
         productNameTextBox2.Text = string.Empty;
         MessageLabel.Text = "";
+
+        discountAmountTextBox.Text = string.Empty;
+        txtIsactive.Text = string.Empty;
     }
 
     private void GetData(string id)
@@ -71,32 +75,43 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
 
     public void SaveData()
     {
+
+       
+        
         if (productCodeTextBox.Text != "" && customerTextBox.Text != "" && activeDtTextBox.Text != "" && inactiveDtTextBox.Text != ""
             && discountPerTextBox.Text != "")
         {
-            CustomerMaster aCustomerMaster;
-            ProductDiscount aProductDiscount = new ProductDiscount()
+            if (CheckDiscountExistOrNot())
             {
-                ProductId = Convert.ToInt32(productIdHiddenField.Value.Trim()),
-                CustomerMasterId = CustomerId(out aCustomerMaster),
-                DiscountPercentage = Convert.ToDecimal(discountPerTextBox.Text),
-                Status = "Active",
-                ActiveDate = Convert.ToDateTime(activeDtTextBox.Text),
-                InactiveDate = Convert.ToDateTime(inactiveDtTextBox.Text),
-                EntryBy = Session["LoginName"].ToString(),
-                EntryDate = DateTime.Now,
-                ActionStatus = "Posted"
+                CustomerMaster aCustomerMaster;
+                ProductDiscount aProductDiscount = new ProductDiscount()
+                {
+                    ProductId = Convert.ToInt32(productIdHiddenField.Value.Trim()),
+                    CustomerMasterId = CustomerId(out aCustomerMaster),
+                    DiscountPercentage = Convert.ToDecimal(discountPerTextBox.Text),
+                    Status = "Active",
+                    ActiveDate = Convert.ToDateTime(activeDtTextBox.Text),
+                    InactiveDate = Convert.ToDateTime(inactiveDtTextBox.Text),
+                    EntryBy = Session["LoginName"].ToString(),
+                    EntryDate = DateTime.Now,
+                    ActionStatus = "Posted"
 
-            };
-            if (aProductDiscountBll.SaveProductDiscount(aProductDiscount))
+                };
+                if (aProductDiscountBll.SaveProductDiscount(aProductDiscount))
+                {
+                    showMessageBox("Data Saved Successfully");
+                }
+                
+            }
+            else
             {
-                showMessageBox("Data Saved Successfully");
+                showMessageBox("Discount already exist !!!");
             }
             Clear();
         }
         else
         {
-            MessageLabel.Text = "Please input data in all Textbox";
+            showMessageBox("Please input data in all Textbox !!!");
         }
     }
     public void UpdateData()
@@ -170,6 +185,9 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
         Product aProduct = new Product();
         aProduct = aCustPaymentBll.DetailProductLoad(productCodeTextBox.Text.Trim());
         productNameTextBox2.Text = aProduct.ProductName;
+        
+        GetProductInGrid(productCodeTextBox.Text);
+        
     }
     public void GenerateParameter()
     {
@@ -259,6 +277,24 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
             GetProductInGrid(productCodeTextBox.Text);
         }
     }
+
+    private bool CheckDiscountExistOrNot()
+    {
+        bool status = false;
+
+
+        DataTable aTable = aProductDiscountBll.CheckDiscountExistOrNot(Convert.ToInt32(customerTextBox.Text), productCodeTextBox.Text.Trim());
+
+            if (aTable.Rows.Count == 0)
+            {
+                status = true;
+            }
+
+        
+
+        return status;
+    }
+
     private void GetProductInGrid(string productCode)
     {
         DCStoreBLL _aDcStockReceiveBll = new DCStoreBLL();
@@ -282,5 +318,33 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
     protected void clearButton_OnClick(object sender, EventArgs e)
     {
        Clear();
+    }
+
+    protected void discountAmountTextBox_OnTextChanged(object sender, EventArgs e)
+    {
+        AmountOrPercantageCalculation("amount");
+    }
+
+    protected void discountPerTextBox_OnTextChanged(object sender, EventArgs e)
+    {
+        AmountOrPercantageCalculation("percentage");
+    }
+      
+    private void AmountOrPercantageCalculation(string flag)
+    {
+        decimal amount = 0;
+        decimal percentage = 0;
+        
+        if (flag == "amount")
+        {
+            percentage = percentage + ((Convert.ToDecimal(discountAmountTextBox.Text) * 100) / Convert.ToDecimal(txtIsactive.Text));
+            discountPerTextBox.Text = System.Math.Round(percentage, 2).ToString(CultureInfo.InvariantCulture);
+        }
+
+        if (flag == "percentage")
+        {
+            amount = amount + ((Convert.ToDecimal(discountPerTextBox.Text) / 100) * Convert.ToDecimal(txtIsactive.Text));
+            discountAmountTextBox.Text = System.Math.Round(amount, 2).ToString(CultureInfo.InvariantCulture);
+        }
     }
 }
