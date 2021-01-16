@@ -214,5 +214,12 @@ namespace Library.DAL.SInventory_DAL
                             where IsActive='1' AND (ActionStatus = 'Accepted' OR ActionStatus = 'Cancel')" + parameter;
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public bool CreateProductGl(int productId)
+        {
+            List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+
+            return aCommonInternalDal.UpdateAction("sp_I_ProductGl", aSqlParameterlist);
+        }
     }
 }

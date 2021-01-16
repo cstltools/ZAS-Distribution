@@ -118,7 +118,6 @@ public partial class SInventory_UI_CustomerFixedDiscount : System.Web.UI.Page
             aDao.CustomerMasterId = Convert.ToInt32(custIdHiddenField.Value);
             aDao.DisParcentage = Convert.ToInt32(disPerTextBox.Text.Trim());
             aDao.IsActive = isActiveCheckBox.Checked;
-            aDao.ActiveDate = Convert.ToDateTime(activeDtTextBox.Text);
             aDao.EntryBy = Session["LoginName"].ToString();
             aDao.EntryDate = DateTime.Now;
 

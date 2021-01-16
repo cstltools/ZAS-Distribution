@@ -35,7 +35,7 @@ namespace Library.DAL.SInventory_DAL
         public DataTable LoadCustomerPaymentInfo(string parameter,string fromDate, string toDate)
         {
             string query = @"SELECT CI.CompanyName,UNT.ComUnitName,CSTMR.CustomerCode,CSTMR.CustomerName,EGI.EmpMasterCode AS MIOCode,
-                             EGI.EmpName AS MIOName, INV.InvoiceNo, INV.InvoiceDate,CP.PayType,INV.PaymentStatus,CPD.PaymentAmount,CP.PaymentDate,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM dbo.tblCustomerPay AS CP WITH (nolock)"
+                             EGI.EmpName AS MIOName, INV.InvoiceNo, INV.InvoiceDate,CP.PayType,INV.PaymentStatus,CPD.PaymentAmount,ISNULL(CPD.AIT,0) AIT,ISNULL(CPD.Discount,0) Discount,CP.PaymentDate,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM dbo.tblCustomerPay AS CP WITH (nolock)"
                              + " LEFT JOIN dbo.tblCustPayDetail AS CPD ON CPD.CustPayId = CP.CustPayId"
                              + " LEFT JOIN dbo.tblInvoice AS INV ON INV.InvoiceId = CPD.InvoiceId"
                              + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON UNT.ComUnitId = INV.ComUnitId"
@@ -43,7 +43,7 @@ namespace Library.DAL.SInventory_DAL
                              + " LEFT JOIN dbo.tblMIOInfo AS MIO ON INV.MiaId = MIO.MIOId"
                              + " LEFT JOIN dbo.tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId"
                              + " LEFT JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = CP.CustomerMasterId"
-                             + " WHERE DeliveryTpGrandTotal > 0 AND CPD.InvoiceId NOT IN (SELECT CRM.InvoiceId FROM dbo.tblCustomerReturnMaster AS CRM) " + parameter + " ORDER BY CSTMR.CustomerCode ";
+                             + " WHERE DeliveryTpGrandTotal > 0 AND CPD.InvoiceId NOT IN (SELECT CRM.InvoiceId FROM dbo.tblCustomerReturnMaster AS CRM WITH (nolock)) " + parameter + " ORDER BY CSTMR.CustomerCode ";
            return  aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }
 
@@ -75,6 +75,21 @@ namespace Library.DAL.SInventory_DAL
             aCommonInternalDAL.LoadDropDownValue(ddl, "UnitName", "ComUnitId", query, "SSIDB");
 
              
+        }
+
+        public DataTable LoadAitInvoice(string parameter)
+        {
+            string query = @"SELECT CompanyName,CustPayDetailId,INV.InvoiceNo,UNT.ComUnitName,INV.InvoiceDate,CP.PayType,CP.PaymentDate,
+                             CPD.AIT AS PaidAmount,CSTMR.CustomerCode ,CSTMR.CustomerName,PaymentRemarks
+                             FROM dbo.tblCustPayDetail AS CPD 
+                             INNER JOIN dbo.tblInvoice AS INV ON INV.InvoiceId = CPD.InvoiceId
+                             LEFT JOIN tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId
+                             LEFT JOIN tblCompanyInfo AS CI ON CI.CompanyId = UNT.CompanyId
+                             INNER JOIN dbo.tblCustomerPay AS CP ON CP.CustPayId = CPD.CustPayId
+                             INNER JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId
+                             WHERE CPD.AIT > 0 " + parameter;
+
+            return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }
     }
 }

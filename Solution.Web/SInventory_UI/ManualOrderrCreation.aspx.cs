@@ -432,6 +432,8 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
                     TextBox productTextBox = (TextBox)productGridView.Rows[row.RowIndex].Cells[3].FindControl("productNameTextBox");
                     AjaxControlToolkit.AutoCompleteExtender modal = (AjaxControlToolkit.AutoCompleteExtender)productTextBox.FindControl("productNameTextBox_AutoCompleteExtender");
                     modal.ContextKey = companyDropDownList.SelectedValue;
+
+                    
                 }
             }
         }
@@ -504,7 +506,7 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
 
             if (ProductExistOrNot(productCode, rowindex))
             {
-                aDataTable = _aDcStockReceiveBll.ProductInfo(productCode, companyDropDownList.SelectedValue);
+                aDataTable = _aDcStockReceiveBll.ProductInfo(productCode, companyDropDownList.SelectedValue,custIdHiddenField.Value);
 
                 if (aDataTable.Rows.Count > 0)
                 {
@@ -931,8 +933,10 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
 
                 if (CheckDataSavedOrNot(masterId))
                 {
-                    ShowMessageBox("Order Generated Successfully !!");
-                    Clear();
+                    DataTable aTable = aOrderCreationDal.GetOrderCode(masterId);
+                    orderCodeTextBox.Text = aTable.Rows[0].Field<String>("OrderCode");
+                    ModalPopupExtender10.Show(); 
+                    
                 }
                 else
                 {
@@ -1195,5 +1199,13 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
     protected void cancelButton_Click(object sender, EventArgs e)
     {
         Clear();
+    }
+
+    protected void yesButton_Click(object sender, EventArgs e)
+    {
+        ModalPopupExtender10.Hide();
+        Clear();
+        ShowMessageBox("Order Created Successsfully!!");
+
     }
 }

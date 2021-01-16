@@ -93,6 +93,7 @@ namespace Library.DAL.SInventory_DAL
 				WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '382' THEN 'ZAS OTC'
                 WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '383' THEN 'ZAS NOC'
                 WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '384' THEN 'ZAS Baby Care'
+                WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '385' THEN 'ZAS Neurology'
 				ELSE ''  
 				END AS CompanyName,
                 vTblTotal.ProductCode ,

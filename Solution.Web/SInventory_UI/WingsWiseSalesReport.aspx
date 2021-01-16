@@ -81,8 +81,8 @@
                             Company Name:
                         </td>
                         <td class="TDRight" width="20%">
-                            <asp:DropDownList ID="companyNameDropDownList" Width="180px" runat="server" CssClass="DropDown"
-                                OnSelectedIndexChanged="companyNameDropDownList_SelectedIndexChanged" AutoPostBack="True">
+                            <asp:DropDownList ID="ddlCompany" Width="180px" runat="server" CssClass="DropDown"
+                                OnSelectedIndexChanged="ddlCompany_SelectedIndexChanged" AutoPostBack="True" >
                             </asp:DropDownList>
                         </td>
                         <td class="TDLeft" width="13%">

@@ -47,11 +47,8 @@ namespace Library.DAO.SInventory_Entities
 
 
         public bool IsActive { get; set; }
-        
 
-
-   
-        
+        public int AITGLId { get; set; }
         
     }
 }

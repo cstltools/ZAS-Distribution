@@ -92,7 +92,10 @@
                 <asp:BoundField DataField="InTransit" HeaderText="In-Transit" />
                 <asp:BoundField DataField="ReturnValue" HeaderText="ReturnValue" />
                 <asp:BoundField DataField="PaymentAmount" HeaderText="Payment Amount" />
+                <asp:BoundField DataField="AIT" HeaderText="AIT" />
+                <asp:BoundField DataField="DOP" HeaderText="Discount On Payment" />
                 <asp:BoundField DataField="Due" HeaderText="Due" />
+                <asp:BoundField DataField="PrevousCollection" HeaderText="Prevous Collection" />
             </Columns>
         </asp:GridView>
         <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CssClass="responstable">

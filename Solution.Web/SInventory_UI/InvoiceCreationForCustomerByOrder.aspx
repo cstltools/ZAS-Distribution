@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master"
+﻿ <%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master"
     AutoEventWireup="true" CodeFile="InvoiceCreationForCustomerByOrder.aspx.cs" Inherits="SInventory_UI_InvoiceCreationForCustomer" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
@@ -464,7 +464,7 @@
                         <td class="TDLeft" width="13%"></td>
                         <td class="TDRight" width="20%">
                             <asp:Button ID="saveButton" runat="server" Text="Invoice Generate"
-                                OnClick="saveButton_Click" />
+                                OnClick="saveButton_Click1" />
                             <asp:ModalPopupExtender ID="ModalPopupExtender10" runat="server" TargetControlID="HiddenField10"
                                 PopupControlID="pnlModal" BackgroundCssClass="modalBackground">
                             </asp:ModalPopupExtender>

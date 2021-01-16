@@ -96,7 +96,7 @@ public partial class SInventory_UI_CustomerPaymentProcess : System.Web.UI.Page
 
                 if (ChkBoxRows.Checked)
                 {
-                    DataTable iSExist = aTranscationDal.IsExist(loadGridView.DataKeys[i]["CustPayId"].ToString());
+                    DataTable iSExist = aTranscationDal.IsExist(loadGridView.DataKeys[i]["CustPayDetailId"].ToString());
 
                     if (iSExist.Rows.Count == 0)
                     {
@@ -127,6 +127,8 @@ public partial class SInventory_UI_CustomerPaymentProcess : System.Web.UI.Page
                                     aCustPaymentDetail.InvoiceId = Convert.ToInt32(aTable.Rows[j].Field<int>("InvoiceId"));
                                     aCustPaymentDetail.TransctionDetailId = Convert.ToInt32(aTable.Rows[j].Field<int>("CustPayDetailId"));
                                     aCustPaymentDetail.PaymentAmount = aTable.Rows[j].Field<decimal>("DetailPaymentAmount");
+                                    aCustPaymentDetail.AIT = aTable.Rows[j].Field<decimal>("AIT");
+                                    aCustPaymentDetail.Discount = aTable.Rows[j].Field<decimal>("Discount");
                                     aCustPaymentDetail.Remarks = aTable.Rows[j].Field<String>("PaymentRemarks");
                                     aCustPaymentDetail.ProcessTime = DateTime.Now;
 

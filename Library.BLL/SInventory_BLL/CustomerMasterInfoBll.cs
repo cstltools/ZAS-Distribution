@@ -260,5 +260,10 @@ namespace Library.BLL.SInventory_BLL
             return aCustomerMasterDAL.UpdateCusstomerGl(customerMasterId)
             ;
         }
+
+        public void LoadAIT(DropDownList ddl)
+        {
+            aCustomerMasterDAL.LoadAIT(ddl);
+        }
     }
 }

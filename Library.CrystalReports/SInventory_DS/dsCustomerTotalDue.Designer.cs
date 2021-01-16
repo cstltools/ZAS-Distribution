@@ -295,6 +295,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             private global::System.Data.DataColumn columnUptoDate;
             
+            private global::System.Data.DataColumn columnAIT;
+            
+            private global::System.Data.DataColumn columnDiscount;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public CustomerTotalDueReportDataDataTable() {
@@ -394,6 +398,22 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AITColumn {
+                get {
+                    return this.columnAIT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DiscountColumn {
+                get {
+                    return this.columnDiscount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -429,7 +449,7 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public CustomerTotalDueReportDataRow AddCustomerTotalDueReportDataRow(string CompanyName, string ComUnitName, string CustomerCode, string CustomerName, decimal DUE, decimal Receiveable, decimal Collection, string UptoDate) {
+            public CustomerTotalDueReportDataRow AddCustomerTotalDueReportDataRow(string CompanyName, string ComUnitName, string CustomerCode, string CustomerName, decimal DUE, decimal Receiveable, decimal Collection, string UptoDate, decimal AIT, decimal Discount) {
                 CustomerTotalDueReportDataRow rowCustomerTotalDueReportDataRow = ((CustomerTotalDueReportDataRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         CompanyName,
@@ -439,7 +459,9 @@ namespace Library.CrystalReports.SInventory_DS {
                         DUE,
                         Receiveable,
                         Collection,
-                        UptoDate};
+                        UptoDate,
+                        AIT,
+                        Discount};
                 rowCustomerTotalDueReportDataRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCustomerTotalDueReportDataRow);
                 return rowCustomerTotalDueReportDataRow;
@@ -470,6 +492,8 @@ namespace Library.CrystalReports.SInventory_DS {
                 this.columnReceiveable = base.Columns["Receiveable"];
                 this.columnCollection = base.Columns["Collection"];
                 this.columnUptoDate = base.Columns["UptoDate"];
+                this.columnAIT = base.Columns["AIT"];
+                this.columnDiscount = base.Columns["Discount"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -491,6 +515,10 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnCollection);
                 this.columnUptoDate = new global::System.Data.DataColumn("UptoDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnUptoDate);
+                this.columnAIT = new global::System.Data.DataColumn("AIT", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAIT);
+                this.columnDiscount = new global::System.Data.DataColumn("Discount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDiscount);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -767,6 +795,38 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal AIT {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCustomerTotalDueReportData.AITColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AIT\' in table \'CustomerTotalDueReportData\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCustomerTotalDueReportData.AITColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Discount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableCustomerTotalDueReportData.DiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Discount\' in table \'CustomerTotalDueReportData\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCustomerTotalDueReportData.DiscountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCompanyNameNull() {
                 return this.IsNull(this.tableCustomerTotalDueReportData.CompanyNameColumn);
             }
@@ -859,6 +919,30 @@ namespace Library.CrystalReports.SInventory_DS {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetUptoDateNull() {
                 this[this.tableCustomerTotalDueReportData.UptoDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAITNull() {
+                return this.IsNull(this.tableCustomerTotalDueReportData.AITColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAITNull() {
+                this[this.tableCustomerTotalDueReportData.AITColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDiscountNull() {
+                return this.IsNull(this.tableCustomerTotalDueReportData.DiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDiscountNull() {
+                this[this.tableCustomerTotalDueReportData.DiscountColumn] = global::System.Convert.DBNull;
             }
         }
         

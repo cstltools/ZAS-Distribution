@@ -70,6 +70,7 @@
     <Compile Include="SInventory_Entities\DirectStockOutDao.cs" />
     <Compile Include="SInventory_Entities\EmpGeneralInfo.cs" />
     <Compile Include="SInventory_Entities\FixedDiscountDao.cs" />
+    <Compile Include="SInventory_Entities\IncomeStatementDao.cs" />
     <Compile Include="SInventory_Entities\Ingridents.cs" />
     <Compile Include="SInventory_Entities\Invoice.cs" />
     <Compile Include="SInventory_Entities\InvoiceBatchDAO.cs" />
@@ -91,9 +92,11 @@
     <Compile Include="SInventory_Entities\ProductDiscount.cs" />
     <Compile Include="SInventory_Entities\ProductSQ.cs" />
     <Compile Include="SInventory_Entities\ProType.cs" />
+    <Compile Include="SInventory_Entities\QuotedPriceSetup.cs" />
     <Compile Include="SInventory_Entities\Requesition.cs" />
     <Compile Include="SInventory_Entities\RequsitionChild.cs" />
     <Compile Include="SInventory_Entities\RSMSetupDao.cs" />
+    <Compile Include="SInventory_Entities\SalesDashboardDao.cs" />
     <Compile Include="SInventory_Entities\ShippingCartonSize.cs" />
     <Compile Include="SInventory_Entities\SlaveInformation.cs" />
     <Compile Include="SInventory_Entities\StockConditionFreezeDAO.cs" />

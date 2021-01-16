@@ -19,5 +19,9 @@ namespace Library.DAO.SInventory_Entities
 
         public int TransctionDetailId { get; set; }
         public DateTime ProcessTime { get; set; }
+
+        public decimal AIT { get; set; }
+
+        public decimal Discount { get; set; }
     }
 }

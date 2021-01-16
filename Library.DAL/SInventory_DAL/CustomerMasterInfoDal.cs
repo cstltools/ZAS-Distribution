@@ -167,6 +167,7 @@ namespace Library.DAL.SInventory_DAL
                         ( 
                           CustomerCode ,
                           CategoryId ,
+                          AITGLId,
                           CustomerName ,
                           Address ,
                           CellNo ,
@@ -184,6 +185,7 @@ namespace Library.DAL.SInventory_DAL
                         )
                 VALUES  ( '" + aCustomerMaster.CustomerCode + "' ,  " +
                         "  '" + aCustomerMaster.CategoryId + "' ,  " +
+                        "  '" + aCustomerMaster.AITGLId + "' ,  " +
                         "  '" + aCustomerMaster.CustomerName + "' ,  " +
                         "  '" + aCustomerMaster.Address + "' ," +
                         "  '" + aCustomerMaster.CellNo + "' ," +
@@ -285,6 +287,8 @@ CompanyId
                     {
                         aCustomerMaster.MarketId = Convert.ToInt32(dataReader["MarketId"].ToString());
                     }
+
+                    aCustomerMaster.AITGLId = Convert.ToInt32(dataReader["AITGLId"].ToString());
                     
                     
                     aCustomerMaster.TermOfPayment = dataReader["TermOfPayment"].ToString();
@@ -355,7 +359,7 @@ CompanyId
 
         public bool UpdateCustomerMasterInfo(CustomerMaster aCustomerMaster)
         {
-            string query = @"UPDATE tblCustMaster SET  CategoryId='"+aCustomerMaster.CategoryId+"' ,  CustomerName='"+aCustomerMaster.CustomerName+"' ,Address='"+aCustomerMaster.Address+"' " +
+            string query = @"UPDATE tblCustMaster SET  CategoryId='" + aCustomerMaster.CategoryId + "' ,  CustomerName='" + aCustomerMaster.CustomerName + "' ,  AITGLId='" + aCustomerMaster.AITGLId + "' ,Address='" + aCustomerMaster.Address + "' " +
                            " ,  CellNo='"+aCustomerMaster.CellNo+"' , MarketId='"+aCustomerMaster.MarketId+"',Addrees2='"+aCustomerMaster.Addrees2+"' , City='"+aCustomerMaster.City+"' ,  ConPerson='"+aCustomerMaster.ConPerson+"' , " +
                            "  ShippingCond='" + aCustomerMaster.ShippingCond + "' ,   TermOfPayment='" + aCustomerMaster.TermOfPayment + "' ,UpdateBy='" + aCustomerMaster.UpdateBy + "' ,IsVatApplicable='" + aCustomerMaster.IsVatApplicable + "',UpdateDate='" + aCustomerMaster.UpdateDate + "'   WHERE CustomerMasterId=" + aCustomerMaster.CustomerMasterId + "";
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
@@ -415,6 +419,13 @@ CompanyId
             aSqlParameterlist.Add(new SqlParameter("@SubsidiaryLId", 36));
 
             return aCommonInternalDal.UpdateAction("sp_UD_CustomerGl", aSqlParameterlist);
+        }
+
+        public void LoadAIT(DropDownList ddl)
+        {
+            ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
+            string queryStr = "SELECT AccountId,AccountName FROM ZAS_ACCDB..tblChartOfAccounts AS GL WHERE GL.SubsidiaryLId = 52";
+            aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "AccountName", "AccountId", queryStr);
         }
     }
 }

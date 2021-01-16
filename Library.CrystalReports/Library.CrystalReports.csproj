@@ -78,6 +78,11 @@
     <Compile Include="SInventory_DS\DeleteOrderDataTable.designer.cs">
       <DependentUpon>DeleteOrderDataTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="SInventory_DS\dsAitCollectionTable.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsAitCollectionTable.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\dsAllSalesReport.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -264,6 +269,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsDestroyProduct.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsDirectStockOut.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsDirectStockOut.xsd</DependentUpon>
     </Compile>
     <Compile Include="SInventory_DS\dsDistrictSales.cs">
       <DependentUpon>dsDistrictSales.xsd</DependentUpon>
@@ -945,6 +955,17 @@
     <None Include="SInventory_DS\DeleteOrderDataTable.xss">
       <DependentUpon>DeleteOrderDataTable.xsd</DependentUpon>
     </None>
+    <None Include="SInventory_DS\dsAitCollectionTable.xsc">
+      <DependentUpon>dsAitCollectionTable.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsAitCollectionTable.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsAitCollectionTable.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsAitCollectionTable.xss">
+      <DependentUpon>dsAitCollectionTable.xsd</DependentUpon>
+    </None>
     <None Include="SInventory_DS\dsAllSalesReport.xsc">
       <DependentUpon>dsAllSalesReport.xsd</DependentUpon>
     </None>
@@ -1291,6 +1312,17 @@
     </None>
     <None Include="SInventory_DS\dsDestroyProduct.xss">
       <DependentUpon>dsDestroyProduct.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsDirectStockOut.xsc">
+      <DependentUpon>dsDirectStockOut.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsDirectStockOut.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsDirectStockOut.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsDirectStockOut.xss">
+      <DependentUpon>dsDirectStockOut.xsd</DependentUpon>
     </None>
     <None Include="SInventory_DS\dsDistrictSales.xsc">
       <DependentUpon>dsDistrictSales.xsd</DependentUpon>

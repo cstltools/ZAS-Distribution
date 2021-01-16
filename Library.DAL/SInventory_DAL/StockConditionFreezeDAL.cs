@@ -38,7 +38,7 @@ namespace Library.DAL.SInventory_DAL
         {
             string query = @"SELECT tblDCStore.*,DCStoreId AS nomanslandID, tblDCStore.ProductCode,tblDCStore.ProductName,tblDCStore.BatchNo,ExpDate,ReceiveDate,TotalQuantity,StockQty,tblUnitPrice.UnitPrice*StockQty AS Amount,StockCondition FROM dbo.tblDCStore
                               INNER JOIN dbo.tblUnitPrice ON tblDCStore.ProductCode = tblUnitPrice.ProductCode        
-                                where  StockQty>0 and   StockCondition = 'Available' AND ComUnitId= '" + ComUnitId + "'";
+                                where  StockQty>0 and   StockCondition = 'Available' AND tblUnitPrice.ActionStatus = 'Accepted' AND IsActive = 1 AND ComUnitId= '" + ComUnitId + "'";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

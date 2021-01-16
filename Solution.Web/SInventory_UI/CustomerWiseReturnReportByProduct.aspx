@@ -126,6 +126,28 @@
                         <td class="TDRight" width="20%">
                         </td>
                     </tr>
+                    
+                     <tr>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                           
+                        </td>
+                        <td class="TDRight" width="20%">
+                               <asp:RadioButtonList ID="DateWiseRadioButton" runat="server" Width="180px" style="text-align: left; padding-right: 10px;" >
+                               <asp:ListItem>InvoiceDateWise</asp:ListItem>
+                               <asp:ListItem>ReturnDateWise</asp:ListItem>      
+                               </asp:RadioButtonList>                          
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                    </tr>
+
+          
 
                     <tr>
                         <td class="TDLeft" width="13%">
@@ -133,7 +155,7 @@
                         <td class="TDRight" width="20%">
                         </td>
                          <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
-                            (Invoice)From Date: <span class="star-mark">*</span>
+                            From Date: <span class="star-mark">*</span>
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="fromDateTextBox" runat="server" CssClass="TextBoxCalander"></asp:TextBox>
@@ -155,7 +177,7 @@
                         <td class="TDRight" width="20%">
                         </td>
                         <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
-                            (Invoice)To Date:  <span class="star-mark">*</span>
+                          To Date:  <span class="star-mark">*</span>
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="toDateTextBox" runat="server" CssClass="TextBoxCalander"></asp:TextBox>

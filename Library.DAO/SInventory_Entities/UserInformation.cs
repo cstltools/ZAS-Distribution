@@ -17,5 +17,6 @@ namespace Library.DAO.SInventory_Entities
         public string Email { get; set; }
         public string ContactNo { get; set; }
         public string UserCode { get; set; }
+        public bool IsHead { get; set; }
     }
 }

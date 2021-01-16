@@ -245,6 +245,23 @@
                         <td class="TDRight" width="20%">
                             &nbsp;</td>
                     </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                        <td class="TDLeft" width="13%">
+                            GL Name (AIT) </td>
+                        <td class="TDRight" width="20%">
+                            <asp:DropDownList ID="ddlAIT" runat="server" CssClass="DropDown">
+                            </asp:DropDownList>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                    </tr>
                     <tr>
                         <td class="TDLeft" width="13%">
                             &nbsp;</td>

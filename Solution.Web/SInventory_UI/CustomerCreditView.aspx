@@ -228,8 +228,8 @@
                                         <asp:BoundField DataField="CompanyName" HeaderText="Company" />
                                         <asp:BoundField DataField="CustomerCode" HeaderText="Customer ID" />
                                         <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
-                                        <asp:BoundField DataField="StartDate" HeaderText="Start Date" DataFormatString="{0:dd-MMM-yyyy}" />
-                                        <asp:BoundField DataField="EndDate" HeaderText="End Date" DataFormatString="{0:dd-MMM-yyyy}" />
+                                        <%--<asp:BoundField DataField="StartDate" HeaderText="Start Date" DataFormatString="{0:dd-MMM-yyyy}" />
+                                        <asp:BoundField DataField="EndDate" HeaderText="End Date" DataFormatString="{0:dd-MMM-yyyy}" />--%>
                                         <asp:BoundField DataField="LimitAmount" HeaderText="Limit Amount" />                                        
                                         <asp:BoundField DataField="Validity" HeaderText="Validity (Day)" />                                        
                                         <asp:BoundField DataField="ActionStatus" HeaderText="Status" />

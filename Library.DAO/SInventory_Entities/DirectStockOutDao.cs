@@ -13,6 +13,7 @@ namespace Library.DAO.SInventory_Entities
         public string Code { get; set; }
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
+        public string StockOutType { get; set; }
         public DateTime StockOutDate { get; set; }
         public int DCStoreId { get; set; }
         public decimal StockOutQty { get; set; }

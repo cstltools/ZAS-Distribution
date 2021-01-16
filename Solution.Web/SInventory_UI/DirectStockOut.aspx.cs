@@ -194,6 +194,7 @@ public partial class SInventory_UI_DirectStockOut : System.Web.UI.Page
                     aDirectStockOutDao.StockOutReason = reasonBoxRows.Text;
                     aDirectStockOutDao.EntryBy = Session["LoginName"].ToString();
                     aDirectStockOutDao.EntryDate = DateTime.Now;
+                    aDirectStockOutDao.StockOutType = ddlStockOutType.SelectedItem.Text;
 
                     id = aReportDal.SaveDirectStockOutInfo(aDirectStockOutDao);
 
@@ -211,6 +212,11 @@ public partial class SInventory_UI_DirectStockOut : System.Web.UI.Page
 
     private bool SaveValidation()
     {
+        if (ddlStockOutType.SelectedIndex == 0)
+        {
+            ShowMessageBox("You should select stock out type !!!");
+            return false;
+        }
 
         int count = 0;
 

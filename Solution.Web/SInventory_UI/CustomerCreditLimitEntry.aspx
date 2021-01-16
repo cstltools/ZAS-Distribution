@@ -147,6 +147,24 @@
                         <td width="20%" class="TDRight">
                         </td>
                     </tr>
+                    
+                    <tr>
+                        <td width="13%" class="TDLeft">
+                        </td>
+                        <td width="20%" class="TDRight">
+                        </td>
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
+                            Limit (Days): <span class="star-mark"> * </span>
+                        </td>
+                        <td width="20%" class="TDRight">
+                            <asp:TextBox ID="limitDaysTextBox" runat="server" CssClass="TextBox"></asp:TextBox>
+                        </td>
+                        <td width="13%" class="TDLeft">
+                        </td>
+                        <td width="20%" class="TDRight">
+                        </td>
+                    </tr>
+
                     <tr runat="server" Visible="False">
                         <td width="13%" class="TDLeft">
                         </td>
@@ -166,7 +184,7 @@
                         </td>
                     </tr>
                     
-                    <tr>
+                    <tr runat="server" Visible="False">
                         <td class="TDLeft" width="13%">
                         </td>
                         <td class="TDRight" width="20%">
@@ -187,7 +205,7 @@
                         <td class="TDRight" width="20%">
                         </td>
                     </tr>
-                    <tr>
+                    <tr runat="server" Visible="False">
                         <td class="TDLeft" width="13%">
                         </td>
                         <td class="TDRight" width="20%">

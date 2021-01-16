@@ -31,15 +31,44 @@ namespace Library.BLL.SInventory_BLL
             { }
         }
 
-        public DataTable ProductDiscountView()
+
+        public bool SaveQuotedPrice(QuotedPriceSetup aProductDiscount)
         {
-            return aProductDiscountDal.ProductDiscountViewDal();
+            try
+            {
+                ClsPrimaryKeyFind aClsPrimaryKeyFind = new ClsPrimaryKeyFind();
+
+                aProductDiscount.QuotedPriceId = aClsPrimaryKeyFind.PrimaryKeyMax("QuotedPriceId", "tblProductQuotedPrice");
+                aProductDiscountDal.SaveQuotedPrice(aProductDiscount);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            { }
+        }
+
+        public DataTable ProductDiscountView(string pram)
+        {
+            return aProductDiscountDal.ProductDiscountViewDal(pram);
+        }
+
+        public DataTable ProductQuotedPriceView()
+        {
+            return aProductDiscountDal.ProductQuotedprice();
         }
 
 
         public bool DeleteProductDiscount(string id)
         {
             return aProductDiscountDal.DeleteProductdiscountDal(id);
+        }
+
+        public bool DeleteProductQuotedprice(string id)
+        {
+            return aProductDiscountDal.DeleteProductQuotedprice(id);
         }
 
         public bool HasProductDiscountName(ProductDiscount aProductDiscount)
@@ -74,6 +103,11 @@ namespace Library.BLL.SInventory_BLL
             return aProductDiscountDal.ApprovalUpdateDAL(aProductDiscount);
         }
 
+        public bool QuotedPriceApproval(QuotedPriceSetup aProductDiscount)
+        {
+            return aProductDiscountDal.QuotedPriceApprovalDAL(aProductDiscount);
+        }
+
 
         public DataTable GetProduct(string productId)
         {
@@ -96,6 +130,11 @@ namespace Library.BLL.SInventory_BLL
         public DataTable GetProductDiscountApproval(string actionstatus)
         {
             return aProductDiscountDal.GetProductDiscountApproval(actionstatus);
+        }
+
+        public DataTable GetProductQuotedPriceApproval(string actionstatus)
+        {
+            return aProductDiscountDal.GetProductQuotedPriceApproval(actionstatus);
         }
 
         public DataTable LoadProductDiscount(string fromdate, string todate)
@@ -155,6 +194,11 @@ namespace Library.BLL.SInventory_BLL
         public DataTable CheckDiscountExistOrNot(int customerId, string productCode)
         {
             return aProductDiscountDal.CheckDiscountExistOrNot(customerId, productCode);
+        }
+
+        public DataTable CheckQuotedPricetExistOrNot(int customerId, string productCode)
+        {
+            return aProductDiscountDal.CheckQuotedPricetExistOrNot(customerId, productCode);
         }
     }
 }

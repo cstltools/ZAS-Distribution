@@ -63,7 +63,7 @@ namespace Library.DAL.SInventory_DAL
 
         public bool DeleteDiscountInfo(string discountId, string userName)
         {
-            string query = @"UPDATE tblCustomerFixedDiscount SET IsActive = 0,ActionStatus = 'Delete',InactiveDate = '" + DateTime.Now + "',InactiveBy = " + userName + " WHERE DiscountId = " + discountId;
+            string query = @"UPDATE tblCustomerFixedDiscount SET IsActive = 0,ActionStatus = 'Delete',InactiveDate = '" + DateTime.Now + "',InactiveBy = '" + userName + "' WHERE DiscountId = " + discountId;
             return _aInternalDal.DeleteDataByCommand(query, "SSIDB");
         }
 
@@ -89,7 +89,7 @@ WHERE ActionStatus IN ('" + actionStatus + "') AND FDC.IsActive = 1 AND FDC.Comp
 
         public bool UpdateDiscount(FixedDiscountDao aOrderInfoMaster)
         {
-            string query = @"UPDATE tblCustomerFixedDiscount SET ActionStatus = '" + aOrderInfoMaster.ActionStatus + "',ApproveBy = '" + aOrderInfoMaster.ApproveBy + "',ApproveDate = " + aOrderInfoMaster.ApproveDate + " WHERE DiscountId = " + aOrderInfoMaster.DiscountId;
+            string query = @"UPDATE tblCustomerFixedDiscount SET ActionStatus = '" + aOrderInfoMaster.ActionStatus + "',ApproveBy = '" + aOrderInfoMaster.ApproveBy + "',ActiveDate = '" + aOrderInfoMaster.ActiveDate + "',ApproveDate = '" + aOrderInfoMaster.ApproveDate + "' WHERE DiscountId = " + aOrderInfoMaster.DiscountId;
             return _aInternalDal.DeleteDataByCommand(query, "SSIDB");
         }
     }

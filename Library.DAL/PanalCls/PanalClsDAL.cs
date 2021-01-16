@@ -98,5 +98,10 @@ namespace Library.DAL.PanalCls
             return aDataSubSubChildItem;
         }
 
+        public DataTable GetDashboardPermission(string userName)
+        {
+            string queryStr = "SELECT UserName FROM tblUser WHERE LoginName = '" + userName + "' AND IsDashboard = 1";
+            return _aCommonInternalDal.DataContainerDataTable(queryStr, "SSIDB");
+        }
     }
 }

@@ -283,7 +283,14 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
             GetProduct(i, aTable.Rows[i]["ProductCode"].ToString());
             /////SMC Low Stock Method /////
             decimal cstock = 0;
-            cstock = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text);
+
+            if (((TextBox) gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text != "")
+            {
+                cstock =
+                    Convert.ToDecimal(
+                        ((TextBox) gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text);
+            }
+           
             if (cstock < Convert.ToDecimal(aTable.Rows[i]["Quantity"].ToString()))
             {
                 GetQty(cstock, i, discountPerRow, percentagePerRow);
@@ -1027,7 +1034,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         {
             if (ProductCodeValidation(productCode, rowindex) == true)
             {
-                aDataTable = aInvoiceBll.ProductInfo(hdComUnitId.Value, productCode);
+                aDataTable = aInvoiceBll.ProductInfo(hdComUnitId.Value, productCode,custCodeTextBox.Text);
                 ((TextBox) gridLineItemGridView.Rows[rowindex].Cells[1].FindControl("codeTextBox")).Text = productCode;
                 if (aDataTable.Rows.Count > 0)
                 {
@@ -1328,6 +1335,105 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                     ((TextBox) gridLineItemGridView.Rows[rowindex].Cells[13].FindControl("tQtyTextBox")).Text.Trim()));
 
     }
+
+
+
+    protected void saveButton_Click1(object sender, EventArgs e)
+    {
+        if (Validation())
+        {
+            if (OrderExists(orderHiddenField.Value) == false)
+            {
+                {
+                    try
+                    {
+                        int invId = aInvoiceBll.SaveInvoiceMater(PrepareMasterData());
+                        if (invId > 0)
+                        {
+                            bool dtl = SaveInvoiceDetail(invId);
+                            if (dtl)
+                            {
+
+                                // Journal Posting
+
+                                if (aInvoiceBll.PostJournal(invId))
+                                {
+                                    OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
+                                    aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
+                                    Clear();
+
+                                    DataTable aTable = aInvoiceBll.GetInvoiceNoById(invId);
+
+                                    if (aTable.Rows.Count > 0)
+                                    {
+                                        invoiceNoTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
+                                        showMessageBox("Proforma Invoice Created Successsfully!!");
+                                        //ModalPopupExtender10.Show();
+
+                                        invTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                aInvoiceBll.DeleteInvoice(orderIdHiddenField.Value);
+                                Clear();
+                                showMessageBox("Internet Connection Error 503 Service Unavailable");
+
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        aInvoiceBll.DeleteInvoice(orderIdHiddenField.Value);
+                        Clear();
+                        showMessageBox("Internet Connection Error 503 Service Unavailable");
+                    }
+                }
+            }
+            else
+            {
+                showMessageBox("Invoice already Generated !!");
+            }
+        }
+    }
+
+    
+
+    private Invoice PrepareMasterData()
+    {
+        string[] forComUCode = comUnitNameTextBox.Text.Split(':');
+        string comUnitCode = forComUCode[0];
+
+        Invoice aInvoice = new Invoice();
+
+        aInvoice.InvoiceDate = Convert.ToDateTime(invDateTextBox.Text.Trim());
+        aInvoice.OrderNo = orderNoTextBox.Text.Trim();
+        aInvoice.OrderDate = Convert.ToDateTime(orderDateTextBox.Text.Trim());
+        aInvoice.CustomerMasterId = Convert.ToInt32(hdCustomerMasterId.Value);
+        aInvoice.ComUnitId = Convert.ToInt32(hdComUnitId.Value);
+        aInvoice.MiaId = Convert.ToInt32(hdMiaId.Value);
+        aInvoice.PaymentTypeId = Convert.ToInt32(payTypeDDL.SelectedValue);
+        aInvoice.TpTotal = Convert.ToDecimal(tpTptalTextBox.Text.Trim());
+        aInvoice.TpDiscount = Convert.ToDecimal(disTotalTextBox.Text.Trim());
+        aInvoice.TpVat = Convert.ToDecimal(vatTotalTextBox.Text.Trim());
+        aInvoice.TpGrandTotal = Convert.ToDecimal(grandTotalTextBox.Text.Trim());
+        aInvoice.UserId = Convert.ToInt32(Session["UserId"].ToString());
+        aInvoice.ComUnitCode = comUnitCode;
+        aInvoice.OrderId = Convert.ToInt32(orderIdHiddenField.Value);
+        aInvoice.TotalSpecialAmount = Convert.ToDecimal(pdTextBox.Text);
+        aInvoice.OldTradePolicy = false;
+        aInvoice.Remarks = remarksTextBox.Text;
+        aInvoice.FixedCustomer = false;
+        aInvoice.DeliveryManId = Convert.ToInt32(deliverypersonNameTextBox.SelectedValue);
+        aInvoice.DpNAme = deliverypersonNameTextBox.Text.Trim();
+        aInvoice.DpMob = deliverypersonMobileTextBox.Text.Trim();
+        aInvoice.ProductOffer = "False";
+
+        return aInvoice;
+    }
+
     protected void saveButton_Click(object sender, EventArgs e)
     {
         if (Validation())

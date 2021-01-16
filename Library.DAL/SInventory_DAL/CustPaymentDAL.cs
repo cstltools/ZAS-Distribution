@@ -58,6 +58,7 @@ namespace Library.DAL.SInventory_DAL
           CashAccId,
           TransctionDetailId,
           ProcessTime, 
+          AIT, Discount,
           PaymentRemarks 
         )
             values (" + aCustPaymentDetail.CustPayDetailId+ "," +
@@ -68,6 +69,8 @@ namespace Library.DAL.SInventory_DAL
                     "" + aCustPaymentDetail.CashAccId + "," +
                     "" + aCustPaymentDetail.TransctionDetailId + "," +
                     "'" + aCustPaymentDetail.ProcessTime + "'," +
+                    "'" + aCustPaymentDetail.AIT + "'," +
+                    "'" + aCustPaymentDetail.Discount + "'," +
                     "'" + aCustPaymentDetail.Remarks + "')";
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
@@ -121,8 +124,15 @@ namespace Library.DAL.SInventory_DAL
         }
         public bool UpdateInvoicePaymentAmount(string amount,string status,string id)
         {
-            string query = @"UPDATE dbo.tblInvoice SET PaymentAmount='" + amount + "',PaymentStatus='"+status+"' WHERE InvoiceId='" + id + "'";
-            return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
+            List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+
+            aSqlParameterlist.Add(new SqlParameter("@InvoiceId", id));
+
+            return aCommonInternalDal.UpdateAction("sp_UD_InvoicePayment", aSqlParameterlist);
+
+
+            //string query = @"UPDATE dbo.tblInvoice SET PaymentAmount='" + amount + "',PaymentStatus='"+status+"' WHERE InvoiceId='" + id + "'";
+            //return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
         }
         
         public void LoadCustomerMaster(DropDownList ddl, string marketId)
@@ -295,12 +305,12 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
 
         public DataTable GetInvoiceByCustomer(string custmerId,string dcId)
         {
-            string query = @"SELECT ISNULL(PaymentAmount,0)PaymentAmount,*,(DeliveryTpGrandTotal-isnull(PaymentAmount,0)) AS Due FROM dbo.tblInvoice           
+            string query = @"SELECT ISNULL(PaymentAmount,0)PaymentAmount,*,ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0) AS Due FROM dbo.tblInvoice           
             LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
             LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
             LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
             WHERE  DeliveryTpGrandTotal > 0 AND tblCustMaster.CustomerMasterId='" + custmerId
-            + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (DeliveryTpGrandTotal-isnull(PaymentAmount,0)) > 0 ";
+            + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0)) > 0 ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

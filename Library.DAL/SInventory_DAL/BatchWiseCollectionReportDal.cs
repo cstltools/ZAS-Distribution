@@ -179,5 +179,20 @@ ISNULL(INV.PaymentStatus,'No Payment') AS PaymentStatus FROM tblInvoice AS INV
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public DataTable AitInformationById(string payId)
+        {
+            string query = @"SELECT 'AIT-' + REPLACE(CONVERT(VARCHAR(20), GETDATE(), 120),'-','') AS MRNo,CompanyName,UNT.ComUnitName,CustPayDetailId,INV.InvoiceNo,INV.InvoiceDate,CP.PayType,CP.PaymentDate,
+                             CPD.AIT AS PaidAmount,CSTMR.CustomerCode ,CSTMR.CustomerName,PaymentRemarks
+                             FROM dbo.tblCustPayDetail AS CPD 
+                             INNER JOIN dbo.tblInvoice AS INV ON INV.InvoiceId = CPD.InvoiceId
+                             LEFT JOIN tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId
+                             LEFT JOIN tblCompanyInfo AS CI ON CI.CompanyId = UNT.CompanyId
+                             INNER JOIN dbo.tblCustomerPay AS CP ON CP.CustPayId = CPD.CustPayId
+                             INNER JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId
+                             WHERE CPD.CustPayDetailId = " + payId;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
     }
 }

@@ -6,7 +6,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using CrystalDecisions.Shared.Json;
 using Library.DAL.SInventory_DAL;
+using Library.DAO.SInventory_Entities;
 
 /// <summary>
 /// Summary description for SInventoryWebService
@@ -507,6 +509,40 @@ LEFT JOIN dbo.tblMIOInfo ON tblMIOInfo.TerritoryId = tblTerritory.TerritoryId WH
             i++;
         }
         return items;
+    }
+
+
+    // Dashboard
+
+    static SalesDashboardDal  aDashboardDal = new SalesDashboardDal();
+
+    [WebMethod]
+    [System.Web.Script.Services.ScriptMethod]
+    public static CompanyWiseSalesDao[] GetCompanyWiseSales(string companyId, string year, string month)
+    {
+        DataTable aTable = aDashboardDal.GetCompanyWiseSales(companyId, year, month);
+
+        List<CompanyWiseSalesDao> aList = new List<CompanyWiseSalesDao>();
+
+        if (aTable.Rows.Count > 0)
+        {
+            var aData = new CompanyWiseSalesDao();
+
+            foreach (DataRow DR in aTable.Rows)
+            {
+                aData = new CompanyWiseSalesDao();
+
+                aData.InvoiceDate = DR["InvoiceDate"].ToString();
+                aData.SalesValue = Convert.ToDecimal(DR["SalesValue"].ToString());
+
+                aList.Add(aData);
+
+            }
+
+            return aList.ToArray();
+        }
+
+        return aList.ToArray();
     }
 }
 

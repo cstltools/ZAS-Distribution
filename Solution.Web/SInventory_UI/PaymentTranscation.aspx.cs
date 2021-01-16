@@ -271,23 +271,46 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             return false;
         }
 
-        decimal totalamount = 0;
+        
         for (int i = 0; i < orderGridView.Rows.Count; i++)
         {
+            decimal totalamount = 0;
+
             CheckBox cbReject = (CheckBox)orderGridView.Rows[i].FindControl("chkSelect");
             if (cbReject.Checked)
             {
                 TextBox payAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
-                totalamount += Convert.ToDecimal((payAmountTextBox.Text));
+                TextBox aitAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("aitTextBox");
+                TextBox discountAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("discountTextBox");
+                totalamount = totalamount + Convert.ToDecimal((payAmountTextBox.Text));
+
+                if (aitAmountTextBox.Text != "")
+                {
+                    totalamount = totalamount + Convert.ToDecimal((aitAmountTextBox.Text));
+                }
+
+                if (discountAmountTextBox.Text != "")
+                {
+                    totalamount = totalamount + Convert.ToDecimal((discountAmountTextBox.Text));
+                }
+
+                if (totalamount > Convert.ToDecimal((orderGridView.Rows[i].Cells[8].Text.Trim())))
+                {
+                    ShowMessageBox("Total Invoice Payment Amount Must Be Equel To Payment Amount !!");
+                    return false;
+                }
+
+                if (totalamount == 0)
+                {   payAmountTextBox.Focus();
+                    ShowMessageBox("Payment Amount must be greater then 0!!");
+                    return false;
+                }
+                
             }
 
         }
 
-        if (totalamount != Convert.ToDecimal((paymentAmountTextBox.Text)))
-        {
-            ShowMessageBox("Total Invoice Payment Amount Must Be Equel To Payment Amount");
-            return false;
-        }
+        
 
         for (int i = 0; i < orderGridView.Rows.Count; i++)
         {
@@ -349,13 +372,6 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         //}
 
 
-        if (Convert.ToDecimal(paymentAmountTextBox.Text.Trim()) == 0)
-        {
-            ShowMessageBox("Payment Amount must be greater then 0!!");
-            return false;
-        }
-       
-        
 
         return true;
     }
@@ -503,6 +519,9 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                             DropDownList ddlBank = (DropDownList)orderGridView.Rows[i].Cells[0].FindControl("ddlBank");
                             DropDownList ddlCash = (DropDownList)orderGridView.Rows[i].Cells[0].FindControl("ddlCash");
 
+                            TextBox aiTextBox = (TextBox)orderGridView.Rows[i].Cells[0].FindControl("aitTextBox");
+                            TextBox disTextBox = (TextBox)orderGridView.Rows[i].Cells[0].FindControl("discountTextBox");
+
                             if (ddlBank.SelectedValue != "")
                             {
                                 aCustPaymentDetail.BankAccId = Convert.ToInt32(ddlBank.SelectedValue);
@@ -514,6 +533,17 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                                 aCustPaymentDetail.CashAccId = Convert.ToInt32(ddlCash.SelectedValue);
                                 aCustPayment.PayType = "Cash";
                             }
+
+                            if (aiTextBox.Text != "")
+                            {
+                                aCustPaymentDetail.AIT = Convert.ToDecimal(aiTextBox.Text.Trim());
+                            }
+
+                            if (disTextBox.Text != "")
+                            {
+                                aCustPaymentDetail.Discount = Convert.ToDecimal(disTextBox.Text.Trim());
+                            }
+
 
                         };
 

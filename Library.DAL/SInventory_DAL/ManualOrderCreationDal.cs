@@ -366,5 +366,11 @@ namespace Library.DAL.SInventory_DAL
             string query = @"SELECT IsVatApplicable FROM tblCustMaster WHERE IsActive = 1 AND CustomerMasterId = " + customerId;
             return aInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public DataTable GetOrderCode(int masterId)
+        {
+            string query = @"SELECT OrderCode FROM dbo.tblOrder WHERE OrderId = " + masterId;
+            return aInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
     }
 }

@@ -74,6 +74,7 @@ public partial class SInventory_UI_UserEdit : System.Web.UI.Page
                 UserStatus = userStatusTextBox.Text,
                 Email = emailTextBox.Text,
                 ContactNo = contactTextBox.Text,
+                IsHead = isHeadCheckBox.Checked
                 
             };
             UserBLL aBll = new UserBLL();
@@ -99,6 +100,7 @@ public partial class SInventory_UI_UserEdit : System.Web.UI.Page
     private void UserLoad(string userId)
     {
         UserInformation aInformation = new UserInformation();
+
         aInformation = aUserBll.UserEditLoad(userId);
         userNameTextBox.Text = aInformation.UserName;
         userTypeTextBox.Text = aInformation.UserType;
@@ -107,6 +109,15 @@ public partial class SInventory_UI_UserEdit : System.Web.UI.Page
         userStatusTextBox.Text = aInformation.UserStatus;
         emailTextBox.Text = aInformation.Email;
         contactTextBox.Text = aInformation.ContactNo;
+
+        if (aInformation.IsHead)
+        {
+            isHeadCheckBox.Checked = true;
+        }
+        else
+        {
+            isHeadCheckBox.Checked = false;
+        }
   
     }
 

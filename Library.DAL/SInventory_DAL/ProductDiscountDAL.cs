@@ -31,18 +31,39 @@ namespace Library.DAL.SInventory_DAL
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
 
-        public DataTable ProductDiscountViewDal()
+        public bool SaveQuotedPrice(QuotedPriceSetup aProductDiscount)
+        {
+            string insertQuery = @"insert into tblProductQuotedPrice (QuotedPriceId,ProductId,CustomerMasterId,QuotedPrice,Status,ActiveDate,InactiveDate,IsActive,EntryBy,EntryDate,ActionStatus) 
+            values (" + aProductDiscount.QuotedPriceId + ",'" + aProductDiscount.ProductId + "','" + aProductDiscount.CustomerMasterId + "','" + aProductDiscount.QuotedPrice + "'," +
+                                 " '" + aProductDiscount.Status + "','" + aProductDiscount.ActiveDate + "','" + aProductDiscount.InactiveDate + "','True','" + aProductDiscount.EntryBy + "','" + aProductDiscount.EntryDate + "','" + aProductDiscount.ActionStatus + "')";
+            return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
+        }
+
+        public DataTable ProductDiscountViewDal(string pram)
         {
 
             string query = @"SELECT ProDis.DiscountId,cust.CustomerCode,com.CompanyName,cust.CustomerName, tblProduct.ProductName,ProDis.DiscountPercentage, 
             ProDis.ActiveDate, ProDis.InactiveDate, ProDis.ActionStatus  from tblProductDiscount As ProDis
             LEFT JOIN dbo.tblCustMaster As cust ON ProDis.CustomerMasterId= cust.CustomerMasterId
             LEFT JOIN dbo.tblProduct ON ProDis.ProductId=dbo.tblProduct.ProductId
-			left join tblCompanyInfo As com On  tblProduct.CompanyId = com.CompanyId WHERE ProDis.IsActive='1' AND ProDis.ActionStatus='Accepted'";
+			left join tblCompanyInfo As com On  tblProduct.CompanyId = com.CompanyId WHERE ProDis.IsActive='1' AND ProDis.ActionStatus='Accepted'" + pram;
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
               
        }
+
+        public DataTable ProductQuotedprice()
+        {
+
+            string query = @"SELECT ProDis.QuotedPriceId,cust.CustomerCode,com.CompanyName,cust.CustomerName, tblProduct.ProductName,ProDis.QuotedPrice, 
+            ProDis.ActiveDate, ProDis.InactiveDate, ProDis.ActionStatus  from tblProductQuotedPrice As ProDis
+            LEFT JOIN dbo.tblCustMaster As cust ON ProDis.CustomerMasterId= cust.CustomerMasterId
+            LEFT JOIN dbo.tblProduct ON ProDis.ProductId=dbo.tblProduct.ProductId
+			left join tblCompanyInfo As com On  tblProduct.CompanyId = com.CompanyId WHERE ProDis.IsActive='1' AND ProDis.ActionStatus='Accepted'";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+
+        }
         public bool DeleteProductdiscountDal(string Id)
         {
 
@@ -50,6 +71,20 @@ namespace Library.DAL.SInventory_DAL
             aSqlParameterlist.Add(new SqlParameter("@DiscountId", Id));
 
             string query = @"DELETE FROM tblProductDiscount WHERE DiscountId=@DiscountId";
+            return aCommonInternalDal.UpdateDataByUpdateCommand(query, aSqlParameterlist, "SSIDB");
+            
+            //List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+            //aSqlParameterlist.Add(new SqlParameter("@DiscountId", Id));
+            //return aCommonInternalDal.DeleteAction("sp_DEL_ProductDiscount", aSqlParameterlist);
+        }
+
+        public bool DeleteProductQuotedprice(string Id)
+        {
+
+            List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+            aSqlParameterlist.Add(new SqlParameter("@DiscountId", Id));
+
+            string query = @"UPDATE tblProductQuotedPrice SET ActionStatus = 'Inactive', IsActive = 0 WHERE QuotedPriceId = @DiscountId";
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, aSqlParameterlist, "SSIDB");
             
             //List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
@@ -89,6 +124,18 @@ namespace Library.DAL.SInventory_DAL
             aSqlParameterlist.Add(new SqlParameter("@ApprovedDate", aProductDiscount.ApprovedDate));
 
             string query = @"UPDATE tblProductDiscount SET ActionStatus=@ActionStatus,ApprovedBy=@ApprovedBy,ApprovedDate=@ApprovedDate WHERE DiscountId=@DiscountId";
+            return aCommonInternalDal.UpdateDataByUpdateCommand(query, aSqlParameterlist, "SSIDB");
+        }
+
+        public bool QuotedPriceApprovalDAL(QuotedPriceSetup aProductDiscount)
+        {
+            List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+            aSqlParameterlist.Add(new SqlParameter("@DiscountId", aProductDiscount.QuotedPriceId));
+            aSqlParameterlist.Add(new SqlParameter("@ActionStatus", aProductDiscount.ActionStatus));
+            aSqlParameterlist.Add(new SqlParameter("@ApprovedBy", aProductDiscount.ApprovedBy));
+            aSqlParameterlist.Add(new SqlParameter("@ApprovedDate", aProductDiscount.ApprovedDate));
+
+            string query = @"UPDATE tblProductQuotedPrice SET ActionStatus=@ActionStatus,ApprovedBy=@ApprovedBy,ApprovedDate=@ApprovedDate WHERE QuotedPriceId=@DiscountId";
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, aSqlParameterlist, "SSIDB");
         }
         public DataTable LoadProductDiscount(string actionstatus)
@@ -131,6 +178,15 @@ namespace Library.DAL.SInventory_DAL
             LEFT JOIN dbo.tblProduct ON tblProduct.ProductId = tblProductDiscount.ProductId
             LEFT JOIN dbo.tblCustMaster ON dbo.tblCustMaster.CustomerMasterId=dbo.tblProductDiscount.CustomerMasterId
             WHERE ActionStatus='"+actionstatus+"'";
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetProductQuotedPriceApproval(string actionstatus)
+        {
+            string query = @"SELECT * FROM dbo.tblProductQuotedPrice
+            LEFT JOIN dbo.tblProduct ON tblProduct.ProductId = tblProductQuotedPrice.ProductId
+            LEFT JOIN dbo.tblCustMaster ON dbo.tblCustMaster.CustomerMasterId=dbo.tblProductQuotedPrice.CustomerMasterId
+            WHERE ActionStatus='" + actionstatus + "'";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
         public void LoadCustomerMaster(DropDownList ddl,string marketId)
@@ -236,6 +292,16 @@ namespace Library.DAL.SInventory_DAL
             string query = @"SELECT * FROM dbo.tblProductDiscount
             LEFT JOIN dbo.tblProduct ON tblProduct.ProductId = tblProductDiscount.ProductId
 			LEFT JOIN tblCustMaster ON tblProductDiscount.CustomerMasterId = tblCustMaster.CustomerMasterId
+            WHERE ProductCode='" + productCode + "' AND CustomerCode ='" + customerId + "' AND ActionStatus IN ('Accepted','Posted')";
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+
+        public DataTable CheckQuotedPricetExistOrNot(int customerId, string productCode)
+        {
+            string query = @"SELECT * FROM dbo.tblProductQuotedPrice
+            LEFT JOIN dbo.tblProduct ON tblProduct.ProductId = tblProductQuotedPrice.ProductId
+			LEFT JOIN tblCustMaster ON tblProductQuotedPrice.CustomerMasterId = tblCustMaster.CustomerMasterId
             WHERE ProductCode='" + productCode + "' AND CustomerCode ='" + customerId + "' AND ActionStatus IN ('Accepted','Posted')";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

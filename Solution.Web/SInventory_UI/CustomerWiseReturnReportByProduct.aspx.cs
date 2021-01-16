@@ -77,6 +77,11 @@ public partial class SInventory_UI_CustomerWiseReturnReportByProduct : System.We
             ShowMessageBox("Please Select  To date !!");
             return false;
         }
+        if (DateWiseRadioButton.SelectedValue == "")
+        {
+            ShowMessageBox("Please Select Date Wise !!");
+            return false;
+        }
 
         return true;
     }
@@ -92,6 +97,10 @@ public partial class SInventory_UI_CustomerWiseReturnReportByProduct : System.We
         Session["ToDate"] = "";
         Session["ToDate"] = toDateTextBox.Text.Trim();
 
+        Session["DateWise"] = "";
+        Session["DateWise"] = DateWiseRadioButton.SelectedItem.Text;
+
+  
         const string url = "../SInventory_RPTVIEW/CustomerWiseReturnReportByProductViewer.aspx";
         const string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
         ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
@@ -101,10 +110,22 @@ public partial class SInventory_UI_CustomerWiseReturnReportByProduct : System.We
     {
         string parameter = "";
 
-        if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
+        if (DateWiseRadioButton.SelectedValue == "ReturnDateWise")
         {
-            parameter = parameter + " WHERE INV.DeliveryInvoiceStatus IN ('Reject','Partial') AND INV.InvoiceDate BETWEEN '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "' AND ' " + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
+            if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
+            {
+                parameter = parameter + " WHERE INV.DeliveryInvoiceStatus IN ('Reject','Partial') AND INV.UpdateDate BETWEEN '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "' AND ' " + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
+            }
         }
+        else
+        {
+            if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
+            {
+                parameter = parameter + " WHERE INV.DeliveryInvoiceStatus IN ('Reject','Partial') AND INV.InvoiceDate BETWEEN '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "' AND ' " + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
+            }
+        }
+
+      
 
         if (companyNameDropDownList.SelectedValue != "")
         {

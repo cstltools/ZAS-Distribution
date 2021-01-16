@@ -170,5 +170,10 @@ namespace Library.BLL.SInventory_BLL
         {
             return aProductUnitPriceDAL.LoadUnitPriceViewInfo(parameter);
         }
+
+        public void CreateProductGl(int productId)
+        {
+            aProductUnitPriceDAL.CreateProductGl(productId);
+        }
     }
 }

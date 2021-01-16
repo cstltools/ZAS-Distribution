@@ -31,6 +31,7 @@ public partial class HRM_UI_TDLUser : System.Web.UI.Page
         contactNoTextBox.Text = string.Empty;
         comUnitDropDownList.SelectedValue = string.Empty;
         userTypeDropDownList.SelectedValue = string.Empty;
+        isHeadCheckBox.Checked = false;
     }
 
     protected void showMessageBox(string message)
@@ -80,7 +81,8 @@ public partial class HRM_UI_TDLUser : System.Web.UI.Page
                 LoginName = loginUserNameTextBox.Text,
                 Password = userPasswordTextBox.Text,
                 UserStatus = userStatusNameDropDownList.SelectedItem.Text,
-                Email = emailNameTextBox.Text
+                Email = emailNameTextBox.Text,
+                IsHead = isHeadCheckBox.Checked
                 
 
             };

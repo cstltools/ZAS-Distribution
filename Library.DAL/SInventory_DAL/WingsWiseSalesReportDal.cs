@@ -132,7 +132,7 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable LoadWingsCollectionInfo(string parameter,string fromDate,string toDate)
         {
-            string query = @"SELECT CI.CompanyName,CUNT.ComUnitCode,CUNT.ComUnitName,ISNULL(SUM(CPAYD.PaymentAmount),0) AS Collection,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM dbo.tblCustPayDetail AS CPAYD"
+            string query = @"SELECT CI.CompanyName,CUNT.ComUnitCode,CUNT.ComUnitName,ISNULL(SUM(CPAYD.PaymentAmount),0) AS Collection,ISNULL(SUM(CPAYD.AIT),0) AS AIT,ISNULL(SUM(CPAYD.Discount),0) AS Discount,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM dbo.tblCustPayDetail AS CPAYD"
                              +" INNER JOIN dbo.tblCustomerPay AS CPAY ON CPAY.CustPayId = CPAYD.CustPayId"
                              +" LEFT JOIN dbo.tblInvoice AS INV ON CPAYD.InvoiceId = INV.InvoiceId"
                              +" LEFT JOIN dbo.tblCompanyUnit AS CUNT ON INV.ComUnitId = CUNT.ComUnitId"
@@ -210,13 +210,14 @@ namespace Library.DAL.SInventory_DAL
             aSqlParameters.Add(new SqlParameter("@EntryBy", aListMasterDao.EntryBy));
             aSqlParameters.Add(new SqlParameter("@EntryDate", aListMasterDao.EntryDate));
             aSqlParameters.Add(new SqlParameter("@StockOutDate", aListMasterDao.StockOutDate));
+            aSqlParameters.Add(new SqlParameter("@StockOutType", aListMasterDao.StockOutType));
 
             return aCommonInternalDAL.UpdateAction("sp_I_DCStockOutInfo", aSqlParameters);
         }
 
         public DataTable GetDCStockOutInfo(string parameter)
         {
-            string query = @"SELECT DISTINCT StockOutCode,StockOutDate,[EntryBy],[EntryDate] FROM tblDirectStockOut WHERE StockOutCode IS NOT NULL " + parameter ;
+            string query = @"SELECT DISTINCT StockOutCode,StockOutDate,[EntryBy],[EntryDate],StockOutReason,StockOutType FROM tblDirectStockOut WHERE StockOutCode IS NOT NULL " + parameter;
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }
 
@@ -246,6 +247,14 @@ namespace Library.DAL.SInventory_DAL
 		+ " ISNULL(SUM((((((INVD.UnitPrice*INVD.Quantity) - INVD.DelivarySpecialAmount))/INVD.Quantity)*(INVD.Quantity-INVD.DeliveryQuantity)) + ((INVD.DelivarySpecialAmount/INVD.Quantity)*(INVD.Quantity-INVD.DeliveryQuantity))),0) > 0 OR"
 		+ " ISNULL(SUM((INVD.DelivarySpecialAmount / INVD.Quantity) * INVD.DeliveryQuantity),0) > 0";
 
+            return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
+        }
+
+
+        public DataTable GetUserCompanyById(string parameter)
+        {
+            string query = @"SELECT DISTINCT TOP 1 CompanyId FROM dbo.tblUserCompanyUnit AS UT
+	LEFT JOIN tblCompanyUnit AS UNT ON UT.CompanyUnitId = UNT.ComUnitId WHERE UserId =" + parameter;
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }
     }

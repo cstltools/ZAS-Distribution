@@ -55,6 +55,7 @@ public partial class SInventory_UI_CustMasterEntry : System.Web.UI.Page
 
         aMasterInfoBll.LoadCategoryName(categoryNameDropDownList);
         aMasterInfoBll.GetLedgerHead(ddlLedgerHead);
+        aMasterInfoBll.LoadAIT(ddlAIT);
     }
 
     private void Clear()
@@ -74,6 +75,8 @@ public partial class SInventory_UI_CustMasterEntry : System.Web.UI.Page
         areaDropDownList.Items.Clear();
         territoryDropDownList.Items.Clear();
         marketDropDownList.Items.Clear();
+
+        ddlAIT.SelectedValue = "";
 
         SetNA();
 
@@ -210,21 +213,18 @@ public partial class SInventory_UI_CustMasterEntry : System.Web.UI.Page
                 CategoryId = Convert.ToInt32(categoryNameDropDownList.SelectedValue),
                 Address = addressTextBox.Text,
                 Addrees2 = addressTextBox2.Text,
-
                 CellNo = contactTextBox.Text,
                 City = cityTextBox.Text,
-
                 ConPerson = contactPersonTextBox.Text,
                 ShippingCond = shippingConditionTextBox.Text,
-
                 MarketId = Convert.ToInt32(marketDropDownList.SelectedValue),
-
                 TermOfPayment = paymentTypeDropDownList.SelectedValue,
                 FixedCustomer = fixedCustomer,
                 CreateBy = Session["LoginName"].ToString(),
                 CreateDate = DateTime.Now,
                 IsActive = true,
-                IsVatApplicable = isVatApplicable.Checked
+                IsVatApplicable = isVatApplicable.Checked,
+                AITGLId = ddlAIT.SelectedValue != "" ? Convert.ToInt32(ddlAIT.SelectedValue) : 0
 
             };
 

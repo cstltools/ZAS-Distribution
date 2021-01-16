@@ -37,6 +37,7 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
             customerTextBox.Text = aTable.Rows[0].Field<String>("CustomerName").ToString(CultureInfo.InvariantCulture);
             customeridHiddenField.Value = aTable.Rows[0].Field<int>("CustomerMasterId").ToString(CultureInfo.InvariantCulture);
             limitAmntTextBox.Text = aTable.Rows[0].Field<Decimal>("LimitAmount").ToString(CultureInfo.InvariantCulture);
+            limitDaysTextBox.Text = aTable.Rows[0].Field<Int32>("DayLimit").ToString(CultureInfo.InvariantCulture);
             
             if (!string.IsNullOrEmpty(aTable.Rows[0]["StartDate"].ToString()))
             {
@@ -60,6 +61,7 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
         companyDropDownList.SelectedIndex = 0;
         limitAmntTextBox.Text = string.Empty;
         perdayLimitTextBox.Text = string.Empty;
+        limitDaysTextBox.Text = string.Empty;
         fromDateTextBox.Text = "";
         toDateTextBox.Text = "";
         Button1.Text = "Save";
@@ -88,21 +90,27 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
 
         if (limitAmntTextBox.Text == string.Empty)
         {
-            ShowMessageBox("Please Customer Credit Limit");
+            ShowMessageBox("Please select Customer Credit Limit");
             return false;
         }
 
-        if (fromDateTextBox.Text == "")
+        if (limitDaysTextBox.Text == string.Empty)
         {
-            ShowMessageBox("Please start date");
+            ShowMessageBox("Please select Customer Day Limit");
             return false;
         }
 
-        if (toDateTextBox.Text == "")
-        {
-            ShowMessageBox("Please to date");
-            return false;
-        }
+        //if (fromDateTextBox.Text == "")
+        //{
+        //    ShowMessageBox("Please start date");
+        //    return false;
+        //}
+
+        //if (toDateTextBox.Text == "")
+        //{
+        //    ShowMessageBox("Please to date");
+        //    return false;
+        //}
 
         //if (perdayLimitTextBox.Text == string.Empty)
         //{
@@ -132,13 +140,14 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
                 {
                     CompanyId = Convert.ToInt32(companyDropDownList.SelectedValue),
                     CustomerMasterId = Convert.ToInt32(customeridHiddenField.Value),
-                    LimitAmount = Convert.ToDecimal(limitAmntTextBox.Text),
-                    DayLimit = 0,
+                    LimitAmount = Convert.ToDecimal(limitAmntTextBox.Text.Trim()),
+                    DayLimit = Convert.ToInt32(limitDaysTextBox.Text.Trim()),
                     EntryBy = Session["LoginName"].ToString(),
                     EntryDate = DateTime.Now,
                     IsActive = true,
-                    StartDate = Convert.ToDateTime(fromDateTextBox.Text),
-                    EndDate = Convert.ToDateTime(toDateTextBox.Text)
+
+                    //StartDate = Convert.ToDateTime(fromDateTextBox.Text),
+                    //EndDate = Convert.ToDateTime(toDateTextBox.Text)
 
                 };
                 bool status = aCreditLimitDal.SaveCreditLimit(aCreditLimitDao);
@@ -160,12 +169,12 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
                     CompanyId = Convert.ToInt32(companyDropDownList.SelectedValue),
                     CustomerMasterId = Convert.ToInt32(customeridHiddenField.Value),
                     LimitAmount = Convert.ToDecimal(limitAmntTextBox.Text),
-                    DayLimit = 0,
+                    DayLimit = Convert.ToInt32(limitDaysTextBox.Text.Trim()),
                     UpdateBy = Session["LoginName"].ToString(),
                     UpdateDate = DateTime.Now,
                     IsActive = true,
-                    StartDate = Convert.ToDateTime(fromDateTextBox.Text),
-                    EndDate = Convert.ToDateTime(toDateTextBox.Text)
+                    //StartDate = Convert.ToDateTime(fromDateTextBox.Text),
+                    //EndDate = Convert.ToDateTime(toDateTextBox.Text)
 
                 };
                 bool status = aCreditLimitDal.UpdateCreditLimit(aCreditLimitDao);

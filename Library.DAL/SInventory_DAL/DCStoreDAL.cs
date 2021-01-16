@@ -93,9 +93,9 @@ namespace Library.DAL.SInventory_DAL
             DataTable aDataTable = new DataTable();
 
             string query = @"SELECT * FROM tblProduct AS PD 
-                            INNER JOIN tblUnitPrice AS UP ON PD.ProductId = UP.ProductId
+                           INNER JOIN tblUnitPrice AS UP ON PD.ProductId = UP.ProductId
                            WHERE  UP.ActionStatus = 'Accepted' AND UP.IsActive = 'True' AND PD.ProductCode = '" + productCode + "' AND PD.CompanyId = '" + companyId + "'";
-            aDataTable= aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+            aDataTable = aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
             return aDataTable;
         }
         public DataTable LoadProductCode(string productId)
@@ -110,6 +110,17 @@ namespace Library.DAL.SInventory_DAL
             string updateQuery = @"UPDATE tblCurrentStock SET Quantity='" + Quantity + "' WHERE ProductCode='" + stockId.Trim() + "' ";
             aCommonInternalDal.UpdateDataByUpdateCommand(updateQuery, "SSIDB");
         }
-        
+
+        public DataTable LoadProductCode(string productCode, string companyId, string customerId)
+        {
+            DataTable aDataTable = new DataTable();
+
+            string query = @"SELECT CASE WHEN QP.QuotedPrice IS NOT NULL THEN QP.QuotedPrice ELSE UnitPrice END UnitPrice,* FROM tblProduct AS PD 
+                             INNER JOIN tblUnitPrice AS UP ON PD.ProductId = UP.ProductId
+                             LEFT JOIN (SELECT ProductId,QuotedPrice FROM tblProductQuotedPrice AS Q WHERE '" + DateTime.Today + "' <= Q.InactiveDate AND Q.IsActive = 1 AND ActionStatus = 'Accepted' AND CustomerMasterId = " + customerId + ") AS QP ON PD.ProductId = QP.ProductId WHERE  UP.ActionStatus = 'Accepted' AND UP.IsActive = 'True' AND PD.ProductCode = '" + productCode + "' AND PD.CompanyId = '" + companyId + "'";
+
+            aDataTable = aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+            return aDataTable;
+        }
     }
 }

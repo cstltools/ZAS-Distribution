@@ -15,6 +15,8 @@ namespace Library.DAO.SInventory_Entities
         public int BankAccId { get; set; }
         public int CashAccId { get; set; }
 
+        public decimal AIT { get; set; }
+        public decimal Discount { get; set; }
         public string Remarks { get; set; }
     }
 }

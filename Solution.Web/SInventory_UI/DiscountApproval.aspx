@@ -112,7 +112,7 @@
                     </tr>
                     <tr>
                         <td width="13%" class="TDLeft" colspan="6">
-                            <div id="gridContainer1" style="height: auto; overflow: auto; width: 97%; margin: 0 auto;">
+                            <div id="gridContainer1" style="height: auto; overflow: auto; width: 80%; margin: 0 auto;">
                                 <asp:GridView ID="loadGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview"
                                     DataKeyNames="DiscountId">
                                     <Columns>
@@ -120,9 +120,9 @@
                                         
                                         <asp:BoundField DataField="ProductName" HeaderText="Product Name" />
                                         <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
-                                        <asp:BoundField DataField="DiscountPercentage" HeaderText="Percent" />
-                                        <asp:BoundField DataField="ActiveDate" HeaderText="Active Date" DataFormatString="{0:dd-MMM-yyyy}" />
-                                        <asp:BoundField DataField="InActiveDate" HeaderText="InActive Date" DataFormatString="{0:dd-MMM-yyyy}" />
+                                        <asp:BoundField DataField="DiscountPercentage" HeaderText="Discount Percentage (%)" />
+                                        <%--<asp:BoundField DataField="ActiveDate" HeaderText="Active Date" DataFormatString="{0:dd-MMM-yyyy}" />
+                                        <asp:BoundField DataField="InActiveDate" HeaderText="InActive Date" DataFormatString="{0:dd-MMM-yyyy}" />--%>
                                         <asp:TemplateField>
                                             <HeaderTemplate>
                                                 <asp:CheckBox ID="chkSelectAll" runat="server" AutoPostBack="True" OnCheckedChanged="chkSelectAll_CheckedChanged" />

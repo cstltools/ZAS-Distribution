@@ -115,7 +115,7 @@ public partial class SInventory_UI_ReturnustomerByInvoiceApproval : System.Web.U
                                         aDcStockNew.ProductName = dtdcinfo.Rows[0]["ProductName"].ToString();
                                         aDcStockNew.PackSize = dtdcinfo.Rows[0]["PackSize"].ToString();
                                         aDcStockNew.BatchNo = dtdcinfo.Rows[0]["BatchNo"].ToString();
-                                        aDcStockNew.TotalQuantity = Convert.ToDecimal(dtdata.Rows[0]["TotalQty"].ToString());
+                                        aDcStockNew.TotalQuantity = Convert.ToDecimal(dtdata.Rows[j]["TotalQty"].ToString());
                                         aDcStockNew.ExpDate = Convert.ToDateTime(dtdcinfo.Rows[0]["ExpDate"].ToString());
                                         aDcStockNew.ReceiveDate =
                                             Convert.ToDateTime(dtdcinfo.Rows[0]["ReceiveDate"].ToString());
@@ -123,8 +123,8 @@ public partial class SInventory_UI_ReturnustomerByInvoiceApproval : System.Web.U
                                         aDcStockNew.ChalanDate =
                                             Convert.ToDateTime(dtdcinfo.Rows[0]["ChalanDate"].ToString());
                                         aDcStockNew.ComUnitId = Convert.ToInt32(dtdcinfo.Rows[0]["ComUnitId"].ToString());
-                                        aDcStockNew.StockQty = Convert.ToInt32(dtdata.Rows[0]["TotalQty"].ToString());
-                                        aDcStockNew.TotalQuantity = Convert.ToInt32(dtdata.Rows[0]["TotalQty"].ToString());
+                                        aDcStockNew.StockQty = Convert.ToInt32(dtdata.Rows[j]["ReturnQty"].ToString());
+                                        aDcStockNew.TotalQuantity = Convert.ToInt32(dtdata.Rows[j]["TotalQty"].ToString());
                                         aDcStockNew.DamageQty = 0;
                                         aDcStockNew.StockRcvDate =
                                             Convert.ToDateTime(dtdcinfo.Rows[0]["StockRcvDate"].ToString());

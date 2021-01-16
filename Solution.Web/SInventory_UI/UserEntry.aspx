@@ -205,6 +205,26 @@
                         <td class="TDRight" width="20%">
                             &nbsp;</td>
                     </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                        <td class="TDLeft" width="13%">
+                            <br />
+                            Is Head
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <br />
+                            <asp:CheckBox ID="isHeadCheckBox" AutoPostBack="True" runat="server" />
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                    </tr>
                    
                     <tr>
                         <td class="TDLeft" width="13%">

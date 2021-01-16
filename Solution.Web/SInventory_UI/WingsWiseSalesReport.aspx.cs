@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -29,30 +30,56 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
 
         if (groupDropDownList.SelectedValue != "")
         {
-            aReportDal.LoadCompanyInfo(companyNameDropDownList, groupDropDownList.SelectedValue);
+            aReportDal.LoadCompanyInfo(ddlCompany, groupDropDownList.SelectedValue);
         }
         else
         {
-            companyNameDropDownList.Items.Clear();
+            ddlCompany.Items.Clear();
             dcDropDownList.Items.Clear();
             
         }
 
+
+        if (Session["IsHead"].ToString() == "True")
+        {
+            DataTable aTable = aReportDal.GetUserCompanyById(Session["UserId"].ToString());
+
+            if (aTable.Rows.Count > 0)
+            {
+                ddlCompany.SelectedValue = aTable.Rows[0].Field<Int32>("CompanyId").ToString(CultureInfo.InvariantCulture);
+                ddlCompany_SelectedIndexChanged(null, null);
+            }
+        }
+
+        
+
+        //if (Session["UserType"].ToString() != "Admin")
+        //{
+        //    ddlCompany.Enabled = false;
+        //}
+        //else
+        //{
+        //    ddlCompany.Enabled = true;
+        //}
+
     }
 
-    protected void companyNameDropDownList_SelectedIndexChanged(object sender, EventArgs e)
+    protected void ddlCompany_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (companyNameDropDownList.SelectedValue != "")
+
+        string userType = Session["UserId"].ToString();
+
+        if (ddlCompany.SelectedValue != "")
         {
             if (Session["UserType"].ToString() != "")
             {
                 if (Session["UserType"].ToString() != "Admin")  
                 {
-                    aReportDal.LoadDcInfoByUser(dcDropDownList, companyNameDropDownList.SelectedValue, Session["UserId"].ToString());
+                    aReportDal.LoadDcInfoByUser(dcDropDownList, ddlCompany.SelectedValue, Session["UserId"].ToString());
                 }
                 else
                 {
-                    aReportDal.LoadDcInfo(dcDropDownList, companyNameDropDownList.SelectedValue);
+                    aReportDal.LoadDcInfo(dcDropDownList, ddlCompany.SelectedValue);
                 }
             }
             else
@@ -65,6 +92,9 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
         {
             dcDropDownList.Items.Clear();
         }
+
+
+
     }
 
 
@@ -85,14 +115,17 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
             return false;
         }
 
+
+        string var = Session["IsHead"].ToString();
+
         if (Session["UserType"].ToString() != "")
         {
-            if (Session["UserType"].ToString() != "Admin")
+            if (Session["UserType"].ToString() != "Admin" && Session["IsHead"].ToString() != "True")
             {
                 if (dcDropDownList.SelectedValue == "")
                 {
                     ShowMessageBox("Please Select DC !!");
-                    return false; 
+                    return false;
                 }
             }
         }
@@ -121,12 +154,14 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
         Session["UnitId"] = "";
         Session["FDate"] = "";
         Session["TDate"] = "";
+        Session["pram"] = "";
 
-        if (companyNameDropDownList.SelectedValue != "")
+        if (ddlCompany.SelectedValue != "")
         {
-            Session["ComId"] = companyNameDropDownList.SelectedValue;
+            Session["ComId"] = ddlCompany.SelectedValue;
         }
 
+       
         if (dcDropDownList.SelectedValue != "")
         {
             Session["UnitId"] = dcDropDownList.SelectedValue;
@@ -137,6 +172,8 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
             Session["FDate"] = fromDateTextBox.Text.Trim();
             Session["TDate"] = toDateTextBox.Text.Trim();
         }
+
+        
 
         //Session["PRAM"] = GetPrameterList();
 
@@ -174,7 +211,7 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
     private void Clear()
     {
         groupDropDownList.SelectedValue = "";
-        companyNameDropDownList.Items.Clear();
+        ddlCompany.Items.Clear();
         dcDropDownList.Items.Clear();
         
         fromDateTextBox.Text = "";

@@ -291,6 +291,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             private global::System.Data.DataColumn columnToDate;
             
+            private global::System.Data.DataColumn columnAIT;
+            
+            private global::System.Data.DataColumn columnDiscount;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public WingsCollectionDataTableDataTable() {
@@ -374,6 +378,22 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AITColumn {
+                get {
+                    return this.columnAIT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DiscountColumn {
+                get {
+                    return this.columnDiscount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -409,7 +429,7 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public WingsCollectionDataTableRow AddWingsCollectionDataTableRow(string CompanyName, string ComUnitCode, string ComUnitName, decimal Collection, string FromDate, string ToDate) {
+            public WingsCollectionDataTableRow AddWingsCollectionDataTableRow(string CompanyName, string ComUnitCode, string ComUnitName, decimal Collection, string FromDate, string ToDate, decimal AIT, decimal Discount) {
                 WingsCollectionDataTableRow rowWingsCollectionDataTableRow = ((WingsCollectionDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         CompanyName,
@@ -417,7 +437,9 @@ namespace Library.CrystalReports.SInventory_DS {
                         ComUnitName,
                         Collection,
                         FromDate,
-                        ToDate};
+                        ToDate,
+                        AIT,
+                        Discount};
                 rowWingsCollectionDataTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowWingsCollectionDataTableRow);
                 return rowWingsCollectionDataTableRow;
@@ -446,6 +468,8 @@ namespace Library.CrystalReports.SInventory_DS {
                 this.columnCollection = base.Columns["Collection"];
                 this.columnFromDate = base.Columns["FromDate"];
                 this.columnToDate = base.Columns["ToDate"];
+                this.columnAIT = base.Columns["AIT"];
+                this.columnDiscount = base.Columns["Discount"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -463,6 +487,10 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnFromDate);
                 this.columnToDate = new global::System.Data.DataColumn("ToDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnToDate);
+                this.columnAIT = new global::System.Data.DataColumn("AIT", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAIT);
+                this.columnDiscount = new global::System.Data.DataColumn("Discount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDiscount);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -704,6 +732,38 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal AIT {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableWingsCollectionDataTable.AITColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AIT\' in table \'WingsCollectionDataTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWingsCollectionDataTable.AITColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal Discount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableWingsCollectionDataTable.DiscountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Discount\' in table \'WingsCollectionDataTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableWingsCollectionDataTable.DiscountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCompanyNameNull() {
                 return this.IsNull(this.tableWingsCollectionDataTable.CompanyNameColumn);
             }
@@ -772,6 +832,30 @@ namespace Library.CrystalReports.SInventory_DS {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetToDateNull() {
                 this[this.tableWingsCollectionDataTable.ToDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAITNull() {
+                return this.IsNull(this.tableWingsCollectionDataTable.AITColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAITNull() {
+                this[this.tableWingsCollectionDataTable.AITColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDiscountNull() {
+                return this.IsNull(this.tableWingsCollectionDataTable.DiscountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDiscountNull() {
+                this[this.tableWingsCollectionDataTable.DiscountColumn] = global::System.Convert.DBNull;
             }
         }
         

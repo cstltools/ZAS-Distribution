@@ -195,6 +195,7 @@ namespace Library.DAL.SInventory_DAL
         public DataTable GetSpecialApproveOrder(string actionstatus)
         {
             DataTable aDataTable = new DataTable();
+
             string query = @"SELECT OrderCode,tblOrder.CustomerMasterId,SubmissionDate,CustomerName,MIOName,MarketName,TerritoryName,RegionName,AreaName,SUM(Quantity)QTY,tblOrder.OrderId,D.Due,CompanyName,tblCompanyUnit.ComUnitName FROM dbo.tblOrder
             LEFT JOIN dbo.tblOrderDetail ON tblOrderDetail.OrderId = tblOrder.OrderId
             LEFT JOIN dbo.tblRegion ON tblRegion.RegionId = tblOrder.RegionId
@@ -204,7 +205,7 @@ namespace Library.DAL.SInventory_DAL
             LEFT JOIN dbo.tblMIOInfo ON tblMIOInfo.MIOId = tblOrder.MIOId
 			LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblOrder.ComUnitId
 			LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
-            LEFT JOIN (SELECT CustomerMasterId,ISNULL(SUM(DeliveryTpGrandTotal-ISNULL(PaymentAmount,0)),0) AS Due FROM dbo.tblInvoice 
+            LEFT JOIN (SELECT CustomerMasterId,ISNULL(SUM(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0))),0) AS Due FROM dbo.tblInvoice 
             WHERE (DeliveryInvoiceStatus IS NOT NULL AND DeliveryInvoiceStatus != 'Reject') GROUP BY CustomerMasterId) AS D ON D.CustomerMasterId = tblOrder.CustomerMasterId
             WHERE (IsInvoice IS NULL OR IsInvoice=0) AND ActionStatus='" + actionstatus + "' AND IsSpecialApproval='1' GROUP BY OrderCode,SubmissionDate,CustomerName,MIOName,MarketName,TerritoryName,RegionName,AreaName,tblOrder.OrderId,D.Due,tblOrder.CustomerMasterId,CompanyName,tblCompanyUnit.ComUnitName";
             aDataTable = aCommonInternalDal.DataContainerDataTable(query, "SSIDB");

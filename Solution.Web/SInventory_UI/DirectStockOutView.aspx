@@ -219,18 +219,20 @@
                                 <asp:GridView ID="orderGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview"
                                     DataKeyNames="StockOutCode">
                                     <Columns>
-                                        <asp:BoundField DataField="StockOutCode" HeaderText="StockOutCode" />
+                                        <asp:BoundField DataField="StockOutCode" HeaderText="Stock-Out Code" />
+                                        <asp:BoundField DataField="StockOutType" HeaderText="Stock-Out Type" />
+                                        <asp:BoundField DataField="StockOutReason" HeaderText="Stock-Out Reason" />
                                         <asp:BoundField DataField="StockOutDate" HeaderText="Stock Out Date" DataFormatString="{0:dd-MMM-yyyy}" />
                                         <asp:BoundField DataField="EntryBy" HeaderText="Entry By" />
                                         <asp:BoundField DataField="EntryDate" HeaderText="Entry Date" DataFormatString="{0:dd-MMM-yyyy}" />
                                           
                                         
-                                         <%--<asp:TemplateField HeaderText="Action">
+                                         <asp:TemplateField HeaderText="Action">
                                             <ItemTemplate>
                                                 <asp:LinkButton ID="invoiceButton" runat="server" Text="Report &gt; &gt; &gt;" ForeColor="#DE751F"
                                                     OnClick="invoiceButton_Click" />
                                             </ItemTemplate>
-                                        </asp:TemplateField>--%>
+                                        </asp:TemplateField>
                                                                             
                                     </Columns>
                                 </asp:GridView>

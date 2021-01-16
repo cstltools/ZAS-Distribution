@@ -104,7 +104,7 @@
                         <td class="TDRight" width="20%">
                         </td>
                         <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
-                            Distribution Center:
+                            Distribution Center: 
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:DropDownList ID="dcDropDownList" Width="180px" runat="server" CssClass="DropDown">
@@ -115,6 +115,28 @@
                         <td class="TDRight" width="20%">
                         </td>
                     </tr>
+                    
+                     <tr>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            Stock out type: <span class="star-mark">* </span>
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:DropDownList ID="ddlStockOutType" Width="180px" runat="server" CssClass="DropDown">
+                                <asp:ListItem Value=""> Select from list </asp:ListItem>
+                                <asp:ListItem> Direct Stock out </asp:ListItem>
+                                <asp:ListItem> Supplier Return </asp:ListItem>
+                            </asp:DropDownList>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                    </tr>
+
                     <tr>
                         <td class="TDLeft" width="13%">
                             &nbsp;

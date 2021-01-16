@@ -23,40 +23,82 @@ public partial class SInventory_RPTVIEW_CustomerWiseReturnReportByProductViewer 
 
         
         var asmDataTable = new DataTable();
+        var Dt = new DataTable();
         string parameter = Session["PRAM"].ToString();
 
         string fromDate = Session["FromDate"].ToString();
         string toDate = Session["ToDate"].ToString();
 
-        asmDataTable = aReportDal.GetCustomerWiseReturnByProduct(parameter,fromDate,toDate).Copy();
+        string DateWise = Session["DateWise"].ToString();
 
-        var ds = new DataSet();
-
-        if (asmDataTable.Rows.Count > 0)
+        if (DateWise == "InvoiceDateWise")
         {
-            asmDataTable.TableName = "CustomerWiseReturnByProduct";
-            ds.Tables.Add(asmDataTable);
+            asmDataTable = aReportDal.GetCustomerWiseReturnByProduct(parameter, fromDate, toDate).Copy();
+            var ds = new DataSet();
+
+            if (asmDataTable.Rows.Count > 0)
+            {
+                asmDataTable.TableName = "CustomerWiseReturnByProduct";
+                ds.Tables.Add(asmDataTable);
 
 
-            rptdoc.Load(ReportPath("crpCustomerWiseReturnByProduct.rpt"));
-            rptdoc.SetDataSource(ds);
-            crvCustMasterRpt.ReportSource = rptdoc;
-            crvCustMasterRpt.DataBind();
-            
+                rptdoc.Load(ReportPath("crpCustomerWiseReturnByProduct.rpt"));
+                rptdoc.SetDataSource(ds);
+                crvCustMasterRpt.ReportSource = rptdoc;
+                crvCustMasterRpt.DataBind();
 
-            //if (reportType == "exl") 
-            //{
-            //    rptdoc.Load(ReportPath("ASMReportExcel.rpt"));
-            //    rptdoc.SetDataSource(ds);
-            //    crvCustMasterRpt.ReportSource = rptdoc;
-            //    crvCustMasterRpt.DataBind();
-            //    rptdoc.ExportToHttpResponse(ExportFormatType.ExcelRecord, Response, true, "ASM_Report");
-            //}
+
+                //if (reportType == "exl") 
+                //{
+                //    rptdoc.Load(ReportPath("ASMReportExcel.rpt"));
+                //    rptdoc.SetDataSource(ds);
+                //    crvCustMasterRpt.ReportSource = rptdoc;
+                //    crvCustMasterRpt.DataBind();
+                //    rptdoc.ExportToHttpResponse(ExportFormatType.ExcelRecord, Response, true, "ASM_Report");
+                //}
+            }
+            else
+            {
+                MessageLabel.Text = "No Data Found!!";
+            }
         }
         else
         {
-            MessageLabel.Text = "No Data Found!!";
+            asmDataTable = aReportDal.GetCustomerWiseReturnByProduct(parameter, fromDate, toDate).Copy();
+            var ds = new DataSet();
+            if (asmDataTable.Rows.Count > 0)
+            {
+                asmDataTable.TableName = "CustomerWiseReturnByProduct";
+                ds.Tables.Add(asmDataTable);
+
+
+                rptdoc.Load(ReportPath("crpCustomerWiseReturnByProduct.rpt"));
+                rptdoc.SetDataSource(ds);
+                crvCustMasterRpt.ReportSource = rptdoc;
+                crvCustMasterRpt.DataBind();
+
+
+                //if (reportType == "exl") 
+                //{
+                //    rptdoc.Load(ReportPath("ASMReportExcel.rpt"));
+                //    rptdoc.SetDataSource(ds);
+                //    crvCustMasterRpt.ReportSource = rptdoc;
+                //    crvCustMasterRpt.DataBind();
+                //    rptdoc.ExportToHttpResponse(ExportFormatType.ExcelRecord, Response, true, "ASM_Report");
+                //}
+            }
+            else
+            {
+                MessageLabel.Text = "No Data Found!!";
+            }
+               
         }
+
+      //  asmDataTable = aReportDal.GetCustomerWiseReturnByProduct(parameter,fromDate,toDate).Copy();
+
+      
+
+
     }
 
     private string ReportPath(string rptName)

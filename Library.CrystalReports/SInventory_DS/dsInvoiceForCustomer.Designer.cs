@@ -1270,6 +1270,8 @@ namespace Library.CrystalReports.SInventory_DS {
             
             private global::System.Data.DataColumn columnInvoiceId;
             
+            private global::System.Data.DataColumn columnGenericName;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public detailDataTableDataTable() {
@@ -1401,6 +1403,14 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn GenericNameColumn {
+                get {
+                    return this.columnGenericName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1436,7 +1446,7 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public detailDataTableRow AdddetailDataTableRow(string ProductCode, string Product, int BonusQuantity, decimal Quantity, decimal UnitPrice, decimal UnitVatAmount, decimal TotalPrice, decimal TotalPriceVatAmount, decimal DiscountPercentage, decimal DiscountAmount, decimal NetAmount, int InvoiceId) {
+            public detailDataTableRow AdddetailDataTableRow(string ProductCode, string Product, int BonusQuantity, decimal Quantity, decimal UnitPrice, decimal UnitVatAmount, decimal TotalPrice, decimal TotalPriceVatAmount, decimal DiscountPercentage, decimal DiscountAmount, decimal NetAmount, int InvoiceId, string GenericName) {
                 detailDataTableRow rowdetailDataTableRow = ((detailDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ProductCode,
@@ -1450,7 +1460,8 @@ namespace Library.CrystalReports.SInventory_DS {
                         DiscountPercentage,
                         DiscountAmount,
                         NetAmount,
-                        InvoiceId};
+                        InvoiceId,
+                        GenericName};
                 rowdetailDataTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdetailDataTableRow);
                 return rowdetailDataTableRow;
@@ -1485,6 +1496,7 @@ namespace Library.CrystalReports.SInventory_DS {
                 this.columnDiscountAmount = base.Columns["DiscountAmount"];
                 this.columnNetAmount = base.Columns["NetAmount"];
                 this.columnInvoiceId = base.Columns["InvoiceId"];
+                this.columnGenericName = base.Columns["GenericName"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1514,6 +1526,8 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnNetAmount);
                 this.columnInvoiceId = new global::System.Data.DataColumn("InvoiceId", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnInvoiceId);
+                this.columnGenericName = new global::System.Data.DataColumn("GenericName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnGenericName);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2690,6 +2704,22 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string GenericName {
+                get {
+                    try {
+                        return ((string)(this[this.tabledetailDataTable.GenericNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'GenericName\' in table \'detailDataTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledetailDataTable.GenericNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsProductCodeNull() {
                 return this.IsNull(this.tabledetailDataTable.ProductCodeColumn);
             }
@@ -2830,6 +2860,18 @@ namespace Library.CrystalReports.SInventory_DS {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetInvoiceIdNull() {
                 this[this.tabledetailDataTable.InvoiceIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsGenericNameNull() {
+                return this.IsNull(this.tabledetailDataTable.GenericNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetGenericNameNull() {
+                this[this.tabledetailDataTable.GenericNameColumn] = global::System.Convert.DBNull;
             }
         }
         

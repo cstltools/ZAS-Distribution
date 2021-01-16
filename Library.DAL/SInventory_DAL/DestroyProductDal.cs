@@ -98,7 +98,7 @@ namespace Library.DAL.SInventory_DAL
                            INNER JOIN dbo.tblUnitPrice U ON F.ProductCode = U.ProductCode
                            INNER JOIN dbo.tblProduct P ON F.ProductCode = P.ProductCode
                            INNER JOIN dbo.tblCompanyUnit AS IUNT ON IUNT.ComUnitId = F.ComUnitId
-                           WHERE StockQty > 0 AND U.IsActive = 1 " + pram + " ORDER BY F.ExpDate ";
+                           WHERE StockQty > 0 AND U.IsActive = 1 AND U.ActionStatus = 'Accepted' " + pram + " ORDER BY F.ExpDate ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

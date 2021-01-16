@@ -47,17 +47,24 @@ namespace Library.DAL.SInventory_DAL
         }
         public DataTable LoadOrderForOrderCreation(string parameter)
         {
-            string query = @"SELECT *,CASE WHEN tblOrder.IsSpecialApproval = 1 AND CR.CreditLimitId IS NULL AND tblCustMaster.TermOfPayment = 'Credit' 
-                             THEN 0 ELSE 1 END AS Permission FROM dbo.tblOrder
-                             INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblOrder.CustomerMasterId
-                             INNER JOIN dbo.tblMarket ON tblMarket.MarketId = tblOrder.MarketId
-                             LEFT JOIN dbo.tblMIOInfo ON tblMIOInfo.MIOId = tblOrder.MIOId
-                             INNER JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = dbo.tblOrder.ComUnitId
-                             INNER JOIN tblCompanyInfo AS CI ON CI.CompanyId = tblCompanyUnit.CompanyId
-                             LEFT JOIN (SELECT CustomerMasterId,CreditLimitId,CompanyId FROM tblCustomerCreditLimit 
-                             WHERE GetDate() BETWEEN StartDate AND EndDate AND ActionStatus IN ('Accepted')) AS CR 
-                             ON tblOrder.CustomerMasterId = CR.CustomerMasterId AND  CI.CompanyId = CR.CompanyId
-                             WHERE IsInvoice = 0 AND ActionStatus = 'Accepted' " + parameter+"";
+            string query = @"SELECT *,CASE WHEN ((ISNULL(D.DUE,0) > ISNULL(CR.LimitAmount,0)) OR (ISNULL(DATEDIFF(day, InvoiceDate,GETDATE()),0) > ISNULL(CR.DayLimit,0))) AND TermOfPayment = 'Credit'  THEN 0 ELSE 1 END AS Permission 
+                            ,ISNULL(DATEDIFF(day, InvoiceDate,GETDATE()),0) AS Ds, ISNULL(CR.DayLimit,0) AS D FROM tblOrder
+                            INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblOrder.CustomerMasterId
+                            INNER JOIN dbo.tblMarket ON tblMarket.MarketId = tblOrder.MarketId                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                            LEFT JOIN dbo.tblMIOInfo ON tblMIOInfo.MIOId = tblOrder.MIOId
+                            INNER JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = dbo.tblOrder.ComUnitId
+                            INNER JOIN tblCompanyInfo AS CI ON CI.CompanyId = tblCompanyUnit.CompanyId
+                            LEFT JOIN ( SELECT CompanyId,CreditLimitId,CustomerMasterId,LimitAmount,DayLimit FROM tblCustomerCreditLimit 
+                             WHERE ActionStatus = 'Accepted') AS CR ON tblCustMaster.CustomerMasterId = CR.CustomerMasterId AND CR.CompanyId =  CI.CompanyId 
+                            LEFT JOIN (SELECT  CI.CompanyId,CustomerMasterId,SUM(ISNULL(DeliveryTpGrandTotal,0) - (ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)))  AS DUE FROM tblInvoice 
+                            LEFT JOIN tblCompanyUnit AS UNT ON UNT.ComUnitId = tblInvoice.ComUnitId
+                            LEFT JOIN tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId
+                            WHERE DeliveryInvoiceStatus IN ('Full','Partial') GROUP BY CustomerMasterId,CI.CompanyId ) 
+                            AS D ON tblOrder.CustomerMasterId = D.CustomerMasterId AND D.CompanyId = CI.CompanyId
+                            LEFT JOIN (SELECT DISTINCT CustomerMasterId,MIN(InvoiceDate) AS InvoiceDate FROM tblInvoice
+                            WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND ISNULL(DeliveryTpGrandTotal,0) - (ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)) > 0
+                            GROUP BY CustomerMasterId ) AS DD ON tblOrder.CustomerMasterId = DD.CustomerMasterId
+                             WHERE IsInvoice = 0 AND ActionStatus = 'Accepted'" + parameter + "";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -361,11 +368,11 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetCustomerDueHistory(string customerMasterId)
         {
-            string query = @"SELECT VC.CustomerMasterId, CI.CompanyName,UNT.ComUnitName,InvoiceNo,InvoiceDate,SUM(DeliveryTpGrandTotal)- SUM(ISNULL(PaymentAmount,0)) AS DueAmount FROM tblInvoice AS INV 
+            string query = @"SELECT VC.CustomerMasterId, CI.CompanyName,UNT.ComUnitName,InvoiceNo,InvoiceDate,ISNULL(SUM(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0))),0) AS DueAmount FROM tblInvoice AS INV 
                             LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId 
                             LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId
                             LEFT JOIN dbo.View_CustomerMaster AS VC ON INV.CustomerMasterId = VC.CustomerMasterId
-                            WHERE INV.CustomerMasterId  = " + customerMasterId  + "GROUP BY CI.CompanyName,UNT.ComUnitName,InvoiceNo,InvoiceDate,VC.CustomerMasterId HAVING SUM(DeliveryTpGrandTotal)- SUM(ISNULL(PaymentAmount,0)) > 0 ";
+                            WHERE INV.CustomerMasterId  = " + customerMasterId + "GROUP BY CI.CompanyName,UNT.ComUnitName,InvoiceNo,InvoiceDate,VC.CustomerMasterId HAVING ISNULL(SUM(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0))),0) > 0 ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

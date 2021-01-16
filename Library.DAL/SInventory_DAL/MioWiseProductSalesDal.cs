@@ -66,7 +66,7 @@ namespace Library.DAL.SInventory_DAL
         {
 
             string query = @"SELECT CI.CompanyCode ,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,EmpName AS MIO,ARA.AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize,ISNULL(SUM(DeliveryTotalQuantity),0) AS Qty,
-                             SUM(INVD.DeliveryNetAmount) AS Value,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,ISNULL(TG.TargetQty,0) TargetQty,CASE WHEN TG.TargetQty IS NOT NULL THEN (ISNULL(SUM(DeliveryTotalQuantity),0) * 100) / TG.TargetQty ELSE 0 END  AS Achivment FROM dbo.tblInvoice AS INV "
+                             SUM(INVD.DeliveryNetAmount) AS Value,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,ISNULL(TG.TargetQty,0) TargetQty,CASE WHEN TG.TargetQty IS NOT NULL THEN (ISNULL(SUM(DeliveryTotalQuantity),0) * 100) / NULLIF(TG.TargetQty,0) ELSE 0 END  AS Achivment FROM dbo.tblInvoice AS INV "
                              + " LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId "
                              + " LEFT JOIN dbo.tblCustMaster AS CSTMR ON  INV.CustomerMasterId = CSTMR.CustomerMasterId"
                              + " LEFT JOIN dbo.tblMIOInfo ON dbo.tblMIOInfo.MIOId=INV.MiaId"
@@ -89,9 +89,9 @@ namespace Library.DAL.SInventory_DAL
         public DataTable GetMioWiseCustomerReturn(string parameter, string fromDate, string toDate)
         {
             string query = @"SELECT CI.CompanyName,UNT.ComUnitName AS Depot,CSTMR.CustomerCode,CSTMR.CustomerName,EGI.EmpMasterCode AS MIOCode,EGI.EmpName AS MIO,EGI.EmpName AS MIO,TTR.TerritoryCode,
-                          INV.InvoiceNo,INV.InvoiceDate,ISNULL(SUM(INVD.NetAmount),0) AS InvoiceValue,
-                          ISNULL(SUM(CASE WHEN INVD.DeliveryNetAmount < 0 THEN 0 ELSE INVD.DeliveryNetAmount END),0) AS SaleValue,
-                          ISNULL(SUM(INVD.NetAmount),0)-ISNULL(SUM(CASE WHEN INVD.DeliveryNetAmount < 0 THEN 0 ELSE INVD.DeliveryNetAmount END),0) 
+                          INV.InvoiceNo,INV.InvoiceDate,ISNULL(SUM(INVD.TotalQuantity),0) AS InvoiceValue,
+                          SUM(CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END) AS SaleValue,
+                          ISNULL(SUM(INVD.TotalPrice),0)-ISNULL(SUM(CASE WHEN INVD.DeliveryTotalPrice < 0 THEN 0 ELSE INVD.DeliveryTotalPrice END),0)  
                           AS ReturnValue,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM tblInvoice AS INV "
                           +" LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId"
                           +" LEFT JOIN dbo.tblMIOInfo AS MIO ON INV.MiaId = MIO.MIOId"

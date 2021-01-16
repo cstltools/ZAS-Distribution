@@ -96,18 +96,20 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetCustomerWiseReturnByProduct(string parameter,string fromDate,string toDate)
         {
-            string query = @"SELECT CI.CompanyName,CSTMR.CustomerCode,CSTMR.CustomerName,INVD.ProductCode,INVD.ProductName,INVD.PackSize,ISNULL(SUM(TotalQuantity - DeliveryTotalQuantity),0)AS Qty,
-                             SUM(ISNULL(INVD.NetAmount,0) - ISNULL(CASE WHEN INVD.DeliveryNetAmount < 0 THEN 0 ELSE INVD.DeliveryNetAmount END,0)) AS Value,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM dbo.tblInvoice AS INV" 
+            string query = @"SELECT OrderNo,CI.CompanyName,CSTMR.CustomerCode,CSTMR.CustomerName,INVD.ProductCode,INVD.ProductName,INVD.PackSize,ISNULL(SUM(TotalQuantity - DeliveryTotalQuantity),0)AS Qty,
+                             ISNULL(SUM(INVD.TotalPrice),0)-ISNULL(SUM(CASE WHEN INVD.DeliveryTotalPrice < 0 THEN 0 ELSE INVD.DeliveryTotalPrice END),0) AS Value,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM dbo.tblInvoice AS INV" 
                              +" LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId" 
                              +" LEFT JOIN dbo.tblCustMaster AS CSTMR ON  INV.CustomerMasterId = CSTMR.CustomerMasterId" 
                              +" LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId"
-                             + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId" 
-                            + parameter + " GROUP BY CI.CompanyName,CSTMR.CustomerCode,CSTMR.CustomerName,INVD.ProductCode,INVD.ProductName,INVD.PackSize "
+                             + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId"
+                            + parameter + " GROUP BY CI.CompanyName,CSTMR.CustomerCode,CSTMR.CustomerName,INVD.ProductCode,INVD.ProductName,INVD.PackSize,OrderNo "
                             + " HAVING SUM(ISNULL(INVD.NetAmount,0) - ISNULL(CASE WHEN INVD.DeliveryNetAmount < 0 THEN 0 ELSE INVD.DeliveryNetAmount END,0)) > 0";
 
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }
 
+
+     
         public void LoadCustomerInfoByUser(DropDownList ddl, string dcId, string companyId, string userId)
         {
             string query = @"SELECT DISTINCT CSTMR.CustomerMasterId,CSTMR.CustomerName FROM dbo.tblDcWiseAreaInfo AS DCA 

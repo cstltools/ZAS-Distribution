@@ -80,6 +80,7 @@ public partial class SInventory_UI_ProUnitPriceApprove : System.Web.UI.Page
                 {
 
                     CheckBox cb = (CheckBox)loadGridView.Rows[i].Cells[7].FindControl("chkSelect");
+
                     if (cb.Checked == true)
                     {
                         ProductUnitPrice aProductUnitPrice = new ProductUnitPrice();
@@ -94,6 +95,7 @@ public partial class SInventory_UI_ProUnitPriceApprove : System.Web.UI.Page
                         if (actionRadioButtonList.SelectedValue != null)
                         {
                             aUnitPriceBll.ApprovalUpdateDAL(aProductUnitPrice);
+                            aUnitPriceBll.CreateProductGl(Convert.ToInt32(loadGridView.DataKeys[i][1].ToString()));
                         }
 
                     }

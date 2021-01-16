@@ -34,6 +34,7 @@ public partial class SInventory_UI_CustMasterEdit : System.Web.UI.Page
         aMasterInfoBll.GetRegion(regionDropDownList);
 
         aMasterInfoBll.LoadCategoryName(categoryNameDropDownList);
+        aMasterInfoBll.LoadAIT(ddlAIT);
     }
 
     private void showMessageBox(string message)
@@ -156,7 +157,8 @@ public partial class SInventory_UI_CustMasterEdit : System.Web.UI.Page
                 FixedCustomer = fixedCustomer,
                 UpdateBy = Session["LoginName"].ToString(),
                 UpdateDate = DateTime.Now,
-                IsVatApplicable = isVatApplicable.Checked
+                IsVatApplicable = isVatApplicable.Checked,
+                AITGLId = ddlAIT.SelectedValue != "" ? Convert.ToInt32(ddlAIT.SelectedValue) : 0
             };
             //CustomerMasterBLL aCustomerMasterBLL = new CustomerMasterBLL();
 
@@ -176,6 +178,7 @@ public partial class SInventory_UI_CustMasterEdit : System.Web.UI.Page
                         }
                         else
                         {
+                            aMasterInfoBll.SaveCoaMasterInfo(aCustomerMaster.CustomerMasterId);
                             showMessageBox("Data Update Successfully!!! Please Reload");
                         }
                     }
@@ -220,6 +223,11 @@ public partial class SInventory_UI_CustMasterEdit : System.Web.UI.Page
              territoryDropDownList.SelectedValue = dt.Rows[0]["TerritoryId"].ToString();
              aMasterInfoBll.GetMarketNameByTerritoryId(marketDropDownList, territoryDropDownList.SelectedValue);
              marketDropDownList.SelectedValue = aCustomerMaster.MarketId.ToString();
+        }
+
+        if (aCustomerMaster.AITGLId != 0)
+        {
+            ddlAIT.SelectedValue = aCustomerMaster.AITGLId.ToString();
         }
 
         isVatApplicable.Checked = aCustomerMaster.IsVatApplicable;

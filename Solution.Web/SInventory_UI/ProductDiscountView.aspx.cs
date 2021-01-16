@@ -1,26 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Library.BLL.SInventory_BLL;
+using Library.DAL.SInventory_DAL;
 
 public partial class SInventory_UI_ProductDiscountView : System.Web.UI.Page
 {
     ProductDiscountBLL aProductDiscountBll = new ProductDiscountBLL();
+    FixedDiscountEntryDal aEntryDal = new FixedDiscountEntryDal();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
-            ProductdiscountLoad();
+            LoadDropdownList();
         }
+    }
+
+    private void LoadDropdownList()
+    {
+
+        aEntryDal.LoadGroupInfo(groupDropDownList);
+
+        groupDropDownList.SelectedValue = 1.ToString(CultureInfo.InvariantCulture);
+
+
+        if (groupDropDownList.SelectedValue != "")
+        {
+            aEntryDal.LoadCompanyInfo(companyNameDropDownList, groupDropDownList.SelectedValue);
+        }
+        else
+        {
+            companyNameDropDownList.Items.Clear();
+        }
+
+    }
+
+    protected void custCodeTextBox_TextChanged(object sender, EventArgs e)
+    {
+        if (custCodeTextBox.Text.Contains(':'))
+        {
+            custIdHiddenField.Value = "";
+            string[] data = custCodeTextBox.Text.Split(':');
+            custCodeTextBox.Text = data[0];
+            custIdHiddenField.Value = data[3];
+        }
+        else
+        {
+            if (custCodeTextBox.Text != "")
+            {
+                custIdHiddenField.Value = "";
+                DataTable aTable = aEntryDal.GetCustomerInfoByCode(custCodeTextBox.Text.Trim());
+
+                if (aTable.Rows.Count > 0)
+                {
+                    custIdHiddenField.Value =
+                        aTable.Rows[0].Field<int>("CustomerMasterId").ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    custIdHiddenField.Value = "";
+                    custCodeTextBox.Text = "";
+                }
+            }
+        }
+
     }
 
     private void ProductdiscountLoad()
     {
-        DataTable aDataTable = aProductDiscountBll.ProductDiscountView();
+        DataTable aDataTable = aProductDiscountBll.ProductDiscountView(GetPrameterList());
         loadGridView.DataSource = aDataTable;
         loadGridView.DataBind();
     }
@@ -72,5 +125,32 @@ public partial class SInventory_UI_ProductDiscountView : System.Web.UI.Page
     protected void gotoinvoiceButton_Click(object sender, EventArgs e)
     {
         throw new NotImplementedException();
+    }
+
+    private String GetPrameterList()
+    {
+        string parameter = "";
+
+        if (custIdHiddenField.Value != "")
+        {
+            parameter = parameter + " AND ProDis.CustomerMasterId = '" + custIdHiddenField.Value + "'";
+        }
+
+        if (companyNameDropDownList.SelectedValue != "")
+        {
+            parameter = parameter + " AND tblProduct.CompanyId = '" + companyNameDropDownList.SelectedValue + "'";
+        }
+
+        return parameter;
+    }
+
+    protected void submitButton_Click(object sender, EventArgs e)
+    {
+        ProductdiscountLoad();
+    }
+
+    protected void clearButton_OnClick(object sender, EventArgs e)
+    {
+        ProductdiscountLoad();
     }
 }

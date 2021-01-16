@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -10,6 +11,7 @@ using Library.DAL.SInventory_DAL;
 public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
 {
     WingsWiseSalesReportDal aReportDal = new WingsWiseSalesReportDal();
+    NationalSalesProductWiseDal aReportDal2 = new NationalSalesProductWiseDal();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -171,5 +173,24 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
         
         fromDateTextBox.Text = "";
         toDateTextBox.Text = "";
+    }
+
+    protected void gridButton_Click(object sender, EventArgs e)
+    {
+        if (Validation())
+        {
+            DataTable aTable = aReportDal2.GetSalesTrackingReport(GetPrameterList());
+
+            if (aTable.Rows.Count > 0)
+            {
+                batchGridView.DataSource = aTable;
+                batchGridView.DataBind();
+            }
+            else
+            {
+                batchGridView.DataSource = null;
+                batchGridView.DataBind();
+            }
+        }
     }
 }

@@ -1,6 +1,47 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master" AutoEventWireup="true" CodeFile="ProductDiscountView.aspx.cs" Inherits="SInventory_UI_ProductDiscountView" %>
+<%@ Register TagPrefix="ajaxToolkit" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.0.20820.28364, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <style type="text/css">
+        /*AutoComplete flyout */
+        .autocomplete_completionListElement
+        {
+            margin: 0px !important;
+            background-color: White;
+            color: windowtext;
+            border: buttonshadow;
+            border-width: 1px;
+            border-style: solid;
+            cursor: default;
+            overflow: auto;
+            font-family: Calibri;
+            font-size: 12px;
+            text-align: left;
+            list-style-type: none;
+            margin-left: 0px;
+            padding-left: 0px;
+            max-height: 350px;
+            width: 40% !important;
+        }
+        
+        /* AutoComplete highlighted item */
+        
+        .autocomplete_highlightedListItem
+        {
+            background-color: yellow;
+            color: black;
+            padding: 1px;
+        }
+        
+        /* AutoComplete item */
+        
+        .autocomplete_listItem
+        {
+            background-color: white;
+            color: blue;
+            padding: 0px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     
@@ -46,6 +87,132 @@
                         <td class="TDLeft" width="13%">&nbsp;</td>
                         <td class="TDRight" width="20%">&nbsp;</td>
                     </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            Group Name:
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:DropDownList ID="groupDropDownList" Width="180px" runat="server" CssClass="DropDown"
+                                Enabled="False" AutoPostBack="True">
+                            </asp:DropDownList>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            Company Name:
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:DropDownList ID="companyNameDropDownList" Width="180px" runat="server" CssClass="DropDown">
+                            </asp:DropDownList>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            Customer Code:
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:TextBox ID="custCodeTextBox" runat="server" CssClass="textbox" AutoPostBack="True"
+                                OnTextChanged="custCodeTextBox_TextChanged"></asp:TextBox>
+                            <ajaxToolkit:AutoCompleteExtender ID="customerTextBox_AutoCompleteExtender" runat="server"
+                                CompletionListCssClass="autocomplete_completionListElement" CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
+                                CompletionListItemCssClass="autocomplete_listItem" CompletionSetCount="10" DelimiterCharacters=""
+                                EnableCaching="true" Enabled="True" MinimumPrefixLength="1" ServiceMethod="GetCustomernew"
+                                ServicePath="SInventoryWebService.asmx" ShowOnlyCurrentWordInCompletionListItem="true"
+                                TargetControlID="custCodeTextBox" UseContextKey="True">
+                            </ajaxToolkit:AutoCompleteExtender>
+                            <asp:HiddenField ID="custIdHiddenField" runat="server" />
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td width="13%" class="TDLeft">
+                            &nbsp;
+                        </td>
+                        <td width="20%" class="TDRight">
+                            &nbsp;
+                        </td>
+                        <td width="13%" class="TDLeft">
+                            &nbsp;
+                        </td>
+                        <td width="20%" class="TDRight">
+                            <asp:Button ID="submitButton" runat="server" OnClick="submitButton_Click" Text="Search" />
+                            <asp:Button ID="clearButton" CssClass="clearButton" BackColor="#E8BC31" runat="server"
+                                OnClick="clearButton_OnClick" Text="Reload" />
+                        </td>
+                        <td width="13%" class="TDLeft">
+                            &nbsp;
+                        </td>
+                        <td width="20%" class="TDRight">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                    </tr>
                     <tr>
 
                         <td width="20%" class="TDRight" colspan="6">
@@ -59,8 +226,8 @@
                                         <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
                                         <asp:BoundField DataField="ProductName" HeaderText="Product Name" />
                                         <asp:BoundField DataField="DiscountPercentage" HeaderText="Discount(%)" />
-                                        <asp:BoundField DataField="ActiveDate" HeaderText="Active Date" DataFormatString="{0:dd-MMM-yyyy}" />
-                                        <asp:BoundField DataField="InactiveDate" HeaderText="Inactive Date"  DataFormatString="{0:dd-MMM-yyyy}"/>
+                                        <%--<asp:BoundField DataField="ActiveDate" HeaderText="Active Date" DataFormatString="{0:dd-MMM-yyyy}" />
+                                        <asp:BoundField DataField="InactiveDate" HeaderText="Inactive Date"  DataFormatString="{0:dd-MMM-yyyy}"/>--%>
                                         <asp:BoundField DataField="ActionStatus" HeaderText="Status" />
                                         <asp:TemplateField HeaderText="Edit" Visible="False">
                                             <ItemTemplate>

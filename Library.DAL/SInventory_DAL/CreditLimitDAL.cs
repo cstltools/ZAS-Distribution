@@ -25,13 +25,11 @@ namespace Library.DAL.SInventory_DAL
                                       IsActive ,
                                       EntryBy ,
                                       EntryDate,
-                                      StartDate,
-                                      EndDate,
                                       ActionStatus
                                     )
                             VALUES  ( '" + aCreditLimitDao.CompanyId+"' ,'"+aCreditLimitDao.CustomerMasterId+"' ,'"+aCreditLimitDao.LimitAmount+"', " +
                                  "   '" + aCreditLimitDao.DayLimit + "' , '" + aCreditLimitDao.IsActive + "' ,'" + aCreditLimitDao.EntryBy + "' ,'" + aCreditLimitDao.EntryDate 
-                                 + "' ,'" + aCreditLimitDao.StartDate + "' ,'" + aCreditLimitDao.EndDate + "','Posted')";
+                                 + "','Posted')";
 
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
@@ -74,7 +72,7 @@ namespace Library.DAL.SInventory_DAL
         public DataTable GetCustomerCreditInfo(string generateParam)
         {
             string query = @"SELECT CreditLimitId,CompanyName,CustomerCode,CustomerName,LimitAmount,StartDate,EndDate,ApprovedBy,tblCustomerCreditLimit.ApprovedDate,
-                             DATEDIFF(day, StartDate, EndDate) AS Validity,ActionStatus FROM dbo.tblCustomerCreditLimit
+                             ISNULL(DayLimit,0) AS Validity,ActionStatus FROM dbo.tblCustomerCreditLimit
                              INNER JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCustomerCreditLimit.CompanyId
                              INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblCustomerCreditLimit.CustomerMasterId
                              WHERE CreditLimitId IS NOT NULL " + generateParam + " ORDER BY CreditLimitId DESC";
@@ -84,7 +82,7 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetCustomerCreditInfoById(string creditId)
         {
-            string query = @"SELECT * FROM dbo.tblCustomerCreditLimit
+            string query = @"SELECT ISNULL(DayLimit,0) AS DayLimit,* FROM dbo.tblCustomerCreditLimit
                              INNER JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCustomerCreditLimit.CompanyId
                              INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblCustomerCreditLimit.CustomerMasterId
                              WHERE CreditLimitId = " + creditId;
@@ -95,7 +93,7 @@ namespace Library.DAL.SInventory_DAL
         public bool UpdateCreditLimit(CreditLimitDAO aCreditLimitDao)
         {
             string query = @"UPDATE tblCustomerCreditLimit SET CompanyId='" + aCreditLimitDao.CompanyId + "',CustomerMasterId='" + aCreditLimitDao.CustomerMasterId
-                + "',LimitAmount = '" + aCreditLimitDao.LimitAmount + "',StartDate='" + aCreditLimitDao.StartDate + "',EndDate='" + aCreditLimitDao.EndDate
+                + "',LimitAmount = '" + aCreditLimitDao.LimitAmount + "',DayLimit='" + aCreditLimitDao.DayLimit 
                 + "',UpdateBy = '" + aCreditLimitDao.UpdateBy + "',UpdateDate = '" + aCreditLimitDao.UpdateDate + "',ActionStatus = 'Posted' WHERE CreditLimitId = " + aCreditLimitDao.CreditLimitId + "";
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
         }

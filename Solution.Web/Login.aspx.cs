@@ -29,6 +29,7 @@ public partial class Login : System.Web.UI.Page
                 if (aTableLogin.Rows.Count > 0)
                 {
                     Session["UserId"] = aTableLogin.Rows[0]["UserId"].ToString().Trim();
+                    Session["IsHead"] = aTableLogin.Rows[0]["IsHead"].ToString().Trim();
                     Session["LoginName"] = aTableLogin.Rows[0]["LoginName"].ToString().Trim();
                     Session["UserType"] = aTableLogin.Rows[0]["UserType"].ToString().Trim();
                     Session["CentralWareHouse"] = aTableLogin.Rows[0]["CentralWareHouse"].ToString().Trim();

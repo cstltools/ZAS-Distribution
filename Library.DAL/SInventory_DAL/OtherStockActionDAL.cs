@@ -40,7 +40,7 @@ namespace Library.DAL.SInventory_DAL
                            INNER JOIN dbo.tblProduct P ON F.ProductCode = P.ProductCode
                            LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INVD.InvoiceDetailId = F.InvoiceDetailId
 						   LEFT JOIN dbo.tblInvoice AS INV  ON INV.InvoiceId = INVD.InvoiceId
-                           WHERE StockQty>0 AND U.IsActive = 1 AND F.ComUnitId ='" + unitID + "'ORDER BY F.ExpDate ";
+                           WHERE StockQty>0 AND U.IsActive = 1 AND U.ActionStatus = 'Accepted' AND F.ComUnitId ='" + unitID + "'ORDER BY F.ExpDate ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

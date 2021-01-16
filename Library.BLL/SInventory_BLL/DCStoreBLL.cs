@@ -94,5 +94,10 @@ namespace Library.BLL.SInventory_BLL
         {
             return aReceiveDal.LoadProductCode(productId);
         }
+
+        public DataTable ProductInfo(string productId, string ManuID, string customerId)
+        {
+            return aReceiveDal.LoadProductCode(productId, ManuID, customerId);
+        }
     }
 }

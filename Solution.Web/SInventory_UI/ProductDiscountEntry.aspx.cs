@@ -78,8 +78,7 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
 
        
         
-        if (productCodeTextBox.Text != "" && customerTextBox.Text != "" && activeDtTextBox.Text != "" && inactiveDtTextBox.Text != ""
-            && discountPerTextBox.Text != "")
+        if (productCodeTextBox.Text != "" && customerTextBox.Text != "" && discountPerTextBox.Text != "")
         {
             if (CheckDiscountExistOrNot())
             {
@@ -90,8 +89,8 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
                     CustomerMasterId = CustomerId(out aCustomerMaster),
                     DiscountPercentage = Convert.ToDecimal(discountPerTextBox.Text),
                     Status = "Active",
-                    ActiveDate = Convert.ToDateTime(activeDtTextBox.Text),
-                    InactiveDate = Convert.ToDateTime(inactiveDtTextBox.Text),
+                    ActiveDate = DateTime.Now,
+                    InactiveDate = DateTime.Now,
                     EntryBy = Session["LoginName"].ToString(),
                     EntryDate = DateTime.Now,
                     ActionStatus = "Posted"

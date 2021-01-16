@@ -92,7 +92,7 @@ namespace Library.DAL.SInventory_DAL
           PaymentAmount ,
           CustPayId,
           BankAccId,
-          CashAccId,
+          CashAccId,AIT,Discount,
           PaymentRemarks
         )
             values (" +
@@ -101,6 +101,8 @@ namespace Library.DAL.SInventory_DAL
                     "" + aCustPaymentDetail.CustPayId + "," +
                     "" + aCustPaymentDetail.BankAccId + "," +
                     "" + aCustPaymentDetail.CashAccId + "," +
+                    "" + aCustPaymentDetail.AIT + "," +
+                    "" + aCustPaymentDetail.Discount + "," +
                     "'" + aCustPaymentDetail.Remarks + "')";
 
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
@@ -122,7 +124,7 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetPaymentProcess(string payId)
         {
-            string query = @"SELECT tblPaymentTranscationMaster.PaymentAmount,dbo.tblPaymentTranscationDetail.PaymentAmount AS DetailPaymentAmount,*,CASE WHEN BankAccId IS NOT NULL AND BankAccId > 0 THEN 'Bank' ELSE 'Cash' END AS PayType2 FROM dbo.tblPaymentTranscationMaster
+            string query = @"SELECT tblPaymentTranscationMaster.PaymentAmount,dbo.tblPaymentTranscationDetail.PaymentAmount AS DetailPaymentAmount,AIT,Discount,*,CASE WHEN BankAccId IS NOT NULL AND BankAccId > 0 THEN 'Bank' ELSE 'Cash' END AS PayType2 FROM dbo.tblPaymentTranscationMaster
                              INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId
                              WHERE tblPaymentTranscationMaster.CustPayId = " + payId;
 

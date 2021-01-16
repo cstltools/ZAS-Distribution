@@ -100,7 +100,23 @@ public partial class SInventory_UI_DirectStockOutView : System.Web.UI.Page
 
     protected void invoiceButton_Click(object sender, EventArgs e)
     {
- 
+        var button = (LinkButton)sender;
+        var currentRow = (GridViewRow)button.Parent.Parent;
+
+        int rowindex = 0;
+        rowindex = currentRow.RowIndex;
+
+        PopUpDirectStockOutReport(orderGridView.DataKeys[rowindex]["StockOutCode"].ToString());
+    }
+
+    private void PopUpDirectStockOutReport(string stockOutcode)
+    {
+        Session["paydetailId"] = "";
+        Session["paydetailId"] = stockOutcode;
+
+        const string url = "../SInventory_RPTVIEW/DirectStockOutViewer.aspx";
+        const string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
+        ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
     }
 
     protected void clearButton_OnClick(object sender, EventArgs e)

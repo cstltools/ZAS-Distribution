@@ -349,7 +349,7 @@
                             &nbsp;
                         </td>
                     </tr>
-                    <tr>
+                    <tr runat="server" Visible="False">
                         <td class="TDLeft" width="13%">
                             &nbsp;
                         </td>
@@ -374,7 +374,7 @@
                             &nbsp;
                         </td>
                     </tr>
-                    <tr>
+                    <tr runat="server" Visible="False">
                         <td class="TDLeft" width="13%">
                             &nbsp;
                         </td>

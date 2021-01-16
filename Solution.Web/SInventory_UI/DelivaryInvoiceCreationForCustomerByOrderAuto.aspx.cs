@@ -1105,8 +1105,9 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                 aInvoiceDetail.DiscountPercentage =
                     Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text);
                 aInvoiceDetail.DiscountAmount =
-                    Convert.ToDecimal(
-                        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text);
+                    (Convert.ToDecimal(
+                        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) / aInvoiceDetail.Quantity) * Convert.ToDecimal(
+                        ((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox")).Text == "" ? 0.ToString() : ((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox")).Text);
                 aInvoiceDetail.BonusQuantity =
                     Convert.ToDecimal(
                         ((TextBox)gridLineItemGridView.Rows[i].Cells[12].FindControl("bQtyTextBox")).Text.Trim());
@@ -1131,8 +1132,7 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                 aInvoiceDetail.TotalPriceVatAmount =
                     Convert.ToDecimal(
                         ((TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox")).Text.Trim());
-                aInvoiceDetail.DiscountPercentage = aInvoiceDetail.DiscountPercentage;
-                aInvoiceDetail.DiscountAmount = aInvoiceDetail.DiscountAmount;
+                
 
                 Decimal dpqty = 1;
                 decimal sdPerUnit = 1;
@@ -1143,6 +1143,12 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                 TextBox tqTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox");
                 TextBox sdTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox");
                 TextBox dqTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox");
+
+                TextBox dpTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dpTextBox");
+                TextBox daTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dpAmtTextBox");
+
+                aInvoiceDetail.DiscountPercentage = Convert.ToDecimal(dpTextBox.Text);
+                //aInvoiceDetail.DiscountAmount = Convert.ToDecimal(daTextBox.Text);
 
                 if (dqTextBox.Text != "")
                 {
@@ -1528,6 +1534,9 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
         {
             for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
             {
+                var tbxDeliveryQuantity = ((TextBox)gridLineItemGridView.Rows[i].FindControl("dQtyTextBox"));
+                var tbxMainQuantity = ((TextBox)gridLineItemGridView.Rows[i].FindControl("qtyTextBox"));
+
                 decimal delqty = 0;
                 delqty = string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox")).Text) ? 0 :
                     Convert.ToDecimal(
@@ -1546,8 +1555,9 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                         ((TextBox) gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox")).Text)
                     : 0;
                 disTotal += (((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text != "")
-                    ? Convert.ToDecimal(
-                        ((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)
+                    ? (Convert.ToDecimal(
+                        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) / Convert.ToDecimal(tbxMainQuantity.Text))
+                        * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text)
                     : 0;
                 gTotal += (((TextBox) gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox")).Text != "")
                     ? Convert.ToDecimal(((TextBox) gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox")).Text)
@@ -1559,7 +1569,7 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
         }
         tpTptalTextBox.Text = tpTotal.ToString();
         vatTotalTextBox.Text = vatTotal.ToString();
-        disTotalTextBox.Text = disTotal.ToString();
+        disTotalTextBox.Text = String.Format("{0:0.00}", disTotal);
         grandTotalTextBox.Text = gTotal.ToString();
         pdTextBox.Text = sptotatl.ToString();
     }
@@ -1622,6 +1632,12 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
 
     protected void dQtyTextBox_TextChanged(object sender, EventArgs e)
     {
+
+        TextBox TextBox = (TextBox)sender;
+        GridViewRow currentRow = (GridViewRow)TextBox.Parent.Parent;
+        int rowind = 0;
+        rowind = currentRow.RowIndex;
+
         for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
         {
             int rowindex = i;
@@ -1642,6 +1658,13 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                     Color.Green;
                 ((DropDownList) gridLineItemGridView.Rows[rowindex].Cells[17].FindControl("reasonReturnDropDownList"))
                     .Enabled = false;
+
+                if (rowind == rowindex)
+                {
+                    CalcululateNetPrice(rowindex);
+                }
+               
+                TotalValueCalculation();
             }
             else if (delqty < mainqty && delqty != 0)
             {
@@ -1650,6 +1673,12 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                     Color.Yellow;
                 ((DropDownList) gridLineItemGridView.Rows[rowindex].Cells[17].FindControl("reasonReturnDropDownList"))
                     .Enabled = true;
+
+                if (rowind == rowindex)
+                {
+                    CalcululateNetPrice(rowindex);
+                }
+                TotalValueCalculation();
             }
             else if (delqty > mainqty)
             {
@@ -1660,6 +1689,13 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                 ((Label) gridLineItemGridView.Rows[rowindex].Cells[15].FindControl("statusLabel")).ForeColor = Color.Red;
                 ((DropDownList) gridLineItemGridView.Rows[rowindex].Cells[17].FindControl("reasonReturnDropDownList"))
                     .Enabled = true;
+
+
+                if (rowind == rowindex)
+                {
+                    CalcululateNetPrice(rowindex);
+                }
+                TotalValueCalculation();
             }
             else
             {
@@ -1677,822 +1713,918 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                 //}
 
                 ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[11].FindControl("tpVatTextBox")).Text = "0";
-            }
-            if (delqty <= mainqty)
-            {
-                TextBox unitPriceTextBox =
-                    (TextBox) gridLineItemGridView.Rows[rowindex].Cells[4].FindControl("unitPriceTextBox");
-                ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text =
-                    (Convert.ToDecimal(unitPriceTextBox.Text)*delqty).ToString();
-                OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
-                TotalValueCalculation();
-                decimal totalprice = Convert.ToDecimal(tpTptalTextBox.Text);
 
-                string ProductCode1 = "";
-                string ProductCode2 = "";
-                string ProductCode3 = "";
-                decimal Qty1 = 0;
-                decimal Qty2 = 0;
-                decimal Qty3 = 0;
-                for (int j = 0; j < gridLineItemGridView.Rows.Count; j++)
+                if (rowind == rowindex)
                 {
-                     ProductCode1 = ((TextBox)gridLineItemGridView.Rows[j].Cells[1].FindControl("codeTextBox")).Text;
-                     if (ProductCode1 == "ARD02")
-                    {
-                        Qty1 += string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text) ? 0 :
-                              Convert.ToDecimal(
-                               ((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text);
+                    CalcululateNetPrice(rowindex);
+                }
+                TotalValueCalculation();
+            }
+            //if (delqty <= mainqty)
+            //{
+            //    TextBox unitPriceTextBox =
+            //        (TextBox) gridLineItemGridView.Rows[rowindex].Cells[4].FindControl("unitPriceTextBox");
+            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text =
+            //        (Convert.ToDecimal(unitPriceTextBox.Text)*delqty).ToString();
+            //    OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
+            //    TotalValueCalculation();
 
-                    }
+            //    //-------------------------------- Start ------------------------------------------------
+
+
+
+            //    //-------------------------------- END ------------------------------------------------
+
+
+            //    decimal totalprice = Convert.ToDecimal(tpTptalTextBox.Text);
+
+            //    string ProductCode1 = "";
+            //    string ProductCode2 = "";
+            //    string ProductCode3 = "";
+            //    decimal Qty1 = 0;
+            //    decimal Qty2 = 0;
+            //    decimal Qty3 = 0;
+            //    for (int j = 0; j < gridLineItemGridView.Rows.Count; j++)
+            //    {
+            //         ProductCode1 = ((TextBox)gridLineItemGridView.Rows[j].Cells[1].FindControl("codeTextBox")).Text;
+            //         if (ProductCode1 == "ARD02")
+            //        {
+            //            Qty1 += string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text) ? 0 :
+            //                  Convert.ToDecimal(
+            //                   ((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text);
+
+            //        }
                      
-                     ProductCode2 = ((TextBox)gridLineItemGridView.Rows[j].Cells[1].FindControl("codeTextBox")).Text;
-                     if (ProductCode2 == "ARD01")
-                    {
-                        Qty2 += string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text) ? 0 :
-                           Convert.ToDecimal(
-                            ((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text);
-                    }
+            //         ProductCode2 = ((TextBox)gridLineItemGridView.Rows[j].Cells[1].FindControl("codeTextBox")).Text;
+            //         if (ProductCode2 == "ARD01")
+            //        {
+            //            Qty2 += string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text) ? 0 :
+            //               Convert.ToDecimal(
+            //                ((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text);
+            //        }
                  
 
-                     ProductCode3 = ((TextBox)gridLineItemGridView.Rows[j].Cells[1].FindControl("codeTextBox")).Text;
-                     if (ProductCode2 == "FGD02")
-                    {
-                        Qty3 += string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text) ? 0 :
-                             Convert.ToDecimal(
-                              ((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text);
-                    }
-                }
+            //         ProductCode3 = ((TextBox)gridLineItemGridView.Rows[j].Cells[1].FindControl("codeTextBox")).Text;
+            //         if (ProductCode2 == "FGD02")
+            //        {
+            //            Qty3 += string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text) ? 0 :
+            //                 Convert.ToDecimal(
+            //                  ((TextBox)gridLineItemGridView.Rows[j].Cells[14].FindControl("dQtyTextBox")).Text);
+            //        }
+            //    }
               
 
 
-                decimal percentage = 0;
+            //    decimal percentage = 0;
 
-                DataTable dtOffer = new DataTable();
-                dtOffer = aOrderInfoBll.LoadOffer(invoiceNoHiddenField.Value);
+            //    DataTable dtOffer = new DataTable();
+            //    dtOffer = aOrderInfoBll.LoadOffer(invoiceNoHiddenField.Value);
 
 
-                if (dtOffer.Rows[0]["ProductOffer"].ToString() == "Esomium20" || dtOffer.Rows[0]["ProductOffer"].ToString() == "FOC" ||
-                    dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOC" || dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
-                {
-                      for (int K = 0; K < gridLineItemGridView.Rows.Count; K++)
-                {
-                    if (ProductCode1 == "ARD02" && Qty1 >= 8)
-                    {
-                        totalprice -= Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[K].FindControl("tpTextBox")).Text);
-                    }
-                    if (ProductCode2 == "ARD01" && Qty2 >= 2)
-                    {
-                        totalprice -= Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[K].FindControl("tpTextBox")).Text);
-                    }
-                    if (ProductCode3 == "FGD02" && Qty3 >= 4)
-                    {
-                        totalprice -= Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[K].FindControl("tpTextBox")).Text);
-                    }
-                }
+            //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "Esomium20" || dtOffer.Rows[0]["ProductOffer"].ToString() == "FOC" ||
+            //        dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOC" || dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
+            //    {
+            //          for (int K = 0; K < gridLineItemGridView.Rows.Count; K++)
+            //    {
+            //        if (ProductCode1 == "ARD02" && Qty1 >= 8)
+            //        {
+            //            totalprice -= Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[K].FindControl("tpTextBox")).Text);
+            //        }
+            //        if (ProductCode2 == "ARD01" && Qty2 >= 2)
+            //        {
+            //            totalprice -= Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[K].FindControl("tpTextBox")).Text);
+            //        }
+            //        if (ProductCode3 == "FGD02" && Qty3 >= 4)
+            //        {
+            //            totalprice -= Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[K].FindControl("tpTextBox")).Text);
+            //        }
+            //    }
              
-                }
-                  else
-                  {
-                    totalprice=  Convert.ToDecimal(tpTptalTextBox.Text);
-                  }
+            //    }
+            //      else
+            //      {
+            //        totalprice=  Convert.ToDecimal(tpTptalTextBox.Text);
+            //      }
               
-                // FixedCustomer and trade Policy
-                // int TotalRecord = gridLineItemGridView.Rows.Count;
+            //    // FixedCustomer and trade Policy
+            //    // int TotalRecord = gridLineItemGridView.Rows.Count;
                
                 
-                    DataTable dtinvoice = aOrderInfoBll.LoadInvoice(invoiceHiddenField.Value);
+            //        DataTable dtinvoice = aOrderInfoBll.LoadInvoice(invoiceHiddenField.Value);
 
-                    DataTable dtFixedCustomer =
-                        aOrderInfoBll.GetFixedCustomerfromInvoiceTable(invoiceHiddenField.Value);
-                    if (Convert.ToBoolean(dtFixedCustomer.Rows[0]["FixedCustomer"]) == true)
-                    {
-                        //2
-                        DataTable dttradepolicy = aOrderInfoBll.GetTradeTerm(totalprice.ToString());
-                        if (dttradepolicy.Rows.Count > 0)
-                        {
-                            percentage = Convert.ToDecimal(2);
-                        }
-                    }
-                    else
-                    {
-                        if (Convert.ToBoolean(dtOffer.Rows[0]["OldTradePolicy"].ToString()) == true)
-                        {
-                            DataTable dttradepolicy = aOrderInfoBll.GetTradeTermOld(tpTptalTextBox.Text);
-                            if (dttradepolicy.Rows.Count > 0)
-                            {
-                                percentage = Convert.ToDecimal(dttradepolicy.Rows[0]["DiscountPerc"].ToString());
-                            }
-                        }
-                        else
-                        {
-                            //1
-                            DataTable dttradepolicy = aOrderInfoBll.GetTradeTerm(totalprice.ToString());
-                            if (dttradepolicy.Rows.Count > 0)
-                            {
-                                percentage = Convert.ToDecimal(dttradepolicy.Rows[0]["DiscountPerc"].ToString());
-                            }
-                        }
+            //        DataTable dtFixedCustomer =
+            //            aOrderInfoBll.GetFixedCustomerfromInvoiceTable(invoiceHiddenField.Value);
+            //        if (Convert.ToBoolean(dtFixedCustomer.Rows[0]["FixedCustomer"]) == true)
+            //        {
+            //            //2
+            //            DataTable dttradepolicy = aOrderInfoBll.GetTradeTerm(totalprice.ToString());
+            //            if (dttradepolicy.Rows.Count > 0)
+            //            {
+            //                percentage = Convert.ToDecimal(2);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            if (Convert.ToBoolean(dtOffer.Rows[0]["OldTradePolicy"].ToString()) == true)
+            //            {
+            //                DataTable dttradepolicy = aOrderInfoBll.GetTradeTermOld(tpTptalTextBox.Text);
+            //                if (dttradepolicy.Rows.Count > 0)
+            //                {
+            //                    percentage = Convert.ToDecimal(dttradepolicy.Rows[0]["DiscountPerc"].ToString());
+            //                }
+            //            }
+            //            else
+            //            {
+            //                //1
+            //                DataTable dttradepolicy = aOrderInfoBll.GetTradeTerm(totalprice.ToString());
+            //                if (dttradepolicy.Rows.Count > 0)
+            //                {
+            //                    percentage = Convert.ToDecimal(dttradepolicy.Rows[0]["DiscountPerc"].ToString());
+            //                }
+            //            }
 
-                    }
+            //        }
                 
               
-                DataTable dtdiscount =
-                    aOrderInfoBll.ProductDiscount(
-                        ((TextBox) gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text,
-                        hdCustomerMasterId.Value, invDateTextBox.Text);
-                decimal percamount = 0;
-                if (dtdiscount.Rows.Count > 0)
-                {
-                    percamount = Convert.ToDecimal(dtdiscount.Rows[0]["DiscountPercentage"].ToString());
-                }
+            //    DataTable dtdiscount =
+            //        aOrderInfoBll.ProductDiscount(
+            //            ((TextBox) gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text,
+            //            hdCustomerMasterId.Value, invDateTextBox.Text);
+            //    decimal percamount = 0;
+            //    if (dtdiscount.Rows.Count > 0)
+            //    {
+            //        percamount = Convert.ToDecimal(dtdiscount.Rows[0]["DiscountPercentage"].ToString());
+            //    }
 
-                decimal totaldiscount = 0;
-                totaldiscount = (percentage*Convert.ToDecimal(tpTptalTextBox.Text))/100;
-                disTotalTextBox.Text = totaldiscount.ToString();
+            //    decimal totaldiscount = 0;
+            //    totaldiscount = (percentage*Convert.ToDecimal(tpTptalTextBox.Text))/100;
+            //    disTotalTextBox.Text = totaldiscount.ToString();
 
-                DataTable dtproductvat =
-                    aOrderInfoBll.ProductVat(
-                        ((TextBox) gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text);
+            //    DataTable dtproductvat =
+            //        aOrderInfoBll.ProductVat(
+            //            ((TextBox) gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text);
 
-                decimal totalamount = 0;
-                totalamount = Convert.ToDecimal(tpTptalTextBox.Text);
-                decimal productamount = 0;
-                productamount =
-                    Convert.ToDecimal(
-                        ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
-                decimal productperc = 0;
-                //productperc = (productamount*100)/totalamount;
-                decimal mainper = 0;
-                mainper = (percentage*productperc)/100;
+            //    decimal totalamount = 0;
+            //    totalamount = Convert.ToDecimal(tpTptalTextBox.Text);
+            //    decimal productamount = 0;
+            //    productamount =
+            //        Convert.ToDecimal(
+            //            ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
+            //    decimal productperc = 0;
+            //    //productperc = (productamount*100)/totalamount;
+            //    decimal mainper = 0;
+            //    mainper = (percentage*productperc)/100;
 
-                // Offer Applied
-                // FixedCustomer and trade Policy
+            //    // Offer Applied
+            //    // FixedCustomer and trade Policy
 
             
 
-                if (dtOffer.Rows[0]["ProductOffer"].ToString() == "Esomium20")
-                {
-                    //if (((TextBox)gridLineItemGridView.Rows[rowindex].Cells[1].FindControl("codeTextBox")).Text == "ARD02" && Qty1 >= 8)
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //       0.ToString("F");
+            //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "Esomium20")
+            //    {
+            //        //if (((TextBox)gridLineItemGridView.Rows[rowindex].Cells[1].FindControl("codeTextBox")).Text == "ARD02" && Qty1 >= 8)
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //       0.ToString("F");
 
-                    //}
-                    //else
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //        (Convert.ToDecimal(
-                    //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
-                    //         (percentage / 100)).ToString("F");
-                    //}
-                }
-                if (dtOffer.Rows[0]["ProductOffer"].ToString() == "FOC")
-                {
+            //        //}
+            //        //else
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //        (Convert.ToDecimal(
+            //        //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
+            //        //         (percentage / 100)).ToString("F");
+            //        //}
+            //    }
+            //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "FOC")
+            //    {
 
-                    //if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "ARD01" && Qty2 >= 2)
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //       0.ToString("F");
-                    //    TextBox tpVatTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                    //    tpVatTextBox1.Text = 0.ToString("F");
-                    //    //Vat percent change 2 commentout//
-                    //    TextBox npTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                    //    npTextBox1.Text = 0.ToString();
+            //        //if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "ARD01" && Qty2 >= 2)
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //       0.ToString("F");
+            //        //    TextBox tpVatTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //        //    tpVatTextBox1.Text = 0.ToString("F");
+            //        //    //Vat percent change 2 commentout//
+            //        //    TextBox npTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //        //    npTextBox1.Text = 0.ToString();
 
-                    //}
-                    //else
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //        (Convert.ToDecimal(
-                    //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
-                    //         (percentage / 100)).ToString("F");
-                    //}
-                }
-                if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOC")
-                {
+            //        //}
+            //        //else
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //        (Convert.ToDecimal(
+            //        //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
+            //        //         (percentage / 100)).ToString("F");
+            //        //}
+            //    }
+            //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOC")
+            //    {
 
-                    //if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "FGD02" && Qty3 >= 4)
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //       0.ToString("F");
-                    //    TextBox tpVatTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                    //    tpVatTextBox1.Text = 0.ToString("F");
-                    //    //Vat percent change 2 commentout//
-                    //    TextBox npTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                    //    npTextBox1.Text = 0.ToString();
+            //        //if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "FGD02" && Qty3 >= 4)
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //       0.ToString("F");
+            //        //    TextBox tpVatTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //        //    tpVatTextBox1.Text = 0.ToString("F");
+            //        //    //Vat percent change 2 commentout//
+            //        //    TextBox npTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //        //    npTextBox1.Text = 0.ToString();
 
-                    //}
-                    //else
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //        (Convert.ToDecimal(
-                    //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
-                    //         (percentage / 100)).ToString("F");
-                    //}
-                }
-                if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
-                {
+            //        //}
+            //        //else
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //        (Convert.ToDecimal(
+            //        //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
+            //        //         (percentage / 100)).ToString("F");
+            //        //}
+            //    }
+            //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
+            //    {
 
-                    //if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "ARD02" && Qty1 >= 8)
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //       0.ToString("F");
+            //        //if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "ARD02" && Qty1 >= 8)
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //       0.ToString("F");
 
-                    //}
-                    //else
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //        (Convert.ToDecimal(
-                    //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
-                    //         (percentage / 100)).ToString("F");
-                    //}
-                }
-                if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
-                {
-                    //if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "FGD02" && Qty3 >= 4)
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //       0.ToString("F");
-                    //    TextBox tpVatTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                    //    tpVatTextBox1.Text = 0.ToString("F");
-                    //    //Vat percent change 2 commentout//
-                    //    TextBox npTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                    //    npTextBox1.Text = 0.ToString();
+            //        //}
+            //        //else
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //        (Convert.ToDecimal(
+            //        //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
+            //        //         (percentage / 100)).ToString("F");
+            //        //}
+            //    }
+            //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
+            //    {
+            //        //if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "FGD02" && Qty3 >= 4)
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //       0.ToString("F");
+            //        //    TextBox tpVatTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //        //    tpVatTextBox1.Text = 0.ToString("F");
+            //        //    //Vat percent change 2 commentout//
+            //        //    TextBox npTextBox1 = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //        //    npTextBox1.Text = 0.ToString();
 
-                    //}
-                    //else
-                    //{
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
-                    //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                    //        (Convert.ToDecimal(
-                    //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
-                    //         (percentage / 100)).ToString("F");
-                    //}
+            //        //}
+            //        //else
+            //        //{
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
+            //        //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //        (Convert.ToDecimal(
+            //        //            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
+            //        //         (percentage / 100)).ToString("F");
+            //        //}
 
-                }
-                if (dtOffer.Rows[0]["ProductOffer"].ToString() == "False")
-                {
-                    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
-                    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                        (Convert.ToDecimal(
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
-                         (percentage / 100)).ToString("F");
-                }
+            //    }
+            //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "False")
+            //    {
+            //        //((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = percentage.ToString();
 
-
-
-
-
-
-
-
-
+            //        //if (Convert.ToDecimal(
+            //        //    ((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("dQtyTextBox")).Text) > 0)
+            //        //{
+            //        //    if (Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text) == 0 && Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) > 0)
+            //        //    {
+            //        //        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //        (Convert.ToDecimal(
+            //        //            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) /
+            //        //         Convert.ToDecimal(
+            //        //            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dQtyTextBox")).Text)).ToString("F");
+            //        //    }
 
 
+            //        //    if (Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text) > 0 && Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) > 0)
+            //        //    {
+            //        //        ((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
+            //        //            (Convert.ToDecimal(mainqty)*Convert.ToDecimal(
+            //        //                ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("unitPriceTextBox")).Text))
+            //        //                .ToString();
+            //        //        (Convert.ToDecimal(
+            //        //            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) /
+            //        //         Convert.ToDecimal(
+            //        //            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dQtyTextBox")).Text)).ToString("F");
+            //        //    }
 
+            //        //}
+            //        //else
+            //        //{
+            //        //    ((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text = 0.ToString();
+            //        //}
 
-
-
-
-
-                if (dtOffer.Rows[0]["ProductOffer"].ToString() == "EzeventFOC")
-                {
-                    if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "OAD01")
-                    {
-                        Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
-                        if (X > 0)
-                        {
-                            decimal vat = 0;
-                            vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                                (Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                                 (percamount / 100)).ToString();
-
-                            decimal withdiscount = 0;
-                            withdiscount =
-                                (Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                 Convert.ToDecimal(
-                                     (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                                 Convert.ToDecimal(
-                                     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                            decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                            //Vat percent change 2 commentout//
-                            //vatamount = (Convert.ToDecimal(
-                            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                            tpVatTextBox.Text = vatamount.ToString("F");
-                            //Vat percent change 2 commentout//
-                            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                            npTextBox.Text = ((Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                               Convert.ToDecimal(
-                                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                                                       .Text
-                                                       .Trim()) -
-                                               Convert.ToDecimal(
-                                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                                                       .Text)) +
-                                              Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                        }
-                        else
-                        {
-                            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                            tpVatTextBox.Text = 0.ToString("F");
-                            //Vat percent change 2 commentout//
-                            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                            npTextBox.Text = 0.ToString();
-                        }
-
-                    }
-                    else
-                    {
-
-                        decimal vat = 0;
-                        vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                            (Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                             (percamount / 100)).ToString();
-
-                        decimal withdiscount = 0;
-                        withdiscount =
-                            (Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                             Convert.ToDecimal(
-                                 (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                             Convert.ToDecimal(
-                                 ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                        decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                        //Vat percent change 2 commentout//
-                        //vatamount = (Convert.ToDecimal(
-                        //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                        TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                        TextBox dqTextBox = (TextBox)gridLineItemGridView.Rows[rowindex].Cells[14].FindControl("dQtyTextBox");
-                        tpVatTextBox.Text = vatamount.ToString("F");
-                        //Vat percent change 2 commentout//
-                        TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                        npTextBox.Text = ((Convert.ToDecimal(
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                           Convert.ToDecimal(
-                                               ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                                                   .Text
-                                                   .Trim()) -
-                                           Convert.ToDecimal(
-                                               ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                                                   .Text)) +
-                                          Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                    }
-                }
-                else if (dtOffer.Rows[0]["ProductOffer"].ToString() == "FlexidolFOC")
-                {
-                    if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "AID01")
-                    {
-                        Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
-                        if (X > 0)
-                        {
-                            decimal vat = 0;
-                            vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                                (Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                                 (percamount / 100)).ToString();
-
-                            decimal withdiscount = 0;
-                            withdiscount =
-                                (Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                 Convert.ToDecimal(
-                                     (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                                 Convert.ToDecimal(
-                                     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                            decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                            //Vat percent change 2 commentout//
-                            //vatamount = (Convert.ToDecimal(
-                            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                            tpVatTextBox.Text = vatamount.ToString("F");
-                            //Vat percent change 2 commentout//
-                            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                            npTextBox.Text = ((Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                               Convert.ToDecimal(
-                                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                                                       .Text
-                                                       .Trim()) -
-                                               Convert.ToDecimal(
-                                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                                                       .Text)) +
-                                              Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                        }
-                        else
-                        {
-                            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                            tpVatTextBox.Text = 0.ToString("F");
-                            //Vat percent change 2 commentout//
-                            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                            npTextBox.Text = 0.ToString();
-                        }
-
-                    }
-                    else
-                    {
-
-                        decimal vat = 0;
-                        vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                            (Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                             (percamount / 100)).ToString();
-
-                        decimal withdiscount = 0;
-                        withdiscount =
-                            (Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                             Convert.ToDecimal(
-                                 (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                             Convert.ToDecimal(
-                                 ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                        decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                        //Vat percent change 2 commentout//
-                        //vatamount = (Convert.ToDecimal(
-                        //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                        TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                        tpVatTextBox.Text = vatamount.ToString("F");
-                        //Vat percent change 2 commentout//
-                        TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                        npTextBox.Text = ((Convert.ToDecimal(
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                           Convert.ToDecimal(
-                                               ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                                                   .Text
-                                                   .Trim()) -
-                                           Convert.ToDecimal(
-                                               ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                                                   .Text)) +
-                                          Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                    }
-                }
-                else if (dtOffer.Rows[0]["ProductOffer"].ToString() == "FOC")
-                {
-                    if (((TextBox) gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "ARD01")
-                    {
-                        Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
-                        if (X>0)
-                        {
-                            decimal vat = 0;
-                            vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                                (Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                                 (percamount / 100)).ToString();
-
-                            decimal withdiscount = 0;
-                            withdiscount =
-                                (Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                 Convert.ToDecimal(
-                                     (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                                 Convert.ToDecimal(
-                                     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                            decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                            //Vat percent change 2 commentout//
-                            //vatamount = (Convert.ToDecimal(
-                            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                            tpVatTextBox.Text = vatamount.ToString("F");
-                            //Vat percent change 2 commentout//
-                            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                            npTextBox.Text = ((Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                               Convert.ToDecimal(
-                                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                                                       .Text
-                                                       .Trim()) -
-                                               Convert.ToDecimal(
-                                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                                                       .Text)) +
-                                              Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                        }
-                        else
-                        {
-                            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                            tpVatTextBox.Text = 0.ToString("F");
-                            //Vat percent change 2 commentout//
-                            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                            npTextBox.Text = 0.ToString();
-                        }
-                       
-                    }
-                    else
-                    {
-
-                        decimal vat = 0;
-                        vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                            (Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                             (percamount / 100)).ToString();
-
-                        decimal withdiscount = 0;
-                        withdiscount =
-                            (Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                             Convert.ToDecimal(
-                                 (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                             Convert.ToDecimal(
-                                 ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                        decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                        //Vat percent change 2 commentout//
-                        //vatamount = (Convert.ToDecimal(
-                        //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                        TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                        tpVatTextBox.Text = vatamount.ToString("F");
-                        //Vat percent change 2 commentout//
-                        TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                        npTextBox.Text = ((Convert.ToDecimal(
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                           Convert.ToDecimal(
-                                               ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                                                   .Text
-                                                   .Trim()) -
-                                           Convert.ToDecimal(
-                                               ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                                                   .Text)) +
-                                          Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                    }
-                }
-                else if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOC")
-                {
-                    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOC")
-                    {
-                        if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "FGD02")
-                        {
-                            Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
-                            if (X > 0)
-                            {
-                                decimal vat = 0;
-                                vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                                    (Convert.ToDecimal(
-                                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                                     (percamount / 100)).ToString();
-
-                                decimal withdiscount = 0;
-                                withdiscount =
-                                    (Convert.ToDecimal(
-                                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                     Convert.ToDecimal(
-                                         (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                                     Convert.ToDecimal(
-                                         ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                                decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                                //Vat percent change 2 commentout//
-                                //vatamount = (Convert.ToDecimal(
-                                //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                                tpVatTextBox.Text = vatamount.ToString("F");
-                                //Vat percent change 2 commentout//
-                                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                                npTextBox.Text = ((Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                                   Convert.ToDecimal(
-                                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                                                           .Text
-                                                           .Trim()) -
-                                                   Convert.ToDecimal(
-                                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                                                           .Text)) +
-                                                  Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                            }
-                            else
-                            {
-                                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                                tpVatTextBox.Text = 0.ToString("F");
-                                //Vat percent change 2 commentout//
-                                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                                npTextBox.Text = 0.ToString();
-                            }
-
-                        }
-                        else
-                        {
-
-                            decimal vat = 0;
-                            vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                                (Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                                 (percamount / 100)).ToString();
-
-                            decimal withdiscount = 0;
-                            withdiscount =
-                                (Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                 Convert.ToDecimal(
-                                     (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                                 Convert.ToDecimal(
-                                     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                            decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                            //Vat percent change 2 commentout//
-                            //vatamount = (Convert.ToDecimal(
-                            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                            tpVatTextBox.Text = vatamount.ToString("F");
-                            //Vat percent change 2 commentout//
-                            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                            npTextBox.Text = ((Convert.ToDecimal(
-                                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                               Convert.ToDecimal(
-                                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                                                       .Text
-                                                       .Trim()) -
-                                               Convert.ToDecimal(
-                                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                                                       .Text)) +
-                                              Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                        }
-                    }
-                }
-                //else if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
-                //{
-                //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
-                //    {
-                //        if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "FGD02")
-                //        {
-                //            Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
-                //            if (X > 0)
-                //            {
-                //                decimal vat = 0;
-                //                vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                //                ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                //                    (Convert.ToDecimal(
-                //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                //                     (percamount / 100)).ToString();
-
-                //                decimal withdiscount = 0;
-                //                withdiscount =
-                //                    (Convert.ToDecimal(
-                //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                //                     Convert.ToDecimal(
-                //                         (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                //                     Convert.ToDecimal(
-                //                         ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                //                decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                //                //Vat percent change 2 commentout//
-                //                //vatamount = (Convert.ToDecimal(
-                //                //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                //                tpVatTextBox.Text = vatamount.ToString("F");
-                //                //Vat percent change 2 commentout//
-                //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                //                npTextBox.Text = ((Convert.ToDecimal(
-                //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                //                                   Convert.ToDecimal(
-                //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                //                                           .Text
-                //                                           .Trim()) -
-                //                                   Convert.ToDecimal(
-                //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                //                                           .Text)) +
-                //                                  Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                //            }
-                //            else
-                //            {
-                //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                //                tpVatTextBox.Text = 0.ToString("F");
-                //                //Vat percent change 2 commentout//
-                //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                //                npTextBox.Text = 0.ToString();
-                //            }
-
-                //        }
-                //        else
-                //        {
-
-                //            decimal vat = 0;
-                //            vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                //            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                //                (Convert.ToDecimal(
-                //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                //                 (percamount / 100)).ToString();
-
-                //            decimal withdiscount = 0;
-                //            withdiscount =
-                //                (Convert.ToDecimal(
-                //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                //                 Convert.ToDecimal(
-                //                     (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                //                 Convert.ToDecimal(
-                //                     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                //            decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                //            //Vat percent change 2 commentout//
-                //            //vatamount = (Convert.ToDecimal(
-                //            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                //            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                //            tpVatTextBox.Text = vatamount.ToString("F");
-                //            //Vat percent change 2 commentout//
-                //            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                //            npTextBox.Text = ((Convert.ToDecimal(
-                //                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                //                               Convert.ToDecimal(
-                //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                //                                       .Text
-                //                                       .Trim()) -
-                //                               Convert.ToDecimal(
-                //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
-                //                                       .Text)) +
-                //                              Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-                //        }
-                //    }
-                //}
-                else
-                {
-                    decimal vat = 0;
-                    vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                    //((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                    //    (Convert.ToDecimal(
-                    //        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
-                    //     (percamount / 100)).ToString();
-
-                    decimal withdiscount = 0;
-                    withdiscount =
-                        (Convert.ToDecimal(
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                         Convert.ToDecimal(
-                             (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                         Convert.ToDecimal(
-                             ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                    decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
-
-                    //Vat percent change 2 commentout//
-                    //vatamount = (Convert.ToDecimal(
-                    //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                    TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                    TextBox upVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("upVatTextBox");
-                    TextBox dqTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox");
-                    TextBox tqTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox");
-                    TextBox sdTextBox = (TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox");
-
-                    TextBox tpTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("tpTextBox");
-                    TextBox dpAmntTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox");
                     
 
-                    Decimal dpqty = 1;
-                    decimal sdPerUnit = 1;
-                    decimal sdTotal = 0;
-                    decimal tpValue = 0;
-                    decimal dpAmountValue = 0;
-                    if(dqTextBox.Text != "")
-                    {
-                        dpqty = Convert.ToDecimal(dqTextBox.Text.Trim());
-                    }
+                    
+                    
+            //    }
 
-                    tpValue = Convert.ToDecimal(tpTextBox.Text.Trim());
-                    dpAmountValue = Convert.ToDecimal(dpAmntTextBox.Text.Trim());
 
-                    sdPerUnit = Convert.ToDecimal(sdTextBox.Text.Trim()) / Convert.ToDecimal(tqTextBox.Text.Trim());
-                    sdTotal = sdTotal + (sdPerUnit*dpqty);
+            //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "EzeventFOC")
+            //    {
+            //        if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "OAD01")
+            //        {
+            //            Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
+            //            if (X > 0)
+            //            {
+            //                decimal vat = 0;
+            //                vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //                ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //                    (Convert.ToDecimal(
+            //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //                     (percamount / 100)).ToString();
 
-                    tpVatTextBox.Text = (Convert.ToDecimal(upVatTextBox.Text) * delqty).ToString("F");
+            //                decimal withdiscount = 0;
+            //                withdiscount =
+            //                    (Convert.ToDecimal(
+            //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                     Convert.ToDecimal(
+            //                         (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //                     Convert.ToDecimal(
+            //                         ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //                decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
 
-                    //Vat percent change 2 commentout//
-                    TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                //Vat percent change 2 commentout//
+            //                //vatamount = (Convert.ToDecimal(
+            //                //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //                tpVatTextBox.Text = vatamount.ToString("F");
+            //                //Vat percent change 2 commentout//
+            //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                npTextBox.Text = ((Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                                   Convert.ToDecimal(
+            //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //                                           .Text
+            //                                           .Trim()) -
+            //                                   Convert.ToDecimal(
+            //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //                                           .Text)) +
+            //                                  Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //            }
+            //            else
+            //            {
+            //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //                tpVatTextBox.Text = 0.ToString("F");
+            //                //Vat percent change 2 commentout//
+            //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                npTextBox.Text = 0.ToString();
+            //            }
 
-                    npTextBox.Text = Math.Round((((tpValue - sdTotal)) + Convert.ToDecimal(tpVatTextBox.Text))).ToString(CultureInfo.InvariantCulture);
+            //        }
+            //        else
+            //        {
 
-                    //npTextBox.Text = ((
-                    //    Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                    //    (Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text.Trim()) + Decimal.Round(sdTotal)) +
-                    //    Convert.ToDecimal(tpVatTextBox.Text))).ToString(CultureInfo.InvariantCulture);
-                }
+            //            decimal vat = 0;
+            //            vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //                (Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //                 (percamount / 100)).ToString();
+
+            //            decimal withdiscount = 0;
+            //            withdiscount =
+            //                (Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                 Convert.ToDecimal(
+            //                     (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //                 Convert.ToDecimal(
+            //                     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //            decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //            //Vat percent change 2 commentout//
+            //            //vatamount = (Convert.ToDecimal(
+            //            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //            TextBox dqTextBox = (TextBox)gridLineItemGridView.Rows[rowindex].Cells[14].FindControl("dQtyTextBox");
+            //            tpVatTextBox.Text = vatamount.ToString("F");
+            //            //Vat percent change 2 commentout//
+            //            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //            npTextBox.Text = ((Convert.ToDecimal(
+            //                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                               Convert.ToDecimal(
+            //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //                                       .Text
+            //                                       .Trim()) -
+            //                               Convert.ToDecimal(
+            //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //                                       .Text)) +
+            //                              Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //        }
+            //    }
+            //    else if (dtOffer.Rows[0]["ProductOffer"].ToString() == "FlexidolFOC")
+            //    {
+            //        if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "AID01")
+            //        {
+            //            Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
+            //            if (X > 0)
+            //            {
+            //                decimal vat = 0;
+            //                vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //                ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //                    (Convert.ToDecimal(
+            //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //                     (percamount / 100)).ToString();
+
+            //                decimal withdiscount = 0;
+            //                withdiscount =
+            //                    (Convert.ToDecimal(
+            //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                     Convert.ToDecimal(
+            //                         (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //                     Convert.ToDecimal(
+            //                         ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //                decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //                //Vat percent change 2 commentout//
+            //                //vatamount = (Convert.ToDecimal(
+            //                //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //                tpVatTextBox.Text = vatamount.ToString("F");
+            //                //Vat percent change 2 commentout//
+            //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                npTextBox.Text = ((Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                                   Convert.ToDecimal(
+            //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //                                           .Text
+            //                                           .Trim()) -
+            //                                   Convert.ToDecimal(
+            //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //                                           .Text)) +
+            //                                  Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //            }
+            //            else
+            //            {
+            //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //                tpVatTextBox.Text = 0.ToString("F");
+            //                //Vat percent change 2 commentout//
+            //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                npTextBox.Text = 0.ToString();
+            //            }
+
+            //        }
+            //        else
+            //        {
+
+            //            decimal vat = 0;
+            //            vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //                (Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //                 (percamount / 100)).ToString();
+
+            //            decimal withdiscount = 0;
+            //            withdiscount =
+            //                (Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                 Convert.ToDecimal(
+            //                     (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //                 Convert.ToDecimal(
+            //                     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //            decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //            //Vat percent change 2 commentout//
+            //            //vatamount = (Convert.ToDecimal(
+            //            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //            tpVatTextBox.Text = vatamount.ToString("F");
+            //            //Vat percent change 2 commentout//
+            //            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //            npTextBox.Text = ((Convert.ToDecimal(
+            //                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                               Convert.ToDecimal(
+            //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //                                       .Text
+            //                                       .Trim()) -
+            //                               Convert.ToDecimal(
+            //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //                                       .Text)) +
+            //                              Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //        }
+            //    }
+            //    else if (dtOffer.Rows[0]["ProductOffer"].ToString() == "FOC")
+            //    {
+            //        if (((TextBox) gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "ARD01")
+            //        {
+            //            Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
+            //            if (X>0)
+            //            {
+            //                decimal vat = 0;
+            //                vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //                ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //                    (Convert.ToDecimal(
+            //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //                     (percamount / 100)).ToString();
+
+            //                decimal withdiscount = 0;
+            //                withdiscount =
+            //                    (Convert.ToDecimal(
+            //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                     Convert.ToDecimal(
+            //                         (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //                     Convert.ToDecimal(
+            //                         ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //                decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //                //Vat percent change 2 commentout//
+            //                //vatamount = (Convert.ToDecimal(
+            //                //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //                tpVatTextBox.Text = vatamount.ToString("F");
+            //                //Vat percent change 2 commentout//
+            //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                npTextBox.Text = ((Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                                   Convert.ToDecimal(
+            //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //                                           .Text
+            //                                           .Trim()) -
+            //                                   Convert.ToDecimal(
+            //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //                                           .Text)) +
+            //                                  Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //            }
+            //            else
+            //            {
+            //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //                tpVatTextBox.Text = 0.ToString("F");
+            //                //Vat percent change 2 commentout//
+            //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                npTextBox.Text = 0.ToString();
+            //            }
+                       
+            //        }
+            //        else
+            //        {
+
+            //            decimal vat = 0;
+            //            vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //                (Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //                 (percamount / 100)).ToString();
+
+            //            decimal withdiscount = 0;
+            //            withdiscount =
+            //                (Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                 Convert.ToDecimal(
+            //                     (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //                 Convert.ToDecimal(
+            //                     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //            decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //            //Vat percent change 2 commentout//
+            //            //vatamount = (Convert.ToDecimal(
+            //            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //            tpVatTextBox.Text = vatamount.ToString("F");
+            //            //Vat percent change 2 commentout//
+            //            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //            npTextBox.Text = ((Convert.ToDecimal(
+            //                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                               Convert.ToDecimal(
+            //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //                                       .Text
+            //                                       .Trim()) -
+            //                               Convert.ToDecimal(
+            //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //                                       .Text)) +
+            //                              Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //        }
+            //    }
+            //    else if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOC")
+            //    {
+            //        if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOC")
+            //        {
+            //            if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "FGD02")
+            //            {
+            //                Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
+            //                if (X > 0)
+            //                {
+            //                    decimal vat = 0;
+            //                    vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //                        (Convert.ToDecimal(
+            //                            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //                         (percamount / 100)).ToString();
+
+            //                    decimal withdiscount = 0;
+            //                    withdiscount =
+            //                        (Convert.ToDecimal(
+            //                            ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                         Convert.ToDecimal(
+            //                             (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //                         Convert.ToDecimal(
+            //                             ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //                    decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //                    //Vat percent change 2 commentout//
+            //                    //vatamount = (Convert.ToDecimal(
+            //                    //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //                    TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //                    tpVatTextBox.Text = vatamount.ToString("F");
+            //                    //Vat percent change 2 commentout//
+            //                    TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                    npTextBox.Text = ((Convert.ToDecimal(
+            //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                                       Convert.ToDecimal(
+            //                                           ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //                                               .Text
+            //                                               .Trim()) -
+            //                                       Convert.ToDecimal(
+            //                                           ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //                                               .Text)) +
+            //                                      Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //                }
+            //                else
+            //                {
+            //                    TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //                    tpVatTextBox.Text = 0.ToString("F");
+            //                    //Vat percent change 2 commentout//
+            //                    TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                    npTextBox.Text = 0.ToString();
+            //                }
+
+            //            }
+            //            else
+            //            {
+
+            //                decimal vat = 0;
+            //                vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //                ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //                    (Convert.ToDecimal(
+            //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //                     (percamount / 100)).ToString();
+
+            //                decimal withdiscount = 0;
+            //                withdiscount =
+            //                    (Convert.ToDecimal(
+            //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                     Convert.ToDecimal(
+            //                         (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //                     Convert.ToDecimal(
+            //                         ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //                decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //                //Vat percent change 2 commentout//
+            //                //vatamount = (Convert.ToDecimal(
+            //                //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //                tpVatTextBox.Text = vatamount.ToString("F");
+            //                //Vat percent change 2 commentout//
+            //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //                npTextBox.Text = ((Convert.ToDecimal(
+            //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //                                   Convert.ToDecimal(
+            //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //                                           .Text
+            //                                           .Trim()) -
+            //                                   Convert.ToDecimal(
+            //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //                                           .Text)) +
+            //                                  Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //            }
+            //        }
+            //    }
+            //    //else if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
+            //    //{
+            //    //    if (dtOffer.Rows[0]["ProductOffer"].ToString() == "MFOCEsomium20")
+            //    //    {
+            //    //        if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "FGD02")
+            //    //        {
+            //    //            Decimal X = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
+            //    //            if (X > 0)
+            //    //            {
+            //    //                decimal vat = 0;
+            //    //                vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //    //                ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //    //                    (Convert.ToDecimal(
+            //    //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //    //                     (percamount / 100)).ToString();
+
+            //    //                decimal withdiscount = 0;
+            //    //                withdiscount =
+            //    //                    (Convert.ToDecimal(
+            //    //                        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //    //                     Convert.ToDecimal(
+            //    //                         (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //    //                     Convert.ToDecimal(
+            //    //                         ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //    //                decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //    //                //Vat percent change 2 commentout//
+            //    //                //vatamount = (Convert.ToDecimal(
+            //    //                //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //    //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //    //                tpVatTextBox.Text = vatamount.ToString("F");
+            //    //                //Vat percent change 2 commentout//
+            //    //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //    //                npTextBox.Text = ((Convert.ToDecimal(
+            //    //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //    //                                   Convert.ToDecimal(
+            //    //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //    //                                           .Text
+            //    //                                           .Trim()) -
+            //    //                                   Convert.ToDecimal(
+            //    //                                       ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //    //                                           .Text)) +
+            //    //                                  Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //    //            }
+            //    //            else
+            //    //            {
+            //    //                TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //    //                tpVatTextBox.Text = 0.ToString("F");
+            //    //                //Vat percent change 2 commentout//
+            //    //                TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //    //                npTextBox.Text = 0.ToString();
+            //    //            }
+
+            //    //        }
+            //    //        else
+            //    //        {
+
+            //    //            decimal vat = 0;
+            //    //            vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //    //            ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //    //                (Convert.ToDecimal(
+            //    //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //    //                 (percamount / 100)).ToString();
+
+            //    //            decimal withdiscount = 0;
+            //    //            withdiscount =
+            //    //                (Convert.ToDecimal(
+            //    //                    ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //    //                 Convert.ToDecimal(
+            //    //                     (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //    //                 Convert.ToDecimal(
+            //    //                     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //    //            decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //    //            //Vat percent change 2 commentout//
+            //    //            //vatamount = (Convert.ToDecimal(
+            //    //            //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //    //            TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //    //            tpVatTextBox.Text = vatamount.ToString("F");
+            //    //            //Vat percent change 2 commentout//
+            //    //            TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+            //    //            npTextBox.Text = ((Convert.ToDecimal(
+            //    //                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //    //                               Convert.ToDecimal(
+            //    //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
+            //    //                                       .Text
+            //    //                                       .Trim()) -
+            //    //                               Convert.ToDecimal(
+            //    //                                   ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox"))
+            //    //                                       .Text)) +
+            //    //                              Convert.ToDecimal(tpVatTextBox.Text)).ToString();
+            //    //        }
+            //    //    }
+            //    //}
+            //    else
+            //    {
+            //        decimal vat = 0;
+            //        vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
+            //        //((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
+            //        //    (Convert.ToDecimal(
+            //        //        ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text) *
+            //        //     (percamount / 100)).ToString();
+
+            //        decimal withdiscount = 0;
+            //        withdiscount =
+            //            (Convert.ToDecimal(
+            //                ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //             Convert.ToDecimal(
+            //                 (((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
+            //             Convert.ToDecimal(
+            //                 ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
+            //        decimal vatamount = Convert.ToDecimal(dtproductvat.Rows[0]["VATAmountPerUnit"].ToString()) * delqty;
+
+            //        //Vat percent change 2 commentout//
+            //        //vatamount = (Convert.ToDecimal(
+            //        //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
+            //        TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+            //        TextBox upVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("upVatTextBox");
+            //        TextBox dqTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox");
+            //        TextBox tqTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox");
+            //        TextBox sdTextBox = (TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox");
+
+            //        TextBox tpTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("tpTextBox");
+            //        TextBox dpAmntTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox");
+                    
+
+            //        Decimal dpqty = 1;
+            //        decimal sdPerUnit = 1;
+            //        decimal sdTotal = 0;
+            //        decimal tpValue = 0;
+            //        decimal dpAmountValue = 0;
+            //        if(dqTextBox.Text != "")
+            //        {
+            //            dpqty = Convert.ToDecimal(dqTextBox.Text.Trim());
+            //        }
+
+            //        tpValue = Convert.ToDecimal(tpTextBox.Text.Trim());
+            //        dpAmountValue = Convert.ToDecimal(dpAmntTextBox.Text.Trim());
+
+            //        sdPerUnit = Convert.ToDecimal(sdTextBox.Text.Trim()) / Convert.ToDecimal(tqTextBox.Text.Trim());
+            //        sdTotal = sdTotal + (sdPerUnit*dpqty);
+
+            //        tpVatTextBox.Text = (Convert.ToDecimal(upVatTextBox.Text) * delqty).ToString("F");
+
+            //        //Vat percent change 2 commentout//
+            //        TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+
+            //        npTextBox.Text = Math.Round((((tpValue - sdTotal)) + Convert.ToDecimal(tpVatTextBox.Text))).ToString(CultureInfo.InvariantCulture);
+
+            //        //npTextBox.Text = ((
+            //        //    Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
+            //        //    (Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text.Trim()) + Decimal.Round(sdTotal)) +
+            //        //    Convert.ToDecimal(tpVatTextBox.Text))).ToString(CultureInfo.InvariantCulture);
+            //    }
                 
-                TotalValueCalculation();
+            //    TotalValueCalculation();
+            //}
+            //else
+            //{
+            //    showMessageBox("Cannot be greater then Total Quantity");
+            //}
+        }
+    }
+
+    private void CalcululateNetPrice(int rowindex)
+    {
+        var tbxDeliveryQuantity = ((TextBox)gridLineItemGridView.Rows[rowindex].FindControl("dQtyTextBox"));
+        var tbxUnitPrice = ((TextBox)gridLineItemGridView.Rows[rowindex].FindControl("unitPriceTextBox"));
+        var tbxMainQuantity = ((TextBox)gridLineItemGridView.Rows[rowindex].FindControl("qtyTextBox"));
+        var tbxDiscountParcentage = ((TextBox)gridLineItemGridView.Rows[rowindex].FindControl("dpTextBox"));
+        var tbxDiscountAmount = ((TextBox)gridLineItemGridView.Rows[rowindex].FindControl("dpAmtTextBox"));
+        var tbxSpecialDiscount = ((TextBox)gridLineItemGridView.Rows[rowindex].FindControl("sdTextBox"));
+        var tbxTpVat = ((TextBox)gridLineItemGridView.Rows[rowindex].FindControl("tpVatTextBox"));
+        var tbxNetPrice = ((TextBox)gridLineItemGridView.Rows[rowindex].FindControl("npTextBox"));
+        var tbxTotalPrice = ((TextBox)gridLineItemGridView.Rows[rowindex].FindControl("tpTextBox"));
+
+
+
+        if (Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text) > 0)
+        {
+            if (Convert.ToDecimal(tbxDiscountParcentage.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDiscountParcentage.Text) > 0)
+            {
+                decimal discountAmount = 0;
+                decimal totalPrice = 0;
+
+                totalPrice = totalPrice +
+                             (Convert.ToDecimal(tbxUnitPrice.Text) * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text));
+
+                tbxTotalPrice.Text = totalPrice.ToString();
+
+                //discountAmount = ((discountAmount +
+                //                 ((Convert.ToDecimal(tbxTotalPrice.Text) * Convert.ToDecimal(tbxDiscountParcentage.Text)) /
+                //                  100)) / Convert.ToDecimal(tbxMainQuantity.Text)) 
+                //                  * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text);
+
+                //tbxDiscountAmount.Text = discountAmount.ToString(CultureInfo.InvariantCulture);
+
+                tbxNetPrice.Text = (((totalPrice - ((Convert.ToDecimal(tbxDiscountAmount.Text) / Convert.ToDecimal(tbxMainQuantity.Text)) * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text))) -
+                                     (Convert.ToDecimal(tbxSpecialDiscount.Text))) + Convert.ToDecimal(tbxTpVat.Text))
+                    .ToString(CultureInfo.InvariantCulture);
+
             }
             else
             {
-                showMessageBox("Cannot be greater then Total Quantity");
+                decimal discountAmount = 0;
+                decimal totalPrice = 0;
+
+                totalPrice = totalPrice +
+                             (Convert.ToDecimal(tbxUnitPrice.Text) * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text));
+
+                tbxTotalPrice.Text = totalPrice.ToString();
+
+                //discountAmount = discountAmount +
+                //                 ((Convert.ToDecimal(tbxDiscountAmount.Text) / Convert.ToDecimal(tbxMainQuantity.Text)) * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text));
+                //tbxDiscountAmount.Text = discountAmount.ToString(CultureInfo.InvariantCulture);
+
+                tbxNetPrice.Text = (((totalPrice - ((Convert.ToDecimal(tbxDiscountAmount.Text) / Convert.ToDecimal(tbxMainQuantity.Text)) * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text))) -
+                                     (Convert.ToDecimal(tbxSpecialDiscount.Text))) + Convert.ToDecimal(tbxTpVat.Text))
+                    .ToString(CultureInfo.InvariantCulture);
             }
+        }
+        else
+        {
+            tbxTotalPrice.Text = 0.ToString();
+            tbxDiscountAmount.Text = 0.ToString(CultureInfo.InvariantCulture);
+            tbxNetPrice.Text = 0.ToString(CultureInfo.InvariantCulture);
         }
     }
 
@@ -2521,7 +2653,7 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
 
        sdBox.Text = (dodValue + sdValue).ToString(CultureInfo.InvariantCulture);
 
-       dQtyTextBox_TextChanged(null,null);
+       CalcululateNetPrice(rowindex);
        TotalValueCalculation();
     }
 }

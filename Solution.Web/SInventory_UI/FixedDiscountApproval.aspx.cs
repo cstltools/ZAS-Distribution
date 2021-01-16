@@ -68,16 +68,17 @@ public partial class SInventory_UI_CustomerFixedDiscountApproval : System.Web.UI
                 for (int i = 0; i < loadGridView.Rows.Count; i++)
                 {
 
-                    var cb = (CheckBox)loadGridView.Rows[i].Cells[7].FindControl("chkSelect");
+                    var cb = (CheckBox)loadGridView.Rows[i].Cells[4].FindControl("chkSelect");
 
                     if (cb.Checked)
                     {
                         var aOrderInfoMaster = new FixedDiscountDao()
                         {
-                            DiscountId = Convert.ToInt32(loadGridView.DataKeys[i][1].ToString()),
+                            DiscountId = Convert.ToInt32(loadGridView.DataKeys[i][0].ToString()),
                             ActionStatus = RadioButtonList.SelectedItem.Text,
                             ApproveBy = Session["LoginName"].ToString(),
                             ApproveDate = DateTime.Today,
+                            ActiveDate = DateTime.Today
                         };
 
 
@@ -109,7 +110,7 @@ public partial class SInventory_UI_CustomerFixedDiscountApproval : System.Web.UI
 
         for (int i = 0; i < loadGridView.Rows.Count; i++)
         {
-            CheckBox cb = (CheckBox)loadGridView.Rows[i].Cells[7].FindControl("chkSelect");
+            CheckBox cb = (CheckBox)loadGridView.Rows[i].Cells[4].FindControl("chkSelect");
 
             if (cb.Checked)
             {
@@ -138,7 +139,7 @@ public partial class SInventory_UI_CustomerFixedDiscountApproval : System.Web.UI
 
         for (int i = 0; i < loadGridView.Rows.Count; i++)
         {
-            CheckBox ChkBoxRows = (CheckBox)loadGridView.Rows[i].Cells[9].FindControl("chkSelect");
+            CheckBox ChkBoxRows = (CheckBox)loadGridView.Rows[i].Cells[4].FindControl("chkSelect");
 
             if (ChkBoxHeader.Checked)
             {

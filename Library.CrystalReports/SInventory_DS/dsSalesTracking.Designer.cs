@@ -307,6 +307,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             private global::System.Data.DataColumn columnActualSales;
             
+            private global::System.Data.DataColumn columnAIT;
+            
+            private global::System.Data.DataColumn columnDOP;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public SalesTrackingDataDataTable() {
@@ -454,6 +458,22 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn AITColumn {
+                get {
+                    return this.columnAIT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DOPColumn {
+                get {
+                    return this.columnDOP;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -489,7 +509,23 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public SalesTrackingDataRow AddSalesTrackingDataRow(string CompanyName, string ComUnitCode, string ComUnitName, string CustomerCode, string CustomerName, string InvoiceNo, System.DateTime InvoiceDate, decimal InvoiceValue, decimal ReturnValue, decimal Discount, decimal InTransit, decimal PaymentAmount, decimal Due, decimal ActualSales) {
+            public SalesTrackingDataRow AddSalesTrackingDataRow(
+                        string CompanyName, 
+                        string ComUnitCode, 
+                        string ComUnitName, 
+                        string CustomerCode, 
+                        string CustomerName, 
+                        string InvoiceNo, 
+                        System.DateTime InvoiceDate, 
+                        decimal InvoiceValue, 
+                        decimal ReturnValue, 
+                        decimal Discount, 
+                        decimal InTransit, 
+                        decimal PaymentAmount, 
+                        decimal Due, 
+                        decimal ActualSales, 
+                        decimal AIT, 
+                        decimal DOP) {
                 SalesTrackingDataRow rowSalesTrackingDataRow = ((SalesTrackingDataRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         CompanyName,
@@ -505,7 +541,9 @@ namespace Library.CrystalReports.SInventory_DS {
                         InTransit,
                         PaymentAmount,
                         Due,
-                        ActualSales};
+                        ActualSales,
+                        AIT,
+                        DOP};
                 rowSalesTrackingDataRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowSalesTrackingDataRow);
                 return rowSalesTrackingDataRow;
@@ -542,6 +580,8 @@ namespace Library.CrystalReports.SInventory_DS {
                 this.columnPaymentAmount = base.Columns["PaymentAmount"];
                 this.columnDue = base.Columns["Due"];
                 this.columnActualSales = base.Columns["ActualSales"];
+                this.columnAIT = base.Columns["AIT"];
+                this.columnDOP = base.Columns["DOP"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -575,6 +615,10 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnDue);
                 this.columnActualSales = new global::System.Data.DataColumn("ActualSales", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnActualSales);
+                this.columnAIT = new global::System.Data.DataColumn("AIT", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAIT);
+                this.columnDOP = new global::System.Data.DataColumn("DOP", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDOP);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -941,6 +985,38 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal AIT {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableSalesTrackingData.AITColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AIT\' in table \'SalesTrackingData\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesTrackingData.AITColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public decimal DOP {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableSalesTrackingData.DOPColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DOP\' in table \'SalesTrackingData\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSalesTrackingData.DOPColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCompanyNameNull() {
                 return this.IsNull(this.tableSalesTrackingData.CompanyNameColumn);
             }
@@ -1105,6 +1181,30 @@ namespace Library.CrystalReports.SInventory_DS {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetActualSalesNull() {
                 this[this.tableSalesTrackingData.ActualSalesColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsAITNull() {
+                return this.IsNull(this.tableSalesTrackingData.AITColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetAITNull() {
+                this[this.tableSalesTrackingData.AITColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDOPNull() {
+                return this.IsNull(this.tableSalesTrackingData.DOPColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDOPNull() {
+                this[this.tableSalesTrackingData.DOPColumn] = global::System.Convert.DBNull;
             }
         }
         

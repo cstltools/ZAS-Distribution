@@ -297,7 +297,25 @@ namespace Library.BLL.SInventory_BLL
             aDetailForInsert.TotalQuantity = qty + bonusQty;
             aDetailForInsert.TotalPrice = qty*aDetailForInsert.UnitPrice;
             aDetailForInsert.DiscountPercentage = aInvoiceDetail.DiscountPercentage;
-            aDetailForInsert.DiscountAmount = aDetailForInsert.TotalPrice * (aInvoiceDetail.DiscountPercentage / 100);
+
+            if (aInvoiceDetail.DiscountPercentage > 0 && aInvoiceDetail.DiscountAmount > 0)
+            {
+                aDetailForInsert.DiscountAmount = ((aDetailForInsert.TotalPrice * aInvoiceDetail.DiscountPercentage) / 100);
+            }
+
+            if (aInvoiceDetail.DiscountPercentage == 0 && aInvoiceDetail.DiscountAmount > 0)
+            {
+                aDetailForInsert.DiscountAmount = (aInvoiceDetail.DiscountAmount / aInvoiceDetail.Quantity) * aDetailForInsert.Quantity;
+            }
+
+            if (aInvoiceDetail.DiscountPercentage == 0 && aInvoiceDetail.DiscountAmount == 0)
+            {
+                aDetailForInsert.DiscountAmount = 0;
+            }
+
+            //aDetailForInsert.DiscountAmount = aInvoiceDetail.DiscountPercentage == null ? (aDetailForInsert.TotalPrice * aInvoiceDetail.DiscountPercentage) / 100 : aInvoiceDetail.DiscountAmount;
+            
+            
             //aDetailForInsert.SpecialAmount = aDetailForInsert.TotalPrice * (aInvoiceDetail.SpecialAmountPer / 100);
             aDetailForInsert.SpecialAmount = aInvoiceDetail.SpecialAmount;
             
@@ -499,6 +517,11 @@ namespace Library.BLL.SInventory_BLL
        public DataTable ProductInfo(string comUnitId, string productCode)
        {
            return aInvoiceDal.ProductInfoDAL(comUnitId, productCode);
+       }
+
+       public DataTable ProductInfo(string comUnitId, string productCode,string customerCode)
+       {
+           return aInvoiceDal.ProductInfoDAL(comUnitId, productCode, customerCode);
        }
        public DataTable ProductFocBonusQtyBLL(string invoiceDate, string productCode, int qty)
        {
@@ -865,6 +888,17 @@ namespace Library.BLL.SInventory_BLL
         public DataTable GetFixedDiscount(string customerId, string unitId)
         {
             return aInvoiceDal.GetFixedDiscount(customerId, unitId);
+        }
+
+        public int SaveInvoiceMater(Invoice aInvoice)
+        {
+            return aInvoiceDal.SaveInvoiceMater(aInvoice);
+        }
+
+        public DataTable GetInvoiceNoById(int invId)
+        {
+            return aInvoiceDal.GetInvoiceNoById(invId);
+            
         }
     }
 }

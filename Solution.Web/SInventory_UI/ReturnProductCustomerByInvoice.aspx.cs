@@ -83,7 +83,7 @@ public partial class SInventory_UI_ReturnProductCustomerByInvoice : System.Web.U
                 .ToString("dd-MMM-yyyy");
             invoiceHiddenField.Value = invoiceId;
 
-            LoadAdjustableInvoiceNo(dtinvoice.Rows[0]["CustomerCode"].ToString());
+            //LoadAdjustableInvoiceNo(dtinvoice.Rows[0]["CustomerCode"].ToString());
 
         }
      

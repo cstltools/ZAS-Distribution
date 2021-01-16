@@ -299,6 +299,8 @@ namespace Library.CrystalReports.SInventory_DS {
             
             private global::System.Data.DataColumn columnToDate;
             
+            private global::System.Data.DataColumn columnOrderNo;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public CustomerWiseReturnByProductDataTable() {
@@ -414,6 +416,14 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn OrderNoColumn {
+                get {
+                    return this.columnOrderNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -449,7 +459,7 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public CustomerWiseReturnByProductRow AddCustomerWiseReturnByProductRow(string CompanyName, string CustomerCode, string CustomerName, string ProductCode, string ProductName, string PackSize, decimal Qty, decimal Value, string FromDate, string ToDate) {
+            public CustomerWiseReturnByProductRow AddCustomerWiseReturnByProductRow(string CompanyName, string CustomerCode, string CustomerName, string ProductCode, string ProductName, string PackSize, decimal Qty, decimal Value, string FromDate, string ToDate, string OrderNo) {
                 CustomerWiseReturnByProductRow rowCustomerWiseReturnByProductRow = ((CustomerWiseReturnByProductRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         CompanyName,
@@ -461,7 +471,8 @@ namespace Library.CrystalReports.SInventory_DS {
                         Qty,
                         Value,
                         FromDate,
-                        ToDate};
+                        ToDate,
+                        OrderNo};
                 rowCustomerWiseReturnByProductRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCustomerWiseReturnByProductRow);
                 return rowCustomerWiseReturnByProductRow;
@@ -494,6 +505,7 @@ namespace Library.CrystalReports.SInventory_DS {
                 this.columnValue = base.Columns["Value"];
                 this.columnFromDate = base.Columns["FromDate"];
                 this.columnToDate = base.Columns["ToDate"];
+                this.columnOrderNo = base.Columns["OrderNo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -519,6 +531,8 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnFromDate);
                 this.columnToDate = new global::System.Data.DataColumn("ToDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnToDate);
+                this.columnOrderNo = new global::System.Data.DataColumn("OrderNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOrderNo);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -828,6 +842,22 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string OrderNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableCustomerWiseReturnByProduct.OrderNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OrderNo\' in table \'CustomerWiseReturnByProduct\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCustomerWiseReturnByProduct.OrderNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCompanyNameNull() {
                 return this.IsNull(this.tableCustomerWiseReturnByProduct.CompanyNameColumn);
             }
@@ -944,6 +974,18 @@ namespace Library.CrystalReports.SInventory_DS {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetToDateNull() {
                 this[this.tableCustomerWiseReturnByProduct.ToDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsOrderNoNull() {
+                return this.IsNull(this.tableCustomerWiseReturnByProduct.OrderNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetOrderNoNull() {
+                this[this.tableCustomerWiseReturnByProduct.OrderNoColumn] = global::System.Convert.DBNull;
             }
         }
         

@@ -19,7 +19,7 @@ public partial class MasterPages_MainMasterPage : System.Web.UI.MasterPage
     {
         if (Session["UserId"] == null ||  Session["UserId"].ToString() == "")
         {
-            Response.Redirect("../Login.aspx");
+         Response.Redirect("../Login.aspx");
         }
         if (!IsPostBack)
         {
@@ -46,7 +46,9 @@ public partial class MasterPages_MainMasterPage : System.Web.UI.MasterPage
         string rightC = @"right-corner";
 
 
-        aDataTableMenu = Convert.ToInt32(Session["UserId"])==1 ? aDal.MainMenu() : aDal.MainMenu(Convert.ToInt32(Session["UserId"]));
+        aDataTableMenu = Convert.ToInt32(Session["UserId"]) == 1 ? aDal.MainMenu() : aDal.MainMenu(Convert.ToInt32(Session["UserId"]));
+
+        DataTable aTable = aDal.GetDashboardPermission(Session["LoginName"].ToString());
         
 
         if (aDataTableMenu.Rows.Count > 0)
@@ -56,6 +58,8 @@ public partial class MasterPages_MainMasterPage : System.Web.UI.MasterPage
             string manurHtml = "";
 
           manurHtml=@"<nav id="+navigation+" >";
+
+         
           manurHtml = manurHtml + @"<div class=" + leftC + "></div><div class=" + rightC +"></div>";
             
             
@@ -63,11 +67,24 @@ public partial class MasterPages_MainMasterPage : System.Web.UI.MasterPage
 
             manurHtml = manurHtml + @"<ul class=" + clM + " id=" + responsive + ">";
 
+            if (Session["LoginName"].ToString() == "admin")
+            {
+                manurHtml = manurHtml + @" <li><a href='../SInventory_UI/DashboardPanel.aspx' target='_blank'><i class='halflings'></i> Dashboard </a>";
+            }
+            else
+            {
+                if (aTable.Rows.Count > 0)
+                {
+                    manurHtml = manurHtml + @" <li><a href='../SInventory_UI/DashboardPanel.aspx' target='_blank'><i class='halflings'></i> Dashboard </a>"; 
+                }
+            }
+            
             for (int i = 0; i < aDataTableMenu.Rows.Count; i++)
             {
                 //////////////////////////////////////////////////MainMenuBind/////////////////////////////////////////////////////////
 
 
+                
 
                 manurHtml = manurHtml + @" <li><a href=" + aDataTableMenu.Rows[i]["URL"].ToString().Trim() + "><i class=" + parent + "></i>" +
                             aDataTableMenu.Rows[i]["ManuName"].ToString().Trim() + " </a>";

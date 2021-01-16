@@ -181,9 +181,9 @@
                             &nbsp;
                         </td>
                         <td width="20%" class="TDRight">
-                            <asp:Button ID="submitButton" runat="server" OnClick="submitButton_Click" Text="View Report" />
-                            <asp:Button ID="clearButton" CssClass="clearButton" BackColor="#E8BC31" runat="server"
-                                OnClick="clearButton_OnClick" Text="Clear" />
+                            <asp:Button ID="gridButton" runat="server" OnClick="gridButton_Click" Text="Grid view" BackColor="#339933" CssClass="button-padding-right" />
+                            <asp:Button ID="submitButton" runat="server" OnClick="submitButton_Click" CssClass="button-padding-right" Text="Preview" />
+                            <asp:Button ID="clearButton"  BackColor="#E8BC31" runat="server" OnClick="clearButton_OnClick" Text="Clear" />
                         </td>
                         <td width="13%" class="TDLeft">
                             &nbsp;
@@ -210,6 +210,34 @@
                         </td>
                         <td class="TDRight" width="20%">
                             &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TDLeft" colspan="6">
+                            <div id="gridContainer" style="text-align: center; height: auto; overflow: auto;
+                                width: 97%; margin: 0 auto;">
+                                <asp:GridView ID="batchGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview">
+                                    <Columns>
+                                        <asp:BoundField DataField="CompanyName" HeaderText="Company Name" />
+                                        <asp:BoundField DataField="ComUnitName" HeaderText="Unit Name" />
+                                        <asp:BoundField DataField="CustomerCode" HeaderText="Customer Code" />
+                                        <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
+                                        <asp:BoundField DataField="MIO" HeaderText="MIO Name" />
+                                        <asp:BoundField DataField="InvoiceNo" HeaderText="Invoice No" />
+                                        <asp:BoundField DataField="InvoiceDate" HeaderText="Invoice Date" DataFormatString="{0:dd-MMM-yyyy}" />
+                                        <asp:BoundField DataField="InvoiceValue" HeaderText="Invoice Value" />
+                                        <asp:BoundField DataField="ActualSales" HeaderText="Actual Sales" />
+                                        <asp:BoundField DataField="Discount" HeaderText="Discount" />
+                                        <asp:BoundField DataField="InTransit" HeaderText="In-Transit" />
+                                        <asp:BoundField DataField="ReturnValue" HeaderText="ReturnValue" />
+                                        <asp:BoundField DataField="PaymentAmount" HeaderText="Payment Amount" />
+                                        <asp:BoundField DataField="AIT" HeaderText="AIT" />
+                                        <asp:BoundField DataField="DOP" HeaderText="Discount On Payment" />
+                                        <asp:BoundField DataField="Due" HeaderText="Due" />
+                                        <asp:BoundField DataField="PrevousCollection" HeaderText="Prevous Collection" />
+                                    </Columns>
+                                </asp:GridView>
+                            </div>
                         </td>
                     </tr>
                     <tr>

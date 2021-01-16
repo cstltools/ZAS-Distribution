@@ -63,7 +63,7 @@
                             
                             <div id="gridContainer1" style="height: 350px; overflow: auto; width: 97%; margin: 0 auto;">
                                 <asp:GridView ID="loadGridView" runat="server" AutoGenerateColumns="False" 
-                                CssClass="gridview" DataKeyNames="UnitPriceId" >
+                                CssClass="gridview" DataKeyNames="UnitPriceId,ProductId" >
                                 <Columns>
                                     <asp:BoundField DataField="ProductCode" HeaderText="Product Code" />
                                     <asp:BoundField DataField="ProductName" HeaderText="Product Name" />

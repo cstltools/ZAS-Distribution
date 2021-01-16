@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -37,6 +38,28 @@ public partial class SInventory_UI_WingsWiseCollectionReport : System.Web.UI.Pag
             dcDropDownList.Items.Clear();
             
         }
+
+
+        if (Session["IsHead"].ToString() == "True")
+        {
+            DataTable aTable = aReportDal.GetUserCompanyById(Session["UserId"].ToString());
+
+            if (aTable.Rows.Count > 0)
+            {
+                companyNameDropDownList.SelectedValue = aTable.Rows[0].Field<Int32>("CompanyId").ToString(CultureInfo.InvariantCulture);
+                companyNameDropDownList_SelectedIndexChanged(null, null);
+            }
+        }
+       
+
+        //if (Session["UserType"].ToString() != "Admin")
+        //{
+        //    companyNameDropDownList.Enabled = false;
+        //}
+        //else
+        //{
+        //    companyNameDropDownList.Enabled = true;
+        //}
 
     }
 
@@ -85,7 +108,7 @@ public partial class SInventory_UI_WingsWiseCollectionReport : System.Web.UI.Pag
 
         if (Session["UserType"].ToString() != "")
         {
-            if (Session["UserType"].ToString() != "Admin")
+            if (Session["UserType"].ToString() != "Admin" && Session["IsHead"].ToString() != "True")
             {
                 if (dcDropDownList.SelectedValue == "")
                 {
