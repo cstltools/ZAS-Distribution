@@ -27,5 +27,11 @@ namespace Library.DAL.SInventory_DAL
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public DataTable GetIsHeadInfo(string userId)
+        {
+            string query = @"SELECT * FROM dbo.tblUser WHERE IsHead = 1 AND UserId = " + userId;
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
     }
 }

@@ -57,6 +57,8 @@ public partial class SInventory_UI_NationalStockReport : System.Web.UI.Page
                                 " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '383' THEN 'ZAS NOC'" +
                                 " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '384' THEN 'ZAS Baby Care'" +
                                 " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '385' THEN 'ZAS Neurology'" +
+                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '386' THEN 'ZAS Hematology'" +
+                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '387' THEN 'Aqvida Bangladesh'" +
 								" ELSE ''" +  
 								" END = '" + companyNameDropDownList.SelectedItem.Text + "'";
         }

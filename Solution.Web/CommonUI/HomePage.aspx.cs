@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -10,19 +11,109 @@ using Library.DAL.SInventory_DAL;
 public partial class CommonUI_HomePage : System.Web.UI.Page
 {
     DashboardDal aDal = new DashboardDal();
+    OrderInfoDAL aOrderInfoDal = new OrderInfoDAL();
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
             LoadExpireProduct();
+            //LoadPendingInvoice();
+            SetOrderDateVisibility();
+
         }
+    }
+
+    private void SetOrderDateVisibility()
+    {
+        if (Session["UserId"] != null && Session["UserId"].ToString() != "")
+        {
+            DataTable dtTable = aDal.GetIsHeadInfo(Session["UserId"].ToString());
+
+            order.Visible = dtTable.Rows.Count > 0;
+        }
+    }
+
+    private void LoadPendingInvoice()
+    {
+        if (Session["UserId"] != null && Session["UserId"].ToString() != "")
+        {
+            DataTable dtTable = aDal.GetIsHeadInfo(Session["UserId"].ToString());
+
+            if (dtTable.Rows.Count > 0)
+            {
+
+                DataTable aTable = aOrderInfoDal.LoadOrderForOrderCreation(GenerateParameter());
+
+                if (aTable.Rows.Count > 0)
+                {
+                    orderGridView.DataSource = aTable;
+                    orderGridView.DataBind();
+
+
+                    for (int i = 0; i < aTable.Rows.Count; i++)
+                    {
+                        var gotoinvoiceButton = (Button)orderGridView.Rows[i].Cells[1].FindControl("gotoinvoiceButton");
+
+                        if (orderGridView.DataKeys[i]["Permission"].ToString() == "1")
+                        {
+                            gotoinvoiceButton.Enabled = true;
+                            gotoinvoiceButton.Text = "Generate Invoice";
+                            gotoinvoiceButton.ToolTip = "";
+                        }
+                        else
+                        {
+                            gotoinvoiceButton.Enabled = false;
+                            gotoinvoiceButton.BackColor = Color.DarkRed;
+                            gotoinvoiceButton.Text = "Unable to Access";
+                            gotoinvoiceButton.ToolTip = "Credit limit extention required !!!";
+                        }
+                    }
+                }
+                else
+                {
+                    orderGridView.DataSource = null;
+                    orderGridView.DataBind();
+                }
+            }
+        }
+    }
+
+    protected void gotoinvoiceButton_Click(object sender, EventArgs e)
+    {
+        Button button = (Button)sender;
+        GridViewRow currentRow = (GridViewRow)button.Parent.Parent;
+        int rowindex = 0;
+        rowindex = currentRow.RowIndex;
+
+        Session["OrderId"] = orderGridView.DataKeys[rowindex]["OrderId"].ToString();
+        Response.Redirect("~/SInventory_UI/InvoiceCreationForCustomerByOrder.aspx");
+
+    }
+
+    public string GenerateParameter()
+    {
+        string param = "";
+
+        if (orderDateTextBox.Text != string.Empty)
+        {
+            param = param + " AND tblOrder.SubmissionDate='" + orderDateTextBox.Text + "'";
+        }
+
+        if (Session["UserId"] != null && Session["UserId"].ToString() != "")
+        {
+            param = param + " AND (CASE WHEN ((ISNULL(D.DUE,0) > ISNULL(CR.LimitAmount,0)) OR (ISNULL(DATEDIFF(day, InvoiceDate,GETDATE()),0) > ISNULL(CR.DayLimit,0))) AND TermOfPayment = 'Credit'  THEN 0 ELSE 1 END) = 0 AND CI.CompanyId IN (SELECT DISTINCT CI.CompanyId FROM tblUserCompanyUnit AS UNT LEFT JOIN tblCompanyUnit AS DC ON UNT.CompanyUnitId = DC.ComUnitId LEFT JOIN tblCompanyInfo AS CI ON DC.CompanyId = CI.CompanyId WHERE UserId = " + Session["UserId"].ToString() + ")";
+
+        }
+       
+
+        return param;
     }
 
     private void LoadExpireProduct()
     {
 
-        if (Session["UserId"] != null || Session["UserId"].ToString() != "")
+        if (Session["UserId"] != null && Session["UserId"].ToString() != "")
         {
             DataTable dtTable = aDal.GetUserPermissionInfo(Session["UserId"].ToString());
 
@@ -50,4 +141,8 @@ public partial class CommonUI_HomePage : System.Web.UI.Page
         ModalPopupExtender10.Hide();
     }
 
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        LoadPendingInvoice();
+    }
 }

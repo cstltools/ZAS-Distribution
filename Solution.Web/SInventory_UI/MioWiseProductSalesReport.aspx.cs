@@ -124,6 +124,9 @@ public partial class SInventory_UI_MioWiseProductSalesReport : System.Web.UI.Pag
         Session["PRAM"] = "";
         Session["PRAM"] = GetPrameterList();
 
+        Session["PRAM2"] = "";
+        Session["PRAM2"] = GetPrameterList2();
+
         Session["FromDate"] = "";
         Session["FromDate"] = fromDateTextBox.Text.Trim();
 
@@ -144,10 +147,7 @@ public partial class SInventory_UI_MioWiseProductSalesReport : System.Web.UI.Pag
             parameter = parameter + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate BETWEEN '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "' AND ' " + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
         }
 
-        if (companyNameDropDownList.SelectedValue != "")
-        {
-            parameter = parameter + " AND CI.CompanyId = '" + companyNameDropDownList.SelectedValue + "'";
-        }
+        
 
         if (dcDropDownList.SelectedValue != "")
         {
@@ -157,6 +157,24 @@ public partial class SInventory_UI_MioWiseProductSalesReport : System.Web.UI.Pag
         if (mioDropDownList.SelectedValue != "")
         {
             parameter = parameter + " AND INV.MiaId = '" + mioDropDownList.SelectedValue + "'";
+        }
+
+        return parameter;
+
+    }
+    
+    private String GetPrameterList2()
+    {
+        string parameter = "";
+
+        if (companyNameDropDownList.SelectedValue != "")
+        {
+            parameter = parameter + " AND CI.CompanyId = '" + companyNameDropDownList.SelectedValue + "'";
+        }
+
+        if (mioDropDownList.SelectedValue != "")
+        {
+            parameter = parameter + " AND TGRT.MiaId = '" + mioDropDownList.SelectedValue + "'";
         }
 
         return parameter;

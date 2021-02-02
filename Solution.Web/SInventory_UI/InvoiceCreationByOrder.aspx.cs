@@ -153,6 +153,7 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
     public string GenerateParameter()
     {
         string param = "";
+
         if (manufacDropDownList.SelectedIndex != 0)
         {
             param = param + "  AND tblCompanyUnit.CompanyId='" + manufacDropDownList.SelectedValue + "' ";
@@ -162,6 +163,7 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
         {
             param = param + " AND tblCompanyUnit.ComUnitId='" + salesCenterDropDownList.SelectedValue + "'";
         }
+
         if (areaDropDownList.SelectedIndex > 0)
         {
             param = param + " AND tblOrder.AreaId='" + areaDropDownList.SelectedValue + "'";
@@ -171,18 +173,25 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
         {
             param = param + " AND tblOrder.TerritoryId='" + territoryDropDownList.SelectedValue + "'";
         }
+
         if (marketDropDownList.SelectedIndex > 0)
         {
             param = param + " AND tblOrder.MarketId='" + marketDropDownList.SelectedValue + "'";
         }
+
         if (orderDateTextBox.Text !=string.Empty)
         {
             param = param + " AND tblOrder.SubmissionDate='" + orderDateTextBox.Text + "'";
         }
-        if (custDropDownList.SelectedIndex >0)
+
+        if (custDropDownList.SelectedIndex > 0)
         {
             param = param + " AND tblOrder.CustomerMasterId='" + custDropDownList.SelectedValue + "'";
         }
+
+        
+            param = param + " AND (CASE WHEN ((ISNULL(D.DUE,0) > ISNULL(CR.LimitAmount,0)) OR (ISNULL(DATEDIFF(day, InvoiceDate,GETDATE()),0) > ISNULL(CR.DayLimit,0))) AND TermOfPayment = 'Credit'  THEN 0 ELSE 1 END) = 1";
+        
 
         return param;
     }
