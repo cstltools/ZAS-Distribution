@@ -82,9 +82,9 @@ public partial class HRM_UI_TDLUser : System.Web.UI.Page
                 Password = userPasswordTextBox.Text,
                 UserStatus = userStatusNameDropDownList.SelectedItem.Text,
                 Email = emailNameTextBox.Text,
-                IsHead = isHeadCheckBox.Checked
+                IsHead = isHeadCheckBox.Checked,
+                IsCreditApproval = isCreditApproval.Checked
                 
-
             };
 
             UserCompanyUnit aUserCompanyUnit = new UserCompanyUnit()

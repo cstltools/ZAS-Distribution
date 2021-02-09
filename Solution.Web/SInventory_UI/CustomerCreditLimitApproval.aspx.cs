@@ -80,6 +80,7 @@ public partial class SInventory_UI_CustomerCreditLimitApproval : System.Web.UI.P
             {
 
                 CheckBox cb = (CheckBox)loadGridView.Rows[i].Cells[5].FindControl("chkSelect");
+
                 if (cb.Checked == true)
                 {
                     CreditLimitDAO aLimitDao = new CreditLimitDAO()

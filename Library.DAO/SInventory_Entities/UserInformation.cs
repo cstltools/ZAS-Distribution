@@ -18,5 +18,6 @@ namespace Library.DAO.SInventory_Entities
         public string ContactNo { get; set; }
         public string UserCode { get; set; }
         public bool IsHead { get; set; }
+        public bool IsCreditApproval { get; set; }
     }
 }

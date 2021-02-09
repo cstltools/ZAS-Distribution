@@ -74,7 +74,8 @@ public partial class SInventory_UI_UserEdit : System.Web.UI.Page
                 UserStatus = userStatusTextBox.Text,
                 Email = emailTextBox.Text,
                 ContactNo = contactTextBox.Text,
-                IsHead = isHeadCheckBox.Checked
+                IsHead = isHeadCheckBox.Checked,
+                IsCreditApproval = isCreditApproval.Checked
                 
             };
             UserBLL aBll = new UserBLL();
@@ -117,6 +118,15 @@ public partial class SInventory_UI_UserEdit : System.Web.UI.Page
         else
         {
             isHeadCheckBox.Checked = false;
+        }
+
+        if (aInformation.IsCreditApproval)
+        {
+            isCreditApproval.Checked = true;
+        }
+        else
+        {
+            isCreditApproval.Checked = false;
         }
   
     }

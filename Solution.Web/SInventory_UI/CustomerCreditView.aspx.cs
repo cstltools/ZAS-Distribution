@@ -95,28 +95,39 @@ public partial class SInventory_UI_CustomerCreditView : System.Web.UI.Page
 
     protected void loadGridView_RowCommand(object sender, GridViewCommandEventArgs e)
     {
+
         if (e.CommandName == "EditData")
         {
             int rowindex = Convert.ToInt32(e.CommandArgument);
             var dataKey = invoiceGridView.DataKeys[rowindex];
 
-            if (Session["LoginName"].ToString() == "rezaul" || Session["LoginName"].ToString() == "Mehedi")
+
+            if (Session["UserId"] != null && Session["UserId"].ToString() != "")
             {
-                if (dataKey != null)
+                DashboardDal aDal = new DashboardDal();
+                DataTable dtTable = aDal.GetIsCreditApprovalInfo(Session["UserId"].ToString());
+
+                if (dtTable.Rows.Count > 0)
                 {
-                    string creditId = dataKey[0].ToString();
+                    if (dataKey != null)
+                    {
+                        string creditId = dataKey[0].ToString();
 
-                    Session["CreditId"] = "";
-                    Session["CreditId"] = creditId;
+                        Session["CreditId"] = "";
+                        Session["CreditId"] = creditId;
 
-                    Response.Redirect("CustomerCreditLimitEntry.aspx");
+                        Response.Redirect("CustomerCreditLimitEntry.aspx");
+                    }
+                }
+                else
+                {
+                    ShowMessageBox("You don't have authorization of this operation !!!");
+                    viewRptButton_Click(null, null);
+                    
+                    
                 }
             }
-            else
-            {
-                ShowMessageBox("You don't have authorisation of this operation !!!");
-                viewRptButton_Click(null,null);
-            }
+            
         }
     }
 

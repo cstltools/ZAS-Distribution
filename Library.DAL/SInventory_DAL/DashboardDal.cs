@@ -33,5 +33,11 @@ namespace Library.DAL.SInventory_DAL
             string query = @"SELECT * FROM dbo.tblUser WHERE IsHead = 1 AND UserId = " + userId;
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public DataTable GetIsCreditApprovalInfo(string userId)
+        {
+            string query = @"SELECT * FROM dbo.tblUser WHERE IsCreditApproval = 1 AND UserId = " + userId;
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
     }
 }

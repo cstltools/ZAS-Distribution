@@ -14,9 +14,9 @@ namespace Library.DAL.SInventory_DAL
         private ClsCommonInternalDAL aCommonInternalDal = new ClsCommonInternalDAL();
         public bool SaveUserInformation(UserInformation aInformation)
         {
-            string insertQuery = @"insert into tblUser (UserId,UserName,UserType,LoginName,Password,UserStatus,Email,ContactNo,UserCode,IsHead) 
+            string insertQuery = @"insert into tblUser (UserId,UserName,UserType,LoginName,Password,UserStatus,Email,ContactNo,IsCreditApproval,UserCode,IsHead) 
             values (" + aInformation.UserId + ",'" + aInformation.UserName + "','" + aInformation.UserType + "','" + aInformation.LoginName + "'," +
-                      "'" + aInformation.Password + "','" + aInformation.UserStatus + "','" + aInformation.Email + "','" + aInformation.ContactNo + "','" + aInformation.UserCode + "','" + aInformation.IsHead + "')";
+                      "'" + aInformation.Password + "','" + aInformation.UserStatus + "','" + aInformation.Email + "','" + aInformation.ContactNo + "','" + aInformation.IsCreditApproval + "','" + aInformation.UserCode + "','" + aInformation.IsHead + "')";
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
 
@@ -98,6 +98,7 @@ namespace Library.DAL.SInventory_DAL
                     aUserInformation.Email = dataReader["Email"].ToString();
                     aUserInformation.ContactNo = dataReader["ContactNo"].ToString();
                     aUserInformation.IsHead = Convert.ToBoolean(dataReader["IsHead"].ToString());
+                    aUserInformation.IsCreditApproval = Convert.ToBoolean(dataReader["IsCreditApproval"].ToString());
                 }
 
             }
@@ -107,7 +108,7 @@ namespace Library.DAL.SInventory_DAL
         public bool UpdateUserInfo(UserInformation aUserInformation)
         {
 
-            string query = @"UPDATE tblUser SET UserName='" + aUserInformation.UserName + "',UserType='" + aUserInformation.UserType + "',LoginName='" + aUserInformation.LoginName + "',Password='" + aUserInformation.Password + "',UserStatus='" + aUserInformation.UserStatus + "',Email='" + aUserInformation.Email + "',ContactNo='" + aUserInformation.ContactNo + "',IsHead='" + aUserInformation.IsHead +  "' WHERE UserId=" + aUserInformation.UserId + "";
+            string query = @"UPDATE tblUser SET UserName='" + aUserInformation.UserName + "',UserType='" + aUserInformation.UserType + "',LoginName='" + aUserInformation.LoginName + "',Password='" + aUserInformation.Password + "',UserStatus='" + aUserInformation.UserStatus + "',Email='" + aUserInformation.Email + "',IsCreditApproval='" + aUserInformation.IsCreditApproval + "',ContactNo='" + aUserInformation.ContactNo + "',IsHead='" + aUserInformation.IsHead + "' WHERE UserId=" + aUserInformation.UserId + "";
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
         }
 

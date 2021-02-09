@@ -88,13 +88,16 @@ public partial class SInventory_UI_MioWiseProductSalesReport : System.Web.UI.Pag
     {
         if (Session["UserType"].ToString() != "")
         {
+
+            if (companyNameDropDownList.SelectedValue == "")
+            {
+                ShowMessageBox("Please Select company !!");
+                return false;
+            }
+
             if (Session["UserType"].ToString() != "Admin")
             {
-                if (companyNameDropDownList.SelectedValue == "")
-                {
-                    ShowMessageBox("Please Select company !!");
-                    return false;
-                }
+                
 
                 if (dcDropDownList.SelectedValue == "")
                 {
@@ -126,6 +129,9 @@ public partial class SInventory_UI_MioWiseProductSalesReport : System.Web.UI.Pag
 
         Session["PRAM2"] = "";
         Session["PRAM2"] = GetPrameterList2();
+        
+        Session["COMID"] = "";
+        Session["COMID"] = companyNameDropDownList.SelectedValue;
 
         Session["FromDate"] = "";
         Session["FromDate"] = fromDateTextBox.Text.Trim();

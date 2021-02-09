@@ -25,11 +25,12 @@ public partial class SInventory_RPTVIEW_MioWiseProductSalesReportViewer : System
         var asmDataTable = new DataTable();
         string parameter = Session["PRAM"].ToString();
         string parameter2 = Session["PRAM2"].ToString();
+        Int32 comId = Convert.ToInt32(Session["COMID"].ToString());
 
         string fromDate = Session["FromDate"].ToString();
         string toDate = Session["ToDate"].ToString();
 
-        asmDataTable = aReportDal.GetMioWiseProductSales(parameter, fromDate, toDate, parameter2).Copy();
+        asmDataTable = aReportDal.GetMioWiseProductSales(parameter, fromDate, toDate, parameter2, comId).Copy();
 
         var ds = new DataSet();
 
