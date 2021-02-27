@@ -86,12 +86,11 @@ namespace Library.DAL.SInventory_DAL
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
-
         public DataTable GetProductPriceReportInfo(string parameter)
         {
             string query = @"SELECT Ci.CompanyName,PD.ProductCode,PD.ProductName,PD.PackSize,UnitPrice,MRPPrice, ISNULL(TPVat, 0) AS Vat,IsActive,ActiveDate,InActiveDate from tblUnitPrice WITH(NOLOCK)
                              INNER JOIN dbo.tblProduct AS PD ON PD.ProductId = tblUnitPrice.ProductId
-                             INNER JOIN dbo.tblCompanyInfo AS CI ON CI.CompanyId = PD.CompanyId " + parameter + " ORDER BY IsActive DESC";
+                             INNER JOIN dbo.tblCompanyInfo AS CI ON CI.CompanyId = PD.CompanyId " + parameter + " AND IsActive = 1 ORDER BY IsActive DESC";
             
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

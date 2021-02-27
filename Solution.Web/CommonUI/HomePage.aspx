@@ -110,13 +110,12 @@
                     <asp:GridView ID="orderGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview"
                         DataKeyNames="ComUnitId,ManufacId,OrderId,Permission">
                         <Columns>
+                            <asp:BoundField DataField="ComUnitName" HeaderText="Wings Name" />
                             <asp:BoundField DataField="OrderCode" HeaderText="Order No" />
                             <asp:BoundField DataField="SubmissionDate" HeaderText="Order Date" DataFormatString="{0:dd-MMM-yyyy}" />
                             <asp:BoundField DataField="CustomerCode" HeaderText="Customer Code" />
                             <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
                             <asp:BoundField DataField="MarketName" HeaderText="Market" />
-                            <%--<asp:BoundField DataField="SalesCenterCode" HeaderText="Sales Center Code" />
-                                    <asp:BoundField DataField="SalesCenterName" HeaderText="Sales Center Name" />--%>
                             <asp:BoundField DataField="MIOCode" HeaderText="MIO Code" />
                             <asp:BoundField DataField="MIOName" HeaderText="MIO Name" />
                             <asp:TemplateField HeaderText="Go To Invoice">
