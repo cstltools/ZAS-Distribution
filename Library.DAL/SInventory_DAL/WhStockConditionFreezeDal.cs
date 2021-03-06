@@ -82,7 +82,7 @@ namespace Library.DAL.SInventory_DAL
 				CASE 
 				WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '371' THEN 'ZAS Dermal'
 				WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '372' THEN 'ZAS Critical Care'
-				WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '373' THEN 'ZAS Opthalmic'
+				WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '373' THEN 'ZAS Ophthalmic'
 				WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '379' THEN 'ZAS Active' 
 				WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '375' THEN 'ZAS Dental ( Clinic )'
 				WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '381' THEN 'ZAS Dental ( Lab  )'
