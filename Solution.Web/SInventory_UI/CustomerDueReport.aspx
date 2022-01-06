@@ -36,7 +36,7 @@
                     <tr runat="server">
                         
                         
-                        <%--<td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
                             From Date: <span class="star-mark"> * </span>
                         </td>
                         <td width="20%" class="TDRight">
@@ -46,7 +46,7 @@
                             <asp:CalendarExtender ID="Date" runat="server" Format="dd-MMM-yyyy" PopupButtonID="imgDate"
                                 TargetControlID="fromDateTextBox">
                             </asp:CalendarExtender>
-                        </td>--%>
+                        </td>
                         
                         <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
                             To Date: <span class="star-mark"> * </span>
@@ -61,15 +61,9 @@
                         </td>
                         
                         
-                        <td width="13%" class="TDLeft">
-                        </td>
-                        <td width="20%" class="TDRight">
-                        </td>
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">                            Customer Code:                        </td>                        <td width="20%" class="TDRight">                            <asp:TextBox ID="txtCustomerCode" runat="server" Width="145px" CssClass="TextBoxCalander"></asp:TextBox>                        </td>                        <td width="13%" class="TDLeft">                        </td>                        <td width="20%" class="TDRight">                        </td>
 
-                        <td width="13%" class="TDLeft">
-                        </td>
-                        <td width="20%" class="TDRight">
-                        </td>
+                        
                     </tr>
                     
 
@@ -212,6 +206,7 @@
                                     <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
                                     <asp:BoundField DataField="InvoiceNo" HeaderText="Invoice No" />
                                     <asp:BoundField DataField="InvoiceDate" HeaderText="Invoice Date" DataFormatString="{0:dd-MMM-yyyy}" />
+                                    <asp:BoundField DataField="DeliveryTpGrandTotal" HeaderText="Actual Value" />
                                     <asp:BoundField DataField="DueAmount" HeaderText="Due Amount" />
 
                                     <asp:TemplateField HeaderText="Action" >

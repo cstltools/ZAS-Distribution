@@ -56,6 +56,35 @@ public partial class SInventory_RPTVIEW_WHStockInReportViewer : System.Web.UI.Pa
             }  
         }
 
+        else if (rptType == "STI")
+        {
+            string pram = Session["PRAM"].ToString();
+
+            DataTable detailDataTable = aStockInReportBll.LoadWarehouseStockInStatement(pram).Copy();
+
+            DataSet Ds = new DataSet();
+
+            detailDataTable.TableName = "StockInStatementDataTable";
+            companyInfoDataTable.TableName = "companyInfoDataTable";
+
+            Ds.Tables.Add(detailDataTable);
+            Ds.Tables.Add(companyInfoDataTable);
+
+            rptdoc.Load(ReportPath("crpWHStockInStatement.rpt"));
+            rptdoc.SetDataSource(Ds);
+
+            if (excel == 0)
+            {
+                crvWHStockInReport.ReportSource = rptdoc;
+                crvWHStockInReport.DataBind();
+            }
+
+            else
+            {
+                rptdoc.ExportToHttpResponse(ExportFormatType.ExcelRecord, Response, true, "Stock Detail Report");
+            }
+        }
+
         else if (rptType == "CSR")
         {
             DataTable comUnitDetailDataTable = new DataTable();

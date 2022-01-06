@@ -231,5 +231,18 @@ namespace Library.DAL.SInventory_DAL
 
             return aCommonInternalDal.UpdateAction("sp_ProductDestroyPosting", aSqlParameterList);
         }
+
+        public DataTable LoadDestroyProductSatementInfo(string parameter)
+        {
+            string query = @"SELECT CI.CompanyName,UNT.ComUnitName,StockOutDate,ApproveDate,
+                             ProductCode,ProductName,PackSize,StockOutQty,DP.Reason,ExpDate FROM tblDestroyProduct DP
+                             LEFT JOIN tblDCStoreFreeze DFZ ON DP.DcFreezeId = DFZ.DCStoreFreezeId
+                             LEFT JOIN tblCompanyUnit UNT ON UNT.ComUnitId = DFZ.ComUnitId
+                             LEFT JOIN tblCompanyInfo CI ON UNT.CompanyId = CI.CompanyId
+                             LEFT JOIN tblUser USR ON DP.StockOutBy = USR.UserId
+                             WHERE ProductName IS NOT NULL " + parameter + " ORDER BY CompanyName,ProductCode";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
     }
 }

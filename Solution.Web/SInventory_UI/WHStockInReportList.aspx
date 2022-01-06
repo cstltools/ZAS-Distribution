@@ -96,11 +96,54 @@
                                 <asp:ListItem> --- Select --- </asp:ListItem>
                                 <asp:ListItem Value="STD"> StockIn Detail Report </asp:ListItem>
                                 <asp:ListItem Value="CSR"> Current Stock Report </asp:ListItem>
+                                <asp:ListItem Value="STI"> Stock In Report </asp:ListItem>
                             </asp:DropDownList>
                         </td>
                         <td width="13%" class="TDLeft">
                         </td>
                         <td width="20%" class="TDRight">
+                        </td>
+                    </tr>
+                    <tr id="fromDate" runat="server" visible="False">
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                         <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            (Stock In) From Date: <span class="star-mark"> * </span>
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:TextBox ID="fromDateTextBox" runat="server" CssClass="TextBoxCalander"></asp:TextBox>
+                            <asp:ImageButton runat="server" AlternateText="Click to show calendar" ImageUrl="~/Images/Calendar_scheduleHS.png"
+                                TabIndex="4" ID="ImageButton1"></asp:ImageButton>
+                            <asp:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd-MMM-yyyy" TargetControlID="fromDateTextBox"
+                                PopupButtonID="ImageButton1">
+                            </asp:CalendarExtender>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                    </tr>
+                    <tr id="toDate" runat="server" visible="False">
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            (Stock In) To Date: <span class="star-mark"> * </span>
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:TextBox ID="toDateTextBox" runat="server" CssClass="TextBoxCalander"></asp:TextBox>
+                            <asp:ImageButton runat="server" AlternateText="Click to show calendar" ImageUrl="~/Images/Calendar_scheduleHS.png"
+                                TabIndex="4" ID="ImageButton2"></asp:ImageButton>
+                            <asp:CalendarExtender ID="CalendarExtender2" runat="server" Format="dd-MMM-yyyy"
+                                TargetControlID="toDateTextBox" PopupButtonID="ImageButton2">
+                            </asp:CalendarExtender>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
                         </td>
                     </tr>
                     <tr id="stockInDate" runat="server" visible="False">

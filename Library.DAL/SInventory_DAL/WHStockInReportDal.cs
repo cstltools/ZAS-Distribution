@@ -51,5 +51,19 @@ namespace Library.DAL.SInventory_DAL
             string queryStr = "SELECT * FROM dbo.tblProduct ORDER	BY ProductName";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "ProductName", "ProductCode", queryStr);
         }
+
+        public DataTable LoadWarehouseStockInStatement(string pram)
+        {
+            string query = @"SELECT CI.CompanyName,WHStockInDate,ChallanNo,ChallanDate,ReferenceNo,ReferenceDate,
+                             PD.ProductCode,PD.ProductName,PKS.PackSizeName,Batch,ExpDate,MfgDate,Qty,WHM.Status FROM tblWHStockInMaster AS WHM
+                             LEFT JOIN tblWHStockInDetail AS WHD ON WHM.WHStockInMasterID = WHD.WHStockInMasterID
+                             LEFT JOIN tblProduct AS PD ON PD.ProductId = WHD.ProductId
+                             LEFT JOIN tblPackSize AS PKS ON PD.PackSizeId = PKS.PackSizeId
+                             LEFT JOIN tblWearhouse AS WH ON WHM.WarehouseId = WH.WearhouseId
+                             LEFT JOIN tblCompanyInfo AS CI ON WH.CompanyId = CI.CompanyId
+                             WHERE WHM.Status = 'Approved' " + pram;
+
+            return aInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
     }
 }

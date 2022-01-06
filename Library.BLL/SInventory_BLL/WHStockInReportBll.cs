@@ -36,5 +36,11 @@ namespace Library.BLL.SInventory_BLL
         {
             aStockInReportDal.GetProductInformation(ddl);
         }
+
+        public DataTable LoadWarehouseStockInStatement(string pram)
+        {
+            return aStockInReportDal.LoadWarehouseStockInStatement(pram);
+        }
+        }
     }
-}
+

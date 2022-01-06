@@ -53,14 +53,26 @@ public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
     {
         string param = "";
 
-        //if (fromDateTextBox.Text.Trim() != "")
-        //{
-            if (toDateTextBox.Text.Trim() != "")
-            {
-                param = param + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate <= '" + toDateTextBox.Text.Trim() + "'";
-            }
-        //}
+        if (fromDateTextBox.Text.Trim() != "" && toDateTextBox.Text.Trim() != "")
+        {
+            param = param + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate BETWEEN '" + fromDateTextBox.Text.Trim() + "' AND '" + toDateTextBox.Text.Trim() + "'";
+        }
 
+        if (fromDateTextBox.Text.Trim() != "" && toDateTextBox.Text.Trim() == "")
+        {
+            param = param + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate => '" + fromDateTextBox.Text.Trim() + "'";
+        }
+
+        if (fromDateTextBox.Text.Trim() == "" && toDateTextBox.Text.Trim() != "")
+        {
+            param = param + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate <= '" + toDateTextBox.Text.Trim() + "'";
+        }
+
+        if (txtCustomerCode.Text.Trim() != "")
+        {
+            param = param + "  AND VC.CustomerCode = '" + txtCustomerCode.Text.Trim() + "' ";
+        }
+        
         if (manufacDropDownList.SelectedIndex  > 0)
         {
             param = param + "  AND CI.CompanyId = '" + manufacDropDownList.SelectedValue + "' ";
@@ -293,15 +305,62 @@ public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
 
         Session["PRAM"] = "";
         Session["PRAM"] = GenerateParameter();
+        
+        Session["PRAM2"] = "";
+        Session["PRAM2"] = GenerateParameter2();
 
         Session["TODT"] = "";
-        Session["TODT"] = toDateTextBox.Text.Trim();
+        Session["TODT"] = GeteDateString();
 
         Session["RPT"] = "";
 
         string url = "../SInventory_RPTVIEW/CustomerDueReportViewer.aspx?company=" + Server.UrlEncode(manufacDropDownList.SelectedValue);
         string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
         ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
+    }
+
+    private String GeteDateString()
+    {
+        string param2 = "";
+
+        if (fromDateTextBox.Text.Trim() != "" && toDateTextBox.Text.Trim() != "")
+        {
+            param2 = param2 + fromDateTextBox.Text.Trim() + " - " + toDateTextBox.Text.Trim() ;
+        }
+
+        if (fromDateTextBox.Text.Trim() != "" && toDateTextBox.Text.Trim() == "")
+        {
+            param2 = param2 + fromDateTextBox.Text.Trim();
+        }
+
+        if (fromDateTextBox.Text.Trim() == "" && toDateTextBox.Text.Trim() != "")
+        {
+            param2 = param2 + toDateTextBox.Text.Trim() ;
+        }
+
+        return param2;
+    }
+
+    private String GenerateParameter2()
+    {
+        string param2 = "";
+
+        if (fromDateTextBox.Text.Trim() != "" && toDateTextBox.Text.Trim() != "")
+        {
+            param2 = param2 + " AND CP.PaymentDate BETWEEN '" + fromDateTextBox.Text.Trim() + "' AND '" + toDateTextBox.Text.Trim() + "'";
+        }
+
+        if (fromDateTextBox.Text.Trim() != "" && toDateTextBox.Text.Trim() == "")
+        {
+            param2 = param2 + " AND CP.PaymentDate => '" + fromDateTextBox.Text.Trim() + "'";
+        }
+
+        if (fromDateTextBox.Text.Trim() == "" && toDateTextBox.Text.Trim() != "")
+        {
+            param2 = param2 + "AND CP.PaymentDate <= '" + toDateTextBox.Text.Trim() + "'";
+        }
+
+        return param2;
     }
 
 
@@ -367,8 +426,8 @@ public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
 
         if (manufacDropDownList.SelectedValue != "")
         {
-            DataTable aTable = aDal.LoadCustomerDueReport(GenerateParameter(), manufacDropDownList.SelectedValue,
-            toDateTextBox.Text);
+            DataTable aTable = aDal.LoadCustomerDueReport(GenerateParameter(), GenerateParameter2(), manufacDropDownList.SelectedValue,
+            GeteDateString());
 
             if (aTable.Rows.Count > 0)
             {

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsDestroyProductSatement" targetNamespace="http://tempuri.org/dsDestroyProductSatement.xsd" xmlns:mstns="http://tempuri.org/dsDestroyProductSatement.xsd" xmlns="http://tempuri.org/dsDestroyProductSatement.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsDestroyProductSatement" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsDestroyProductSatement" msprop:Generator_UserDSName="dsDestroyProductSatement">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DestroyProductSatementDataTable" msprop:Generator_TableClassName="DestroyProductSatementDataTableDataTable" msprop:Generator_TableVarName="tableDestroyProductSatementDataTable" msprop:Generator_TablePropName="DestroyProductSatementDataTable" msprop:Generator_RowDeletingName="DestroyProductSatementDataTableRowDeleting" msprop:Generator_RowChangingName="DestroyProductSatementDataTableRowChanging" msprop:Generator_RowEvHandlerName="DestroyProductSatementDataTableRowChangeEventHandler" msprop:Generator_RowDeletedName="DestroyProductSatementDataTableRowDeleted" msprop:Generator_UserTableName="DestroyProductSatementDataTable" msprop:Generator_RowChangedName="DestroyProductSatementDataTableRowChanged" msprop:Generator_RowEvArgName="DestroyProductSatementDataTableRowChangeEvent" msprop:Generator_RowClassName="DestroyProductSatementDataTableRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CompanyName" msprop:Generator_ColumnVarNameInTable="columnCompanyName" msprop:Generator_ColumnPropNameInRow="CompanyName" msprop:Generator_ColumnPropNameInTable="CompanyNameColumn" msprop:Generator_UserColumnName="CompanyName" type="xs:string" minOccurs="0" />
+              <xs:element name="ComUnitName" msprop:Generator_ColumnVarNameInTable="columnComUnitName" msprop:Generator_ColumnPropNameInRow="ComUnitName" msprop:Generator_ColumnPropNameInTable="ComUnitNameColumn" msprop:Generator_UserColumnName="ComUnitName" type="xs:string" minOccurs="0" />
+              <xs:element name="StockOutDate" msprop:Generator_ColumnVarNameInTable="columnStockOutDate" msprop:Generator_ColumnPropNameInRow="StockOutDate" msprop:Generator_ColumnPropNameInTable="StockOutDateColumn" msprop:Generator_UserColumnName="StockOutDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ApproveDate" msprop:Generator_ColumnVarNameInTable="columnApproveDate" msprop:Generator_ColumnPropNameInRow="ApproveDate" msprop:Generator_ColumnPropNameInTable="ApproveDateColumn" msprop:Generator_UserColumnName="ApproveDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ProductCode" msprop:Generator_ColumnVarNameInTable="columnProductCode" msprop:Generator_ColumnPropNameInRow="ProductCode" msprop:Generator_ColumnPropNameInTable="ProductCodeColumn" msprop:Generator_UserColumnName="ProductCode" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductName" msprop:Generator_ColumnVarNameInTable="columnProductName" msprop:Generator_ColumnPropNameInRow="ProductName" msprop:Generator_ColumnPropNameInTable="ProductNameColumn" msprop:Generator_UserColumnName="ProductName" type="xs:string" minOccurs="0" />
+              <xs:element name="PackSize" msprop:Generator_ColumnVarNameInTable="columnPackSize" msprop:Generator_ColumnPropNameInRow="PackSize" msprop:Generator_ColumnPropNameInTable="PackSizeColumn" msprop:Generator_UserColumnName="PackSize" type="xs:string" minOccurs="0" />
+              <xs:element name="StockOutQty" msprop:Generator_ColumnVarNameInTable="columnStockOutQty" msprop:Generator_ColumnPropNameInRow="StockOutQty" msprop:Generator_ColumnPropNameInTable="StockOutQtyColumn" msprop:Generator_UserColumnName="StockOutQty" type="xs:decimal" minOccurs="0" />
+              <xs:element name="Reason" msprop:Generator_ColumnVarNameInTable="columnReason" msprop:Generator_ColumnPropNameInRow="Reason" msprop:Generator_ColumnPropNameInTable="ReasonColumn" msprop:Generator_UserColumnName="Reason" type="xs:string" minOccurs="0" />
+              <xs:element name="ExpDate" msprop:Generator_ColumnVarNameInTable="columnExpDate" msprop:Generator_ColumnPropNameInRow="ExpDate" msprop:Generator_ColumnPropNameInTable="ExpDateColumn" msprop:Generator_UserColumnName="ExpDate" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

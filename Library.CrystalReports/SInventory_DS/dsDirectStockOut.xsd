@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsDirectStockOut" targetNamespace="http://tempuri.org/dsDirectStockOut.xsd" xmlns:mstns="http://tempuri.org/dsDirectStockOut.xsd" xmlns="http://tempuri.org/dsDirectStockOut.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsDirectStockOut" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsDirectStockOut" msprop:Generator_UserDSName="dsDirectStockOut">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DirectStockOut" msprop:Generator_TableClassName="DirectStockOutDataTable" msprop:Generator_TableVarName="tableDirectStockOut" msprop:Generator_RowChangedName="DirectStockOutRowChanged" msprop:Generator_TablePropName="DirectStockOut" msprop:Generator_RowDeletingName="DirectStockOutRowDeleting" msprop:Generator_RowChangingName="DirectStockOutRowChanging" msprop:Generator_RowEvHandlerName="DirectStockOutRowChangeEventHandler" msprop:Generator_RowDeletedName="DirectStockOutRowDeleted" msprop:Generator_RowClassName="DirectStockOutRow" msprop:Generator_UserTableName="DirectStockOut" msprop:Generator_RowEvArgName="DirectStockOutRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="StockOutCode" msprop:Generator_ColumnVarNameInTable="columnStockOutCode" msprop:Generator_ColumnPropNameInRow="StockOutCode" msprop:Generator_ColumnPropNameInTable="StockOutCodeColumn" msprop:Generator_UserColumnName="StockOutCode" type="xs:string" minOccurs="0" />
+              <xs:element name="ComUnitName" msprop:Generator_ColumnVarNameInTable="columnComUnitName" msprop:Generator_ColumnPropNameInRow="ComUnitName" msprop:Generator_ColumnPropNameInTable="ComUnitNameColumn" msprop:Generator_UserColumnName="ComUnitName" type="xs:string" minOccurs="0" />
+              <xs:element name="StockOutType" msprop:Generator_ColumnVarNameInTable="columnStockOutType" msprop:Generator_ColumnPropNameInRow="StockOutType" msprop:Generator_ColumnPropNameInTable="StockOutTypeColumn" msprop:Generator_UserColumnName="StockOutType" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductCode" msprop:Generator_ColumnVarNameInTable="columnProductCode" msprop:Generator_ColumnPropNameInRow="ProductCode" msprop:Generator_ColumnPropNameInTable="ProductCodeColumn" msprop:Generator_UserColumnName="ProductCode" type="xs:string" minOccurs="0" />
+              <xs:element name="ProductName" msprop:Generator_ColumnVarNameInTable="columnProductName" msprop:Generator_ColumnPropNameInRow="ProductName" msprop:Generator_ColumnPropNameInTable="ProductNameColumn" msprop:Generator_UserColumnName="ProductName" type="xs:string" minOccurs="0" />
+              <xs:element name="PackSize" msprop:Generator_ColumnVarNameInTable="columnPackSize" msprop:Generator_ColumnPropNameInRow="PackSize" msprop:Generator_ColumnPropNameInTable="PackSizeColumn" msprop:Generator_UserColumnName="PackSize" type="xs:string" minOccurs="0" />
+              <xs:element name="StockOutDate" msprop:Generator_ColumnVarNameInTable="columnStockOutDate" msprop:Generator_ColumnPropNameInRow="StockOutDate" msprop:Generator_ColumnPropNameInTable="StockOutDateColumn" msprop:Generator_UserColumnName="StockOutDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ChalanNo" msprop:Generator_ColumnVarNameInTable="columnChalanNo" msprop:Generator_ColumnPropNameInRow="ChalanNo" msprop:Generator_ColumnPropNameInTable="ChalanNoColumn" msprop:Generator_UserColumnName="ChalanNo" type="xs:string" minOccurs="0" />
+              <xs:element name="ChalanDate" msprop:Generator_ColumnVarNameInTable="columnChalanDate" msprop:Generator_ColumnPropNameInRow="ChalanDate" msprop:Generator_ColumnPropNameInTable="ChalanDateColumn" msprop:Generator_UserColumnName="ChalanDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="StockOutQty" msprop:Generator_ColumnVarNameInTable="columnStockOutQty" msprop:Generator_ColumnPropNameInRow="StockOutQty" msprop:Generator_ColumnPropNameInTable="StockOutQtyColumn" msprop:Generator_UserColumnName="StockOutQty" type="xs:decimal" minOccurs="0" />
+              <xs:element name="StockOutReason" msprop:Generator_ColumnVarNameInTable="columnStockOutReason" msprop:Generator_ColumnPropNameInRow="StockOutReason" msprop:Generator_ColumnPropNameInTable="StockOutReasonColumn" msprop:Generator_UserColumnName="StockOutReason" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -72,7 +72,7 @@
             </td>
             <td width="20%" class="TDRight"></td>
         </tr>
-        <tr runat="server" ID="order" Visible="False">
+        <tr runat="server" id="order" visible="False">
             <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Order Date: <span class="star-mark">*</span>
             </td>
             <td width="20%" class="TDRight">
@@ -86,9 +86,7 @@
             <td width="13%" class="TDLeft">
                 <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Search" />
             </td>
-            <td width="20%" class="TDRight">
-                
-            </td>
+            <td width="20%" class="TDRight"></td>
             <td width="13%" class="TDLeft"></td>
             <td width="20%" class="TDRight"></td>
         </tr>
@@ -108,7 +106,7 @@
                 <div id="gridContainer1" style="height: auto; overflow: auto; width: 97%; margin: 0 auto;">
 
                     <asp:GridView ID="orderGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview"
-                        DataKeyNames="ComUnitId,ManufacId,OrderId,Permission">
+                        DataKeyNames="ComUnitId,ManufacId,OrderId,Permission,CustomerMasterId">
                         <Columns>
                             <asp:BoundField DataField="ComUnitName" HeaderText="Wings Name" />
                             <asp:BoundField DataField="OrderCode" HeaderText="Order No" />
@@ -122,6 +120,12 @@
                                 <ItemTemplate>
                                     <asp:Button ID="gotoinvoiceButton" runat="server" Text="Go To Invoice" ToolTip="" CssClass="button"
                                         OnClick="gotoinvoiceButton_Click" />
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Action">
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="invoiceButton" runat="server" Text="Preview Due History &gt;"
+                                        ForeColor="#EC3D18" OnClick="invoiceButton_Click" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -324,6 +328,8 @@
             </tr>
         </tr>
     </table>
+    
+     <div>        <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="HiddenField1"            PopupControlID="Panel1" BackgroundCssClass="modalBackground">        </ajaxToolkit:ModalPopupExtender>        <asp:HiddenField ID="HiddenField1" runat="server"></asp:HiddenField>        <asp:Panel ID="Panel1" runat="server" Style="display: none; overflow: scroll; padding: 10px"            Width="1000px" CssClass="modalPopup">            <asp:UpdatePanel ID="UpdatePanel1" runat="server">                <ContentTemplate>                    <div style="text-align: center">                        <table width="100%">                            <span>                                <h3>                                    Due History                                </h3>                            </span>                            <hr />                            <tr>                                <td width="20%" class="TDRight" colspan="6">                                    <div id="g" style="height: auto; overflow: auto; width: 97%; margin: 0 auto;">                                        <asp:GridView ID="dueGrid" runat="server" AutoGenerateColumns="False" CssClass="gridview"                                            DataKeyNames="CustomerMasterId">                                            <Columns>                                                <asp:TemplateField HeaderText="#SL">                                                    <ItemTemplate>                                                        <asp:Label ID="LabelSL" Text='<%# Container.DataItemIndex + 1 %>' runat="server"></asp:Label>                                                    </ItemTemplate>                                                </asp:TemplateField>                                                <asp:BoundField DataField="CompanyName" HeaderText="Company Name" />                                                <asp:BoundField DataField="ComUnitName" HeaderText="Unit Name" />                                                <asp:BoundField DataField="InvoiceNo" HeaderText="Invoice No" />                                                <asp:BoundField DataField="InvoiceDate" HeaderText="Invoice Date" DataFormatString="{0:dd-MMM-yyyy}" />                                                <asp:BoundField DataField="DueAmount" HeaderText="Due Amount" />                                            </Columns>                                        </asp:GridView>                                    </div>                                </td>                            </tr>                            <tr>                                <td width="13%" class="TDLeft">                                    &nbsp;                                </td>                                <td width="20%" class="TDRight">                                    &nbsp;                                </td>                                <td width="13%" class="TDLeft">                                </td>                                <td width="20%" class="TDRight">                                </td>                                <td width="13%" class="TDLeft">                                    &nbsp;                                </td>                                <td width="20%" class="TDRight">                                    &nbsp;                                </td>                            </tr>                            <tr>                                <td width="13%" class="TDLeft">                                    &nbsp;                                </td>                                <td width="20%" class="TDRight">                                    &nbsp;                                </td>                                <td width="13%" class="TDLeft">                                </td>                                <td width="20%" class="TDRight">                                </td>                                <td width="13%" class="TDLeft">                                    &nbsp;                                </td>                                <td width="20%" class="TDRight">                                    &nbsp;                                </td>                            </tr>                            <tr>                                <td width="13%" class="TDLeft">                                    &nbsp;                                </td>                                <td width="20%" class="TDRight">                                    &nbsp;                                </td>                                <td width="13%" class="TDLeft">                                </td>                                <td width="20%" class="TDRight">                                    <asp:Button ID="Button2" Text="Close" OnClick="btnDue_OnClick" runat="server"                                        CssClass="example_a" BackColor="#ED3B58" />                                    &nbsp;                                </td>                                <td width="13%" class="TDLeft">                                    &nbsp;                                </td>                                <td width="20%" class="TDRight">                                    &nbsp;                                </td>                            </tr>                            <tr>                                <td width="13%" class="TDLeft">                                    &nbsp;                                </td>                                <td width="20%" class="TDRight">                                    &nbsp;                                </td>                                <td width="13%" class="TDLeft">                                </td>                                <td width="20%" class="TDRight">                                </td>                                <td width="13%" class="TDLeft">                                    &nbsp;                                </td>                                <td width="20%" class="TDRight">                                    &nbsp;                                </td>                            </tr>                        </table>                    </div>                </ContentTemplate>            </asp:UpdatePanel>        </asp:Panel>    </div>
 
     <div>
         <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender10" runat="server" TargetControlID="HiddenField10"

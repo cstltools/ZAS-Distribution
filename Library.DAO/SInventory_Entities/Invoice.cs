@@ -49,6 +49,7 @@ namespace Library.DAO.SInventory_Entities
 
         public string DpNAme { get; set; }
         public string DpMob { get; set; }
+        public string PONumber { get; set; }
 
         
     }

@@ -6,12 +6,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Library.BLL.SInventory_BLL;
 using Library.DAL.SInventory_DAL;
 
 public partial class CommonUI_HomePage : System.Web.UI.Page
 {
     DashboardDal aDal = new DashboardDal();
     OrderInfoDAL aOrderInfoDal = new OrderInfoDAL();
+    OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -32,6 +34,11 @@ public partial class CommonUI_HomePage : System.Web.UI.Page
 
             order.Visible = dtTable.Rows.Count > 0;
         }
+    }
+
+    protected void btnDue_OnClick(object sender, EventArgs e)
+    {
+        ModalPopupExtender1.Hide();
     }
 
     private void LoadPendingInvoice()
@@ -76,6 +83,41 @@ public partial class CommonUI_HomePage : System.Web.UI.Page
                     orderGridView.DataBind();
                 }
             }
+        }
+    }
+
+    protected void invoiceButton_Click(object sender, EventArgs e)
+    {
+        var button = (LinkButton)sender;
+        var currentRow = (GridViewRow)button.Parent.Parent;
+
+        int rowindex = 0;
+        rowindex = currentRow.RowIndex;
+
+        var dataKey = orderGridView.DataKeys[rowindex];
+        //if (dataKey != null)
+        //PopupReport(dataKey["CustPayDetailId"].ToString());
+        ModalPopupExtender1.Show();
+
+        LoadDueHistory(dataKey["CustomerMasterId"].ToString());
+
+    }
+
+    private void LoadDueHistory(string customerMasterId)
+    {
+        DataTable aTable = aOrderInfoBll.LoadCustomerDueHistory(customerMasterId);
+
+        if (aTable.Rows.Count > 0)
+        {
+            dueGrid.DataSource = aTable;
+            dueGrid.DataBind();
+
+            dueGrid.Columns[2].HeaderStyle.Width = 20;
+        }
+        else
+        {
+            dueGrid.DataSource = null;
+            dueGrid.DataBind();
         }
     }
 

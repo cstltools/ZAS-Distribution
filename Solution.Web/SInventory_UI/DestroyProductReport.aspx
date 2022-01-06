@@ -2,6 +2,13 @@
 <%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.0.20820.28364, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    
+    <style>
+        #ContentPlaceHolder1_submitButton {
+            margin-right: 4px !important;
+        }
+    </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     
@@ -189,7 +196,8 @@
                             &nbsp;
                         </td>
                         <td width="20%" class="TDRight">
-                            <asp:Button ID="submitButton" runat="server" OnClick="submitButton_Click" Text="Search" />
+                            <asp:Button ID="submitButton" CssClass="margin-right" runat="server" OnClick="submitButton_Click" Text="Search" />
+                            <asp:Button ID="viewReport" BackColor="green" runat="server" OnClick="viewReportButton_Click" Text="View Report" />
                             <asp:Button ID="clearButton" CssClass="clearButton" BackColor="#E8BC31" runat="server"
                                 OnClick="clearButton_OnClick" Text="Clear" />
                         </td>

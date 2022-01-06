@@ -97,6 +97,8 @@ public partial class SInventory_UI_WHStockInReportList : System.Web.UI.Page
             excelButton.Visible = false;
 
             searchButton.Visible = true;
+            fromDate.Visible = false;
+            toDate.Visible = false;
         }
 
         else if (reportDropDownList.SelectedValue == "CSR")
@@ -109,8 +111,27 @@ public partial class SInventory_UI_WHStockInReportList : System.Web.UI.Page
             excelButton.Visible = true;
             searchButton.Visible = false;
 
+            fromDate.Visible = false;
+            toDate.Visible = false;
+
             loadGridView.DataSource = null;
             loadGridView.DataBind(); 
+
+        }
+        else if (reportDropDownList.SelectedValue == "STI")
+        {
+            stockInDate.Visible = false;
+            productName.Visible = false;
+            
+            fromDate.Visible = true;
+            toDate.Visible = true;
+
+            reportButton.Visible = true;
+            excelButton.Visible = true;
+            searchButton.Visible = false;
+
+            loadGridView.DataSource = null;
+            loadGridView.DataBind();
 
         }
 
@@ -122,6 +143,9 @@ public partial class SInventory_UI_WHStockInReportList : System.Web.UI.Page
             reportButton.Visible = false;
             excelButton.Visible = false;
             searchButton.Visible = true;
+
+            fromDate.Visible = false;
+            toDate.Visible = false;
 
             loadGridView.DataSource = null;
             loadGridView.DataBind(); 
@@ -152,6 +176,46 @@ public partial class SInventory_UI_WHStockInReportList : System.Web.UI.Page
                 "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
             ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
         }
+
+        if (reportDropDownList.SelectedValue == "STI")
+        {
+            Session["ReportType"] = "";
+            Session["ReportType"] = "STI";
+            Session["PRAM"] = "";
+            Session["PRAM"] = StiParameter();
+
+            //if (productDropDownList.SelectedValue != string.Empty)
+            //{
+            //    Session["ProductId"] = Conv(productDropDownList.SelectedValue);
+            //}
+
+            Session["Excel"] = "";
+            Session["Excel"] = 0;
+
+            string url = "../SInventory_RPTVIEW/WHStockInReportViewer.aspx?reqId=";
+            // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
+            string fullURL =
+                "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url +
+                "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
+            ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
+        }
+    }
+
+    private String StiParameter()
+    {
+        string pram = "";
+
+        if (companyNameDropDownList.SelectedValue != "")
+        {
+            pram = pram + " AND CI.CompanyId = " + Convert.ToInt32(companyNameDropDownList.SelectedValue);
+        }
+
+        if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
+        {
+            pram = pram + " AND WHStockInDate BETWEEN '" + fromDateTextBox.Text.Trim() + "' AND '" + toDateTextBox.Text.Trim() + "'";
+        }
+
+        return pram;
     }
 
     private string GstParameter()

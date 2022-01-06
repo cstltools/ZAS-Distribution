@@ -1,0 +1,5 @@
+F:\GIT Project\ZAS Sales\Library.DAO\bin\Release\Library.DAO.dll
+F:\GIT Project\ZAS Sales\Library.DAO\bin\Release\Library.DAO.pdb
+F:\GIT Project\ZAS Sales\Library.DAO\obj\Release\Library.DAO.csprojResolveAssemblyReference.cache
+F:\GIT Project\ZAS Sales\Library.DAO\obj\Release\Library.DAO.dll
+F:\GIT Project\ZAS Sales\Library.DAO\obj\Release\Library.DAO.pdb

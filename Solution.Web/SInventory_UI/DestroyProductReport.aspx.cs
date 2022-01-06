@@ -185,4 +185,42 @@ public partial class SInventory_UI_DestroyProductReport : System.Web.UI.Page
 
         PopUpCustomerPaymentReport(loadGridView.DataKeys[rowindex]["DestroyId"].ToString());
     }
+
+    protected void viewReportButton_Click(object sender, EventArgs e)
+    {
+        PopUpDestroyProduct();
+    }
+
+    private void PopUpDestroyProduct()
+    {
+        Session["PRAM"] = "";
+        Session["PRAM"] = GetPrameterList();
+
+        const string url = "../SInventory_RPTVIEW/DestroyProductStatementViewer.aspx";
+        const string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
+        ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
+    }
+
+    private String GetPrameterList()
+    {
+        string parameter = "";
+
+        if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
+        {
+            parameter = parameter + " AND StockOutDate BETWEEN '" + fromDateTextBox.Text.Trim() + "' AND '" + toDateTextBox.Text.Trim() + "'";
+        }
+
+        if (dcDropDownList.SelectedValue != "")
+        {
+            parameter = parameter + " AND UNT.ComUnitId = '" + dcDropDownList.SelectedValue + "'";
+        }
+
+        if (companyNameDropDownList.SelectedValue != "")
+        {
+            parameter = parameter + " AND CI.CompanyId =  '" + companyNameDropDownList.SelectedValue + "'";
+        }
+
+        return parameter;
+
+    }
 }

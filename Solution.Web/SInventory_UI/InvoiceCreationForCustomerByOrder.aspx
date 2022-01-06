@@ -155,10 +155,7 @@
                             <asp:Label ID="districtNameTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
 
-                        <td class="TDLeft" width="13%">&nbsp;
-                        </td>
-                        <td class="TDRight" width="20%">&nbsp;
-                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">                                 PO Number:                        </td>                        <td class="TDRight" width="20%">                            <asp:TextBox ID="txtPONumber" runat="server" CssClass="TextBox"></asp:TextBox>                        </td>
                     </tr>
                     <tr>
                         <td class="TDLeft" width="13%">

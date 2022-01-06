@@ -38,7 +38,7 @@ namespace Library.DAL.SInventory_DAL
             aCommonInternalDAL.LoadDropDownValue(customerDropDownList, "CustomerName", "CustomerMasterId", queryStr, "SSIDB");
         }
 
-        public DataTable LoadCustomerDueReport(string parameter, string companyId, string toDate)
+        public DataTable LoadCustomerDueReport(string parameter, string parameter2, string companyId, string toDate)
         {
 //            string query = @"SELECT CI.CompanyName, CSTMR.CustomerCode, CSTMR.CustomerName,MKT.MarketName, CSTMR.Address, INV.DeliveryTpGrandTotal AS DueAmount, ISNULL(INV.PaymentAmount,0) AS PreviousPay, (INV.DeliveryTpGrandTotal - ISNULL(INV.PaymentAmount,0)) AS ReceivableDue  FROM dbo.tblInvoice AS INV 
 //                            INNER JOIN dbo.tblCompanyUnit AS CU ON CU.ComUnitId = INV.ComUnitId
@@ -72,14 +72,14 @@ namespace Library.DAL.SInventory_DAL
 
 
 
-            string query = @"SELECT CI.CompanyName,UNT.ComUnitName,VC.CustomerName,VC.CustomerCode,VC.MarketName,InvoiceNo,InvoiceDate,INV.MiaId,VC.TerritoryName,MIO.EmpName AS MIO, MIO.EmpMasterCode AS MIOCode,
+            string query = @"SELECT CI.CompanyName,UNT.ComUnitName,VC.CustomerName,VC.CustomerCode,VC.MarketName,InvoiceNo,InvoiceDate,INV.MiaId,VC.TerritoryName,MIO.EmpName AS MIO, MIO.EmpMasterCode AS MIOCode,DeliveryTpGrandTotal,
                              DeliveryTpGrandTotal- (ISNULL(PMNT.PaymentAmount,0) + ISNULL(PMNT.AIT,0) + ISNULL(PMNT.Discount,0)) AS DueAmount,VC.TermOfPayment,VC.Address,'" + toDate + "' AS UptoDate FROM dbo.tblInvoice AS INV"   
                              + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId "
                              + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId"
                              + " LEFT JOIN ("
                              + " SELECT InvoiceId,SUM(CPD.PaymentAmount) AS PaymentAmount,SUM(CPD.AIT) AIT, SUM(CPD.Discount) Discount FROM tblCustPayDetail AS CPD "
                              + " LEFT JOIN tblCustomerPay AS CP ON CPD.CustPayId = CP.CustPayId"
-                             + " WHERE CP.PaymentDate <= '" + toDate + "' GROUP BY InvoiceId "
+                             + " WHERE InvoiceId IS NOT NULL " + parameter2 + " GROUP BY InvoiceId "
                             + ") AS PMNT ON PMNT.InvoiceId = inv.InvoiceId "
                             + "LEFT JOIN dbo.View_CustomerMaster AS VC ON INV.CustomerMasterId = VC.CustomerMasterId "
                             + "LEFT JOIN (SELECT MIO.TerritoryId,EGI.EmpName, EGI.EmpMasterCode FROM dbo.tblTerritory AS TTR "

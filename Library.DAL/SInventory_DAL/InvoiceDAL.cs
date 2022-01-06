@@ -1570,6 +1570,7 @@ where I.TpTotal>0 AND I.DelivaryInvoiceNo IS NULL    and I.InvoiceDate between '
             aSqlParameterlist.Add(new SqlParameter("@Remarks", aInvoice.Remarks));
             aSqlParameterlist.Add(new SqlParameter("@DeliveryManId", aInvoice.DeliveryManId));
             aSqlParameterlist.Add(new SqlParameter("@UnitCode", aInvoice.ComUnitCode));
+            aSqlParameterlist.Add(new SqlParameter("@PONumber", aInvoice.PONumber));
 
             return aCommonInternalDal.SaveAction("sp_I_InvoiceMaster", aSqlParameterlist, "@InvoiceId");
         }

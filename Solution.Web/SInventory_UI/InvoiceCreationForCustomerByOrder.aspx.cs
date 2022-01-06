@@ -1430,6 +1430,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         aInvoice.DpNAme = deliverypersonNameTextBox.Text.Trim();
         aInvoice.DpMob = deliverypersonMobileTextBox.Text.Trim();
         aInvoice.ProductOffer = "False";
+        aInvoice.PONumber = txtPONumber.Text;
 
         return aInvoice;
     }
