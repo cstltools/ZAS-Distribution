@@ -1083,7 +1083,7 @@ LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = ORD.TerritoryId
             string query = @"SELECT EGI.EmpName AS DeliveryPersonName,tblEmpGeneralInfo.CellNumber AS DeliveryPersonPhNo,IV.InvoiceId,IV.InvoiceNo,IV.InvoiceDate,IV.OrderNo,IV.OrderDate,
     IV.TpTotal,IV.TpVat,(IV.TpDiscount+isnull(IV.TotalSpecialAmount,0))TpDiscount,IV.TpGrandTotal,CU.ComUnitCode,CU.ComUnitName as 
     CompanyName,  (CU.Address) AS CUAddress,  CM.CustomerCode,CM.CustomerName, (CM.Address) AS 
-    CMAddress,CM.Addrees2,CC.CategoryName,PT.PaymentTypeName,  dbo.tblEmpGeneralInfo.EmpMasterCode AS MiaCode,dbo.tblEmpGeneralInfo.EmpName AS MiaName,MarketName as UserName,IV.Remarks  
+    CMAddress,CM.Addrees2,CC.CategoryName,PT.PaymentTypeName,  dbo.tblEmpGeneralInfo.EmpMasterCode AS MiaCode,dbo.tblEmpGeneralInfo.EmpName AS MiaName,MarketName as UserName,IV.Remarks,PONumber,U.UserName AS PreparedBy  
     FROM tblInvoice IV 
     LEFT JOIN dbo.tblOrder ON tblOrder.OrderId = IV.OrderId
     LEFT JOIN dbo.tblDeliveryManInfo ON IV.DeliveryManId=dbo.tblDeliveryManInfo.DeliveryManId

@@ -23,14 +23,13 @@ public partial class SInventory_RPTVIEW_CustomerDueReportViewer : System.Web.UI.
 
         
         var asmDataTable = new DataTable();
-        string parameter = Session["PRAM"].ToString();
-        string parameter2 = Session["PRAM2"].ToString();
+        string parameter = Session["PRAM"].ToString();    
         string toDate = Session["TODT"].ToString();
-
         string rpt = Session["RPT"].ToString();
 
         if (rpt == "")
         {
+            string parameter2 = Session["PRAM2"].ToString();
             string companyId = Request.QueryString["company"];
             asmDataTable = aReportDal.LoadCustomerDueReport(parameter, parameter2, companyId, toDate).Copy();
 

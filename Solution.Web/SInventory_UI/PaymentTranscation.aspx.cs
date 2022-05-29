@@ -246,30 +246,30 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             return false;
         }
 
-        int count = 0;
+        //int count = 0;
 
-        if (orderGridView.Rows.Count > 0)
-        {
-            for (int i = 0; i < orderGridView.Rows.Count; i++)
-            {
+        //if (orderGridView.Rows.Count > 0)
+        //{
+        //    for (int i = 0; i < orderGridView.Rows.Count; i++)
+        //    {
 
-                if (((CheckBox)orderGridView.Rows[i].Cells[1].FindControl("chkSelect")).Checked)
-                {
-                    if (((TextBox)orderGridView.Rows[i].FindControl("payAmountTextBox")).Text == "")
-                    {
-                        ShowMessageBox("Please fill out Pay Amount !!");
-                        return false;
-                    }
-                    count++;
-                }
-            }
-        }
+        //        if (((CheckBox)orderGridView.Rows[i].Cells[1].FindControl("chkSelect")).Checked)
+        //        {
+        //            if (((TextBox)orderGridView.Rows[i].FindControl("payAmountTextBox")).Text == "")
+        //            {
+        //                ShowMessageBox("Please fill out Pay Amount !!");
+        //                return false;
+        //            }
+        //            count++;
+        //        }
+        //    }
+        //}
 
-        if (paymentAmountTextBox.Text.Trim() == "")
-        {
-            ShowMessageBox("Please Select Payment Amount!!");
-            return false;
-        }
+        //if (paymentAmountTextBox.Text.Trim() == "")
+        //{
+        //    ShowMessageBox("Please Select Payment Amount !!");
+        //    return false;
+        //}
 
         
         for (int i = 0; i < orderGridView.Rows.Count; i++)
@@ -277,12 +277,17 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             decimal totalamount = 0;
 
             CheckBox cbReject = (CheckBox)orderGridView.Rows[i].FindControl("chkSelect");
+
             if (cbReject.Checked)
             {
                 TextBox payAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
                 TextBox aitAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("aitTextBox");
                 TextBox discountAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("discountTextBox");
-                totalamount = totalamount + Convert.ToDecimal((payAmountTextBox.Text));
+
+                if (payAmountTextBox.Text != "")
+                {
+                    totalamount = totalamount + Convert.ToDecimal((payAmountTextBox.Text));
+                }
 
                 if (aitAmountTextBox.Text != "")
                 {
@@ -294,15 +299,9 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                     totalamount = totalamount + Convert.ToDecimal((discountAmountTextBox.Text));
                 }
 
-                if (totalamount > Convert.ToDecimal((orderGridView.Rows[i].Cells[8].Text.Trim())))
-                {
-                    ShowMessageBox("Total Invoice Payment Amount Must Be Equel To Payment Amount !!");
-                    return false;
-                }
-
                 if (totalamount == 0)
                 {   payAmountTextBox.Focus();
-                    ShowMessageBox("Payment Amount must be greater then 0!!");
+                    ShowMessageBox("Payment Amount must be greater then 0 !!");
                     return false;
                 }
                 
@@ -484,35 +483,49 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                         aCustPayment.CreateDate = DateTime.Now;
 
 
-                        if ((Convert.ToDecimal(payAmountTextBox.Text) + prevamount) ==
+                        if (payAmountTextBox.Text.Trim() != "")
+                        {
+                            if ((Convert.ToDecimal(payAmountTextBox.Text) + prevamount) ==
                             Convert.ToDecimal(orderGridView.Rows[i].Cells[7].Text))
-                        {
-                            decimal totalamount = 0;
-                            totalamount = (Convert.ToDecimal(payAmountTextBox.Text) + prevamount);
+                            {
+                                decimal totalamount = 0;
+                                totalamount = (Convert.ToDecimal(payAmountTextBox.Text) + prevamount);
 
-                            aCustPayment.InvPaymentAmount = totalamount;
-                            aCustPayment.PaymentStatus = "Full";
-                            //aCustPaymentBll.UpdateInvoicePaymentAmount(totalamount.ToString(), "Full",
-                            //    orderGridView.DataKeys[i][0].ToString());
+                                aCustPayment.InvPaymentAmount = totalamount;
+                                aCustPayment.PaymentStatus = "Full";
+                                //aCustPaymentBll.UpdateInvoicePaymentAmount(totalamount.ToString(), "Full",
+                                //    orderGridView.DataKeys[i][0].ToString());
+                            }
+                            else
+                            {
+                                decimal totalamount = 0;
+                                totalamount = (Convert.ToDecimal(payAmountTextBox.Text) + prevamount);
+
+                                aCustPayment.InvPaymentAmount = totalamount;
+                                aCustPayment.PaymentStatus = "Partial";
+
+                                //aCustPaymentBll.UpdateInvoicePaymentAmount(totalamount.ToString(), "Partial",
+                                //    orderGridView.DataKeys[i][0].ToString());
+                            }
                         }
-                        else
-                        {
-                            decimal totalamount = 0;
-                            totalamount = (Convert.ToDecimal(payAmountTextBox.Text) + prevamount);
 
-                            aCustPayment.InvPaymentAmount = totalamount;
-                            aCustPayment.PaymentStatus = "Partial";
-
-                            //aCustPaymentBll.UpdateInvoicePaymentAmount(totalamount.ToString(), "Partial",
-                            //    orderGridView.DataKeys[i][0].ToString());
-                        }
+                        
 
                         aCustPaymentDetails = new List<PaymentTranscationDetailDao>();
 
                         PaymentTranscationDetailDao aCustPaymentDetail = new PaymentTranscationDetailDao();
                         {
                             aCustPaymentDetail.InvoiceId = Convert.ToInt32(orderGridView.DataKeys[i]["InvoiceId"].ToString());
-                            aCustPaymentDetail.PaymentAmount = Convert.ToDecimal(payAmountTextBox.Text);
+
+                            if (payAmountTextBox.Text.Trim() != "")
+                            {
+                                aCustPaymentDetail.PaymentAmount = Convert.ToDecimal(payAmountTextBox.Text);
+                            }
+                            else
+                            {
+                                aCustPaymentDetail.PaymentAmount = 0;
+                            }
+                            
                             aCustPaymentDetail.Remarks = remarksTextBox.Text;
 
 
@@ -573,26 +586,63 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         GridViewRow currentRow = (GridViewRow)qtyTextBox.Parent.Parent;
         int rowindex = 0;
         rowindex = currentRow.RowIndex;
-        decimal prevamount = 0;
-        TextBox payAmountTextBox = (TextBox)orderGridView.Rows[rowindex].Cells[7].FindControl("payAmountTextBox");
-        decimal mainamount = string.IsNullOrEmpty(payAmountTextBox.Text) ? 0 : Convert.ToDecimal(payAmountTextBox.Text);
-        decimal delamount = Convert.ToDecimal(orderGridView.Rows[rowindex].Cells[6].Text);
 
-        if (orderGridView.Rows[rowindex].Cells[6].Text != "&nbsp;")
-        {
-            prevamount = Convert.ToDecimal(orderGridView.Rows[rowindex].Cells[7].Text);
-        }
+        ValidatePaymentInfo(rowindex, qtyTextBox);
+
+        //decimal prevamount = 0;
+        //TextBox payAmountTextBox = (TextBox)orderGridView.Rows[rowindex].Cells[7].FindControl("payAmountTextBox");
+        //decimal mainamount = string.IsNullOrEmpty(payAmountTextBox.Text) ? 0 : Convert.ToDecimal(payAmountTextBox.Text);
+        //decimal delamount = Convert.ToDecimal(orderGridView.Rows[rowindex].Cells[6].Text);
+
+        //if (orderGridView.Rows[rowindex].Cells[6].Text != "&nbsp;")
+        //{
+        //    prevamount = Convert.ToDecimal(orderGridView.Rows[rowindex].Cells[7].Text);
+        //}
 
 
-        if ((mainamount + prevamount) > delamount)
-        {
-            payAmountTextBox.Text = "0";
-            ShowMessageBox("Cannot Be Greater then Invoice Quantity ");
+        //if ((mainamount + prevamount) > delamount)
+        //{
+        //    payAmountTextBox.Text = "0";
+        //    ShowMessageBox("Cannot Be Greater then Invoice Quantity ");
 
-        }
+        //}
 
         ClaculatePaymentAmount();
 
+    }
+
+    private void ValidatePaymentInfo(int i, TextBox textBox)
+    {
+        decimal totalamount = 0;
+
+        TextBox payAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
+        TextBox aitAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("aitTextBox");
+        TextBox discountAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("discountTextBox");
+
+        if (payAmountTextBox.Text.Trim() != "")
+        {
+            totalamount = totalamount + Convert.ToDecimal((payAmountTextBox.Text));
+        }
+
+        if (aitAmountTextBox.Text.Trim() != "")
+        {
+            totalamount = totalamount + Convert.ToDecimal((aitAmountTextBox.Text));
+        }
+
+        if (discountAmountTextBox.Text.Trim() != "")
+        {
+            totalamount = totalamount + Convert.ToDecimal((discountAmountTextBox.Text));
+        }
+
+        string amount = orderGridView.Rows[i].Cells[8].Text.Trim();
+
+        if (totalamount > Convert.ToDecimal(amount))
+        {
+             ShowMessageBox("Total Amount Must Be less than or Equel to due Amount !!");
+             textBox.Text = "";
+       }
+
+       
     }
 
 
@@ -870,7 +920,11 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         for (int i = 0; i < orderGridView.Rows.Count; i++)
         {
             CheckBox ChkBoxRows = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
+
             TextBox amountBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
+            TextBox aitBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("aitTextBox");
+            TextBox discountBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("discountTextBox");
+
             decimal amount = 0;
 
             if (ChkBoxRows.Checked)
@@ -1172,5 +1226,25 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
             ShowMessageBox("You should select row item first !!");
         }
+    }
+
+    protected void aitTextBox_TextChanged(object sender, EventArgs e)
+    {
+        TextBox aitTextBox = (TextBox)sender;
+        GridViewRow currentRow = (GridViewRow)aitTextBox.Parent.Parent;
+        int rowindex = 0;
+        rowindex = currentRow.RowIndex;
+
+        ValidatePaymentInfo(rowindex, aitTextBox);
+    }
+
+    protected void discountTextBox_TextChanged(object sender, EventArgs e)
+    {
+        TextBox discountTextBox = (TextBox)sender;
+        GridViewRow currentRow = (GridViewRow)discountTextBox.Parent.Parent;
+        int rowindex = 0;
+        rowindex = currentRow.RowIndex;
+
+        ValidatePaymentInfo(rowindex, discountTextBox);
     }
 }

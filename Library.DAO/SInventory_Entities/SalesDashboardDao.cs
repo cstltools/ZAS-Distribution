@@ -13,6 +13,7 @@ namespace Library.DAO.SInventory_Entities
         public decimal ActualSales { get; set; }
         public decimal TotalCollection { get; set; }
         public decimal TotalDue { get; set; }
+        public decimal StockValue { get; set; }
     }
 
 
@@ -24,12 +25,31 @@ namespace Library.DAO.SInventory_Entities
         public decimal DueValue { get; set; }
     }
 
+    public class MioWiseInvoiceDao
+    {
+        public string InvoiceDate { get; set; }
+        public decimal NoOfInvoice { get; set; }
+        public decimal NoOfDelivaryInvoice { get; set; }
+    }
+
+    public class CompanyWiseInvoiceDao
+    {
+        public string InvoiceDate { get; set; }
+        public decimal NoOfInvoice { get; set; }
+    }
+
 
     public class CompanyWiseUnitSalesDao
     {
         public string CompanyName { get; set; }
         public string UnitName { get; set; }
         public decimal SalesValue { get; set; }
+    }
+
+    public class MIODao
+    {
+        public string MIOId { get; set; }
+        public string EmpName { get; set; }
     }
 
     public class FinancialYearDao
@@ -63,6 +83,12 @@ namespace Library.DAO.SInventory_Entities
     {
         public string RegionName { get; set; }
         public Int32 RegionId { get; set; }
+    }
+
+    public class DepotDao
+    {
+        public string UnitName { get; set; }
+        public Int32 UnitId { get; set; }
     }
 
     public class WingsSalesTrend
@@ -156,7 +182,9 @@ namespace Library.DAO.SInventory_Entities
     {
         public string CustomerCode { get; set; }
         public string CustomerName { get; set; }
+        public decimal PrevActualSales { get; set; }
         public decimal ActualSales { get; set; }
+        public decimal PrevMonthDue { get; set; }
         public decimal Due { get; set; }
 
     }

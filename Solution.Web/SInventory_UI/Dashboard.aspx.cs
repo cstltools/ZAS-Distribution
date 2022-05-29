@@ -86,6 +86,75 @@ public partial class SInventory_UI_Dashboard : System.Web.UI.Page
         return aList.ToArray();
 
     }
+
+    [WebMethod(EnableSession = true)]
+    public static CompanyWiseInvoiceDao[] GetCompanyWiseInvoice(string companyId, string fromDate, string toDate)
+    {
+        List<CompanyWiseInvoiceDao> aList = new List<CompanyWiseInvoiceDao>();
+
+
+        DateTime date = DateTime.Today;
+        var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+        var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+            DataTable aTable = aDashboardDal.GetCompanyInvoice(companyId == "" ? "1" : companyId, fromDate == "" ? firstDayOfMonth : Convert.ToDateTime(fromDate), toDate == "" ? lastDayOfMonth : Convert.ToDateTime(toDate));
+
+            if (aTable.Rows.Count > 0)
+            {
+
+                foreach (DataRow DR in aTable.Rows)
+                {
+                    var aData = new CompanyWiseInvoiceDao();
+
+                    aData.InvoiceDate = DR["InvoiceDate"].ToString();
+                    aData.NoOfInvoice = Convert.ToDecimal(DR["NoOfInvoice"].ToString());
+
+                    aList.Add(aData);
+
+                }
+
+                return aList.ToArray();
+            }
+
+        return aList.ToArray();
+
+    }
+    
+    
+    [WebMethod(EnableSession = true)]
+    public static MioWiseInvoiceDao[] GetMioWiseInvoice(string companyId, string fromDate, string toDate, string mioId)
+    {
+        List<MioWiseInvoiceDao> aList = new List<MioWiseInvoiceDao>();
+
+
+        DateTime date = DateTime.Today;
+        var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
+        var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+        DataTable aTable = aDashboardDal.GetMioWiseInvoice(companyId == "" ? "1" : companyId, fromDate == "" ? firstDayOfMonth : Convert.ToDateTime(fromDate), toDate == "" ? lastDayOfMonth : Convert.ToDateTime(toDate), mioId == null ? "0" : mioId);
+
+        if (aTable.Rows.Count > 0)
+        {
+
+            foreach (DataRow DR in aTable.Rows)
+            {
+                var aData = new MioWiseInvoiceDao();
+
+                aData.InvoiceDate = DR["InvoiceDate"].ToString();
+                aData.NoOfInvoice = Convert.ToDecimal(DR["NoOfInvoice"].ToString());
+                aData.NoOfDelivaryInvoice = Convert.ToDecimal(DR["NoOfDelivaryInvoice"].ToString());
+
+                aList.Add(aData);
+
+            }
+
+            return aList.ToArray();
+        }
+        
+
+        return aList.ToArray();
+
+    }
     
     [WebMethod(EnableSession = true)]
     public static Top50CustomerDao[] GetTop50Customer(string companyId, string fromDate, string toDate)
@@ -110,6 +179,8 @@ public partial class SInventory_UI_Dashboard : System.Web.UI.Page
                 aData.CustomerCode = DR["CustomerCode"].ToString();
                 aData.CustomerName = DR["CustomerName"].ToString();
                 aData.ActualSales = Convert.ToDecimal(DR["ActualSales"].ToString());
+                aData.PrevActualSales = Convert.ToDecimal(DR["PrevActualSales"].ToString());
+                aData.PrevMonthDue = Convert.ToDecimal(DR["PrevMonthDue"].ToString());
                 aData.Due = Convert.ToDecimal(DR["Due"].ToString());
 
                 aList.Add(aData);
@@ -126,7 +197,7 @@ public partial class SInventory_UI_Dashboard : System.Web.UI.Page
 
 
     [WebMethod(EnableSession = true)]
-    public static TopPriorityProductSalesDao[] GetTopPriorityProductsales(string companyId, string regionId, string fromDate, string toDate)
+    public static TopPriorityProductSalesDao[] GetTopPriorityProductsales(string companyId, string depotId, string fromDate, string toDate)
     {
 
         List<TopPriorityProductSalesDao> aList = new List<TopPriorityProductSalesDao>();
@@ -136,7 +207,7 @@ public partial class SInventory_UI_Dashboard : System.Web.UI.Page
         var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
         var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
-        DataTable aTable = aDashboardDal.GetTopPriorityProductsales(companyId, regionId, fromDate == "" ? firstDayOfMonth : Convert.ToDateTime(fromDate), toDate == "" ? lastDayOfMonth : Convert.ToDateTime(toDate));
+        DataTable aTable = aDashboardDal.GetTopPriorityProductsales(companyId, depotId == "" ? "0" : depotId, fromDate == "" ? firstDayOfMonth : Convert.ToDateTime(fromDate), toDate == "" ? lastDayOfMonth : Convert.ToDateTime(toDate));
 
         if (aTable.Rows.Count > 0)
         {
@@ -310,6 +381,37 @@ public partial class SInventory_UI_Dashboard : System.Web.UI.Page
         return aList.ToArray();
 
     }
+    
+    [WebMethod(EnableSession = true)]
+    public static DepotDao[] GetDepotInfo(string companyId)
+    {
+
+        List<DepotDao> aList = new List<DepotDao>();
+
+
+        DataTable aTable = aDashboardDal.GetDepot(companyId);
+
+        if (aTable.Rows.Count > 0)
+        {
+
+            foreach (DataRow DR in aTable.Rows)
+            {
+                var aData = new DepotDao();
+
+                aData.UnitName = DR["UnitName"].ToString();
+                aData.UnitId = Convert.ToInt32(DR["ComUnitId"].ToString());
+
+                aList.Add(aData);
+
+            }
+
+            return aList.ToArray();
+        }
+
+
+        return aList.ToArray();
+
+    }
 
     [WebMethod(EnableSession = true)]
     public static WingsSalesTrend[] GetWingsSalesTrend(string year)
@@ -346,13 +448,24 @@ public partial class SInventory_UI_Dashboard : System.Web.UI.Page
 
 
     [WebMethod(EnableSession = true)]
-    public static SalesDashboardDao[] GetDashBoardCardInfo(string companyId)
+    public static SalesDashboardDao[] GetDashBoardCardInfo(string companyId, string fromDate, string toDate)
     {
 
         var aList = new List<SalesDashboardDao>();
 
+        decimal stockValue = 0;
 
-        DataTable aTable = aDashboardDal.GetDashBoardCardInfo(companyId, DateTime.Today);
+        DataTable stockTable = aDashboardDal.GetDashBoardStockCardInfo(companyId, fromDate, toDate, DateTime.Today);
+
+        if (stockTable.Rows.Count > 0)
+        {
+            foreach (DataRow DR in stockTable.Rows)
+            {
+                stockValue = Convert.ToDecimal(DR["TotalPrice"].ToString());
+            }
+        }
+
+        DataTable aTable = aDashboardDal.GetDashBoardCardInfo(companyId,fromDate,toDate, DateTime.Today);
 
         if (aTable.Rows.Count > 0)
         {
@@ -367,6 +480,7 @@ public partial class SInventory_UI_Dashboard : System.Web.UI.Page
                 aData.ActualSales = Convert.ToDecimal(DR["ActualSales"].ToString());
                 aData.TotalCollection = Convert.ToDecimal(DR["TotalCollection"].ToString());
                 aData.TotalDue = Convert.ToDecimal(DR["TotalDue"].ToString());
+                aData.StockValue = stockValue;
 
                 aList.Add(aData);
 
@@ -399,6 +513,36 @@ public partial class SInventory_UI_Dashboard : System.Web.UI.Page
 
                 aData.FinancialYearId = dr["FinancialYearId"].ToString();
                 aData.FinancialYear = dr["FinancialYear"].ToString();
+
+                aList.Add(aData);
+
+            }
+
+            return aList.ToArray();
+        }
+
+
+        return aList.ToArray();
+
+    }
+
+
+    [WebMethod(EnableSession = true)]
+    public static MIODao[] GetMIOInfo(string companyId)
+    {
+        List<MIODao> aList = new List<MIODao>();
+
+        DataTable aTable = aDashboardDal.GetMIOInfo(companyId);
+
+        if (aTable.Rows.Count > 0)
+        {
+
+            foreach (DataRow dr in aTable.Rows)
+            {
+                var aData = new MIODao();
+
+                aData.MIOId = dr["MIOId"].ToString();
+                aData.EmpName = dr["EmpName"].ToString();
 
                 aList.Add(aData);
 

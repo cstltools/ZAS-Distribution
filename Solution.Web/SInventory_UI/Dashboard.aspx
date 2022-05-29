@@ -381,6 +381,10 @@
         .bg-c-megenta {
             background-color: #826BBF;
         }
+        
+        .bg-c-pink {
+            background-color: #B5256C;
+        }
 
         .div-hide {
             display: none !important;
@@ -437,14 +441,45 @@
                                     <div class="col-sm-12 col-md-12">
                                         <div class="card main-card  pb-4">
                                             <div class="card-header main-card-head">
-                                                <h5 class=""><i class="fas fa-1x fa-th-large "></i>&nbsp;Dashboard </h5>
-                                                <div class="col-sm-4 mb-0">
+                                                <h5 class=""><i class="fas fa-1x fa-th-large "></i>&nbsp; Dashboard </h5>
+                                                <div class="col-sm-3 mb-0">
                                                     <div class="form-group row">
-                                                        <label for="ddlCardCompany" class="col-sm-4 col-form-label col-form-label-sm text-right">Wings name <span class="text-sm-left text-c-green"></span>:  </label>
-                                                        <div class="col-sm-8">
+                                                        <label for="ddlCardCompany" class="col-sm-5 col-form-label col-form-label-sm text-right"> Wings name <span class="text-sm-left text-c-green"></span>:  </label>
+                                                        <div class="col-sm-7">
                                                             <select id="ddlCardCompany" class="form-control form-control-sm "></select>
                                                         </div>
 
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-2 mb-0">
+                                                    <div class="form-group row">
+                                                        <label for="txtCardFromDate" class="col-sm-5 col-form-label col-form-label-sm text-right">From Date: <span class="text-sm-left text-c-green"></span>:  </label>
+                                                        <div class="col-sm-7">
+                                                            <input class="form-control  form-control-sm " type="date" id="txtCardFromDate" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-2 mb-0">
+                                                    <div class="form-group row">
+                                                        <label for="txtCardToDate" class="col-sm-5 col-form-label col-form-label-sm text-right">To Date: <span class="text-sm-left text-c-green"></span>:  </label>
+                                                        <div class="col-sm-7">
+                                                            <input class="form-control  form-control-sm " type="date" id="txtCardToDate" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-1">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-1 col-form-label col-form-label-sm text-right">&nbsp;</label>
+                                                        <div class="col-sm-10">
+                                                            <button type="button" onclick="SetDashBoardCardInfo()" class="btn btn-sm btn-success">
+                                                                <i class="fa fa-1x fa-retweet" aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -454,7 +489,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row" style="padding: 10px 15px 0 15px !important; margin-bottom: -20px;">
-                                                    <div class="col-md-6 col-xl-3">
+                                                    <div class="col-md-6 col-xl-2">
                                                         <div class="card bg-c-blue notification-card">
                                                             <div class="card-block info-card" style="padding: 0 8px !important;">
                                                                 <div class="row align-items-center">
@@ -509,7 +544,7 @@
                                                     </div>
 
 
-                                                    <div class="col-md-6 col-xl-3">
+                                                    <div class="col-md-6 col-xl-2">
                                                         <div class="card bg-c-red notification-card">
                                                             <div class="card-block" style="padding: 0 8px !important;">
                                                                 <div class="row align-items-center">
@@ -517,6 +552,20 @@
                                                                     <div class="col-8 notify-cont">
                                                                         <h4 id="due">0</h4>
                                                                         <p>Total Due</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6 col-xl-2">
+                                                        <div class="card bg-c-pink notification-card">
+                                                            <div class="card-block" style="padding: 0 8px !important;">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col-4 notify-icon"><i class="fas fa-chart-bar"></i></div>
+                                                                    <div class="col-8 notify-cont">
+                                                                        <h4 id="stockValue">0</h4>
+                                                                        <p>Total Stock Value</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -684,6 +733,207 @@
                                                     </div>
                                                 </div>
 
+                                                <%--============================= Company Wise Invoice Comparison ===============================--%>
+
+                                                <div class="row p-15 flex-card-container">
+                                                    <div class="col-md-12 col-xl-12">
+                                                        <div class="accordion" id="accordionExample10">
+                                                            <div class="card child-card">
+                                                                <div class="card-header child-card-header text-center" id="headingOne10">
+                                                                    <h5 class="mb-0">
+                                                                        <a href="#!" data-toggle="collapse" data-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne" class="">Company Wise Daily Invoice Comparison </a>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="collapseOne10" class="card-body mt-3 collapse show" aria-labelledby="headingOne" data-parent="#accordionExample10" style="padding-bottom: 10px !important">
+
+                                                                    <div class="row ">
+                                                                        <div class="col-sm-3">
+                                                                            <div class="form-group row">
+                                                                                <label for="ddlMioInvCompany" class="col-sm-4 col-form-label col-form-label-sm text-right">Wings name <span class="text-sm-left text-c-red">[*]</span> </label>
+                                                                                <div class="col-sm-8">
+                                                                                    <select id="ddlInvCompany" class="form-control form-control-sm "></select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="col-sm-3">
+                                                                            <div class="form-group row">
+                                                                                <label for="txtFromDate" class="col-sm-5 col-form-label col-form-label-sm text-right">From Date <span class="text-sm-left text-c-red">[*]</span></label>
+                                                                                <div class="col-sm-7">
+
+                                                                                    <input class="form-control  form-control-sm " type="date" id="txtInvFromDate" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-3">
+                                                                            <div class="form-group row">
+                                                                                <label for="txtToDate" class="col-sm-5 col-form-label col-form-label-sm text-right">To Date <span class="text-sm-left text-c-red">[*]</span></label>
+                                                                                <div class="col-sm-7">
+
+                                                                                    <input class="form-control  form-control-sm " type="date" id="txtInvToDate" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-1">
+                                                                            <div class="form-group row">
+                                                                                <label class="col-sm-1 col-form-label col-form-label-sm text-right">&nbsp;</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <button type="button" onclick="LoadCompanyWisePerDayInvoice()" class="btn btn-sm btn-success">
+                                                                                        <i class="fa fa-1x fa-retweet" aria-hidden="true"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="row form-container">
+                                                                        <div id="invoice-chart-container" style="width: 100% !important;"></div>
+                                                                        <img id="invoice-spinner" class="center" style="height: 80px; width: 80px;" src="../Assets/loading.gif" />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="accordion" id="accordionExample101" style="width: 96% !important; margin: 0 auto;">
+
+                                                                    <div class="card child-card">
+                                                                        <div class="card-header child-card-header text-left" id="headingOne101">
+                                                                            <h5 class="mb-0">
+                                                                                <a href="#!" data-toggle="collapse" data-target="#collapseOne101" aria-expanded="true" aria-controls="collapseOne" class=""><i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;Wings Per day Invoice </a>
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div id="collapseOne101" class="card-body mt-3 collapse hide" aria-labelledby="headingOne101" data-parent="#accordionExample101" style="padding-bottom: 10px !important">
+                                                                            <div class="row form-container">
+                                                                                <table class="table table-bordered table-xs">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th># SL</th>
+                                                                                            <th>Invoice Date </th>
+                                                                                            <th>No Of Invoice </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody id="invoice-detail">
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <%--============================= MIO Wise Invoice Comparison ===============================--%>
+
+                                                <div class="row p-15 flex-card-container">
+                                                    <div class="col-md-12 col-xl-12">
+                                                        <div class="accordion" id="accordionExample9">
+                                                            <div class="card child-card">
+                                                                <div class="card-header child-card-header text-center" id="headingOne9">
+                                                                    <h5 class="mb-0">
+                                                                        <a href="#!" data-toggle="collapse" data-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne" class="">MIO Wise Daily Invoice Comparison  </a>
+                                                                    </h5>
+                                                                </div>
+                                                                <div id="collapseOne9" class="card-body mt-3 collapse show" aria-labelledby="headingOne" data-parent="#accordionExample" style="padding-bottom: 10px !important">
+
+                                                                    <div class="row ">
+                                                                        <div class="col-sm-3">
+                                                                            <div class="form-group row">
+                                                                                <label for="ddlMioInvCompany" class="col-sm-4 col-form-label col-form-label-sm text-right">Wings name <span class="text-sm-left text-c-red">[*]</span> </label>
+                                                                                <div class="col-sm-8">
+                                                                                    <select id="ddlMioInvCompany" class="form-control form-control-sm "></select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-3">
+                                                                            <div class="form-group row">
+                                                                                <label for="ddlMio" class="col-sm-5 col-form-label col-form-label-sm text-right">MIO name <span class="text-sm-left text-c-red">[*]</span>  </label>
+                                                                                <div class="col-sm-7">
+                                                                                    <select id="ddlMio" class="form-control form-control-sm "></select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-2">
+                                                                            <div class="form-group row">
+                                                                                <label for="txtFromDate" class="col-sm-5 col-form-label col-form-label-sm text-right">From Date <span class="text-sm-left text-c-red">[*]</span></label>
+                                                                                <div class="col-sm-7">
+
+                                                                                    <input class="form-control  form-control-sm " type="date" id="txtMioInvFromDate" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-2">
+                                                                            <div class="form-group row">
+                                                                                <label for="txtToDate" class="col-sm-5 col-form-label col-form-label-sm text-right">To Date <span class="text-sm-left text-c-red">[*]</span></label>
+                                                                                <div class="col-sm-7">
+
+                                                                                    <input class="form-control  form-control-sm " type="date" id="txtMioInvToDate" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-sm-2">
+                                                                            <div class="form-group row">
+                                                                                <label class="col-sm-1 col-form-label col-form-label-sm text-right">&nbsp;</label>
+                                                                                <div class="col-sm-10">
+                                                                                    <button type="button" onclick="LoadMioWisePerDayInvoice()" class="btn btn-sm btn-success">
+                                                                                        <i class="fa fa-1x fa-retweet" aria-hidden="true"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="row form-container">
+                                                                        <div id="mioinvoice-chart-container" style="width: 100% !important;"></div>
+                                                                        <img id="mioinvoice-spinner" class="center" style="height: 80px; width: 80px;" src="../Assets/loading.gif" />
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="accordion" id="accordionExample91" style="width: 96% !important; margin: 0 auto;">
+
+                                                                    <div class="card child-card">
+                                                                        <div class="card-header child-card-header text-left" id="headingOne91">
+                                                                            <h5 class="mb-0">
+                                                                                <a href="#!" data-toggle="collapse" data-target="#collapseOne91" aria-expanded="true" aria-controls="collapseOne" class=""><i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp; MIO Wise Invoice </a>
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div id="collapseOne91" class="card-body mt-3 collapse hide" aria-labelledby="headingOne91" data-parent="#accordionExample91" style="padding-bottom: 10px !important">
+                                                                            <div class="row form-container">
+                                                                                <table class="table table-bordered table-xs">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>#SL</th>
+                                                                                            <th>Invoice Date </th>
+                                                                                            <th>No Of Invoice </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody id="mioinvoice-detail">
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
                                                 <div class="row p-15 flex-card-container">
 
 
@@ -795,7 +1045,7 @@
 
                                                                         <div class="col-sm-4">
                                                                             <div class="form-group row">
-                                                                                <label for="ddlTopCustomerCompany" class="col-sm-4 col-form-label col-form-label-sm text-right"> Wings name <span class="text-sm-left text-c-green"></span>:  </label>
+                                                                                <label for="ddlTopCustomerCompany" class="col-sm-4 col-form-label col-form-label-sm text-right">Wings name <span class="text-sm-left text-c-green"></span>:  </label>
                                                                                 <div class="col-sm-7">
                                                                                     <select id="ddlTopCustomerCompany" class="form-control form-control-sm "></select>
                                                                                 </div>
@@ -804,7 +1054,7 @@
 
                                                                         <div class="col-sm-3">
                                                                             <div class="form-group row">
-                                                                                <label for="txtFromDate" class="col-sm-4 col-form-label col-form-label-sm text-right"> From Date <span class="text-sm-left text-c-red">[*]</span></label>
+                                                                                <label for="txtFromDate" class="col-sm-4 col-form-label col-form-label-sm text-right">From Date <span class="text-sm-left text-c-red">[*]</span></label>
                                                                                 <div class="col-sm-8">
 
                                                                                     <input class="form-control  form-control-sm " type="date" id="txtTopFromDate" />
@@ -847,6 +1097,8 @@
                                                                                     <th># SL</th>
                                                                                     <th>Customer Code</th>
                                                                                     <th>Customer Name</th>
+                                                                                    <th>Previous Month Sales </th>
+                                                                                    <th>Previous Month Due </th>
                                                                                     <th>Actual Sales </th>
                                                                                     <th>Due </th>
                                                                                 </tr>
@@ -863,10 +1115,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                                
-                                                
-                                                
+
+
+
+
                                                 <div class="row p-15">
 
                                                     <%--============================= Top Priority Product Sales ===============================--%>
@@ -886,18 +1138,18 @@
 
                                                                         <div class="col-sm-2">
                                                                             <div class="form-group row">
-                                                                                <label for="ddlTopCustomerCompany" class="col-sm-4 col-form-label col-form-label-sm text-right"> Wings  <span class="text-sm-left text-c-green"></span>:  </label>
+                                                                                <label for="ddlTopCustomerCompany" class="col-sm-4 col-form-label col-form-label-sm text-right">Wings  <span class="text-sm-left text-c-green"></span>:  </label>
                                                                                 <div class="col-sm-7">
                                                                                     <select id="ddlTopPriorityCompany" class="form-control form-control-sm "></select>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        
+
                                                                         <div class="col-sm-3">
                                                                             <div class="form-group row">
-                                                                                <label for="ddlRegion" class="col-sm-4 col-form-label col-form-label-sm text-right"> Region  <span class="text-sm-left text-c-green"></span>:  </label>
+                                                                                <label for="ddlDepot" class="col-sm-4 col-form-label col-form-label-sm text-right">Depot  <span class="text-sm-left text-c-green"></span>:  </label>
                                                                                 <div class="col-sm-7">
-                                                                                    <select id="ddlRegion" class="form-control form-control-sm "></select>
+                                                                                    <select id="ddlDepot" class="form-control form-control-sm "></select>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -905,7 +1157,7 @@
 
                                                                         <div class="col-sm-3">
                                                                             <div class="form-group row">
-                                                                                <label for="txtFromDate" class="col-sm-4 col-form-label col-form-label-sm text-right"> From Date <span class="text-sm-left text-c-red">[*]</span></label>
+                                                                                <label for="txtFromDate" class="col-sm-4 col-form-label col-form-label-sm text-right">From Date <span class="text-sm-left text-c-red">[*]</span></label>
                                                                                 <div class="col-sm-8">
 
                                                                                     <input class="form-control  form-control-sm " type="date" id="txtTopPriorityFromDate" />
@@ -1297,13 +1549,13 @@
                                                                                     <tr>
                                                                                         <th># SL</th>
                                                                                         <th>Name of the region </th>
-                                                                                        <th>1 - 10 (Days) </th>
-                                                                                        <th>11 - 20 (Days)</th>
-                                                                                        <th>21 - 30 (Days)</th>
-                                                                                        <th>31 - 40 (Days)</th>
-                                                                                        <th>41 - 50 (Days)</th>
-                                                                                        <th>51 - 60 (Days)</th>
-                                                                                        <th>60 + (Days)</th>
+                                                                                        <th> 1 (Month) </th>
+                                                                                        <th> 2 (Month) </th>
+                                                                                        <th> 3 (Month) </th>
+                                                                                        <th> 4 (Month) </th>
+                                                                                        <th> 5 (Month) </th>
+                                                                                        <th> 6 (Month) </th>
+                                                                                        <th> 6+ (Month)</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody id="agling-detail">
@@ -1469,6 +1721,16 @@
         $(document).ready(function () {
 
 
+            //$('#txtCardFromDate').datepicker({
+            //    "setDate": new Date(),
+            //    "autoclose": true
+            //});
+
+            //$('#txtCardToDate').datepicker({
+            //    "setDate": new Date(),
+            //    "autoclose": true
+            //});
+
             $(function () {
                 $('#txtToDate').daterangepicker({
                     singleDatePicker: true,
@@ -1497,20 +1759,24 @@
 
 
             //<----------------- Set Date ---------------------->
-            
+
             //var date = new Date();
             //var fDay = new Date(date.getFullYear(), date.getMonth(), 1);
             //var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-            
-            
+
+
             //var startDate = formatDate((new Date(date.getFullYear(), date.getMonth(), 1)).substr(6));
             //var endDate = formatDate((new Date(date.getFullYear(), date.getMonth() + 1, 0)).substr(6));
-            
+
             //alert(lastDay);
-            
+
             //$('#txtTopFromDate').val(startDate);
             //$('#txtTopToDate').val(endDate);
+
+            $('#ddlTopPriorityCompany').change(function () {
+                LoadWingsWiseDepot(); // Load On Change
+            });
 
             // <-------------- Load & Set Initial Data ------------------>
 
@@ -1526,6 +1792,21 @@
             $('#ddlCardCompany').change(function () {
                 SetDashBoardCardInfo(); // Load On Change
             });
+
+
+            // Company wise invoice Comperison
+
+            LoadCompanyWisePerDayInvoice();
+
+            $("#headingOne101").click(function () {
+
+                LoadCompanyWisePerDayinvDataTable(); // Load Datatable
+
+            });
+
+            // <------------ MIO InvoiceComparison --------------->
+
+            LoadMioWisePerDayInvoice();
 
 
             //<------------- Expire Product ---------------------->
@@ -1550,6 +1831,13 @@
 
             });
 
+
+            $("#headingOne91").click(function () {
+
+                LoadMIOWiseInvoiceDataTable(); // Load Datatable
+
+            });
+
             // <----------------- Sales Trend ----------------->
 
             LoadWingsSalesTrendChart();
@@ -1561,10 +1849,12 @@
             });
 
 
+            $('#ddlMioInvCompany').change(function () {
+                LoadMIOInfo();
+            });
+
             $('#ddlSalesTrendCompany').change(function () {
                 LoadFinancialYear();
-                //LoadSalesTrendDataTable();
-                //LoadWingsSalesTrendChart();
             });
 
 
@@ -1661,6 +1951,308 @@
         });
 
 
+        function LoadWingsWiseDepot() {
+
+            var companyId = $('#ddlTopPriorityCompany').val();
+
+            $.ajax({
+                type: "POST",
+                url: "Dashboard.aspx/GetDepotInfo",
+                data: JSON.stringify({ companyId: companyId }),
+                dataType: "JSON",
+                contentType: "application/json;charset=utf-8",
+                async: false,
+                success: function (data) {
+
+                    var result = data.d;
+
+                    $('#ddlDepot').empty();
+                    $("#ddlDepot").append(new Option("Select .."));
+
+                    for (var i in result) {
+                        $('#ddlDepot').append($("<option></option>").val(result[i].UnitId)
+                            .html(result[i].UnitName));
+                    }
+
+                    $('#ddlDepot').val();
+
+                }
+            });
+        }
+        // Comapny wise invoice comperison
+
+        function LoadCompanyWisePerDayinvDataTable() {
+
+            var fromDate = $('#txtInvFromDate').val();
+            var toDate = $('#txtInvToDate').val();
+            var companyId = $('#ddlInvCompany').val();
+
+
+            $.ajax({
+                type: "POST",
+                url: "Dashboard.aspx/GetCompanyWiseInvoice",
+                data: JSON.stringify({ companyId: companyId, fromDate: fromDate, toDate: toDate }),
+                dataType: "JSON",
+                contentType: "application/json;charset=utf-8",
+                async: false,
+                success: function (data) {
+
+                    var result = data.d;
+
+                    var totalCount = 0;
+
+                    for (var j in result) {
+
+                        totalCount = parseFloat(totalCount) + parseFloat(result[j].NoOfInvoice);
+                    }
+
+
+                    var html = '';
+
+                    for (var i in result) {
+
+                        html += '<tr>';
+                        html += '<td>' + (parseInt(i) + 1) + '</td>';
+                        html += '<td>' + result[i].InvoiceDate + '</td>';
+                        html += '<td>' + numberWithCommas(result[i].NoOfInvoice) + '</td>';
+                        html += '</tr>';
+
+
+                    }
+
+
+                    html += '<tr style="font-weight: bold;">';
+                    html += '<td></td>';
+                    html += '<td>Total No of invoice:</td>';
+                    html += '<td>' + numberWithCommas(parseFloat(totalCount).toFixed(2)) + '</td>';
+                    html += '</tr>';
+
+                    $('#invoice-detail').html(html);
+
+
+
+                }
+            });
+        }
+
+
+        function LoadCompanyWisePerDayInvoice() {
+
+            var fromDate = $('#txtInvFromDate').val();
+            var toDate = $('#txtInvToDate').val();
+            var companyId = $('#ddlInvCompany').val();
+
+
+            $("#invoice-spinner").show();
+
+
+            $.ajax({
+                type: "POST",
+                url: "Dashboard.aspx/GetCompanyWiseInvoice",
+                data: JSON.stringify({ companyId: companyId, fromDate: fromDate, toDate: toDate }),
+                dataType: "JSON",
+                contentType: "application/json;charset=utf-8",
+                async: false,
+                success: function (data) {
+
+                    var result = data.d;
+
+                    var noOfInvoice = [];
+                    var label = [];
+
+                    for (var i in result) {
+
+                        noOfInvoice.push(result[i].NoOfInvoice);
+                        label.push(result[i].InvoiceDate);
+
+                    }
+
+                    console.log(data);
+
+
+                    Highcharts.chart('invoice-chart-container', {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: ''
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            type: 'date',
+                            categories: label,
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            labels: {
+                                rotation: -90,
+                                style: {
+                                    fontSize: '13px',
+                                    fontFamily: 'Verdana, sans-serif'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0,
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '{point.y:.1f}'
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'No Of Invoice',
+                            data: noOfInvoice
+                        }
+                            //, {
+                            //    name: 'No of Delivery Invoice',
+                            //    data: noOfDelivaryInvoice
+                            //}
+                            //, {
+                            //name: 'Due',
+                            //data: dueValue
+
+                            //}
+                        ]
+                    });
+
+                    $("#invoice-spinner").hide();
+                },
+                error: function () {
+                    alert('Failed');
+                }
+            });
+
+
+
+        }
+
+
+        // <------------ MIO InvoiceComparison --------------->
+
+        function LoadMioWisePerDayInvoice() {
+            var fromDate = $('#txtMioInvFromDate').val();
+            var toDate = $('#txtMioInvToDate').val();
+            var companyId = $('#ddlMioInvCompany').val();
+            var mioId = $('#ddlMio').val();
+
+
+
+
+            $("#mioinvoice-spinner").show();
+
+
+            $.ajax({
+                type: "POST",
+                url: "Dashboard.aspx/GetMioWiseInvoice",
+                data: JSON.stringify({ companyId: companyId, fromDate: fromDate, toDate: toDate, mioId: mioId }),
+                dataType: "JSON",
+                contentType: "application/json;charset=utf-8",
+                async: false,
+                success: function (data) {
+
+                    var result = data.d;
+
+                    var noOfInvoice = [];
+                    var noOfDelivaryInvoice = [];
+                    var label = [];
+
+                    for (var i in result) {
+
+                        noOfInvoice.push(result[i].NoOfInvoice);
+                        noOfDelivaryInvoice.push(result[i].NoOfDelivaryInvoice);
+                        label.push(result[i].InvoiceDate);
+
+                    }
+
+                    console.log(data);
+
+
+                    Highcharts.chart('mioinvoice-chart-container', {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: ''
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            type: 'date',
+                            categories: label,
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            labels: {
+                                rotation: -90,
+                                style: {
+                                    fontSize: '13px',
+                                    fontFamily: 'Verdana, sans-serif'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0,
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '{point.y:.1f}'
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'No Of Invoice',
+                            data: noOfInvoice
+                        }
+                            //, {
+                            //    name: 'No of Delivery Invoice',
+                            //    data: noOfDelivaryInvoice
+                            //}
+                            //, {
+                            //name: 'Due',
+                            //data: dueValue
+
+                            //}
+                        ]
+                    });
+
+
+                },
+                error: function () {
+                    alert('Failed');
+                }
+            });
+
+            $("#mioinvoice-spinner").hide();
+
+
+
+        }
+
         //<------------- Expire Product ---------------------->
 
         function LoadExpireProduct() {
@@ -1706,7 +2298,7 @@
                 }
             });
         }
-        
+
 
         //<------------- Top50 Customer ---------------------->
 
@@ -1737,6 +2329,8 @@
                         html += '<td>' + (parseInt(i) + 1) + '</td>';
                         html += '<td>' + result[i].CustomerCode + '</td>';
                         html += '<td>' + result[i].CustomerName + '</td>';
+                        html += '<td>' + numberWithCommas(result[i].PrevActualSales) + '</td>';
+                        html += '<td>' + numberWithCommas(result[i].PrevMonthDue) + '</td>';
                         html += '<td>' + numberWithCommas(result[i].ActualSales) + '</td>';
                         html += '<td>' + numberWithCommas(result[i].Due) + '</td>';
                         html += '</tr>';
@@ -1760,13 +2354,13 @@
             var fromDate = $('#txtTopPriorityFromDate').val();
             var toDate = $('#txtTopPriorityToDate').val();
             var companyId = $('#ddlTopPriorityCompany').val();
-            var regionId = $('#ddlRegion').val();
+            var regionId = $('#ddlDepot').val();
 
 
             $.ajax({
                 type: "POST",
                 url: "Dashboard.aspx/GetTopPriorityProductsales",
-                data: JSON.stringify({ companyId: companyId, regionId: regionId, fromDate: fromDate, toDate: toDate }),
+                data: JSON.stringify({ companyId: companyId, depotId: regionId, fromDate: fromDate, toDate: toDate }),
                 dataType: "JSON",
                 contentType: "application/json;charset=utf-8",
                 async: false,
@@ -1959,6 +2553,35 @@
         }
 
 
+        function LoadMIOInfo() {
+
+            var salesTrendCompanyId = $('#ddlMioInvCompany').val();
+
+            debugger;
+
+            $.ajax({
+
+
+                type: "POST",
+                url: "Dashboard.aspx/GetMIOInfo",
+                data: JSON.stringify({ companyId: salesTrendCompanyId }),
+                dataType: "JSON",
+                contentType: "application/json;charset=utf-8",
+                async: false,
+                success: function (data) {
+
+                    var result = data.d;
+
+                    $('#ddlMio').empty();
+
+                    for (var i in result) {
+                        $('#ddlMio').append($("<option></option>").val(result[i].MIOId).html(result[i].EmpName));
+                    }
+                }
+            });
+        }
+
+
         function LoadFinancialYear() {
 
             var salesTrendCompanyId = $('#ddlSalesTrendCompany').val();
@@ -2025,7 +2648,58 @@
         }
 
 
+
+
         function LoadDropDownlist() {
+
+
+            $.ajax({
+                type: "POST",
+                url: "Dashboard.aspx/GetCompanyInfo",
+                data: JSON.stringify({}),
+                dataType: "JSON",
+                contentType: "application/json;charset=utf-8",
+                async: false,
+                success: function (data) {
+
+                    var result = data.d;
+
+                    $('#ddlInvCompany').empty();
+
+                    for (var i in result) {
+                        $('#ddlInvCompany').append($("<option></option>").val(result[i].CompanyId).html(result[i].CompanyName));
+                    }
+
+                    $('#ddlInvCompany').val();
+
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "Dashboard.aspx/GetCompanyInfo",
+                data: JSON.stringify({}),
+                dataType: "JSON",
+                contentType: "application/json;charset=utf-8",
+                async: false,
+                success: function (data) {
+
+
+
+                    var result = data.d;
+
+                    $('#ddlMioInvCompany').empty();
+
+                    for (var i in result) {
+                        $('#ddlMioInvCompany').append($("<option></option>").val(result[i].CompanyId)
+                            .html(result[i].CompanyName));
+                    }
+
+                    $('#ddlMioInvCompany').val();
+
+                }
+            });
+
 
             $.ajax({
                 type: "POST",
@@ -2075,32 +2749,32 @@
 
                 }
             });
-            
 
-            $.ajax({
-                type: "POST",
-                url: "Dashboard.aspx/GetRegionInfo",
-                data: JSON.stringify({}),
-                dataType: "JSON",
-                contentType: "application/json;charset=utf-8",
-                async: false,
-                success: function (data) {
 
-                    var result = data.d;
+            //$.ajax({
+            //    type: "POST",
+            //    url: "Dashboard.aspx/GetRegionInfo",
+            //    data: JSON.stringify({}),
+            //    dataType: "JSON",
+            //    contentType: "application/json;charset=utf-8",
+            //    async: false,
+            //    success: function (data) {
 
-                    $('#ddlRegion').empty();
+            //        var result = data.d;
 
-                    for (var i in result) {
-                        $('#ddlRegion').append($("<option></option>").val(result[i].RegionId)
-                            .html(result[i].RegionName));
-                    }
+            //        $('#ddlRegion').empty();
 
-                    $('#ddlRegion').val();
+            //        for (var i in result) {
+            //            $('#ddlRegion').append($("<option></option>").val(result[i].RegionId)
+            //                .html(result[i].RegionName));
+            //        }
 
-                }
-            });
-            
-            
+            //        $('#ddlRegion').val();
+
+            //    }
+            //});
+
+
             $.ajax({
                 type: "POST",
                 url: "Dashboard.aspx/GetCompanyInfo",
@@ -2340,6 +3014,8 @@
             //    }
             //});
 
+            LoadWingsWiseDepot();
+
 
         }
 
@@ -2348,11 +3024,13 @@
 
 
             var companyId = $('#ddlCardCompany').val();
+            var fromDate = $('#txtCardFromDate').val();
+            var toDate = $('#txtCardToDate').val();
 
             $.ajax({
                 type: "POST",
                 url: "Dashboard.aspx/GetDashBoardCardInfo",
-                data: JSON.stringify({ companyId: companyId }),
+                data: JSON.stringify({ companyId: companyId, fromDate: fromDate, toDate: toDate }),
                 dataType: "JSON",
                 contentType: "application/json;charset=utf-8",
                 async: false,
@@ -2367,9 +3045,10 @@
                         $("#OrderNo").html(result[i].NoOfOrder);
                         $("#invoiceNo").html(result[i].NoOfInvoice);
                         $("#actualSales").html(result[i].ActualSales);
-                        $("#deliveryNo").html(result[i].DeliveryConfirmed);
+                        $("#deliveryNo").html(result[i].DeliveryConfirmed + " (" + result[i].ActualSales + ")");
                         $("#collection").html(result[i].TotalCollection);
                         $("#due").html(numberWithCommas(parseFloat(result[i].TotalDue).toFixed(2)));
+                        $("#stockValue").html(numberWithCommas(parseFloat(result[i].StockValue).toFixed(2)));
                     }
 
                     $('#productsales-detail').html(html);
@@ -2878,6 +3557,68 @@
                     alert('Failed');
                 }
             });
+        }
+
+
+        function LoadMIOWiseInvoiceDataTable() {
+
+            var fromDate = $('#txtMioInvFromDate').val();
+            var toDate = $('#txtMioInvToDate').val();
+            var companyId = $('#ddlMioInvCompany').val();
+            var mioId = $('#ddlMio').val();
+
+            if (fromDate != '' && toDate != '' && companyId != '' && mioId != '') {
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "Dashboard.aspx/GetMioWiseInvoice",
+                    data: JSON.stringify({ companyId: companyId, fromDate: fromDate, toDate: toDate, mioId: mioId }),
+                    dataType: "JSON",
+                    contentType: "application/json;charset=utf-8",
+                    async: false,
+                    success: function (data) {
+
+                        var result = data.d;
+
+                        var totalCount = 0;
+
+                        for (var j in result) {
+
+                            totalCount = parseFloat(totalCount) + parseFloat(result[j].NoOfInvoice);
+                        }
+
+
+                        var html = '';
+
+                        for (var i in result) {
+
+                            html += '<tr>';
+                            html += '<td>' + (parseInt(i) + 1) + '</td>';
+                            html += '<td>' + result[i].InvoiceDate + '</td>';
+                            html += '<td>' + numberWithCommas(result[i].NoOfInvoice) + '</td>';
+                            html += '</tr>';
+
+
+                        }
+
+
+                        html += '<tr style="font-weight: bold;">';
+                        html += '<td></td>';
+                        html += '<td>Total No of invoice:</td>';
+                        html += '<td>' + numberWithCommas(parseFloat(totalCount).toFixed(2)) + '</td>';
+                        html += '</tr>';
+
+                        $('#mioinvoice-detail').html(html);
+
+
+                    }
+                });
+
+
+            }
+
+
         }
 
         function LoadSalesFunnelDataTable() {

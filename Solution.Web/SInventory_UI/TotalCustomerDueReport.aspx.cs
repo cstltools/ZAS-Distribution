@@ -48,7 +48,7 @@ public partial class SInventory_UI_TotalCustomerDueReport : System.Web.UI.Page
 
     private string GenerateParameter()
     {
-        string param = "  WHERE (INV.DeliveryInvoiceStatus IS NOT NULL AND INV.DeliveryInvoiceStatus != 'Reject') AND INV.InvoiceDate <= '" + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
+        string param = "  WHERE INV.DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate <= '" + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
 
         if (manufacDropDownList.SelectedIndex  > 0)
         {

@@ -71,6 +71,10 @@
                 <asp:BoundField DataField="Noakhali" HeaderText="Noakhali" />
                 <asp:BoundField DataField="Sylhet" HeaderText="Sylhet" />
                 <asp:BoundField DataField="Khulna" HeaderText="Khulna" />
+                <asp:BoundField DataField="Mymensingh" HeaderText="Mymensingh" />
+                <asp:BoundField DataField="Rangpur" HeaderText="Rangpur" />
+                <asp:BoundField DataField="Rajshahi" HeaderText="Rajshahi" />
+                <asp:BoundField DataField="Cumilla" HeaderText="Cumilla" />
                 <asp:BoundField DataField="Transit" HeaderText="Transit" />
                 <asp:BoundField DataField="Freeze" HeaderText="Freeze" />
                 <asp:BoundField DataField="TotalIssue" HeaderText="Total Issue" />

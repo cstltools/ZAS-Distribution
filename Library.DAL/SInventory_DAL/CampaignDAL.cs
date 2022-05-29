@@ -32,7 +32,7 @@ namespace Library.DAL.SInventory_DAL
         }
         public DataTable LoadingleData(string id)
         {
-            string query = @"SELECT REPLACE(convert(varchar, FromDate, 106),' ','-')AS  FromDate,REPLACE(convert(varchar, ToDate, 106),' ','-')ToDate,*,B.ProductName AS BonusProductName,B.ProductId AS BonusProductId  FROM dbo.tblBonusCampaignMaster
+            string query = @"SELECT REPLACE(convert(varchar, tblBonusCampaignMaster.FromDate, 106),' ','-')AS  FromDate,REPLACE(convert(varchar, tblBonusCampaignMaster.ToDate, 106),' ','-')ToDate,*,B.ProductName AS BonusProductName,B.ProductId AS BonusProductId  FROM dbo.tblBonusCampaignMaster
 LEFT JOIN dbo.tblBonusCampgainDetail ON tblBonusCampgainDetail.CampgainMasterId = tblBonusCampaignMaster.CampgainMasterId
 LEFT JOIN dbo.tblProduct P ON P.ProductCode=dbo.tblBonusCampgainDetail.PointProductCode
 LEFT JOIN dbo.tblProduct B ON B.ProductCode=dbo.tblBonusCampgainDetail.BonusProductCode

@@ -108,12 +108,14 @@ WHERE CP.PaymentDate <= '" + toDateTime + "' GROUP BY InvoiceId ) AS PMNT ON PMN
             return _aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
-        public DataTable GetDashBoardCardInfo(string companyId,DateTime currentDate)
+        public DataTable GetDashBoardCardInfo(string companyId,string fromDate, string toDate,DateTime currentDate)
         {
             List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
 
             aSqlParameterList.Add(new SqlParameter("@CurrentDate", currentDate));
             aSqlParameterList.Add(new SqlParameter("@CompanyId", companyId));
+            aSqlParameterList.Add(new SqlParameter("@FromDate", fromDate == "" ?DateTime.Today : Convert.ToDateTime(fromDate)));
+            aSqlParameterList.Add(new SqlParameter("@ToDate", toDate == "" ? DateTime.Today : Convert.ToDateTime(toDate)));
 
             return _aCommonInternalDal.GetDataTableAction("sp_GET_DashboardCardInfo", aSqlParameterList, "SSIDB");
         }
@@ -124,6 +126,15 @@ WHERE CP.PaymentDate <= '" + toDateTime + "' GROUP BY InvoiceId ) AS PMNT ON PMN
             aSqlParameterList.Add(new SqlParameter("@CompanyId", companyId));
 
             return _aCommonInternalDal.GetDataTableAction("sp_GET_FinancialYear", aSqlParameterList, "SSIDB");
+        }
+
+        public DataTable GetMIOInfo(string companyId)
+        {
+            string query = @"SELECT MIOId,EmpName FROM tblMIOInfo AS MIO 
+                             LEFT JOIN tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId
+                             WHERE MIO.CompanyId = '" + companyId + "' AND IsActive = 1 ORDER BY EmpName";
+
+            return _aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
         public DataTable GetCompanyInfo()
@@ -218,55 +229,108 @@ WHERE CP.PaymentDate <= '" + toDateTime + "' GROUP BY InvoiceId ) AS PMNT ON PMN
 
         public DataTable GetTop50Customer(string companyId, DateTime fromDate, DateTime toDate)
         {
-            string query = @"SELECT TOP 50 MST.CustomerCode,MST.CustomerName,SUM(CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END) ActualSales,ISNULL(DD.DUE,0) AS Due
-		FROM dbo.tblInvoice AS INV 
-		LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId
-		LEFT JOIN tblCustMaster AS MST ON INV.CustomerMasterId = MST.CustomerMasterId
-		LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId
-		LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId
-		LEFT JOIN (SELECT INV.CustomerMasterId,
-        SUM(DeliveryTpGrandTotal)- SUM((ISNULL(PMNT.PaymentAmount,0) + ISNULL(PMNT.AIT,0) + ISNULL(PMNT.Discount,0))) AS DUE FROM dbo.tblInvoice AS INV 
-        LEFT JOIN ( SELECT InvoiceId,SUM(CPD.PaymentAmount) AS PaymentAmount,SUM(CPD.AIT) AIT, SUM(CPD.Discount) Discount FROM tblCustPayDetail AS CPD   
-        LEFT JOIN tblCustomerPay AS CP ON CPD.CustPayId = CP.CustPayId  WHERE CP.PaymentDate <= '" + toDate + "' GROUP BY InvoiceId ) AS PMNT ON PMNT.InvoiceId = inv.InvoiceId " 
-        + " LEFT JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId "
-        + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId "
-        + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId "
-        + " LEFT JOIN dbo.tblMarket AS MKT ON CSTMR.MarketId = MKT.MarketId "
-        + " LEFT JOIN dbo.tblTerritory AS TTR ON MKT.TerritoryId = TTR.TerritoryId "
-        + " LEFT JOIN dbo.tblArea AS ARA ON TTR.AreaId = ARA.AreaId  WHERE (INV.DeliveryInvoiceStatus IS NOT NULL AND INV.DeliveryInvoiceStatus != 'Reject')  AND CI.CompanyId = " + companyId 
-        + " AND INV.InvoiceDate <= '" + toDate + "' GROUP BY INV.CustomerMasterId"
-        + " HAVING SUM(DeliveryTpGrandTotal)- SUM((ISNULL(PMNT.PaymentAmount,0) + ISNULL(PMNT.AIT,0) + ISNULL(PMNT.Discount,0))) > 0 ) AS DD ON DD.CustomerMasterId = INV.CustomerMasterId"
-		+ " WHERE INV.DeliveryInvoiceStatus IN ('Full','Partial') AND INVD.Quantity > 0  "
-        + " AND INV.InvoiceDate BETWEEN '" + fromDate + "' AND '" + toDate + "' AND CI.CompanyId = " + companyId 
-		+ " GROUP BY MST.CustomerName, MST.CustomerCode,ISNULL(DD.DUE,0) ORDER BY SUM(CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END) DESC ";
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
 
-            return _aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+            aSqlParameterList.Add(new SqlParameter("@CompanyId", Convert.ToInt32(companyId)));
+            aSqlParameterList.Add(new SqlParameter("@fromDate", fromDate));
+            aSqlParameterList.Add(new SqlParameter("@toDate", toDate));
+
+
+//            string query = @"SELECT TOP 50 MST.CustomerCode,MST.CustomerName,SUM(CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END) ActualSales,ISNULL(DD.DUE,0) AS Due
+//		FROM dbo.tblInvoice AS INV 
+//		LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId
+//		LEFT JOIN tblCustMaster AS MST ON INV.CustomerMasterId = MST.CustomerMasterId
+//		LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId
+//		LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId
+//		LEFT JOIN (SELECT INV.CustomerMasterId,
+//        SUM(DeliveryTpGrandTotal)- SUM((ISNULL(PMNT.PaymentAmount,0) + ISNULL(PMNT.AIT,0) + ISNULL(PMNT.Discount,0))) AS DUE FROM dbo.tblInvoice AS INV 
+//        LEFT JOIN ( SELECT InvoiceId,SUM(CPD.PaymentAmount) AS PaymentAmount,SUM(CPD.AIT) AIT, SUM(CPD.Discount) Discount FROM tblCustPayDetail AS CPD   
+//        LEFT JOIN tblCustomerPay AS CP ON CPD.CustPayId = CP.CustPayId  WHERE CP.PaymentDate <= '" + toDate + "' GROUP BY InvoiceId ) AS PMNT ON PMNT.InvoiceId = inv.InvoiceId " 
+//        + " LEFT JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId "
+//        + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId "
+//        + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId "
+//        + " LEFT JOIN dbo.tblMarket AS MKT ON CSTMR.MarketId = MKT.MarketId "
+//        + " LEFT JOIN dbo.tblTerritory AS TTR ON MKT.TerritoryId = TTR.TerritoryId "
+//        + " LEFT JOIN dbo.tblArea AS ARA ON TTR.AreaId = ARA.AreaId  WHERE (INV.DeliveryInvoiceStatus IS NOT NULL AND INV.DeliveryInvoiceStatus != 'Reject')  AND CI.CompanyId = " + companyId 
+//        + " AND INV.InvoiceDate <= '" + toDate + "' GROUP BY INV.CustomerMasterId"
+//        + " HAVING SUM(DeliveryTpGrandTotal)- SUM((ISNULL(PMNT.PaymentAmount,0) + ISNULL(PMNT.AIT,0) + ISNULL(PMNT.Discount,0))) > 0 ) AS DD ON DD.CustomerMasterId = INV.CustomerMasterId"
+//        + " WHERE INV.DeliveryInvoiceStatus IN ('Full','Partial') AND INVD.Quantity > 0  "
+//        + " AND INV.InvoiceDate BETWEEN '" + fromDate + "' AND '" + toDate + "' AND CI.CompanyId = " + companyId 
+//        + " GROUP BY MST.CustomerName, MST.CustomerCode,ISNULL(DD.DUE,0) ORDER BY SUM(CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END) DESC ";
+
+            return _aCommonInternalDal.GetDataTableAction("sp_Dashboard_Top50Customer",aSqlParameterList,"SSIDB");
         }
 
-        public DataTable GetTopPriorityProductsales(string companyId, string regionId, DateTime fromDate, DateTime toDate)
+        public DataTable GetTopPriorityProductsales(string companyId, string depotId, DateTime fromDate, DateTime toDate)
         {
-            string query = @"SELECT INVD.ProductCode,INVD.ProductName,ISNULL(TGT.TargetQty,0) TargetQty,ISNULL(SUM(DeliveryTotalQuantity),0) AS SalesQty,
-            CASE WHEN TGT.TargetQty IS NOT NULL THEN (ISNULL(SUM(DeliveryTotalQuantity),0) * 100) / NULLIF(TGT.TargetQty,0) 
-            ELSE 0 END  AS Achivment,CASE WHEN MAX(InvoiceDate) IS NOT NULL THEN (ISNULL(DATEDIFF(DAY, '" + fromDate + "', MAX(InvoiceDate)),0) * 100) / NULLIF(DATEDIFF(DAY, '" + fromDate + "', '" + toDate + "'),0)" 
-            + " ELSE 0 END  AS TimePass FROM tblInvoice AS INV "
-            + " LEFT JOIN tblInvoiceDetail AS INVD ON INV.invoiceId = INVD.InvoiceId "
-            + " LEFT JOIN tblOrder AS ODR ON ODR.OrderId = INV.OrderId "
-            + " LEFT JOIN tblRegion AS RGN ON ODR.RegionId = RGN.RegionId "
-            + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId "
-            + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId "
-            + " LEFT JOIN (SELECT RGN.RegionName,RSM.EmpName AS RSM,ProductCode,ProductName,SUM(TargetQty) TargetQty  FROM tblMIATargetProductWise AS MTP "
-            + " LEFT JOIN tblProduct AS PD ON MTP.ProductId = PD.ProductId "
-            + " LEFT JOIN tblMIOInfo AS MIO ON MTP.MiaId = MIO.MIOId "
-            + " LEFT JOIN tblTerritory AS TTR ON MIO.TerritoryId = TTR.TerritoryId "
-            + " LEFT JOIN tblArea AS ARA ON ARA.AreaId = TTR.AreaId "
-            + " LEFT JOIN tblRegion AS RGN ON RGN.RegionId = ARA.RegionId "
-            + " LEFT JOIN (SELECT EGI.EmpName,RegionId FROM tblRSMInfo AS RSM " 
-            + " LEFT JOIN tblEmpGeneralInfo AS EGI ON RSM.EmployeeId = EGI.EmpInfoId "
-            + " WHERE RSM.CompanyId = " + companyId + ") AS RSM ON RSM.RegionId = RGN.RegionId WHERE MTP.Year = DATENAME(year,'" + fromDate + "') "
-            + " AND (MTP.Period = DATENAME(month,'" + fromDate + "'))"
-            + " GROUP BY RGN.RegionName,RSM.EmpName,ProductCode,ProductName) AS TGT ON INVD.ProductCode = TGT.ProductCode AND RGN.RegionName = TGT.RegionName"
-            + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate BETWEEN '" + fromDate + "' AND '" + toDate + "' AND RGN.RegionId = " + regionId 
-            + " AND CI.CompanyId = "+ companyId + " GROUP BY INVD.ProductCode,INVD.ProductName,TGT.TargetQty  ORDER BY ProductCode";
+            string query = "";
+
+            if (depotId != null && depotId != "Select ..")
+            {
+                 query = @"SELECT INVD.ProductCode,INVD.ProductName,ISNULL(TGT.TargetQty,0) TargetQty,ISNULL(SUM(DeliveryTotalQuantity),0) AS SalesQty,
+                CASE WHEN TGT.TargetQty IS NOT NULL THEN (ISNULL(SUM(DeliveryTotalQuantity),0) * 100) / NULLIF(TGT.TargetQty,0) 
+                ELSE 0 END  AS Achivment,CASE WHEN MAX(InvoiceDate) IS NOT NULL THEN (ISNULL(DATEDIFF(DAY, '" + fromDate +
+                               "', MAX(InvoiceDate)),0) * 100) / NULLIF(DATEDIFF(DAY, '" + fromDate + "', '" + toDate +
+                               "'),0)"
+                               + " ELSE 0 END  AS TimePass FROM tblInvoice AS INV "
+                               + " LEFT JOIN tblInvoiceDetail AS INVD ON INV.invoiceId = INVD.InvoiceId "
+                               + " LEFT JOIN tblOrder AS ODR ON ODR.OrderId = INV.OrderId "
+                               + " LEFT JOIN tblRegion AS RGN ON ODR.RegionId = RGN.RegionId "
+                               + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId "
+                               + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId "
+                               +
+                               " LEFT JOIN (SELECT RGN.RegionName,RSM.EmpName AS RSM,ProductCode,ProductName,SUM(TargetQty) TargetQty  FROM tblMIATargetProductWise AS MTP "
+                               + " LEFT JOIN tblProduct AS PD ON MTP.ProductId = PD.ProductId "
+                               + " LEFT JOIN tblMIOInfo AS MIO ON MTP.MiaId = MIO.MIOId "
+                               + " LEFT JOIN tblTerritory AS TTR ON MIO.TerritoryId = TTR.TerritoryId "
+                               + " LEFT JOIN tblArea AS ARA ON ARA.AreaId = TTR.AreaId "
+                               + " LEFT JOIN tblRegion AS RGN ON RGN.RegionId = ARA.RegionId "
+                               + " LEFT JOIN (SELECT EGI.EmpName,RegionId FROM tblRSMInfo AS RSM "
+                               + " LEFT JOIN tblEmpGeneralInfo AS EGI ON RSM.EmployeeId = EGI.EmpInfoId "
+                               + " WHERE RSM.CompanyId = " + companyId +
+                               ") AS RSM ON RSM.RegionId = RGN.RegionId WHERE MTP.Year = DATENAME(year,'" + fromDate +
+                               "') "
+                               + " AND (MTP.Period = DATENAME(month,'" + fromDate + "'))"
+                               +
+                               " GROUP BY RGN.RegionName,RSM.EmpName,ProductCode,ProductName) AS TGT ON INVD.ProductCode = TGT.ProductCode AND RGN.RegionName = TGT.RegionName"
+                               + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate BETWEEN '" +
+                               fromDate + "' AND '" + toDate + "' AND UNT.ComUnitId = " + depotId
+                               + " AND CI.CompanyId = " + companyId +
+                               " GROUP BY INVD.ProductCode,INVD.ProductName,TGT.TargetQty  ORDER BY ProductCode";
+            }
+            else
+            {
+                 query = @"SELECT INVD.ProductCode,INVD.ProductName,ISNULL(TGT.TargetQty,0) TargetQty,ISNULL(SUM(DeliveryTotalQuantity),0) AS SalesQty,
+                CASE WHEN TGT.TargetQty IS NOT NULL THEN (ISNULL(SUM(DeliveryTotalQuantity),0) * 100) / NULLIF(TGT.TargetQty,0) 
+                ELSE 0 END  AS Achivment,CASE WHEN MAX(InvoiceDate) IS NOT NULL THEN (ISNULL(DATEDIFF(DAY, '" + fromDate +
+                              "', MAX(InvoiceDate)),0) * 100) / NULLIF(DATEDIFF(DAY, '" + fromDate + "', '" + toDate +
+                              "'),0)"
+                              + " ELSE 0 END  AS TimePass FROM tblInvoice AS INV "
+                              + " LEFT JOIN tblInvoiceDetail AS INVD ON INV.invoiceId = INVD.InvoiceId "
+                              + " LEFT JOIN tblOrder AS ODR ON ODR.OrderId = INV.OrderId "
+                              + " LEFT JOIN tblRegion AS RGN ON ODR.RegionId = RGN.RegionId "
+                              + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId "
+                              + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId "
+                              +
+                              " LEFT JOIN (SELECT RGN.RegionName,RSM.EmpName AS RSM,ProductCode,ProductName,SUM(TargetQty) TargetQty  FROM tblMIATargetProductWise AS MTP "
+                              + " LEFT JOIN tblProduct AS PD ON MTP.ProductId = PD.ProductId "
+                              + " LEFT JOIN tblMIOInfo AS MIO ON MTP.MiaId = MIO.MIOId "
+                              + " LEFT JOIN tblTerritory AS TTR ON MIO.TerritoryId = TTR.TerritoryId "
+                              + " LEFT JOIN tblArea AS ARA ON ARA.AreaId = TTR.AreaId "
+                              + " LEFT JOIN tblRegion AS RGN ON RGN.RegionId = ARA.RegionId "
+                              + " LEFT JOIN (SELECT EGI.EmpName,RegionId FROM tblRSMInfo AS RSM "
+                              + " LEFT JOIN tblEmpGeneralInfo AS EGI ON RSM.EmployeeId = EGI.EmpInfoId "
+                              + " WHERE RSM.CompanyId = " + companyId +
+                              ") AS RSM ON RSM.RegionId = RGN.RegionId WHERE MTP.Year = DATENAME(year,'" + fromDate +
+                              "') "
+                              + " AND (MTP.Period = DATENAME(month,'" + fromDate + "'))"
+                              +
+                              " GROUP BY RGN.RegionName,RSM.EmpName,ProductCode,ProductName) AS TGT ON INVD.ProductCode = TGT.ProductCode AND RGN.RegionName = TGT.RegionName"
+                              + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate BETWEEN '" +
+                              fromDate + "' AND '" + toDate + "' AND CI.CompanyId = " + companyId +
+                              " GROUP BY INVD.ProductCode,INVD.ProductName,TGT.TargetQty  ORDER BY ProductCode";
+            }
+            
 
             return _aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -276,6 +340,43 @@ WHERE CP.PaymentDate <= '" + toDateTime + "' GROUP BY InvoiceId ) AS PMNT ON PMN
             string query = "SELECT distinct RGN.RegionId, RGN.RegionCode + ' : ' + RGN.RegionName AS RegionName FROM tblRegion AS RGN WHERE RGN.IsActive ='True'";
             return _aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
-        
+
+        public DataTable GetDepot(string companyId)
+        {
+            string query = "SELECT ComUnitId,ComUnitCode + ' : ' + ComUnitName AS UnitName FROM tblCompanyUnit AS UNT WHERE UNT.CompanyId = " + companyId;
+            return _aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+
+        public DataTable GetCompanyInvoice(string companyId, DateTime fromDate, DateTime toDate)
+        {
+            string query = @"SELECT UNT.CompanyId,CONVERT(varchar, INV.InvoiceDate, 7) InvoiceDate,COUNT(InvoiceNo) AS NoOfInvoice FROM tblInvoice AS INV 
+                             LEFT JOIN tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId
+                             WHERE InvoiceDate BETWEEN '" + fromDate + "' AND '" + toDate + "' AND UNT.CompanyId = " + companyId + " GROUP BY UNT.CompanyId,INV.InvoiceDate ORDER BY InvoiceDate";
+
+            return _aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetMioWiseInvoice(string companyId, DateTime fromDate, DateTime toDate, string mioId)
+        {
+            string query = @"SELECT UNT.CompanyId,MIO.MIOId,EmpName,CONVERT(varchar, INV.InvoiceDate, 7) InvoiceDate,COUNT(InvoiceNo) AS NoOfInvoice,COUNT(DelivaryInvoiceNo) AS NoOfDelivaryInvoice FROM tblInvoice AS INV 
+                             LEFT JOIN tblMIOInfo AS MIO ON INV.MiaId = MIO.MIOId
+                             LEFT JOIN tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId
+                             LEFT JOIN tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId
+                             WHERE InvoiceDate BETWEEN '" + fromDate + "' AND '" + toDate + "' AND UNT.CompanyId = " + companyId + " AND MIO.MIOId = " + mioId + " GROUP BY UNT.CompanyId,MIO.MIOId,EmpName,InvoiceDate ORDER BY InvoiceDate";
+
+            return _aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetDashBoardStockCardInfo(string companyId, string fromDate, string toDate, DateTime today)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
+            aSqlParameterList.Add(new SqlParameter("@CompanyId", companyId));
+            aSqlParameterList.Add(new SqlParameter("@FromDate", fromDate == "" ? DateTime.Today : Convert.ToDateTime(fromDate)));
+            aSqlParameterList.Add(new SqlParameter("@ToDate", toDate == "" ? DateTime.Today : Convert.ToDateTime(toDate)));
+
+            return _aCommonInternalDal.GetDataTableAction("sp_NationalBinCardPrice", aSqlParameterList, "SSIDB");
+        }
     }
 }

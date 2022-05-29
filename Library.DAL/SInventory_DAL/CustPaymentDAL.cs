@@ -170,12 +170,13 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
 //            string query = @"SELECT ISNULL(PaymentAmount,0)PaymentAmount,*,(DeliveryTpGrandTotal-isnull(PaymentAmount,0)) AS Due FROM dbo.tblInvoice           
 //            INNER JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
 //            WHERE  DeliveryTpGrandTotal > 0 AND BatchId='" + batchId + "' AND dbo.tblInvoice.CustomerMasterId='" + customerId + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL ";
-            
-            string query = @"SELECT ISNULL(PaymentAmount,0)PaymentAmount,*,(DeliveryTpGrandTotal-isnull(PaymentAmount,0)) AS Due,
+
+            string query = @"SELECT PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,(DeliveryTpGrandTotal-isnull(PaymentAmount,0)) AS Due,
                              tblCompanyInfo.CompanyId,tblCustMaster.CustomerMasterId FROM dbo.tblInvoice           
                              LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
                              LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
                              LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
+                             LEFT JOIN tblPaymentType ON tblInvoice.PaymentTypeId = tblPaymentType.PaymentTypeId
                              WHERE  DeliveryTpGrandTotal > 0 AND BatchId='" + batchId
                              + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (DeliveryTpGrandTotal-isnull(PaymentAmount,0)) > 0";
 
@@ -305,25 +306,27 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
 
         public DataTable GetInvoiceByCustomer(string custmerId,string dcId)
         {
-            string query = @"SELECT ISNULL(PaymentAmount,0)PaymentAmount,*,ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0) AS Due FROM dbo.tblInvoice           
+            string query = @"SELECT tblPaymentType.PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0) AS Due FROM dbo.tblInvoice           
             LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
             LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
             LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
+            LEFT JOIN tblPaymentType ON tblPaymentType.PaymentTypeId = tblInvoice.PaymentTypeId
             WHERE  DeliveryTpGrandTotal > 0 AND tblCustMaster.CustomerMasterId='" + custmerId
             + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0)) > 0 ";
 
-            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");  
         }
 
 
         public DataTable GetInvoiceByCustomer(string custmerId, string userId, string dcId)
         {
-            string query = @"SELECT ISNULL(PaymentAmount,0)PaymentAmount,*,(DeliveryTpGrandTotal-isnull(PaymentAmount,0)) AS Due FROM dbo.tblInvoice           
+            string query = @"SELECT tblPaymentType.PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0) AS Due FROM dbo.tblInvoice           
             LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
             LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
             LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
+      LEFT JOIN tblPaymentType ON tblPaymentType.PaymentTypeId = tblInvoice.PaymentTypeId
             WHERE  DeliveryTpGrandTotal > 0 AND tblCustMaster.CustomerMasterId='" + custmerId + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND tblInvoice.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userId
-            + " ) AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (DeliveryTpGrandTotal-isnull(PaymentAmount,0)) > 0 ";
+            + " ) AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0)) > 0 ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -351,11 +354,12 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
             //            INNER JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
             //            WHERE  DeliveryTpGrandTotal > 0 AND BatchId='" + batchId + "' AND dbo.tblInvoice.CustomerMasterId='" + customerId + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL ";
 
-            string query = @"SELECT ISNULL(PaymentAmount,0)PaymentAmount,*,(DeliveryTpGrandTotal-isnull(PaymentAmount,0)) AS Due,
+            string query = @"SELECT tblPaymentType.PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,(DeliveryTpGrandTotal-isnull(PaymentAmount,0)) AS Due,
                              tblCompanyInfo.CompanyId,tblCustMaster.CustomerMasterId FROM dbo.tblInvoice           
                              LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
                              LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
                              LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
+                             LEFT JOIN tblPaymentType ON tblPaymentType.PaymentTypeId = tblInvoice.PaymentTypeId
                              WHERE  DeliveryTpGrandTotal > 0 AND BatchId='" + batchId + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND tblInvoice.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userId
                              + ") AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (DeliveryTpGrandTotal-isnull(PaymentAmount,0)) > 0"; 
 

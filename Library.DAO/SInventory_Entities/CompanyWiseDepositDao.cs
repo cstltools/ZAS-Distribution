@@ -8,8 +8,7 @@ namespace Library.DAO.SInventory_Entities
     public class CompanyWiseDepositDao
     {
         public int DepositId { get; set; }
-        public int CompanyId { get; set; }
-        public int BranchId { get; set; }
+        public int DepotId { get; set; }
         public decimal Amount { get; set; }
         public string EntryBy { get; set; }
         public DateTime EntryDate { get; set; }
@@ -19,6 +18,13 @@ namespace Library.DAO.SInventory_Entities
         public bool IsDelete { get; set; }
         public string DeleteBy { get; set; }
         public DateTime DeleteDate { get; set; }
+        public int BankId { get; set; }
+        public string BranchName { get; set; }
+        public string DepositType { get; set; }
+        public string AccountName { get; set; }
+        public string CheckNumber { get; set; }
+        public DateTime? CheckDate { get; set; }
+        public string Remarks { get; set; }
 
     }
 }

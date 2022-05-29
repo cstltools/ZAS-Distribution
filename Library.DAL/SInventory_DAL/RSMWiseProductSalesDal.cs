@@ -69,7 +69,7 @@ namespace Library.DAL.SInventory_DAL
                              + " LEFT JOIN dbo.tblRegion AS RGN ON RGN.RegionId = RSM.RegionId"
                              + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId"
                              + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId "
-                             + parameter + " GROUP BY  CI.CompanyCode ,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,EmpName,RGN.RegionName,INVD.ProductCode,INVD.ProductName,INVD.PackSize "
+                             + parameter + " AND INVD.DeliveryStatus IN ('Full','Partial') AND INVD.Quantity > 0 GROUP BY  CI.CompanyCode ,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,EmpName,RGN.RegionName,INVD.ProductCode,INVD.ProductName,INVD.PackSize "
                              + " HAVING SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END)) > 0";
             
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");

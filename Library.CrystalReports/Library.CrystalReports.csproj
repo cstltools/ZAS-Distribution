@@ -265,6 +265,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsDeliveryReturn.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SInventory_DS\dsDepositDataTable.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsDepositDataTable.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsDepositListDataTable.cs">
+      <DependentUpon>dsDepositListDataTable.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsDepositListDataTable.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsDepositListDataTable.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\dsDestroyProduct.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -355,6 +368,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsMioWiseProductSaleTable.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsNationalBeenCard.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsNationalBeenCard.xsd</DependentUpon>
     </Compile>
     <Compile Include="SInventory_DS\dsNationalSalesProductWise.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -1312,6 +1330,28 @@
     <None Include="SInventory_DS\dsDeliveryReturn.xss">
       <DependentUpon>dsDeliveryReturn.xsd</DependentUpon>
     </None>
+    <None Include="SInventory_DS\dsDepositDataTable.xsc">
+      <DependentUpon>dsDepositDataTable.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsDepositDataTable.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsDepositDataTable.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsDepositDataTable.xss">
+      <DependentUpon>dsDepositDataTable.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsDepositListDataTable.xsc">
+      <DependentUpon>dsDepositListDataTable.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsDepositListDataTable.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsDepositListDataTable.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsDepositListDataTable.xss">
+      <DependentUpon>dsDepositListDataTable.xsd</DependentUpon>
+    </None>
     <None Include="SInventory_DS\dsDestroyProduct.xsc">
       <DependentUpon>dsDestroyProduct.xsd</DependentUpon>
     </None>
@@ -1501,6 +1541,17 @@
     </None>
     <None Include="SInventory_DS\dsMioWiseProductSaleTable.xss">
       <DependentUpon>dsMioWiseProductSaleTable.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsNationalBeenCard.xsc">
+      <DependentUpon>dsNationalBeenCard.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsNationalBeenCard.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsNationalBeenCard.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsNationalBeenCard.xss">
+      <DependentUpon>dsNationalBeenCard.xsd</DependentUpon>
     </None>
     <None Include="SInventory_DS\dsNationalSalesProductWise.xsc">
       <DependentUpon>dsNationalSalesProductWise.xsd</DependentUpon>

@@ -40,14 +40,7 @@ namespace Library.DAL.SInventory_DAL
             return aCommonInternalDal.GetDataTableAction("sp_DCBinCard", aSqlParameterList, "SSIDB");
             
             
-            
-            
-            
-            
-            
-            
-            
-            
+           
   //          string query = "SELECT P.ProductCode as ProductCode,P.ProductName as ProductName ,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,'" + DC + "' AS DC,P.PackSize as BaseUnit,ISNULL(vTblOB.Quantity,0)OpeningStock   ,ISNULL(vTblStoReceive.TotalStockReceiveQty,0) AS ReceiveFromCentralWarehouse   ,ISNULL(vTblChallanReceive.TotalStockReceiveQty,0) "
   //+" AS ReceiveFromAreaOfficeInterTransfer    ,ISNULL(vTblStockReceive.TotalStockReceiveQty,0) AS TotalReceived,ISNULL(vTblChallanTransit.Challan,0) AS IntransitWHB2B,ISNULL(vTblsalesInTransit.Sales,0) AS SalesInTransit  ,ISNULL(vTblsales.Sales,0) AS IssuedToSales, ISNULL(vbBonus.BonusQty,0) AS IssuedToBonus   ,ISNULL(vTblProductBonus.Sales,0) AS IssuedToProductBonus   ,ISNULL(vTblChallan.Challan,0) AS IssuedToAreaOfficeInterTransfer    ,ISNULL(vTblFreez.Freeze,0) AS IssuedToDamageAndOthers,    ISNULL(vTblFreez2.Freeze,0) AS Blocked, ISNULL(vTblSample.SampleIssue,0) AS SampleIssue,   "
   //+" ((ISNULL(vTblOB.Quantity,0)+ISNULL(vTblStoReceive.TotalStockReceiveQty,0)+ISNULL(vTblChallanReceive.TotalStockReceiveQty,0)+ ISNULL(vTblChallanTransit.Challan,0))-(ISNULL(vTblsales.Sales,0) +ISNULL(vTblProductBonus.Sales,0)+ISNULL(vTblChallan.Challan,0)+ ISNULL(vTblSample.SampleIssue,0)+ ISNULL(vbBonus.BonusQty,0) + ISNULL(vTblsalesInTransit.Sales,0)))  as ClosingStock ,"

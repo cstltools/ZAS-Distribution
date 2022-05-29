@@ -340,10 +340,12 @@
                                         <asp:BoundField DataField="InvoiceNo" HeaderText="Invoice No" />
                                         <asp:BoundField DataField="InvoiceDate" HeaderText="Invoice Date" DataFormatString="{0:dd-MMM-yyyy}" />
                                         <asp:BoundField DataField="DelivaryInvoiceNo" HeaderText="Del. Invoice" />
+                                        
                                         <asp:BoundField DataField="UpdateDate" HeaderText="Del. Date" DataFormatString="{0:dd-MMM-yyyy}" />
                                         <asp:BoundField DataField="DeliveryTpGrandTotal" HeaderText="Receiveable" HtmlEncodeFormatString="False" />
                                         <asp:BoundField DataField="PaymentAmount" HeaderText="Previous Pay" HtmlEncodeFormatString="False" />
                                         <asp:BoundField DataField="Due" HeaderText="Due Amount" />
+                                        <asp:BoundField DataField="PaymentTypeName" HeaderText="Payment Type" />
                                         <asp:TemplateField HeaderText="Pay Amount">
                                             <ItemTemplate>
                                                 <asp:TextBox ID="payAmountTextBox" runat="server" Width="80px" AutoPostBack="True" OnTextChanged="payAmountTextBox_TextChanged"></asp:TextBox>
@@ -380,7 +382,7 @@
                                         
                                         <asp:TemplateField HeaderText="AIT">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="aitTextBox"  Width="80px" runat="server" AutoPostBack="True"></asp:TextBox>
+                                                <asp:TextBox ID="aitTextBox"  Width="80px" runat="server" AutoPostBack="True" OnTextChanged="aitTextBox_TextChanged"></asp:TextBox>
                                                 <asp:FilteredTextBoxExtender ID="FilteredTextBoxExtenderunitValue1" runat="server"
                                                     Enabled="True" TargetControlID="aitTextBox" FilterType="Custom" ValidChars="0123456789.">
                                                 </asp:FilteredTextBoxExtender>
@@ -389,7 +391,7 @@
                                         
                                         <asp:TemplateField HeaderText="Discount">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="discountTextBox" Width="80px" runat="server" AutoPostBack="True"></asp:TextBox>
+                                                <asp:TextBox ID="discountTextBox" Width="80px" runat="server" AutoPostBack="True" OnTextChanged="discountTextBox_TextChanged"></asp:TextBox>
                                                 <asp:FilteredTextBoxExtender ID="FilteredTextBoxExtenderunitValue12" runat="server"
                                                     Enabled="True" TargetControlID="discountTextBox" FilterType="Custom" ValidChars="0123456789.">
                                                 </asp:FilteredTextBoxExtender>

@@ -232,8 +232,11 @@ public partial class SInventory_UI_Dashboard : System.Web.UI.Page
 
         var aList = new List<SalesDashboardDao>();
 
+        string fromDate ="";
+        string toDate ="";
 
-        DataTable aTable = aDashboardDal.GetDashBoardCardInfo(companyId, Convert.ToDateTime("2020-09-1 00:00:00.000"));
+
+        DataTable aTable = aDashboardDal.GetDashBoardCardInfo(companyId, fromDate, toDate, Convert.ToDateTime("2020-09-1 00:00:00.000"));
 
         if (aTable.Rows.Count > 0)
         {

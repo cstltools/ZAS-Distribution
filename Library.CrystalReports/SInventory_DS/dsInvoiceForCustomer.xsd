@@ -50,6 +50,8 @@
               <xs:element name="DeliveryPersonName" msprop:Generator_ColumnVarNameInTable="columnDeliveryPersonName" msprop:Generator_ColumnPropNameInRow="DeliveryPersonName" msprop:Generator_ColumnPropNameInTable="DeliveryPersonNameColumn" msprop:Generator_UserColumnName="DeliveryPersonName" type="xs:string" minOccurs="0" />
               <xs:element name="DeliveryPersonPhNo" msprop:Generator_ColumnVarNameInTable="columnDeliveryPersonPhNo" msprop:Generator_ColumnPropNameInRow="DeliveryPersonPhNo" msprop:Generator_ColumnPropNameInTable="DeliveryPersonPhNoColumn" msprop:Generator_UserColumnName="DeliveryPersonPhNo" type="xs:string" minOccurs="0" />
               <xs:element name="Remarks" msprop:Generator_ColumnVarNameInTable="columnRemarks" msprop:Generator_ColumnPropNameInRow="Remarks" msprop:Generator_ColumnPropNameInTable="RemarksColumn" msprop:Generator_UserColumnName="Remarks" type="xs:string" minOccurs="0" />
+              <xs:element name="PONumber" msprop:Generator_ColumnVarNameInTable="columnPONumber" msprop:Generator_ColumnPropNameInRow="PONumber" msprop:Generator_ColumnPropNameInTable="PONumberColumn" msprop:Generator_UserColumnName="PONumber" type="xs:string" minOccurs="0" />
+              <xs:element name="PreparedBy" msprop:Generator_ColumnVarNameInTable="columnPreparedBy" msprop:Generator_ColumnPropNameInRow="PreparedBy" msprop:Generator_ColumnPropNameInTable="PreparedByColumn" msprop:Generator_UserColumnName="PreparedBy" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

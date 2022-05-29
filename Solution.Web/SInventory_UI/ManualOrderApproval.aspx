@@ -17,8 +17,7 @@
             width: 300px;
             border: 3px solid;
         }
-    </style>
-    <style scoped>
+
         .example_a
         {
             color: #fff !important;

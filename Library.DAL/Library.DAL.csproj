@@ -71,15 +71,16 @@
     <Compile Include="SInventory_DAL\ChalanDAL.cs" />
     <Compile Include="SInventory_DAL\CompanyInfoDAL.cs" />
     <Compile Include="SInventory_DAL\CompanySalesReportDAL.cs" />
-    <Compile Include="SInventory_DAL\CompanywisebranchDal.cs" />
     <Compile Include="SInventory_DAL\ComUnitSalesReportDAL.cs" />
     <Compile Include="SInventory_DAL\ASMWiseProductSalesDal.cs" />
     <Compile Include="SInventory_DAL\BatchWiseTransitReportDal.cs" />
     <Compile Include="SInventory_DAL\DashboardDal.cs" />
     <Compile Include="SInventory_DAL\DashboardInfoDal.cs" />
+    <Compile Include="SInventory_DAL\DepositSlipEntryDal.cs" />
     <Compile Include="SInventory_DAL\DuplicatePaymentCorrectionDal.cs" />
     <Compile Include="SInventory_DAL\ErrorInvoiceDal.cs" />
     <Compile Include="SInventory_DAL\FixedDiscountEntryDal.cs" />
+    <Compile Include="SInventory_DAL\NationalBeenCaedDal.cs" />
     <Compile Include="SInventory_DAL\NationalSalesProductWiseDal.cs" />
     <Compile Include="SInventory_DAL\PaymentTranscationDal.cs" />
     <Compile Include="SInventory_DAL\PettyCashDaL.cs" />

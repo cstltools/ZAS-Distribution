@@ -96,18 +96,21 @@ namespace Library.DAL.SInventory_DAL
                 WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '385' THEN 'ZAS Neurology'
                 WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '386' THEN 'ZAS Hematology'
                 WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '387' THEN 'Aqvida Bangladesh'
+                WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '391' THEN 'Z A S Nutrition'
+                WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '392' THEN 'ZAS I V F'
 				ELSE ''  
 				END AS CompanyName,
                 vTblTotal.ProductCode ,
                 vTblTotal.ProductName ,
                 vTblTotal.PackSize ,                
-                SUM(vTblTotal.AvailableQty)AQty ,
+                SUM(vTblTotal.AvailableQty) + SUM(vTblTotal.FZQty) AQty ,
                 SUM(vTblTotal.BookFDel)BookFDel ,
                 SUM(vTblTotal.Tqty)Tqty ,
                 SUM(vTblTotal.RQty)RQty ,
                 SUM(vTblTotal.BQty)BQty ,
 				SUM(vTblTotal.WHQty)WHQty ,
-                SUM(vTblTotal.WHQty+vTblTotal.AvailableQty+vTblTotal.RQty+vTblTotal.BQty)TotalQty ,
+                SUM(vTblTotal.FZQty) FZQty,
+                SUM(vTblTotal.WHQty+vTblTotal.AvailableQty+vTblTotal.RQty+vTblTotal.BQty + vTblTotal.FZQty)TotalQty ,
 				SUM(vTblTotal.AvailableQty * vTblTotal.Price) AS AvialableValue,
 				SUM(vTblTotal.RQty * vTblTotal.Price) AS RestrictedValue,
 				SUM(vTblTotal.Tqty * vTblTotal.Price) AS TransitValue,
@@ -117,7 +120,7 @@ namespace Library.DAL.SInventory_DAL
 
                 FROM 
                 (SELECT p.ProductCode,p.ProductName,DCS.PackSize,DCS.
-                BatchNo,DCS.MfgDate,DCS.ExpDate,DCS.StockQty AS AvailableQty,0 AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,UP.UnitPrice AS Price,
+                BatchNo,DCS.MfgDate,DCS.ExpDate,DCS.StockQty AS AvailableQty,0 AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,0 AS FZQty,UP.UnitPrice AS Price,
                 DCS.ComUnitId,0 AS WHQty  FROM dbo.tblDCStore DCS 
                 INNER JOIN dbo.tblProduct p ON DCS.ProductCode = p.ProductCode
 				INNER JOIN dbo.tblUnitPrice AS UP ON P.ProductId = UP.ProductId
@@ -127,7 +130,7 @@ namespace Library.DAL.SInventory_DAL
                 WHERE DCS.StockQty>0 AND DCS.StockCondition='Available' AND UP.IsActive=1
                 UNION ALL
                 SELECT p.ProductCode,p.ProductName,DCS.PackSize,DCS.
-                BatchNo,DCS.MfgDate,DCS.ExpDate,DCS.StockQty AS AvailableQty,0 AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,UP.UnitPrice AS Price,
+                BatchNo,DCS.MfgDate,DCS.ExpDate,DCS.StockQty AS AvailableQty,0 AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,0 AS FZQty,UP.UnitPrice AS Price,
                 DCS.ComUnitId,0 AS WHQty  FROM dbo.tblDCStore DCS 
                 INNER JOIN dbo.tblChalanDetail cd ON dcs.ChalanDetailsId=CD.ChalanDetailsId
                 --INNER JOIN tblDCStore dc ON CD.DCStoreId=DC.DCStoreId
@@ -140,7 +143,7 @@ namespace Library.DAL.SInventory_DAL
                 
                 UNION ALL
                 SELECT p.ProductCode,p.ProductName,ID.PackSize,
-                ID.BatchNo,DCS.MfgDate,DCS.ExpDate,0 AS AvailableQty,ID.TotalQuantity AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,UP.UnitPrice AS Price,
+                ID.BatchNo,DCS.MfgDate,DCS.ExpDate,0 AS AvailableQty,ID.TotalQuantity AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,0 AS FZQty,UP.UnitPrice AS Price,
                 I.ComUnitId,0 AS WHQty
                 FROM dbo.tblInvoice I 
                 INNER JOIN dbo.tblInvoiceDetail ID ON ID.InvoiceId = I.InvoiceId 
@@ -154,7 +157,7 @@ namespace Library.DAL.SInventory_DAL
                 WHERE I.DelivaryInvoiceNo IS NULL AND UP.IsActive=1
                 UNION ALL
                   SELECT p.ProductCode,p.ProductName,P.PackSize,
-                ID.BatchNo,DCS.MfgDate,DCS.ExpDate,0 AS AvailableQty,ID.Quantity AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,UP.UnitPrice AS Price,
+                ID.BatchNo,DCS.MfgDate,DCS.ExpDate,0 AS AvailableQty,ID.Quantity AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,0 AS FZQty,UP.UnitPrice AS Price,
                 cu.ComUnitId,0 AS WHQty
                 FROM dbo.tblChalanInfo I 
                 INNER JOIN dbo.tblChalanDetail ID ON ID.ChalanId = I.ChalanId 
@@ -168,10 +171,21 @@ namespace Library.DAL.SInventory_DAL
                 INNER JOIN dbo.tblWHStockInDetail MD ON MD.WHStockInDetailID = CS.MigoDetailID
                 WHERE I.IsDeliver IS NULL AND UP.IsActive=1
                 
+                UNION ALL
+                SELECT p.ProductCode,p.ProductName,DCS.PackSize,DCS.
+                BatchNo,MD.MfgDate,DCS.ExpDate,0 AS AvailableQty,0 AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,DCS.StockQty AS FZQty,UP.UnitPrice AS Price,
+                DCS.ComUnitId,0 AS WHQty FROM dbo.tblDCStoreFreeze DCS 
+                INNER JOIN dbo.tblDCStore DS ON DS.DCStoreId = DCS.DCStoreId
+                INNER JOIN dbo.tblProduct p ON DCS.ProductCode = p.ProductCode
+				INNER JOIN dbo.tblUnitPrice AS UP ON P.ProductId = UP.ProductId
+                left JOIN tblStockInTransfar ST ON ST.StockInTransfarId = DS.StockInTransfarId
+                left JOIN dbo.tblCentralStore CS ON CS.ReceiveId = ST.ReceiveId
+                left JOIN dbo.tblWHStockInDetail MD ON MD.WHStockInDetailID = CS.MigoDetailID
+                WHERE DCS.StockQty>0 AND (DCS.StockCondition IS NULL OR DCS.StockCondition = 'ReturnStock') AND UP.IsActive=1
                 
                 UNION ALL
                 SELECT p.ProductCode,p.ProductName,DCS.PackSize,DCS.
-                BatchNo,MD.MfgDate,DCS.ExpDate,0 AS AvailableQty,0 AS BookFDel,0 AS Tqty,DCS.StockQty AS RQty,0 AS BQty,UP.UnitPrice AS Price,
+                BatchNo,MD.MfgDate,DCS.ExpDate,0 AS AvailableQty,0 AS BookFDel,0 AS Tqty,DCS.StockQty AS RQty,0 AS BQty,0 AS FZQty,UP.UnitPrice AS Price,
                 DCS.ComUnitId,0 AS WHQty FROM dbo.tblDCStoreFreeze DCS 
                 INNER JOIN dbo.tblDCStore DS ON DS.DCStoreId = DCS.DCStoreId
                 INNER JOIN dbo.tblProduct p ON DCS.ProductCode = p.ProductCode
@@ -182,7 +196,7 @@ namespace Library.DAL.SInventory_DAL
                 WHERE DCS.StockQty>0 AND DCS.StockCondition='Restricted' AND UP.IsActive=1
                 UNION ALL
                 SELECT p.ProductCode,p.ProductName,DCS.PackSize,DCS.
-                BatchNo,MD.MfgDate,DCS.ExpDate,0 AS AvailableQty,0 AS BookFDel,0 AS Tqty,0 AS RQty,DCS.StockQty AS BQty,UP.UnitPrice AS Price,
+                BatchNo,MD.MfgDate,DCS.ExpDate,0 AS AvailableQty,0 AS BookFDel,0 AS Tqty,0 AS RQty,DCS.StockQty AS BQty,0 AS FZQty,UP.UnitPrice AS Price,
                 DCS.ComUnitId,0 AS WHQty 
                 FROM dbo.tblDCStoreFreeze DCS 
                 INNER JOIN dbo.tblDCStore DS ON DS.DCStoreId = DCS.DCStoreId
@@ -194,7 +208,7 @@ namespace Library.DAL.SInventory_DAL
                 WHERE DCS.StockQty>0 AND DCS.StockCondition='Blocked' AND UP.IsActive=1
                 UNION ALL
                 SELECT p.ProductCode,p.ProductName,ST.PackSize,ST.
-                BatchNo,ST.MfgDate,ST.ExpDate,0 AS AvailableQty,0 AS BookFDel,ST.Quantity AS Tqty,0 AS RQty,0 AS BQty,UP.UnitPrice AS Price,
+                BatchNo,ST.MfgDate,ST.ExpDate,0 AS AvailableQty,0 AS BookFDel,ST.Quantity AS Tqty,0 AS RQty,0 AS BQty,0 AS FZQty,UP.UnitPrice AS Price,
                 R.ComUnitId,0 AS WHQty FROM dbo.tblRequisition R 
                 INNER JOIN dbo.tblStockInTransfar ST ON ST.ReqId = R.ReqId
                 INNER JOIN dbo.tblProduct p ON p.ProductCode = ST.ProductCode
@@ -203,7 +217,7 @@ namespace Library.DAL.SInventory_DAL
                 WHERE  R.ReceiveIssue IS NULL AND UP.IsActive=1
                 UNION ALL
                 SELECT p.ProductCode,p.ProductName,D.PackSize,D.
-                                BatchNo,D.MfgDate,D.ExpDate,0 AS AvailableQty,0 AS BookFDel,CD.Quantity AS Tqty,0 AS RQty,0 AS BQty,UP.UnitPrice AS Price,
+                                BatchNo,D.MfgDate,D.ExpDate,0 AS AvailableQty,0 AS BookFDel,CD.Quantity AS Tqty,0 AS RQty,0 AS BQty,0 AS FZQty,UP.UnitPrice AS Price,
                                 CU.ComUnitId,0 AS WHQty FROM dbo.tblChalanInfo C 
                 INNER JOIN dbo.tblChalanDetail CD ON CD.ChalanId = C.ChalanId
                 INNER JOIN dbo.tblDCStore D ON D.DCStoreId = CD.DCStoreId
@@ -213,7 +227,7 @@ namespace Library.DAL.SInventory_DAL
                 WHERE C.IsDeliver ='False' AND UP.IsActive=1
 				UNION ALL
 				SELECT ProductCode,ProductName,PackSize,
-                BatchNo,MfgDate,ExpDate,0 AS AvailableQty,0 AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,UnitPrice AS Price,
+                BatchNo,MfgDate,ExpDate,0 AS AvailableQty,0 AS BookFDel,0 AS Tqty,0 AS RQty,0 AS BQty,0 AS FZQty,UnitPrice AS Price,
                 0 AS ComUnitId,SUM(Quantity) AS WHQty FROM dbo.tblCentralStore WHERE QUantity > 0 GROUP BY ProductCode,ProductName,PackSize,BatchNo,MfgDate,ExpDate,UnitPrice
 				) AS vTblTotal				
 				LEFT JOIN dbo.tblCompanyUnit Cu ON Cu.ComUnitId = vTblTotal.ComUnitId " + parameter + " GROUP BY vTblTotal.ProductCode, vTblTotal.ProductName ,vTblTotal.PackSize";

@@ -297,13 +297,6 @@ public partial class SInventory_UI_CustomerPayment : System.Web.UI.Page
             return false;
         }
         
-        //if (customerDropDownList.SelectedIndex == 0)
-        //{
-        //    ShowMessageBox("Please Select Customer!!");
-        //    return false;
-        //}
-
-
         if (Convert.ToDecimal(paymentAmountTextBox.Text.Trim()) == 0)
         {
             ShowMessageBox("Payment Amount must be greater then 0!!");

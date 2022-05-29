@@ -63,8 +63,7 @@ public partial class MasterPages_MainMasterPage : System.Web.UI.MasterPage
           manurHtml = manurHtml + @"<div class=" + leftC + "></div><div class=" + rightC +"></div>";
             
             
-            
-
+           
             manurHtml = manurHtml + @"<ul class=" + clM + " id=" + responsive + ">";
 
             if (Session["LoginName"].ToString() == "admin")

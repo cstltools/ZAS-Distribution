@@ -688,6 +688,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             private global::System.Data.DataColumn columnRemarks;
             
+            private global::System.Data.DataColumn columnPONumber;
+            
+            private global::System.Data.DataColumn columnPreparedBy;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public mainDataTableDataTable() {
@@ -923,6 +927,22 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PONumberColumn {
+                get {
+                    return this.columnPONumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PreparedByColumn {
+                get {
+                    return this.columnPreparedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -983,7 +1003,9 @@ namespace Library.CrystalReports.SInventory_DS {
                         string Addrees2, 
                         string DeliveryPersonName, 
                         string DeliveryPersonPhNo, 
-                        string Remarks) {
+                        string Remarks, 
+                        string PONumber, 
+                        string PreparedBy) {
                 mainDataTableRow rowmainDataTableRow = ((mainDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         InvoiceId,
@@ -1010,7 +1032,9 @@ namespace Library.CrystalReports.SInventory_DS {
                         Addrees2,
                         DeliveryPersonName,
                         DeliveryPersonPhNo,
-                        Remarks};
+                        Remarks,
+                        PONumber,
+                        PreparedBy};
                 rowmainDataTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowmainDataTableRow);
                 return rowmainDataTableRow;
@@ -1058,6 +1082,8 @@ namespace Library.CrystalReports.SInventory_DS {
                 this.columnDeliveryPersonName = base.Columns["DeliveryPersonName"];
                 this.columnDeliveryPersonPhNo = base.Columns["DeliveryPersonPhNo"];
                 this.columnRemarks = base.Columns["Remarks"];
+                this.columnPONumber = base.Columns["PONumber"];
+                this.columnPreparedBy = base.Columns["PreparedBy"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1113,6 +1139,10 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnDeliveryPersonPhNo);
                 this.columnRemarks = new global::System.Data.DataColumn("Remarks", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRemarks);
+                this.columnPONumber = new global::System.Data.DataColumn("PONumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPONumber);
+                this.columnPreparedBy = new global::System.Data.DataColumn("PreparedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPreparedBy);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2197,6 +2227,38 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PONumber {
+                get {
+                    try {
+                        return ((string)(this[this.tablemainDataTable.PONumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PONumber\' in table \'mainDataTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablemainDataTable.PONumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PreparedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tablemainDataTable.PreparedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PreparedBy\' in table \'mainDataTable\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablemainDataTable.PreparedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsInvoiceIdNull() {
                 return this.IsNull(this.tablemainDataTable.InvoiceIdColumn);
             }
@@ -2493,6 +2555,30 @@ namespace Library.CrystalReports.SInventory_DS {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetRemarksNull() {
                 this[this.tablemainDataTable.RemarksColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPONumberNull() {
+                return this.IsNull(this.tablemainDataTable.PONumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPONumberNull() {
+                this[this.tablemainDataTable.PONumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPreparedByNull() {
+                return this.IsNull(this.tablemainDataTable.PreparedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPreparedByNull() {
+                this[this.tablemainDataTable.PreparedByColumn] = global::System.Convert.DBNull;
             }
         }
         
