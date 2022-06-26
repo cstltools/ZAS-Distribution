@@ -207,7 +207,7 @@ public partial class SInventory_UI_DestroyProductReport : System.Web.UI.Page
 
         if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
         {
-            parameter = parameter + " AND StockOutDate BETWEEN '" + fromDateTextBox.Text.Trim() + "' AND '" + toDateTextBox.Text.Trim() + "'";
+            parameter = parameter + " AND ApproveDate BETWEEN '" + fromDateTextBox.Text.Trim() + "' AND '" + toDateTextBox.Text.Trim() + "'";
         }
 
         if (dcDropDownList.SelectedValue != "")
