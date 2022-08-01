@@ -307,6 +307,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsEmployeewiseProductSales.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SInventory_DS\dsExpireProduct.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsExpireProduct.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\dsFreezeStockInfo.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1413,6 +1418,17 @@
     </None>
     <None Include="SInventory_DS\dsEmployeewiseProductSales.xss">
       <DependentUpon>dsEmployeewiseProductSales.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsExpireProduct.xsc">
+      <DependentUpon>dsExpireProduct.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsExpireProduct.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsExpireProduct.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsExpireProduct.xss">
+      <DependentUpon>dsExpireProduct.xsd</DependentUpon>
     </None>
     <None Include="SInventory_DS\dsFreezeStockInfo.xsc">
       <DependentUpon>dsFreezeStockInfo.xsd</DependentUpon>

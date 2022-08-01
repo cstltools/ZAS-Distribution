@@ -86,23 +86,29 @@ public partial class SInventory_UI_DestroyProductApproval : Page
                         {
                             if (aDal.ApprovalUpdateDAL(aOrderInfoMaster))
                             {
-                                DataTable aTable = aDal.FetchDcFreezeQty(aOrderInfoMaster.DcFreezeId);
-                                
-                                decimal qty = 0;
 
-                                if (aTable.Rows.Count > 0)
+                                if (RadioButtonList.SelectedItem.Text.Trim() != "Cancel")
                                 {
-                                    Label lblName = (Label)loadGridView.Rows[i].FindControl("StockOutQty");
-                                    decimal dt = aTable.Rows[0].Field<Decimal>("StockQty");
+                                    DataTable aTable = aDal.FetchDcFreezeQty(aOrderInfoMaster.DcFreezeId);
 
-                                    qty = dt - Convert.ToDecimal(loadGridView.DataKeys[i][2].ToString());
+                                    decimal qty = 0;
 
-                                    aDal.UpdateFreezeStockQty(aOrderInfoMaster.DcFreezeId,qty);
+                                    if (aTable.Rows.Count > 0)
+                                    {
+                                        Label lblName = (Label)loadGridView.Rows[i].FindControl("StockOutQty");
+                                        decimal dt = aTable.Rows[0].Field<Decimal>("StockQty");
 
-                                    //Journal Posting
+                                        qty = dt - Convert.ToDecimal(loadGridView.DataKeys[i][2].ToString());
 
-                                    aDal.PostJournal(Convert.ToInt32(loadGridView.DataKeys[i][0].ToString()));
+                                        aDal.UpdateFreezeStockQty(aOrderInfoMaster.DcFreezeId, qty);
+
+                                        //Journal Posting
+
+                                        aDal.PostJournal(Convert.ToInt32(loadGridView.DataKeys[i][0].ToString()));
+                                    }
+
                                 }
+                                
                                 
                             }
                            

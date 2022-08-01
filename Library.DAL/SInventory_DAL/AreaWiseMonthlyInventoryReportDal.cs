@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Web.Profile;
 using System.Web.UI.WebControls;
 using Library.DAL.InternalCls;
 using Library.DAO.SInventory_Entities;
@@ -25,6 +26,36 @@ namespace Library.DAL.SInventory_DAL
 //            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
 //        }
 
+
+        public DataTable GetExpireProductReport(string companyId, string unitId, int noOfMonths)
+        {
+            string pram = "";
+            string pram2 = "";
+
+            if (companyId != "0")
+            {
+                pram = pram + " AND CI.CompanyId = " + companyId;
+                pram2 = pram2 + " AND CI.CompanyId = " + companyId;
+            }
+
+            if (unitId != "0")
+            {
+                pram = pram + " AND CU.ComUnitId = " + unitId;
+                pram = pram + " AND CI.CompanyId = " + 0;
+            }
+
+            if (noOfMonths != 0)
+            {
+                pram = pram + " AND (GETDATE() BETWEEN DATEADD(MONTH, -" + noOfMonths + ",CAST(ExpDate AS DATETIME)) AND ExpDate)";
+                pram2 = pram2 + " AND (GETDATE() BETWEEN DATEADD(MONTH, -" + noOfMonths + ",CAST(ExpDate AS DATETIME)) AND ExpDate)";
+            }
+
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
+            aSqlParameterList.Add(new SqlParameter("@pram", pram));
+            aSqlParameterList.Add(new SqlParameter("@pram2", pram2));
+            return aCommonInternalDal.GetDataTableAction("sp_GetExpireproductList", aSqlParameterList, "SSIDB");
+        }
 
         public DataTable GetAreaWiseMonthlyInventoryReport(string fromDate, string toDate, string CiD, string DC, string comId)
         {
