@@ -87,6 +87,17 @@ public partial class SInventory_UI_AreaWiseMonthlyInventoryReport : System.Web.U
                 var comId = companyNameDropDownList.SelectedValue != "" ? Convert.ToInt32(companyNameDropDownList.SelectedValue) : 0;
                 var branchId = branchDropDownList.SelectedValue != "" ? Convert.ToInt32(branchDropDownList.SelectedValue) : 0;
 
+                Session["National"] = "";
+
+                if (nationalCheckBox.Checked)
+                {
+                    Session["National"] = 1;
+                }
+                else
+                {
+                    Session["National"] = 0;
+                }
+                
                 var url = "../SInventory_RPTVIEW/NearlyExpireproductReportViewer.aspx?nomberOfMonths=" + nomberOfMonths + "&branchId=" + branchId + "&comId=" + comId;
                 var fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
                 ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
@@ -107,5 +118,21 @@ public partial class SInventory_UI_AreaWiseMonthlyInventoryReport : System.Web.U
     protected void viewRptButton_Click(object sender, EventArgs e)
     {
         ReportPopUp();
+    }
+
+    protected void nationalCheckBox_CheckedChanged(object sender, EventArgs e)
+    {
+        if (nationalCheckBox.Checked)
+        {
+            branchDropDownList.Enabled = false;
+            Session["DC"] = "0";
+            branchDropDownList.SelectedValue = string.Empty;
+
+        }
+        else
+        {
+            branchDropDownList.Enabled = true;
+            branchDropDownList.SelectedValue = string.Empty;
+        }
     }
 }

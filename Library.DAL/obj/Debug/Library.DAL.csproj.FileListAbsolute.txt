@@ -430,3 +430,102 @@ F:\GIT Project\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.dll
 F:\GIT Project\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.pdb
 F:\GIT Project\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.dll
 F:\GIT Project\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.pdb
+D:\JEWEL\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.dll
+D:\JEWEL\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.pdb
+D:\JEWEL\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.dll
+D:\JEWEL\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.pdb
+D:\JEWEL\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+D:\JEWEL\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.dll
+D:\JEWEL\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.pdb
+F:\ZAS S\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.dll
+F:\ZAS S\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.pdb
+F:\ZAS S\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.dll
+F:\ZAS S\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.pdb
+F:\ZAS S\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+F:\ZAS S\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.dll
+F:\ZAS S\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.pdb
+F:\Projects In hand 2022\ZAS\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.dll
+F:\Projects In hand 2022\ZAS\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.pdb
+F:\Projects In hand 2022\ZAS\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.dll
+F:\Projects In hand 2022\ZAS\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.pdb
+F:\Projects In hand 2022\ZAS\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+F:\Projects In hand 2022\ZAS\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.dll
+F:\Projects In hand 2022\ZAS\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.pdb
+D:\Tareq\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.dll
+D:\Tareq\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.pdb
+D:\Tareq\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.dll
+D:\Tareq\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.pdb
+D:\Tareq\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+D:\Tareq\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.dll
+D:\Tareq\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.pdb
+F:\Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+F:\Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.dll
+F:\Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.pdb
+F:\Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.dll
+F:\Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.pdb
+F:\Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.dll
+F:\Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.pdb
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.dll
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.pdb
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.dll
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.pdb
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.dll
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.pdb
+F:\02. GIT ERP\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.dll
+F:\02. GIT ERP\ZAS Sales\Library.DAL\bin\Debug\Library.DAL.pdb
+F:\02. GIT ERP\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.dll
+F:\02. GIT ERP\ZAS Sales\Library.DAL\bin\Debug\Library.DAO.pdb
+F:\02. GIT ERP\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+F:\02. GIT ERP\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.dll
+F:\02. GIT ERP\ZAS Sales\Library.DAL\obj\Debug\Library.DAL.pdb
+F:\02. GIT ERP\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.dll
+F:\02. GIT ERP\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.pdb
+F:\02. GIT ERP\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.dll
+F:\02. GIT ERP\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.pdb
+F:\02. GIT ERP\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+F:\02. GIT ERP\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.dll
+F:\02. GIT ERP\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.pdb
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.pdb
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.pdb
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.pdb
+E:\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.dll
+E:\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.pdb
+E:\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.dll
+E:\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.pdb
+E:\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+E:\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.dll
+E:\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.pdb
+D:\Rana\Zas_SalesRollNew\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.dll
+D:\Rana\Zas_SalesRollNew\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.pdb
+D:\Rana\Zas_SalesRollNew\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.dll
+D:\Rana\Zas_SalesRollNew\ZAS Sales_new\Library.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Rana\Zas_SalesRollNew\ZAS Sales_new\Library.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Rana\Zas_SalesRollNew\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.pdb
+D:\Rana\Zas_SalesRollNew\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+D:\Rana\Zas_SalesRollNew\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.dll
+D:\Rana\Zas_SalesRollNew\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.pdb
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAL.pdb
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Debug\Library.DAO.pdb
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.pdb
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Debug\Library.DAL.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Debug\Library.DAL.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Debug\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Debug\Library.DAO.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Debug\Library.DAL.csproj.AssemblyReference.cache
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Debug\Library.DAL.csproj.CoreCompileInputs.cache
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Debug\Library..61D7EBAF.Up2Date
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Debug\Library.DAL.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Debug\Library.DAL.pdb

@@ -63,7 +63,7 @@ namespace Library.DAL.SInventory_DAL
 
         public void GetDdlDc(DropDownList ddl, string areaId)
         {
-            string queryStr = @"SELECT UNT.ComUnitId,(ComUnitCode+':'+ComUnitName) AS ComUnitName FROM dbo.tblDcWiseAreaInfo AS DCA 
+            string queryStr = @"SELECT DISTINCT UNT.ComUnitId,(ComUnitCode+':'+ComUnitName) AS ComUnitName FROM dbo.tblDcWiseAreaInfo AS DCA 
                                 INNER JOIN dbo.tblCompanyUnit AS UNT ON DCA.DCId = UNT.ComUnitId
                                 WHERE DCA.AreaId = '" + areaId + "'";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "ComUnitName", "ComUnitId", queryStr);
@@ -212,8 +212,6 @@ namespace Library.DAL.SInventory_DAL
                                                  
             aSqlParameters.Add(new SqlParameter("@ActionStatus", aListMasterDao.ActionStatus));
             //aSqlParameters.Add(new SqlParameter("@IsDirect", aListMasterDao.IsDirect));
-            aSqlParameters.Add(new SqlParameter("@ApprovedBy", aListMasterDao.ApprovedBy));
-            aSqlParameters.Add(new SqlParameter("@ApprovedDate", aListMasterDao.ApprovedDate));
                                                  
             aSqlParameters.Add(new SqlParameter("@EntryBy", aListMasterDao.EntryBy));
             aSqlParameters.Add(new SqlParameter("@EntryDate", aListMasterDao.EntryDate));
@@ -301,6 +299,8 @@ namespace Library.DAL.SInventory_DAL
 
             aSqlParameters.Add(new SqlParameter("@TotalTradePrice", aListMasterDao.TotalTradePrice));
             aSqlParameters.Add(new SqlParameter("@OrderId", aListMasterDao.OrderId));
+
+            //return aInternalDal.SaveAction("sp_I_SampleProductIssueDetail", aSqlParameters, "@OrderDetailId");
 
 
             string insertQuery = @"INSERT INTO dbo.tblSampleIssueDetail
@@ -400,10 +400,11 @@ namespace Library.DAL.SInventory_DAL
             return aInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
-        public decimal DeleteSampleInvoice(string invoiceNo)
+        public decimal DeleteSampleInvoice(string invoiceNo,string userid)
         {
             List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
             aSqlParameterList.Add(new SqlParameter("@IssueCode", invoiceNo));
+            aSqlParameterList.Add(new SqlParameter("@userid", userid));
             return aInternalDal.RunStoreProcedure("sp_DEL_SampleStockIssue", aSqlParameterList, "SSIDB");
         }
 
@@ -412,6 +413,54 @@ namespace Library.DAL.SInventory_DAL
             List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
             aSqlParameterList.Add(new SqlParameter("@InvoiceId", masterId));
             return aInternalDal.UpdateAction("sp_SampleInvoicePosting", aSqlParameterList);
+        }
+
+
+        public DataTable GetSpecialApproveOrder(string actionstatus)
+        {
+            DataTable aDataTable = new DataTable();
+
+            string query = @"SELECT SI.*,CN.CompanyName,M.ManufacName,
+R.RegionName,A.AreaName,T.TerritoryName,MRKT.MarketName,EG.EmpName AS DeliveryMan
+FROM tblSampleIssue SI
+INNER JOIN tblCompanyUnit AS CUN ON SI.ComUnitId=CUN.ComUnitId
+INNER JOIN tblCompanyInfo AS CN ON CUN.CompanyId=CN.CompanyId
+LEFT JOIN tblManufacturer AS M ON SI.ManufacId=M.ManufacId
+INNER JOIN tblRegion AS R ON SI.RegionId=R.RegionId
+INNER JOIN tblArea  AS A ON SI.AreaId=A.AreaId
+INNER JOIN tblTerritory  AS T ON SI.TerritoryId=T.TerritoryId
+INNER JOIN tblMarket  AS MRKT ON SI.MarketId=MRKT.MarketId
+INNER JOIN tblDeliveryManInfo  AS DM ON SI.DeliveryPersonId=DM.DeliveryManId
+INNER JOIN tblEmpGeneralInfo  AS EG ON DM.DeliveryManId=EG.EmpInfoId
+Where SI.ActionStatus ='" + actionstatus + "'";
+
+                    aDataTable = aInternalDal.DataContainerDataTable(query, "SSIDB");
+
+                return aDataTable;
+            }
+        public bool ApprovalUpdateDAL(OrderInfoMaster aOrderInfoMaster)
+        {
+            List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+            aSqlParameterlist.Add(new SqlParameter("@MasterId", aOrderInfoMaster.OrderId));
+            aSqlParameterlist.Add(new SqlParameter("@ActionStatus", aOrderInfoMaster.ActionStatus));
+            aSqlParameterlist.Add(new SqlParameter("@ApprovedBy", aOrderInfoMaster.ApprovedBy));
+            aSqlParameterlist.Add(new SqlParameter("@ApprovedDate", aOrderInfoMaster.ApprovedDate));
+
+            return aInternalDal.UpdateAction("sp_UD_SampleIssue", aSqlParameterlist);
+        }
+
+        public DataTable CheckAvilAbleQty(int orderId)
+        {
+            DataTable aDataTable = new DataTable();
+
+            string query = @"SELECT ISSD.ProductCode,ISSD.Quantity RequiredQty,SUM(ISNULL(DCS.StockQty,0)) IssueQty FROM tblSampleIssue AS ISS
+                             LEFT JOIN tblSampleIssueDetail AS ISSD ON ISS.OrderId = ISSD.OrderId
+                             LEFT JOIN tblDCStore AS DCS ON ISSD.ProductCode = DCS.ProductCode AND ISS.ComUnitId = DCS.ComUnitId AND  StockQty > 0
+                             WHERE  ISS.OrderId = " + orderId  + " GROUP BY ISSD.ProductCode,ISSD.Quantity HAVING ISSD.Quantity > SUM(ISNULL(DCS.StockQty,0))";
+
+            aDataTable = aInternalDal.DataContainerDataTable(query, "SSIDB");
+
+            return aDataTable;
         }
     }
 }

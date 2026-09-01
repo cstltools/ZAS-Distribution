@@ -90,7 +90,7 @@ public partial class SInventory_UI_DirectStockOutView : System.Web.UI.Page
 
         if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
         {
-            parameter = parameter + "AND StockOutDate BETWEEN '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "' AND '" + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
+            parameter = parameter + "AND CONVERT(DATE, StockOutDate)  BETWEEN '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "' AND '" + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
         }
 
 

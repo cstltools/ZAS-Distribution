@@ -50,6 +50,8 @@ namespace Library.BLL.SInventory_BLL
             { }
         }
 
+
+
         private string SalesCodeGenerator(int id)
         {
             string code = string.Empty;
@@ -105,6 +107,11 @@ namespace Library.BLL.SInventory_BLL
         public void LoadDcType(DropDownList ddl)
         {
             aDal.LoadDcType(ddl);
+        }
+
+        public void LoadCashAccount(DropDownList ddlCashAccount, int companyId)
+        {
+            aDal.LoadCashAccount(ddlCashAccount, companyId);
         }
     }
 }

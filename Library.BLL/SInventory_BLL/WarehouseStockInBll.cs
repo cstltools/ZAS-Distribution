@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -32,11 +33,27 @@ namespace Library.BLL.SInventory_BLL
 
         public bool SaveStockInMasterInfo(WarehouseStockInMasterDao aStockInMasterDao, out Int32 maxRowId)
         {
-            maxRowId = StockInId();
-            aStockInMasterDao.WHStockInMasterID = maxRowId;
-            aStockInMasterDao.WHStockInCode = WHStockInCode();
 
-            return aWarehouseStockInDal.SaveStockInMasterInformation(aStockInMasterDao);
+            // Check Duplicate entry
+
+            DataTable aTable = new DataTable();
+            aTable = aWarehouseStockInDal.CheckEntryWithinlastMinute(aStockInMasterDao);
+
+            if (aTable.Rows.Count != 1) // 1 means exist
+            {
+                maxRowId = StockInId();
+                aStockInMasterDao.WHStockInMasterID = maxRowId;
+                aStockInMasterDao.WHStockInCode = WHStockInCode();
+
+                return aWarehouseStockInDal.SaveStockInMasterInformation(aStockInMasterDao);
+            }
+            else
+            {
+                maxRowId = 0;
+                return false;
+            }
+
+            
         }
 
         private int StockInId()
@@ -87,7 +104,16 @@ namespace Library.BLL.SInventory_BLL
         {
             foreach (WharehouseStockInDetailsDao aDetailDao in aDetailList)
             {
-                aWarehouseStockInDal.SaveWarehouseStockInDetail(aDetailDao);
+                // Check Duplicate
+
+                DataTable aTable = aWarehouseStockInDal.CheckDetailsExistOrNot(aDetailDao);
+
+                if (aTable.Rows.Count == 0)
+                {
+                    aWarehouseStockInDal.SaveWarehouseStockInDetail(aDetailDao);
+                }
+
+                
             }
             return "Data Saved Successfully";
         }

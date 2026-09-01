@@ -43,6 +43,8 @@
     <Compile Include="Panal_Entities\ObjActionPageWiseStep.cs" />
     <Compile Include="Panal_Entities\ObjUserWiseApprovalPermission.cs" />
     <Compile Include="SInventory_Entities\ASMInfoDao.cs" />
+    <Compile Include="SInventory_Entities\BonusCampaignDetailsDao.cs" />
+    <Compile Include="SInventory_Entities\BonusCampaignMasterDao.cs" />
     <Compile Include="SInventory_Entities\CampaignDAO.cs" />
     <Compile Include="SInventory_Entities\CampaignDetailDAO.cs" />
     <Compile Include="SInventory_Entities\ChalanDetail.cs" />
@@ -85,14 +87,19 @@
     <Compile Include="SInventory_Entities\OrderInfoMaster.cs" />
     <Compile Include="SInventory_Entities\OrderListMasterDAO.cs" />
     <Compile Include="SInventory_Entities\PackSize.cs" />
+    <Compile Include="SInventory_Entities\PaymentBachMasterDao.cs" />
+    <Compile Include="SInventory_Entities\PaymentBatchDetailDao.cs" />
     <Compile Include="SInventory_Entities\PaymentTranscationDetailDao.cs" />
     <Compile Include="SInventory_Entities\PaymentTranscationMasterDao.cs" />
     <Compile Include="SInventory_Entities\PettyCashDetailsDao.cs" />
     <Compile Include="SInventory_Entities\PettyCashMasterDao.cs" />
     <Compile Include="SInventory_Entities\ProductDiscount.cs" />
+    <Compile Include="SInventory_Entities\ProductRawMaterialDetailsDao.cs" />
     <Compile Include="SInventory_Entities\ProductSQ.cs" />
     <Compile Include="SInventory_Entities\ProType.cs" />
     <Compile Include="SInventory_Entities\QuotedPriceSetup.cs" />
+    <Compile Include="SInventory_Entities\RAN_DetailsDao.cs" />
+    <Compile Include="SInventory_Entities\RAN_MasterDao.cs" />
     <Compile Include="SInventory_Entities\Requesition.cs" />
     <Compile Include="SInventory_Entities\RequsitionChild.cs" />
     <Compile Include="SInventory_Entities\RSMSetupDao.cs" />
@@ -106,6 +113,7 @@
     <Compile Include="SInventory_Entities\SupplierInformation.cs" />
     <Compile Include="SInventory_Entities\tblNonTranscationalInvoiceMasterDao.cs" />
     <Compile Include="SInventory_Entities\TerritoryInfoDao.cs" />
+    <Compile Include="SInventory_Entities\TradeMaterialTransferDao.cs" />
     <Compile Include="SInventory_Entities\UserCompanyUnit.cs" />
     <Compile Include="SInventory_Entities\UserCompanyUnitDao.cs" />
     <Compile Include="SInventory_Entities\UserInformation.cs" />

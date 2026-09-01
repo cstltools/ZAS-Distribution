@@ -129,6 +129,42 @@ public partial class SInventory_UI_CustomerCreditView : System.Web.UI.Page
             }
             
         }
+
+        if (e.CommandName == "DeleteData")
+        {
+            int rowindex = Convert.ToInt32(e.CommandArgument);
+            var dataKey = invoiceGridView.DataKeys[rowindex];
+
+            if (Session["UserId"] != null && Session["UserId"].ToString() != "")
+            {
+                DashboardDal aDal = new DashboardDal();
+                DataTable dtTable = aDal.GetIsCreditApprovalInfo(Session["UserId"].ToString());
+
+                if (dtTable.Rows.Count > 0)
+                {
+                    if (dataKey != null)
+                    {
+                        string creditId = dataKey[0].ToString();
+
+
+                        if (aDal.DeleteCredit(creditId))
+                        {
+                            ShowMessageBox("Deleted Successfully !!!");
+                            viewRptButton_Click(null, null);
+                        }
+
+                        
+                    }
+                }
+                else
+                {
+                    ShowMessageBox("You don't have authorization of this operation !!!");
+                    viewRptButton_Click(null, null);
+
+
+                }
+            }
+        }
     }
 
     private void ShowMessageBox(string message)

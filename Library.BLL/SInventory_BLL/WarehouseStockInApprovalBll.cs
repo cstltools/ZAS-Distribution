@@ -29,23 +29,46 @@ namespace Library.BLL.SInventory_BLL
             return approvalDal.GetWarehouseStockInInformation();
         }
 
+        public bool ApproveWarehouseStockInMaster(WarehouseStockInMasterDao aMasterDao)
+        {
+            return approvalDal.ApproveWarehouseStockInMaster(aMasterDao);
+        }
+
         public string ApprovalUpdateBLL(WarehouseStockInMasterDao aMasterDao)
         {
             approvalDal.ApprovalUpdateDal(aMasterDao);
             return "Weldone! Stock In approved successfully!!!";
         }
 
-        public void InsertDataIntoCenterlWarehouse(List<WHStockInToCenteralStore> aCenteralStoreList)
+        public bool InsertDataIntoCenterlWarehouse(List<WHStockInToCenteralStore> aCenteralStoreList)
         {
+            bool status = false;
+
             foreach (WHStockInToCenteralStore aCenteralStore in aCenteralStoreList)
             {
-                approvalDal.SaveWHStockIntoCenterlWarehouse(aCenteralStore);
+                // Check Already Exist or Not 
+
+                DataTable aTable = new DataTable();
+                aTable = approvalDal.CheckDetailsExistOrNot(aCenteralStore);
+
+                if (aTable.Rows.Count == 0)
+                {
+                    status = approvalDal.SaveWHStockIntoCenterlWarehouse(aCenteralStore);
+                }
+  
             }
+
+            return status;
         }
 
         public DataTable LoadWarehouseStockInInfo(Int32 stockInMasterId)
         {
             return approvalDal.GetLoadWarehouseStockInInfo(stockInMasterId);
+        }
+
+        public bool PostJournal(int stockInMasterId)
+        {
+            return approvalDal.PostJournal(stockInMasterId);
         }
     }
 }

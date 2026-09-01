@@ -163,6 +163,10 @@ namespace Library.DAL.SInventory_DAL
        
         public bool SaveCustometMasterInfo(CustomerMaster aCustomerMaster)
         {
+            string expiryDateValue = aCustomerMaster.TradeLicenseExpiryDate.HasValue
+                ? "'" + aCustomerMaster.TradeLicenseExpiryDate.Value.ToString("yyyy-MM-dd HH:mm:ss") + "'"
+                : "NULL";
+
             string insertQuery = @"INSERT INTO dbo.tblCustMaster
                         ( 
                           CustomerCode ,
@@ -179,9 +183,9 @@ namespace Library.DAL.SInventory_DAL
                           
                           TermOfPayment ,
                           
-                            CreateBy,
+                           CreateBy,
                             CreateDate,
-                          FixedCustomer,IsVatApplicable,IsActive
+                          FixedCustomer,IsVatApplicable,IsActive,TradelicenseNo,TradeLicenseExpiryDate
                         )
                 VALUES  ( '" + aCustomerMaster.CustomerCode + "' ,  " +
                         "  '" + aCustomerMaster.CategoryId + "' ,  " +
@@ -201,8 +205,12 @@ namespace Library.DAL.SInventory_DAL
                         "  '" + aCustomerMaster.CreateDate + "' ,  " +
                         "  '" + aCustomerMaster.FixedCustomer + "' , " +
                         "  '" + aCustomerMaster.IsVatApplicable + "' , " +
-                        "  '" + aCustomerMaster.IsActive + "'  " +
+                        "  '" + aCustomerMaster.IsActive + "',  " +
+                        "  '" + aCustomerMaster.TradelicenseNo + "' , " +
+                        "  " + expiryDateValue + "  " +
                        " )";
+
+
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
 
@@ -211,9 +219,10 @@ namespace Library.DAL.SInventory_DAL
             List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
 
             aSqlParameterlist.Add(new SqlParameter("@CustomerId", supplierId));
-            aSqlParameterlist.Add(new SqlParameter("@SubsidiaryLId", 36));
+            //aSqlParameterlist.Add(new SqlParameter("@SubsidiaryLId", 36));
 
-            return aCommonInternalDal.UpdateAction("sp_I_CustomerGl", aSqlParameterlist);
+            //return aCommonInternalDal.UpdateAction("sp_I_CustomerGl", aSqlParameterlist);
+            return aCommonInternalDal.UpdateAction("sp_Integration_CustomerSubsidaryInsert", aSqlParameterlist);
         }
 
         public bool CheckDuplicate(CustomerMaster aCompanyInfo)
@@ -292,6 +301,11 @@ CompanyId
                     
                     
                     aCustomerMaster.TermOfPayment = dataReader["TermOfPayment"].ToString();
+                    aCustomerMaster.TradelicenseNo = dataReader["TradelicenseNo"].ToString();
+                    if (dataReader["TradeLicenseExpiryDate"] != DBNull.Value && dataReader["TradeLicenseExpiryDate"].ToString() != "")
+                    {
+                        aCustomerMaster.TradeLicenseExpiryDate = Convert.ToDateTime(dataReader["TradeLicenseExpiryDate"]);
+                    }
                     aCustomerMaster.IsVatApplicable = Convert.ToBoolean(dataReader["IsVatApplicable"]);
                     //aCustomerMaster.CustomerCodeOld = dataReader["CustomerCodeOld"].ToString();
                     //aCustomerMaster.UploadDate = Convert.ToDateTime(dataReader["UploadDate"].ToString());
@@ -359,9 +373,13 @@ CompanyId
 
         public bool UpdateCustomerMasterInfo(CustomerMaster aCustomerMaster)
         {
+            string expiryDateValue = aCustomerMaster.TradeLicenseExpiryDate.HasValue
+                ? "'" + aCustomerMaster.TradeLicenseExpiryDate.Value.ToString("yyyy-MM-dd HH:mm:ss") + "'"
+                : "NULL";
+
             string query = @"UPDATE tblCustMaster SET  CategoryId='" + aCustomerMaster.CategoryId + "' ,  CustomerName='" + aCustomerMaster.CustomerName + "' ,  AITGLId='" + aCustomerMaster.AITGLId + "' ,Address='" + aCustomerMaster.Address + "' " +
                            " ,  CellNo='"+aCustomerMaster.CellNo+"' , MarketId='"+aCustomerMaster.MarketId+"',Addrees2='"+aCustomerMaster.Addrees2+"' , City='"+aCustomerMaster.City+"' ,  ConPerson='"+aCustomerMaster.ConPerson+"' , " +
-                           "  ShippingCond='" + aCustomerMaster.ShippingCond + "' ,   TermOfPayment='" + aCustomerMaster.TermOfPayment + "' ,UpdateBy='" + aCustomerMaster.UpdateBy + "' ,IsVatApplicable='" + aCustomerMaster.IsVatApplicable + "',UpdateDate='" + aCustomerMaster.UpdateDate + "'   WHERE CustomerMasterId=" + aCustomerMaster.CustomerMasterId + "";
+                           "  ShippingCond='" + aCustomerMaster.ShippingCond + "' ,   TermOfPayment='" + aCustomerMaster.TermOfPayment + "' ,UpdateBy='" + aCustomerMaster.UpdateBy + "' ,IsVatApplicable='" + aCustomerMaster.IsVatApplicable + "',TradelicenseNo='" + aCustomerMaster.TradelicenseNo + "',TradeLicenseExpiryDate=" + expiryDateValue + ",UpdateDate='" + aCustomerMaster.UpdateDate + "'   WHERE CustomerMasterId=" + aCustomerMaster.CustomerMasterId + "";
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
             //List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
             //aSqlParameterlist.Add(new SqlParameter("@CategoryId", aCustomerMaster.CategoryId));
@@ -407,6 +425,8 @@ CompanyId
 
         public DataTable GetMaxCode()
         {
+            //string query = @"SELECT 'CUST-' + RIGHT('00000' + CAST(ISNULL(MAX(CAST(SUBSTRING(CustomerCode, 7, LEN(CustomerCode)) AS INT)), 0) + 1 AS NVARCHAR), 5) AS Code FROM tblCustMaster";
+
             string query = @"SELECT CONVERT(NVARCHAR(50), MAX(CustomerCode) + 1) AS Code FROM tblCustMaster";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

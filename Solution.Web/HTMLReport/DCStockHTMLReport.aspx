@@ -77,6 +77,7 @@
                 <asp:BoundField DataField="OpeningStock" HeaderText="Opening Stock" />
                 <asp:BoundField DataField="ReceiveFromCentralWarehouse" HeaderText="Rcv From (CWH)" />
                 <asp:BoundField DataField="ReceiveFromAreaOfficeInterTransfer" HeaderText="Rcv From (B2B)" />
+                <asp:BoundField DataField="ReturnQty" HeaderText="Return Rcv Qty" />
                 <asp:BoundField DataField="IntransitWHB2B" HeaderText="In-Transit (WH&B2B)" />
                 <asp:BoundField DataField="TotalReceived" HeaderText="Total Received" />
                 <asp:BoundField DataField="TotalStock" HeaderText="Total Stock" />

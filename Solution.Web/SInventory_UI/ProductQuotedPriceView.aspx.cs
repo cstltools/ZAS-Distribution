@@ -6,24 +6,103 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Library.BLL.SInventory_BLL;
+using Library.DAL.SInventory_DAL;
 
 public partial class SInventory_UI_ProductDiscountView : System.Web.UI.Page
 {
     ProductDiscountBLL aProductDiscountBll = new ProductDiscountBLL();
+    CreditLimitDAL aCashBll = new CreditLimitDAL();
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
         {
+            LoaddropdownList();
             ProductdiscountLoad();
         }
     }
 
-    private void ProductdiscountLoad()
+    private void LoaddropdownList()
     {
 
-        DataTable aDataTable = aProductDiscountBll.ProductQuotedPriceView();
-        loadGridView.DataSource = aDataTable;
+        aCashBll.GetCompanyDropdownList(CompanyDropDown);
+        CompanyDropDown.SelectedValue = 2.ToString();
+
+    }
+
+
+
+    protected void custCodeTextBox_TextChanged(object sender, EventArgs e)
+    {
+
+        string Perticular = custCodeTextBox.Text.Trim();
+
+
+        if (Perticular.Contains(':'))
+        {
+            string[] emp = Perticular.Split(':');
+            //  TextBox txtPerticular = (TextBox)itemGridView.Rows[rowindex].Cells[1].FindControl("txtPerticular");
+            custCodeTextBox.Text = emp[1];
+
+            CustomerIdHiddenField.Value = emp[3];
+
+
+
+        }
+        else
+        {
+
+            custCodeTextBox.Text = "";
+            CustomerIdHiddenField.Value = "";
+            //showMessageBox("Input Correct Data !");
+        }
+
+        ProductdiscountLoad();
+    }
+
+    private String GenerateParam()
+    {
+        string param = "";
+
+
+        if (CompanyDropDown.SelectedValue != "")
+        {
+            param = param + "And tblProduct.CompanyId ='" + CompanyDropDown.SelectedValue + "' ";
+        }
+
+
+        if (CustomerIdHiddenField.Value != "")
+        {
+            param = param + " And ProDis.CustomerMasterId ='" + CustomerIdHiddenField.Value + "' ";
+        }
+
+        return param;
+    }
+
+    private void ProductdiscountLoad()
+    {
+        loadGridView.DataSource = null;
         loadGridView.DataBind();
+
+        if (CompanyDropDown.SelectedValue != "")
+        {
+
+            if (CustomerIdHiddenField.Value != "")
+            {
+                DataTable aDataTable = aProductDiscountBll.ProductQuotedPriceView(GenerateParam());
+                loadGridView.DataSource = aDataTable;
+                loadGridView.DataBind();
+            }
+            else
+            {
+                showMessageBox("Please Select Customer !!");
+            }
+        }
+        else
+        {
+            showMessageBox("Please Select Company !!");
+        }
+
+        
     }
 
     private void PopUp(string Id)
@@ -73,5 +152,10 @@ public partial class SInventory_UI_ProductDiscountView : System.Web.UI.Page
     protected void gotoinvoiceButton_Click(object sender, EventArgs e)
     {
         throw new NotImplementedException();
+    }
+
+    protected void CompanyDropDown_OnSelectedIndexChanged(object sender, EventArgs e)
+    {
+        ProductdiscountLoad();
     }
 }

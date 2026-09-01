@@ -33,10 +33,10 @@
         
         <br />
 
-        <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="../HTML_Report_css/images/excel.png"
+        <%--<asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="../HTML_Report_css/images/excel.png"
             OnClick="ImageButton1_Click" Width="40px" />
             <br />
-        <span style="color: #b8860b;">Import Excel</span>
+        <span style="color: #b8860b;">Import Excel</span>--%>
         <asp:GridView ID="loadGridView" runat="server" AutoGenerateColumns="False" CssClass="responstable">
             <Columns>
                 <asp:BoundField DataField="MiaCode" HeaderText="Mia Code"></asp:BoundField>

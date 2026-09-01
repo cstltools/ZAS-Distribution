@@ -149,7 +149,7 @@ namespace Library.BLL.SInventory_BLL
             }
             else
             {
-                code = "10001";
+                code = "CUST-00001";
             }
 
             

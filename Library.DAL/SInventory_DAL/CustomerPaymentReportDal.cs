@@ -42,7 +42,7 @@ namespace Library.DAL.SInventory_DAL
                              + " LEFT JOIN dbo.tblCompanyInfo AS CI ON CI.CompanyId = UNT.CompanyId"
                              + " LEFT JOIN dbo.tblMIOInfo AS MIO ON INV.MiaId = MIO.MIOId"
                              + " LEFT JOIN dbo.tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId"
-                             + " LEFT JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = CP.CustomerMasterId"
+                             + " LEFT JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId "
                              + " WHERE DeliveryTpGrandTotal > 0 AND CPD.InvoiceId NOT IN (SELECT CRM.InvoiceId FROM dbo.tblCustomerReturnMaster AS CRM WITH (nolock)) " + parameter + " ORDER BY CSTMR.CustomerCode ";
            return  aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }

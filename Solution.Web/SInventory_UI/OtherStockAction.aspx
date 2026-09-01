@@ -141,7 +141,7 @@
                         <td width="20%" class="TDRight">
                             <asp:Button ID="submitButton" runat="server" Text="Search" OnClick="submitButton_Click" CssClass="button-padding-right"
                                 BackColor="#339933" />
-                            <%--<asp:Button ID="refreshButton" runat="server" OnClick="refreshButton_Click" Text="Refresh" />--%>
+                            <%--<asp:Button ID="printButton" runat="server" OnClick="refreshButton_Click" Text="Refresh" />--%>
                             <%--OnClick="searchButton_Click"--%>
                             <asp:Button ID="submitButton0" runat="server" OnClick="submitButton0_OnClick" Text="Submit" />
                         </td>

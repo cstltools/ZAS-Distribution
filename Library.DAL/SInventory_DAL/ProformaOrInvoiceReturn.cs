@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -52,17 +52,22 @@ namespace Library.DAL.SInventory_DAL
             }
             return false;
         }
-        public int DeleteProformaDal(string Invoice)
+        public int DeleteProformaDal(string Invoice, string userId)
         {
             List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
             aSqlParameterList.Add(new SqlParameter("@InvoiceCode", Invoice));
+            aSqlParameterList.Add(new SqlParameter("@userId", userId));
             return aCommonInternalDal.RunStoreProcedure("sp_Delete_ProformaInvoice", aSqlParameterList, "SSIDB");
         }
-        public int DeleteDeliveyInvoiceDal(string Invoice)
+        public int DeleteDeliveyInvoiceDal(string Invoice, string userId)
         {
             List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
             aSqlParameterList.Add(new SqlParameter("@DelivaryInvoiceNo", Invoice));
+            aSqlParameterList.Add(new SqlParameter("@User", userId));
+
             return aCommonInternalDal.RunStoreProcedure("sp_DeleteDeliveryInvoice", aSqlParameterList, "SSIDB");
+            //return aCommonInternalDal.RunStoreProcedure("sp_DeleteDeliveryInvoice_FullRollback", aSqlParameterList, "SSIDB");
         }
         public DataTable LoadDetailID(string Invoice)
         {
@@ -75,6 +80,7 @@ namespace Library.DAL.SInventory_DAL
         }
         public DataTable LoadStock(string InvoiceDetailID)
         {
+
             DataTable InvoiceDetail = new DataTable();
             string query = @" select * from tblDCStoreFreeze where InvoiceDetailId='" + InvoiceDetailID + "' and StockQty<>TotalQuantity AND StockQty > 0";
             InvoiceDetail = aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
@@ -93,6 +99,34 @@ namespace Library.DAL.SInventory_DAL
            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
            aSqlParameterList.Add(new SqlParameter("@InvoiceId", invoiceNo));
            return aCommonInternalDal.UpdateAction("sp_DeliveryInvoiceDeletePosting", aSqlParameterList);
+       }
+
+       public bool HasWHStockIn(string whStockInCode)
+       {
+           string query = "SELECT * FROM tblWHStockInMaster WHERE Status = 'Posted' AND WHStockInCode = '" + whStockInCode + "'";
+           IDataReader dataReader = aCommonInternalDal.DataContainerDataReader(query, "SSIDB");
+           if (dataReader != null)
+           {
+               while (dataReader.Read())
+               {
+                   return true;
+               }
+           }
+           return false;
+       }
+
+       public bool CheckSampleInvoice(string sampleinvoiceCode)
+       {
+           string query = "SELECT * FROM tblSampleIssue WHERE ActionStatus = 'Accepted' AND OrderCode = '" + sampleinvoiceCode + "'";
+           IDataReader dataReader = aCommonInternalDal.DataContainerDataReader(query, "SSIDB");
+           if (dataReader != null)
+           {
+               while (dataReader.Read())
+               {
+                   return true;
+               }
+           }
+           return false;
        }
     }
 }

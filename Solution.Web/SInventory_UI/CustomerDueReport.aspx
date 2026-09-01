@@ -120,10 +120,12 @@
                     </tr>
                     
                     <tr>
-                        <td width="13%" class="TDLeft">
-                            &nbsp;
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
+                            Payment Type: <span style="color: red">*</span>
                         </td>
                         <td width="20%" class="TDRight">
+                            <asp:DropDownList ID="payTypeDDL" runat="server" CssClass="DropDown">
+                            </asp:DropDownList>
                         </td>
                         <td width="13%" class="TDLeft">
                         </td>
@@ -198,7 +200,7 @@
                             <div id="gridContainer" style=" text-align: center; height: auto; overflow: auto; width: 97%; margin: 0 auto;">
                                 
                                 <asp:GridView ID="invoiceGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview"
-                                DataKeyNames="InvoiceNo">
+                                DataKeyNames="InvoiceNo,InvoiceId">
                                 <Columns>
                                     <asp:BoundField DataField="CompanyName" HeaderText="Company Name" />
                                     <asp:BoundField DataField="ComUnitName" HeaderText="Unit Name" />

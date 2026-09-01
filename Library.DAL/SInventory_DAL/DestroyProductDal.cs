@@ -205,7 +205,7 @@ namespace Library.DAL.SInventory_DAL
                              INNER JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = NTV.CustomerMasterId
                              INNER JOIN dbo.tblCompanyUnit AS UNT ON UNT.ComUnitId = NTV.ComUnitId
                              INNER JOIN dbo.tblCompanyInfo AS CI ON CI.CompanyId = UNT.CompanyId
-                             INNER JOIN dbo.tblInvoice AS INV ON INV.InvoiceId = NTV.InvoiceId WHERE ActionStatus='" + actionStatus + "' ORDER BY UNT.EntryDate";
+                             LEFT JOIN dbo.tblInvoice AS INV ON INV.InvoiceId = NTV.InvoiceId WHERE ActionStatus='" + actionStatus + "' ORDER BY UNT.EntryDate";
             aDataTable = aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
 
             return aDataTable;
@@ -220,7 +220,8 @@ namespace Library.DAL.SInventory_DAL
             aSqlParameterlist.Add(new SqlParameter("@ApprovedBy", aOrderInfoMaster.ApprovedBy));
             aSqlParameterlist.Add(new SqlParameter("@ApprovedDate", aOrderInfoMaster.ApprovedDate));
 
-            return aCommonInternalDal.RunStoreProcedure("sp_NonTranscationalInvoiceApproval", aSqlParameterlist, "SSIDB");
+            //return aCommonInternalDal.RunStoreProcedure("sp_NonTranscationalInvoiceApproval", aSqlParameterlist, "SSIDB");
+            return aCommonInternalDal.RunStoreProcedure("sp_NonTranscationalInvoiceApproval_New", aSqlParameterlist, "SSIDB");
         }
 
         public bool PostJournal(int destroyId)
@@ -229,13 +230,13 @@ namespace Library.DAL.SInventory_DAL
 
             aSqlParameterList.Add(new SqlParameter("@DestroyId", destroyId));
 
-            return aCommonInternalDal.UpdateAction("sp_ProductDestroyPosting", aSqlParameterList);
+            return aCommonInternalDal.UpdateAction("sp_Sales_ProductDestroyPosting", aSqlParameterList);
         }
 
         public DataTable LoadDestroyProductSatementInfo(string parameter)
         {
-            string query = @"SELECT CI.CompanyName,UNT.ComUnitName,StockOutDate,ApproveDate,
-                             ProductCode,ProductName,PackSize,StockOutQty,DP.Reason,ExpDate FROM tblDestroyProduct DP
+            string query = @"SELECT CI.CompanyName,UNT.ComUnitName,CONVERT(NVARCHAR, StockOutDate, 107) StockOutDate,CONVERT(NVARCHAR, ApproveDate, 107) ApproveDate,
+                             ProductCode,ProductName,PackSize,StockOutQty,DP.Reason,CONVERT(NVARCHAR, ExpDate, 107) ExpDate FROM tblDestroyProduct DP
                              LEFT JOIN tblDCStoreFreeze DFZ ON DP.DcFreezeId = DFZ.DCStoreFreezeId
                              LEFT JOIN tblCompanyUnit UNT ON UNT.ComUnitId = DFZ.ComUnitId
                              LEFT JOIN tblCompanyInfo CI ON UNT.CompanyId = CI.CompanyId

@@ -31,17 +31,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\Solution.Web\Bin\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\DLL\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+      <HintPath>..\Solution.Web\Bin\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\DLL\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,15 +62,18 @@
     <Compile Include="MAIN_FUNCTION\DB_Manager.cs" />
     <Compile Include="InternalCls\ClsCommonInternalDAL.cs" />
     <Compile Include="InternalCls\ClsPrimaryKeyFind.cs" />
+    <Compile Include="MAIN_FUNCTION\DB_Names.cs" />
     <Compile Include="PanalCls\PanalClsDAL.cs" />
     <Compile Include="Panal_DAL\PanalDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SInventory_DAL\AreaDAL.cs" />
     <Compile Include="SInventory_DAL\AreaWiseMonthlyInventoryReportDal.cs" />
     <Compile Include="SInventory_DAL\ASMInfoDal.cs" />
+    <Compile Include="SInventory_DAL\AuditReportOneDal.cs" />
     <Compile Include="SInventory_DAL\BatchWiseCollectionDal.cs" />
     <Compile Include="SInventory_DAL\BatchWiseCollectionReportDal.cs" />
     <Compile Include="SInventory_DAL\BatchWiseTopSheetDal.cs" />
+    <Compile Include="SInventory_DAL\BonusCampaignDal.cs" />
     <Compile Include="SInventory_DAL\CampaignDAL.cs" />
     <Compile Include="SInventory_DAL\CentralStoreDAL.cs" />
     <Compile Include="SInventory_DAL\ChalanDAL.cs" />
@@ -76,15 +84,22 @@
     <Compile Include="SInventory_DAL\BatchWiseTransitReportDal.cs" />
     <Compile Include="SInventory_DAL\DashboardDal.cs" />
     <Compile Include="SInventory_DAL\DashboardInfoDal.cs" />
+    <Compile Include="SInventory_DAL\DeleteInvoiceReportDAL.cs" />
     <Compile Include="SInventory_DAL\DepositSlipEntryDal.cs" />
     <Compile Include="SInventory_DAL\DuplicatePaymentCorrectionDal.cs" />
     <Compile Include="SInventory_DAL\ErrorInvoiceDal.cs" />
+    <Compile Include="SInventory_DAL\FieldForceSummeryDal.cs" />
     <Compile Include="SInventory_DAL\FixedDiscountEntryDal.cs" />
+    <Compile Include="SInventory_DAL\HREmployeeDataSyncDal.cs" />
+    <Compile Include="SInventory_DAL\MaterialConversionReceiveDal.cs" />
     <Compile Include="SInventory_DAL\NationalBeenCaedDal.cs" />
     <Compile Include="SInventory_DAL\NationalSalesProductWiseDal.cs" />
     <Compile Include="SInventory_DAL\PaymentTranscationDal.cs" />
     <Compile Include="SInventory_DAL\PettyCashDaL.cs" />
+    <Compile Include="SInventory_DAL\ReturnAcknowledgmentNoteDal.cs" />
     <Compile Include="SInventory_DAL\SalesDashboardDal.cs" />
+    <Compile Include="SInventory_DAL\SalesPerformanceReportProductWise_Dal.cs" />
+    <Compile Include="SInventory_DAL\SalesSummeryReportForAcc.cs" />
     <Compile Include="SInventory_DAL\SampleInvoiceDal.cs" />
     <Compile Include="SInventory_DAL\SampleIssueDal.cs" />
     <Compile Include="SInventory_DAL\CustomerFixedDiscountDal.cs" />
@@ -164,8 +179,11 @@
     <Compile Include="SInventory_DAL\StockUOMDAL.cs" />
     <Compile Include="SInventory_DAL\SupplierInfoDal.cs" />
     <Compile Include="SInventory_DAL\TerritoryInfoDal.cs" />
+    <Compile Include="SInventory_DAL\TradeMaterialTransferDal.cs" />
     <Compile Include="SInventory_DAL\TotalSummaryDAL.cs" />
+    <Compile Include="SInventory_DAL\UserCredentialChangeDal.cs" />
     <Compile Include="SInventory_DAL\UserDAL.cs" />
+    <Compile Include="SInventory_DAL\UserMenuPermissionDal.cs" />
     <Compile Include="SInventory_DAL\WarehousePickingDAL.cs" />
     <Compile Include="SInventory_DAL\WarehouseStockInApprovalDal.cs" />
     <Compile Include="SInventory_DAL\WarehouseStockInDal.cs" />
@@ -177,10 +195,11 @@
     <Compile Include="SInventory_DAL\WHStockInReportDal.cs" />
     <Compile Include="SInventory_DAL\WHStockListDAL.cs" />
     <Compile Include="SInventory_DAL\WhStockMonitoringReportDal.cs" />
+    <Compile Include="SInventory_DAL\WHStockValuationReprtDal.cs" />
     <Compile Include="SInventory_DAL\WingsSalesAndCollectionReportDal.cs" />
     <Compile Include="SInventory_DAL\WingsWiseSalesReportDal.cs" />
+    <Compile Include="SInventory_DAL\ZASMonitoringDal.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Library.DAO\Library.DAO.csproj">
       <Project>{41D64757-EE79-4D94-8162-FA9B70785771}</Project>

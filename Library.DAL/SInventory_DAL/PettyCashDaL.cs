@@ -285,7 +285,6 @@ namespace Library.DAL.PettyCash_DaL
         public DataTable LoadCreditCustomerReport(string parameter)
         {
             string queryStr = @"Select cust.CustomerCode As CustomerID, cust.CustomerName , cust.Address, com.CompanyName,  DATEDIFF(day, StartDate, EndDate) AS DayLimit, LimitAmount As ValueLimit from tblCustomerCreditLimit 
-
               Left join tblCustMaster As cust On cust.CustomerMasterId = tblCustomerCreditLimit.CustomerMasterId
               Left Join tblCompanyInfo As com On com.CompanyId = tblCustomerCreditLimit.CompanyId 
               Where tblCustomerCreditLimit.CreditLimitId Is NOT NULL " + parameter;

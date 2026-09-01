@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -15,22 +15,60 @@ namespace Library.BLL.SInventory_BLL
         ChalanInfo aChalanInfo = new ChalanInfo();
         ChalanDAL aChalanDal = new ChalanDAL();
         ClsPrimaryKeyFind aClsPrimaryKeyFind = new ClsPrimaryKeyFind();
+
         public bool SaveDataForChalanInfo(ChalanInfo aChalanInfo, out int ChalanId)
         {
-            ChalanId = aClsPrimaryKeyFind.PrimaryKeyMax("ChalanId", "tblChalanInfo");
-            aChalanInfo.ChalanId = ChalanId;
-            aChalanInfo.ChalanNo = ChalanNoGenerator(aChalanInfo.ChalanId);
-            return aChalanDal.SaveDataForChalanInfo(aChalanInfo);            
+            DataTable aTable = new DataTable();
+            aTable = aChalanDal.CheckEntryWithinlastMinute(aChalanInfo);
+
+            if (aTable.Rows.Count != 1) // 1 means exist
+            {
+                ChalanId = aClsPrimaryKeyFind.PrimaryKeyMax("ChalanId", "tblChalanInfo");
+                aChalanInfo.ChalanId = ChalanId;
+                aChalanInfo.ChalanNo = ChalanNoGenerator(aChalanInfo.ChalanId);
+                return aChalanDal.SaveDataForChalanInfo(aChalanInfo);           
+            }
+            else
+            {
+                ChalanId = 0;
+                return false;
+            }
+     
         }
+
         public int DCStockIn2(DCStockNew aDcStockNew)
         {
             string msg = "Data Save Successfully!!";
             int DCStoreId = 0;
 
-            DCStoreId = aDcStockNew.DCStoreId = aClsPrimaryKeyFind.PrimaryKeyMax("DCStoreId", "tblDCStore", "SSIDB");
-            aChalanDal.DCStockInDALMain(aDcStockNew);
-            aChalanDal.ChalanUpdate(aDcStockNew.ChalanId.ToString());
+            // Check Duplicate 
 
+            DataTable aTable = new DataTable();
+            aTable = aChalanDal.CheckB2BExistOrNotInDcStore(aDcStockNew);
+
+            if (aTable.Rows.Count == 0)
+            {
+                DCStoreId = aDcStockNew.DCStoreId = aClsPrimaryKeyFind.PrimaryKeyMax("DCStoreId", "tblDCStore", "SSIDB");
+                aChalanDal.DCStockInDALMain(aDcStockNew);
+                aChalanDal.ChalanUpdate(aDcStockNew.ChalanId.ToString());
+
+                // Insert Into Weighted Average 
+
+                if (DCStoreId > 0)
+                {
+                    // Update CentralStoreId in DCStore
+                    RequisitionDAL aRequisitionDal = new RequisitionDAL();
+
+                    aRequisitionDal.UpdateTempReceiveId();
+
+                    // process Weighted Average (Disabled as per user request to not maintain DC Store WAC)
+
+                    // aChalanDal.ProcessWeightedAverage(DCStoreId);
+                }
+
+            }
+
+            
             return DCStoreId;
         }
         public string SaveDCStoreFreeze2(DCStoreFreezeDAO aDcStockNew)
@@ -38,9 +76,16 @@ namespace Library.BLL.SInventory_BLL
             string msg = "Data Save Successfully!!";
 
             ClsPrimaryKeyFind aClsPrimaryKeyFind = new ClsPrimaryKeyFind();
-            aDcStockNew.DCStoreFreezeId = aClsPrimaryKeyFind.PrimaryKeyMax("DCStoreFreezeId",
-                "tblDCStoreFreeze");
+            aDcStockNew.DCStoreFreezeId = aClsPrimaryKeyFind.PrimaryKeyMax("DCStoreFreezeId","tblDCStoreFreeze");
             aChalanDal.SaveDCStoreFreeze2(aDcStockNew);
+
+
+            // Insert Into Weighted Average (Disabled as per user request to not maintain DC Store WAC)
+
+            // if (aDcStockNew.DCStoreFreezeId > 0)
+            // {
+            //     aChalanDal.ProcessWeightedAverageFreezeStock(aDcStockNew.DCStoreFreezeId);
+            // }
 
             return msg;
         }
@@ -78,15 +123,35 @@ namespace Library.BLL.SInventory_BLL
 
         public bool SaveDataForChalanDetail(List<ChalanDetail> aIChalanList)
         {
+            bool status = false;
+
             foreach (var chalanDetail in aIChalanList)
             {
-                chalanDetail.ChalanDetailId = aClsPrimaryKeyFind.PrimaryKeyMax("ChalanDetailsId", "tblChalanDetail");
-                aChalanDal.SaveDataForChalanDetail(chalanDetail);
+                // Check Already Exist or not
 
-                DataTable dtdcinfo = DCInfoWithDCId(chalanDetail.DCStoreId.ToString());
-                UpdateDCStockQuantity(chalanDetail.DCStoreId.ToString(), (Convert.ToDecimal(dtdcinfo.Rows[0]["StockQty"].ToString()) - chalanDetail.Quantity).ToString());
+                DataTable  aTable = new DataTable();
+
+                aTable = aChalanDal.CheckDetailsExistOrNot(chalanDetail);
+
+                if (aTable.Rows.Count == 0)
+                {
+                    chalanDetail.ChalanDetailId = aClsPrimaryKeyFind.PrimaryKeyMax("ChalanDetailsId", "tblChalanDetail");
+                    status = aChalanDal.SaveDataForChalanDetail(chalanDetail);
+
+                    DataTable dtdcinfo = DCInfoWithDCId(chalanDetail.DCStoreId.ToString());
+                    UpdateDCStockQuantity(chalanDetail.DCStoreId.ToString(), (Convert.ToDecimal(dtdcinfo.Rows[0]["StockQty"].ToString()) - chalanDetail.Quantity).ToString());
+
+                    // Insert Into Weighted Average (Disabled as per user request to not maintain DC Store WAC)
+
+                    // if (chalanDetail.ChalanDetailId > 0)
+                    // {
+                    //     aChalanDal.ProcessWeightedAverageB2BTransfer(chalanDetail.ChalanDetailId);
+                    // }
+                }
+
             }
-            return true;
+
+            return status;
         }
         public DataTable DCStoreReport(string reqId)
         {

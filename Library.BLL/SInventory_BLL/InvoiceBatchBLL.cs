@@ -64,5 +64,10 @@ namespace Library.BLL.SInventory_BLL
         {
             return aInvoiceBatchDal.LoadInvoiceByUser(delManId, invDate,userId);
         }
+
+        public bool UpdateBachCodeById(int batchId)
+        {
+            return aInvoiceBatchDal.UpdateBachCodeById(batchId);
+        }
     }
 }

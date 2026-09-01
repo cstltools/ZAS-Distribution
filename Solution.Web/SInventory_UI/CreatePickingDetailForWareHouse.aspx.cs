@@ -23,6 +23,7 @@ public partial class SInventory_UI_CreatePickingDetailForWareHouse : System.Web.
 
             DataTable aTableexists = new DataTable();
             aTableexists = aRequisitionBll.GetRequisitionInfoTransferReqId(reqId);
+
             if (aTableexists.Rows.Count > 0)
             {
                 showMessageBox(" Picking Already Completed!!");

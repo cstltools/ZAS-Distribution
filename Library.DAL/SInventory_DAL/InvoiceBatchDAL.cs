@@ -43,8 +43,13 @@ namespace Library.DAL.SInventory_DAL
         }
         public void LoadDeliveryMan(DropDownList aDropDownList)
         {
-            string query = @"SELECT *,EmpName as DeliveryManName FROM dbo.tblDeliveryManInfo
-            inner join tblEmpGeneralInfo on tblDeliveryManInfo.EmpInfoId=tblEmpGeneralInfo.EmpInfoId";
+            string query = @"SELECT DL.DeliveryManId,ISNULL( HRGI.EmpName + ' (' + JobLocationName + ')', EGI.EmpName) DeliveryManName FROM tblDeliveryManInfo AS DL
+INNER JOIN tblEmpGeneralInfo AS EGI ON DL.EmpInfoId = EGI.EmpInfoId
+LEFT JOIN ZASHRIS..tblEmpGeneralInfo AS HRGI ON EGI.EmpMasterCode = HRGI.EmpMasterCode
+LEFT JOIN ZASHRIS..tblJobLocation AS JL ON HRGI.JobLocationisionId = JL.JobLocationisionId
+WHERE DL.IsActive = 1 ORDER BY JobLocationName ASC";
+
+
             aCommonInternalDal.LoadDropDownValue(aDropDownList, "DeliveryManName", "DeliveryManId", query, "SSIDB");
         }
 //        public DataTable LoadInvoice(string companyId, string delManId, string invDate)
@@ -85,7 +90,7 @@ namespace Library.DAL.SInventory_DAL
         }
         public void UpdateInvoiceBatchId(string invoiceId,string batchId)
         {
-            string updateQuery = @"UPDATE dbo.tblInvoice SET BatchId='"+batchId+"' WHERE InvoiceId='"+invoiceId+"'";
+            string updateQuery = @"UPDATE tblInvoice SET BatchId='" + batchId + "' WHERE InvoiceId='" + invoiceId + "' AND ISNULL(BatchId,0) = 0";
             aCommonInternalDal.UpdateDataByUpdateCommand(updateQuery, "SSIDB");
         }
 
@@ -103,6 +108,15 @@ namespace Library.DAL.SInventory_DAL
             WHERE InvoiceDate='" + invDate + "' AND ( BatchId IS NULL) AND DeliveryManId= " + delManId + " AND tblInvoice.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userId + ")";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public bool UpdateBachCodeById(int batchId)
+        {
+            List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+            
+            aSqlParameterlist.Add(new SqlParameter("@BatchId", batchId));
+
+            return aCommonInternalDal.UpdateAction("sp_Save_BatchCode",aSqlParameterlist); 
         }
     }
 }

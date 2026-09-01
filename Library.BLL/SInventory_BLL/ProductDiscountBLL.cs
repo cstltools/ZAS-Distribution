@@ -39,7 +39,15 @@ namespace Library.BLL.SInventory_BLL
                 ClsPrimaryKeyFind aClsPrimaryKeyFind = new ClsPrimaryKeyFind();
 
                 aProductDiscount.QuotedPriceId = aClsPrimaryKeyFind.PrimaryKeyMax("QuotedPriceId", "tblProductQuotedPrice");
+
+                // Inactive Existing
+
+                //aProductDiscountDal.InactiveQuotedPrice(aProductDiscount);
+
+                // Save New
+
                 aProductDiscountDal.SaveQuotedPrice(aProductDiscount);
+
                 return true;
             }
             catch (Exception ex)
@@ -55,9 +63,9 @@ namespace Library.BLL.SInventory_BLL
             return aProductDiscountDal.ProductDiscountViewDal(pram);
         }
 
-        public DataTable ProductQuotedPriceView()
+        public DataTable ProductQuotedPriceView(string pram)
         {
-            return aProductDiscountDal.ProductQuotedprice();
+            return aProductDiscountDal.ProductQuotedprice(pram);
         }
 
 

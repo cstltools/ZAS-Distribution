@@ -449,7 +449,7 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public DestroyProductSatementDataTableRow AddDestroyProductSatementDataTableRow(string CompanyName, string ComUnitName, System.DateTime StockOutDate, System.DateTime ApproveDate, string ProductCode, string ProductName, string PackSize, decimal StockOutQty, string Reason, System.DateTime ExpDate) {
+            public DestroyProductSatementDataTableRow AddDestroyProductSatementDataTableRow(string CompanyName, string ComUnitName, string StockOutDate, string ApproveDate, string ProductCode, string ProductName, string PackSize, decimal StockOutQty, string Reason, string ExpDate) {
                 DestroyProductSatementDataTableRow rowDestroyProductSatementDataTableRow = ((DestroyProductSatementDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         CompanyName,
@@ -503,9 +503,9 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnCompanyName);
                 this.columnComUnitName = new global::System.Data.DataColumn("ComUnitName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnComUnitName);
-                this.columnStockOutDate = new global::System.Data.DataColumn("StockOutDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnStockOutDate = new global::System.Data.DataColumn("StockOutDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStockOutDate);
-                this.columnApproveDate = new global::System.Data.DataColumn("ApproveDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnApproveDate = new global::System.Data.DataColumn("ApproveDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnApproveDate);
                 this.columnProductCode = new global::System.Data.DataColumn("ProductCode", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnProductCode);
@@ -517,7 +517,7 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnStockOutQty);
                 this.columnReason = new global::System.Data.DataColumn("Reason", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnReason);
-                this.columnExpDate = new global::System.Data.DataColumn("ExpDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                this.columnExpDate = new global::System.Data.DataColumn("ExpDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnExpDate);
             }
             
@@ -695,10 +695,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime StockOutDate {
+            public string StockOutDate {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableDestroyProductSatementDataTable.StockOutDateColumn]));
+                        return ((string)(this[this.tableDestroyProductSatementDataTable.StockOutDateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'StockOutDate\' in table \'DestroyProductSatementDataTable\' is" +
@@ -712,10 +712,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime ApproveDate {
+            public string ApproveDate {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableDestroyProductSatementDataTable.ApproveDateColumn]));
+                        return ((string)(this[this.tableDestroyProductSatementDataTable.ApproveDateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'ApproveDate\' in table \'DestroyProductSatementDataTable\' is " +
@@ -814,10 +814,10 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime ExpDate {
+            public string ExpDate {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tableDestroyProductSatementDataTable.ExpDateColumn]));
+                        return ((string)(this[this.tableDestroyProductSatementDataTable.ExpDateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'ExpDate\' in table \'DestroyProductSatementDataTable\' is DBNu" +

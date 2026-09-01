@@ -23,5 +23,6 @@ namespace Library.DAO.SInventory_Entities
         public decimal GrandTotal { get; set; }
         public int ManufacId { get; set; }
         public int FromComUnitId { get; set; }
+        public string ChalanBy { get; set; }
     }
 }

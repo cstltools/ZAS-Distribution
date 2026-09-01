@@ -9,6 +9,7 @@ namespace Library.DAO.SInventory_Entities
     {
         public int ComUnitId { get; set; }
         public int CompanyId { get; set; }
+        public int CashGlId { get; set; }
         public string ShortName { get; set; }
         public string ComUnitName { get; set; }
         public string ComUnitCode { get; set; }

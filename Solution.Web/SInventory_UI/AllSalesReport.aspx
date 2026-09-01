@@ -40,7 +40,7 @@
                             &nbsp;
                         </td>
                     </tr>
-                    <tr runat="server" visible="True" id="Tr1">
+                    <tr runat="server" visible="False" id="Tr1">
                         <td class="TDLeft" width="13%">
                         </td>
                         <td class="TDRight" width="20%">
@@ -99,7 +99,7 @@
                         <td class="TDRight" width="20%">
                         </td>
                         <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
-                            Sales Center: <span class="star-mark">*</span>
+                            Sales Center: 
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:DropDownList ID="dcDropDownList1" Width="180px" runat="server" CssClass="DropDown"

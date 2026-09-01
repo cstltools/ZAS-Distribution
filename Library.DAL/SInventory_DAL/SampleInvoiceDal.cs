@@ -21,7 +21,7 @@ namespace Library.DAL.SInventory_DAL
         public DataTable GetInvoiceData(string parameter)
         {
             string query = @"SELECT CUNT.ComUnitCode + '' + CUNT.ComUnitName AS Wings,CSTMR.CustomerCode + ':' + CSTMR.CustomerName AS Customer,
-INV.OrderCode, INV.SubmissionDate,INV.GrossValue,EGI.EmpName AS DeliveryMan,INV.ManufacId FROM tblSampleIssue AS INV 
+INV.OrderCode, INV.SubmissionDate,INV.GrossValue,EGI.EmpName AS DeliveryMan,INV.ManufacId,ActionStatus  FROM tblSampleIssue AS INV 
 LEFT JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId
 LEFT JOIN dbo.tblCompanyUnit AS CUNT ON CUNT.ComUnitId = INV.ComUnitId
 LEFT JOIN dbo.tblDeliveryManInfo AS DLV ON DLV.DeliveryManId = INV.DeliveryPersonId

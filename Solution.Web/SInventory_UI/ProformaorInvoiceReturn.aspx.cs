@@ -38,11 +38,15 @@ public partial class SInventory_UI_ProformaorInvoiceReturn : System.Web.UI.Page
     {
         InvoiceCheckBox.Checked = false;
         proformaInvoiceTextBox.Text = string.Empty;
+        chkSampleInvoice.Checked = false;
+        chkWHStockIn.Checked = false;
     }
     protected void InvoiceCheckBox_CheckedChanged(object sender, EventArgs e)
     {
         ProformaCheckBox.Checked = false;
         proformaInvoiceTextBox.Text = string.Empty;
+        //chkSampleInvoice.Checked = false;
+        chkWHStockIn.Checked = false;
     }
     
 
@@ -52,41 +56,58 @@ public partial class SInventory_UI_ProformaorInvoiceReturn : System.Web.UI.Page
         {
             // Journal Posting
 
-            if (aInvoiceReturnBll.ProformaReturnPosting(proformaInvoiceTextBox.Text.Trim()))
-            {
-                if (aInvoiceReturnBll.DeleteProforma(proformaInvoiceTextBox.Text.Trim()) > 0)
+            //if (aInvoiceReturnBll.ProformaReturnPosting(proformaInvoiceTextBox.Text.Trim()))
+            //{
+                if (aInvoiceReturnBll.DeleteProforma(proformaInvoiceTextBox.Text.Trim(), Session["LoginName"].ToString()) > 0)
                 {
                     Clear();
                     showMessageBox("Delete successfully !!");
                 }
-            }
+            //}
 
         }
 
-        if (proformaInvoiceTextBox.Text != "" && chkSampleInvoice.Checked)
+        if (proformaInvoiceTextBox.Text != "" && chkWHStockIn.Checked)
         {
-            SampleIssueDal aDal = new SampleIssueDal();
-            if (aDal.DeleteSampleInvoice(proformaInvoiceTextBox.Text.Trim()) > 0)
+            WHStockInReportDal aDal = new WHStockInReportDal();
+
+            if (aDal.DeleteWHStockIn(proformaInvoiceTextBox.Text.Trim(), Session["LoginName"].ToString()) > 0)
             {
                 Clear();
                 showMessageBox("Delete successfully !!");
             }
         }
+
+        if (proformaInvoiceTextBox.Text != "" && chkSampleInvoice.Checked)
+        {
+            SampleIssueDal aDal = new SampleIssueDal();
+
+            if (aDal.DeleteSampleInvoice(proformaInvoiceTextBox.Text.Trim(),Session["LoginName"].ToString()) > 0)
+            {
+                Clear();
+                showMessageBox("Delete successfully !!");
+            }
+        }
+
         if (proformaInvoiceTextBox.Text != "" && InvoiceCheckBox.Checked)
         {
 
 
              //Journal Posting
-            if (aInvoiceReturnBll.InvoiceDeletePosting(proformaInvoiceTextBox.Text.Trim()))
-            {
+            //if (aInvoiceReturnBll.InvoiceDeletePosting(proformaInvoiceTextBox.Text.Trim()))
+            //{
                 DataTable dt1 = new DataTable();
+
                 dt1 = aInvoiceReturnBll.LoadDetailID(proformaInvoiceTextBox.Text.Trim());
+
                 int Count = 0;
 
                 for (int i = 0; i < dt1.Rows.Count; i++)
                 {
                     DataTable dt2 = new DataTable();
+
                     dt2 = aInvoiceReturnBll.LoadStock(dt1.Rows[i]["InvoiceDetailId"].ToString());
+
                     if (dt2.Rows.Count > 0)
                     {
                         Count = 1;
@@ -96,7 +117,7 @@ public partial class SInventory_UI_ProformaorInvoiceReturn : System.Web.UI.Page
 
                 if (Count == 0)
                 {
-                    aInvoiceReturnBll.DeleteDeliveyInvoice(proformaInvoiceTextBox.Text.Trim());
+                    aInvoiceReturnBll.DeleteDeliveyInvoice(proformaInvoiceTextBox.Text.Trim(), Session["LoginName"].ToString());
                     Clear();
                     showMessageBox("Delete successfully !!");
                 }
@@ -104,7 +125,7 @@ public partial class SInventory_UI_ProformaorInvoiceReturn : System.Web.UI.Page
                 {
                     showMessageBox("Stock Already Returned From Freeze Stock, Cant't Delete !!");
                 }
-            }
+            //}
 
             
         }
@@ -123,6 +144,7 @@ public partial class SInventory_UI_ProformaorInvoiceReturn : System.Web.UI.Page
                 proformaInvoiceTextBox.Text = string.Empty;
             }
         }
+        
         if (InvoiceCheckBox.Checked)
         {
 
@@ -138,5 +160,30 @@ public partial class SInventory_UI_ProformaorInvoiceReturn : System.Web.UI.Page
                 proformaInvoiceTextBox.Text = string.Empty;
             }
         }
+
+        if (chkSampleInvoice.Checked)
+        {
+
+            //bool chk = aInvoiceReturnBll.chkInvoice(proformaInvoiceTextBox.Text.Trim());
+
+            bool chk = aInvoiceReturnBll.CheckSampleInvoice(proformaInvoiceTextBox.Text.Trim());
+
+            if (chk)
+            {
+            }
+            else
+            {
+                showMessageBox("No Invoice Found!!");
+                proformaInvoiceTextBox.Text = string.Empty;
+            }
+        }
+    }
+
+    protected void chkWHStockIn_CheckedChanged(object sender, EventArgs e)
+    {
+        ProformaCheckBox.Checked = false;
+        proformaInvoiceTextBox.Text = string.Empty;
+        chkSampleInvoice.Checked = false;
+        InvoiceCheckBox.Checked = false;
     }
 }

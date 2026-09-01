@@ -45,6 +45,9 @@ public partial class SInventory_UI_ReceiveProductByChalanByDC : System.Web.UI.Pa
     private void Save()
     {
         List<DCStockNew> aDcStockNewsList = new List<DCStockNew>();
+
+        int DCStoreId = 0;
+
         for (int i = 0; i < rcvGridView.Rows.Count; i++)
         {
             TextBox rcvQtyTextBox = (TextBox) rcvGridView.Rows[i].Cells[7].FindControl("rcvQtyTextBox");
@@ -70,51 +73,72 @@ public partial class SInventory_UI_ReceiveProductByChalanByDC : System.Web.UI.Pa
                 ReceiveDateTime = DateTime.Now
             };
 
-            DataTable aTable = aRequisitionBll.CheckDuplicateEntry(aDcStockNew.ChalanDetailsId);
-            
-            if (aTable.Rows.Count == 0)
-            {
-                int DCStoreId = aChalanBll.DCStockIn2(aDcStockNew);
-                if (Convert.ToDecimal(damageTextBox.Text.Trim()) > 0)
-                {
-                    DCStoreFreezeDAO aDCStoreFreezeDAO = new DCStoreFreezeDAO();
-                    aDCStoreFreezeDAO.DCStoreId = DCStoreId;
 
-                    aDCStoreFreezeDAO.StorageLocation = "";
-                    aDCStoreFreezeDAO.ProductCode = rcvGridView.Rows[i].Cells[0].Text;
-                    aDCStoreFreezeDAO.ProductName = rcvGridView.Rows[i].Cells[1].Text;
-                    aDCStoreFreezeDAO.PackSize = rcvGridView.Rows[i].Cells[2].Text;
-                    aDCStoreFreezeDAO.BatchNo = rcvGridView.Rows[i].Cells[3].Text;
-                    aDCStoreFreezeDAO.TotalQuantity = Convert.ToDecimal(damageTextBox.Text.Trim());
-                    aDCStoreFreezeDAO.StockQty = Convert.ToDecimal(damageTextBox.Text.Trim());
-                    aDCStoreFreezeDAO.DamageQty = 0;
-                    aDCStoreFreezeDAO.ExpDate = Convert.ToDateTime(rcvGridView.Rows[i].Cells[5].Text);
-                    aDCStoreFreezeDAO.ReceiveDate = Convert.ToDateTime(rcvGridView.Rows[i].Cells[6].Text);
-                    aDCStoreFreezeDAO.StockRcvDate = Convert.ToDateTime(rcvDateTextBox.Text.Trim());
-                    aDCStoreFreezeDAO.ChalanNo = clnNoTextBox.Text.Trim();
-                    aDCStoreFreezeDAO.ChalanDate = Convert.ToDateTime(clnDateTextBox.Text.Trim());
-                    aDCStoreFreezeDAO.ComUnitId = Convert.ToInt32(hdComUnitId.Value);
-                    aDCStoreFreezeDAO.StockCondition = "Restricted";
-                    aDCStoreFreezeDAO.ChalanDetailsId = aDcStockNew.ChalanDetailsId;
-                    aDCStoreFreezeDAO.ChalanId = Convert.ToInt32(rcvGridView.DataKeys[i][0].ToString());
-                    //aDCStoreFreezeDAO.ReqId = Convert.ToInt32(rcvGridView.DataKeys[i][0].ToString());
-                    //aDCStoreFreezeDAO.ReqChildId = Convert.ToInt32(rcvGridView.DataKeys[i][1].ToString());
-                    //aDCStoreFreezeDAO.StockInTransfarId = Convert.ToInt32(rcvGridView.DataKeys[i][2].ToString());
-                    aChalanBll.SaveDCStoreFreeze2(aDCStoreFreezeDAO);
-                }
+            // Save operation
+
+            DCStoreId = aChalanBll.DCStockIn2(aDcStockNew);
+
+            // Save to Freeze Store
+
+            if (Convert.ToDecimal(damageTextBox.Text.Trim()) > 0)
+            {
+                DCStoreFreezeDAO aDCStoreFreezeDAO = new DCStoreFreezeDAO();
+                aDCStoreFreezeDAO.DCStoreId = DCStoreId;
+
+                aDCStoreFreezeDAO.StorageLocation = "";
+                aDCStoreFreezeDAO.ProductCode = rcvGridView.Rows[i].Cells[0].Text;
+                aDCStoreFreezeDAO.ProductName = rcvGridView.Rows[i].Cells[1].Text;
+                aDCStoreFreezeDAO.PackSize = rcvGridView.Rows[i].Cells[2].Text;
+                aDCStoreFreezeDAO.BatchNo = rcvGridView.Rows[i].Cells[3].Text;
+                aDCStoreFreezeDAO.TotalQuantity = Convert.ToDecimal(damageTextBox.Text.Trim());
+                aDCStoreFreezeDAO.StockQty = Convert.ToDecimal(damageTextBox.Text.Trim());
+                aDCStoreFreezeDAO.DamageQty = 0;
+                aDCStoreFreezeDAO.ExpDate = Convert.ToDateTime(rcvGridView.Rows[i].Cells[5].Text);
+                aDCStoreFreezeDAO.ReceiveDate = Convert.ToDateTime(rcvGridView.Rows[i].Cells[6].Text);
+                aDCStoreFreezeDAO.StockRcvDate = Convert.ToDateTime(rcvDateTextBox.Text.Trim());
+                aDCStoreFreezeDAO.ChalanNo = clnNoTextBox.Text.Trim();
+                aDCStoreFreezeDAO.ChalanDate = Convert.ToDateTime(clnDateTextBox.Text.Trim());
+                aDCStoreFreezeDAO.ComUnitId = Convert.ToInt32(hdComUnitId.Value);
+                aDCStoreFreezeDAO.StockCondition = "Restricted";
+                aDCStoreFreezeDAO.ChalanDetailsId = aDcStockNew.ChalanDetailsId;
+                aDCStoreFreezeDAO.ChalanId = Convert.ToInt32(rcvGridView.DataKeys[i][0].ToString());
+                //aDCStoreFreezeDAO.ReqId = Convert.ToInt32(rcvGridView.DataKeys[i][0].ToString());
+                //aDCStoreFreezeDAO.ReqChildId = Convert.ToInt32(rcvGridView.DataKeys[i][1].ToString());
+                //aDCStoreFreezeDAO.StockInTransfarId = Convert.ToInt32(rcvGridView.DataKeys[i][2].ToString());
+                aChalanBll.SaveDCStoreFreeze2(aDCStoreFreezeDAO);
             }
 
+           
+
+            //DataTable aTable = aRequisitionBll.CheckDuplicateEntry(aDcStockNew.ChalanDetailsId);
             
+            //if (aTable.Rows.Count == 0)
+            //{
+                
+
+
+            //}
+
         }
 
-        // Update TempReceiveId 
-        aRequisitionBll.UpdateTempReceiveId();
 
-        showMessageBox("Data Save Successfully!!");
-        Popup(hdReqId.Value);
+        if (DCStoreId > 0)
+        {
+            // Update TempReceiveId 
+
+            aRequisitionBll.UpdateTempReceiveId();
+
+            showMessageBox("Data Save Successfully !!");
+            Popup(hdReqId.Value);
+
+        }
+        else
+        {
+            showMessageBox("Data Already Exist !!");
+        }
+
         Clear();
 
-        
         
     }
 

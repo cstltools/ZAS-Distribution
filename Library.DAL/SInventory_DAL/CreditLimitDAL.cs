@@ -71,11 +71,21 @@ namespace Library.DAL.SInventory_DAL
         
         public DataTable GetCustomerCreditInfo(string generateParam)
         {
-            string query = @"SELECT CreditLimitId,CompanyName,CustomerCode,CustomerName,LimitAmount,StartDate,EndDate,ApprovedBy,tblCustomerCreditLimit.ApprovedDate,
-                             ISNULL(DayLimit,0) AS Validity,ActionStatus FROM dbo.tblCustomerCreditLimit
-                             INNER JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCustomerCreditLimit.CompanyId
-                             INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblCustomerCreditLimit.CustomerMasterId
-                             WHERE CreditLimitId IS NOT NULL " + generateParam + " ORDER BY CreditLimitId DESC";
+            string query = @"SELECT tblCustomerCreditLimit.ApprovedBy,tblCustomerCreditLimit.ApprovedDate,CreditLimitId,CompanyName,CustomerCode,CustomerName,LimitAmount,StartDate,EndDate,ApprovedBy,tblCustomerCreditLimit.ApprovedDate,
+            ActionStatus,InvoiceDate, ISNULL(DayLimit,0) AS Validity,ISNULL(DATEDIFF(day, InvoiceDate,GETDATE()),0) AS Ds,InvoiceNo, CASE WHEN tblCustomerCreditLimit.IsActive = 1 THEN 'Active' ELSE 'Inactive' END AS ActiveStatus,
+            (ISNULL(DayLimit,0) - ISNULL(DATEDIFF(day, InvoiceDate,GETDATE()),0)) AS DaysRemaining FROM dbo.tblCustomerCreditLimit WITH(NOLOCK)
+            INNER JOIN dbo.tblCompanyInfo WITH(NOLOCK) ON tblCompanyInfo.CompanyId = tblCustomerCreditLimit.CompanyId
+            INNER JOIN dbo.tblCustMaster WITH(NOLOCK) ON tblCustMaster.CustomerMasterId = tblCustomerCreditLimit.CustomerMasterId
+            LEFT JOIN (SELECT CustomerMasterId,CompanyId,MIN(InvoiceNo) AS InvoiceNo,MIN(InvoiceDate) AS InvoiceDate FROM tblInvoice AS INV
+            LEFT JOIN tblCompanyUnit AS CI ON INV.ComUnitId = CI.ComUnitId
+            LEFT JOIN (SELECT M.CommonPK_ID,SUM(DebitAmountBDT) AS ReturnAmount FROM CSTL_ACCDB..tblDebitCreditVoucherMaster AS M
+            			LEFT JOIN CSTL_ACCDB..tblDebitCreditVoucherDetail AS D ON M.VoucherMasterId = D.VoucherMasterId
+            			LEFT JOIN tblInvoice AS INV ON M.CommonPK_ID = INV.InvoiceId
+            			WHERE ISNULL(M.IsInventoryValuation,0) = 0 AND M.TableID = 2018 GROUP BY M.CommonPK_ID) AS RTN ON INV.InvoiceId = RTN.CommonPK_ID
+            WHERE ISNULL(IsBadDue,0) = 0 AND ISNULL(DeliveryTpGrandTotal,0) > 0 
+            AND ISNULL(DeliveryTpGrandTotal,0) - (ISNULL(PaymentAmount,0) + ISNULL(AIT,0) + ISNULL(DiscountOnPayment,0))- ISNULL(ReturnAmount,0) > 1
+            GROUP BY CustomerMasterId,CompanyId) AS DD ON tblCustomerCreditLimit.CustomerMasterId = DD.CustomerMasterId AND tblCustomerCreditLimit.CompanyId = DD.CompanyId
+            WHERE CreditLimitId IS NOT NULL " + generateParam + " ORDER BY CompanyName,CreditLimitId,CustomerCode";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -93,9 +103,29 @@ namespace Library.DAL.SInventory_DAL
         public bool UpdateCreditLimit(CreditLimitDAO aCreditLimitDao)
         {
             string query = @"UPDATE tblCustomerCreditLimit SET CompanyId='" + aCreditLimitDao.CompanyId + "',CustomerMasterId='" + aCreditLimitDao.CustomerMasterId
-                + "',LimitAmount = '" + aCreditLimitDao.LimitAmount + "',DayLimit='" + aCreditLimitDao.DayLimit 
+                + "',LimitAmount = '" + aCreditLimitDao.LimitAmount + "',DayLimit='" + aCreditLimitDao.DayLimit + "',IsActive='" + aCreditLimitDao.IsActive 
                 + "',UpdateBy = '" + aCreditLimitDao.UpdateBy + "',UpdateDate = '" + aCreditLimitDao.UpdateDate + "',ActionStatus = 'Posted' WHERE CreditLimitId = " + aCreditLimitDao.CreditLimitId + "";
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
+        }
+
+        public DataTable CheckExistorNot(int companyId, int customerid)
+        {
+            string query = @"SELECT ISNULL(DayLimit,0) AS DayLimit,* FROM dbo.tblCustomerCreditLimit
+                             INNER JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCustomerCreditLimit.CompanyId
+                             INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblCustomerCreditLimit.CustomerMasterId
+                             WHERE tblCustomerCreditLimit.IsActive = 1 AND  tblCustomerCreditLimit.CompanyId = " + companyId + "AND tblCustomerCreditLimit.CustomerMasterId = " + customerid;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable CheckExistorNotUpdate(int companyId, int customerid, int creditId)
+        {
+            string query = @"SELECT ISNULL(DayLimit,0) AS DayLimit,* FROM dbo.tblCustomerCreditLimit
+                             INNER JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCustomerCreditLimit.CompanyId
+                             INNER JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblCustomerCreditLimit.CustomerMasterId
+                             WHERE tblCustomerCreditLimit.IsActive = 1 AND tblCustomerCreditLimit.CompanyId = " + companyId + "AND tblCustomerCreditLimit.CustomerMasterId = " + customerid + " AND CreditLimitId != " + creditId;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
     }
 }

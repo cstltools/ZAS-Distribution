@@ -6,6 +6,12 @@
     <meta charset="UTF-8">
     <title> SalesRoll - Login </title>
     <link rel="stylesheet" href="LoginAssets/css/style.css" media="screen" type="text/css" />
+    
+    <style>
+        #lblversion {
+            font-weight: bold !important;
+        }
+    </style>
 </head>
 <body style="background-image: url(images/MaintingandProtecting.jpg)">
     <span > 
@@ -17,9 +23,11 @@
         
         
         <h1 style="font-size: 17px; color: white;">
-            <span style="/*! font-size: ; */font-weight: bold;font-size: 30px;" > Salesroll </span> 
+            <span style="/*! font-size: ; */font-weight: bold;font-size: 30px;" > Salesroll&nbsp;</span> 
+             Ver: <asp:Label ID="lblversion" runat="server" Font-Size="Smaller" ForeColor="white"></asp:Label>
             <br />
-           Log In        
+            Release: <asp:Label ID="lblRelease" runat="server" Font-Size="Smaller" ForeColor="white"></asp:Label>
+           <%--Log In        --%>
         </h1>
         <form id="Form1" runat="server">
         <asp:TextBox ID="userNameTextBox" runat="server" CssClass="textbox" placeholder="Enter username"></asp:TextBox>

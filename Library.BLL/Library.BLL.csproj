@@ -46,6 +46,7 @@
     <Compile Include="SInventory_BLL\AreaBLL.cs" />
     <Compile Include="SInventory_BLL\AreaWiseMonthlyInventoryReportBll.cs" />
     <Compile Include="SInventory_BLL\ASMInfoBll.cs" />
+    <Compile Include="SInventory_BLL\AuditReportOneBll.cs" />
     <Compile Include="SInventory_BLL\BatchWiseTopSheetBll.cs" />
     <Compile Include="SInventory_BLL\CampaignBLL.cs" />
     <Compile Include="SInventory_BLL\CentralStoreBLL.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="SInventory_BLL\DCStoreBLL.cs" />
     <Compile Include="SInventory_BLL\DCUserPermissionBll.cs" />
     <Compile Include="SInventory_BLL\DcWiseAreaAloBll.cs" />
+    <Compile Include="SInventory_BLL\DeleteInvoiceReportBLL.cs" />
     <Compile Include="SInventory_BLL\DeliveryPersonBLL.cs" />
     <Compile Include="SInventory_BLL\DepartmentBLL.cs" />
     <Compile Include="SInventory_BLL\DesignationBll.cs" />

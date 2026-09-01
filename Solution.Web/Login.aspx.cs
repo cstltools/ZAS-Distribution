@@ -13,7 +13,22 @@ public partial class Login : System.Web.UI.Page
     PanalBLL aPanalBll = new PanalBLL();
     protected void Page_Load(object sender, EventArgs e)
     {
+        LoadVersionInfo();
     }
+
+    private void LoadVersionInfo()
+    {
+       DataTable aTable = new DataTable();
+
+        aTable = aPanalBll.GetVersionData();
+
+        for (int i = 0; i < aTable.Rows.Count; i++)
+        {
+            lblversion.Text = aTable.Rows[0]["VersionName"].ToString().Trim();
+            lblRelease.Text = Convert.ToDateTime(aTable.Rows[0]["ReleaseDate"]).ToString("MMM dd, yyyy");
+        }
+    }
+
     protected void loginButton_Click(object sender, EventArgs e)
     {
         msgLabel.Text = "";

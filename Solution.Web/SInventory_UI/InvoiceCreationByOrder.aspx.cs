@@ -139,7 +139,7 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
                     gotoinvoiceButton.Enabled = false;
                     gotoinvoiceButton.BackColor = Color.DarkRed;
                     gotoinvoiceButton.Text = "Unable to Access";
-                    gotoinvoiceButton.ToolTip = "Credit limit extention required !!!";
+                    gotoinvoiceButton.ToolTip = "Credit limit not set or requires extension.";
                 }
             }
         }
@@ -156,41 +156,55 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
 
         if (manufacDropDownList.SelectedIndex != 0)
         {
-            param = param + "  AND tblCompanyUnit.CompanyId='" + manufacDropDownList.SelectedValue + "' ";
+            param = param + "  AND UNT.CompanyId='" + manufacDropDownList.SelectedValue + "' ";
 
         }
         if (salesCenterDropDownList.SelectedIndex > 0)
         {
-            param = param + " AND tblCompanyUnit.ComUnitId='" + salesCenterDropDownList.SelectedValue + "'";
+            param = param + " AND UNT.ComUnitId='" + salesCenterDropDownList.SelectedValue + "'";
         }
 
         if (areaDropDownList.SelectedIndex > 0)
         {
-            param = param + " AND tblOrder.AreaId='" + areaDropDownList.SelectedValue + "'";
+            param = param + " AND ODR.AreaId='" + areaDropDownList.SelectedValue + "'";
         }
        
         if (territoryDropDownList.SelectedIndex > 0)
         {
-            param = param + " AND tblOrder.TerritoryId='" + territoryDropDownList.SelectedValue + "'";
+            param = param + " AND ODR.TerritoryId='" + territoryDropDownList.SelectedValue + "'";
         }
 
         if (marketDropDownList.SelectedIndex > 0)
         {
-            param = param + " AND tblOrder.MarketId='" + marketDropDownList.SelectedValue + "'";
+            param = param + " AND ODR.MarketId='" + marketDropDownList.SelectedValue + "'";
         }
 
         if (orderDateTextBox.Text !=string.Empty)
         {
-            param = param + " AND tblOrder.SubmissionDate='" + orderDateTextBox.Text + "'";
+            param = param + " AND ODR.SubmissionDate='" + orderDateTextBox.Text + "'";
         }
 
         if (custDropDownList.SelectedIndex > 0)
         {
-            param = param + " AND tblOrder.CustomerMasterId='" + custDropDownList.SelectedValue + "'";
+            param = param + " AND ODR.CustomerMasterId='" + custDropDownList.SelectedValue + "'";
         }
 
-        
-            param = param + " AND (CASE WHEN ((ISNULL(D.DUE,0) > ISNULL(CR.LimitAmount,0)) OR (ISNULL(DATEDIFF(day, InvoiceDate,GETDATE()),0) > ISNULL(CR.DayLimit,0))) AND TermOfPayment = 'Credit'  THEN 0 ELSE 1 END) = 1";
+
+//        param = param + @" AND (
+//    CASE 
+//        WHEN TermOfPayment = 'Credit' THEN
+//            CASE 
+//                WHEN ISNULL(LimitAmount, 0) = 0 THEN 0  -- No limit set No permission
+//                WHEN 
+//                    (ISNULL(GrossValue, 0) + ISNULL(Due, 0) <= ISNULL(LimitAmount, 0)) AND
+//                    (ISNULL(DayLimit, 0) = 0 OR DATEDIFF(day, InvoiceDate, GETDATE()) <= ISNULL(DayLimit, 0))
+//                THEN 1
+//                ELSE 0
+//            END
+//        ELSE 1
+//    END
+//) = 1";
+
         
 
         return param;

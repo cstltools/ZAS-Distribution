@@ -12,6 +12,7 @@ namespace Library.DAO.SInventory_Entities
         public int MiaId { get; set; }
         public string MiaName { get; set; }
         public decimal TargetQty { get; set; }
+        public decimal TargetAmount { get; set; }
         public string Period { get; set; }
         public string Year { get; set; }
         public int ProductId { get; set; }

@@ -1,0 +1,11 @@
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_obj\Debug\Library.DAL.csproj.AssemblyReference.cache
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_obj\Debug\Library.DAL.csproj.CoreCompileInputs.cache
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_bin\Library.DAL.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_bin\Library.DAL.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_bin\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_bin\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_bin\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_bin\Library.DAO.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_obj\Debug\Library..61D7EBAF.Up2Date
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_obj\Debug\Library.DAL.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\build_dal_obj\Debug\Library.DAL.pdb

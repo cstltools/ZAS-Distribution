@@ -28,7 +28,7 @@ namespace Library.DAL.SInventory_DAL
             string query = @"SELECT CU.ComUnitCode,CU.ComUnitName,C.CustomerCode,C.CustomerName,I.OrderNo,CONVERT(VARCHAR,I.OrderDate,103) as OrderDate,I.InvoiceNo,
                          CONVERT(VARCHAR,I.InvoiceDate,103)  InvoiceDate,I.DelivaryInvoiceNo, CONVERT(VARCHAR,I.InvoiceDate,103) UpdateDate,ID.ProductCode,ID.ProductName,
                          ID.PackSize,ID.BatchNo,CONVERT(VARCHAR,DS.ExpDate,103) ExpDate,ID.DeliveryQuantity,DeliveryNetAmount,
-                         DeliveryTotalPriceVatAmount,DeliveryDiscountAmount,ID.DelivarySpecialAmount,C.AreaCode,C.AreaName as DistrictCode,C.TerritoryCode, C.TerritoryName,EGI.EmpMasterCode AS MiaCode , C.RegionCode,C.MarketCode,C.MarketName
+                         DeliveryTotalPriceVatAmount,DeliveryDiscountAmount,ID.DelivarySpecialAmount,C.AreaCode,C.AreaName as DistrictCode,C.TerritoryCode, C.TerritoryName,EGI.EmpMasterCode AS MiaCode , C.RegionCode,C.Address MarketCode,C.Address MarketName
                          FROM dbo.tblInvoice I  with(nolock)
                          INNER JOIN dbo.tblInvoiceDetail ID ON ID.InvoiceId = I.InvoiceId 
                          INNER JOIN dbo.tblCompanyUnit CU ON CU.ComUnitId = I.ComUnitId
@@ -36,8 +36,7 @@ namespace Library.DAL.SInventory_DAL
                          INNER JOIN dbo.tblDCStore DS ON DS.DCStoreId = ID.DCStoreId 
 						 INNER JOIN dbo.tblMIOInfo AS MIO ON I.MiaId = MIO.MIOId
 						 INNER JOIN dbo.tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId
-                         WHERE ID.DeliveryStatus IN ('Full','Partial')
-                         AND I.ComUnitId = '" + districtId.Trim() + "' and I.InvoiceDate BETWEEN '" + fromDate + "' and '" + toDate + "'";
+                         WHERE ID.DeliveryStatus IN ('Full','Partial') " + districtId + " and I.InvoiceDate BETWEEN '" + fromDate + "' and '" + toDate + "'";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

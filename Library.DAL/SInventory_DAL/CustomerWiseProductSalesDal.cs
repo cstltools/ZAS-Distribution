@@ -47,7 +47,7 @@ namespace Library.DAL.SInventory_DAL
         {
 
             string query = @"SELECT CI.CompanyName,CSTMR.CustomerCode,CSTMR.CustomerName,EmpName AS MIO,ARA.AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize,ISNULL(SUM(DeliveryTotalQuantity),0) AS Qty,
-                             SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END)) AS Value,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM dbo.tblInvoice AS INV" 
+                             SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END)) AS Value,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,  INVD.BatchNo, INVD.ExpDate FROM dbo.tblInvoice AS INV" 
                              + " LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId"
                              + " LEFT JOIN dbo.tblCustMaster AS CSTMR ON  INV.CustomerMasterId = CSTMR.CustomerMasterId"
                              + " LEFT JOIN dbo.tblMIOInfo ON dbo.tblMIOInfo.MIOId=INV.MiaId"
@@ -56,7 +56,7 @@ namespace Library.DAL.SInventory_DAL
                              + " LEFT JOIN dbo.tblEmpGeneralInfo ON dbo.tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId"
                              + " LEFT JOIN dbo.tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId"
                              + " LEFT JOIN dbo.tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId"
-                             + parameter + " GROUP BY  CI.CompanyName,CSTMR.CustomerCode,CSTMR.CustomerName,EmpName,ARA.AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize"
+                             + parameter + " GROUP BY  CI.CompanyName,CSTMR.CustomerCode,CSTMR.CustomerName,EmpName,ARA.AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize, INVD.BatchNo, INVD.ExpDate"
                              + " HAVING SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END)) > 0";
 
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");

@@ -67,14 +67,18 @@ namespace Library.DAL.SInventory_DAL
                                     )";
             return aCommonInternalDal.SaveDataByInsertCommandWithIdentity(insertQuery, aSqlParameterlist, "SSIDB");
         }
+
         public DataTable LoadInvoiceNew(string delinvno)
         {
-            string query = @"SELECT  *,(DeliveryTotalQuantity-ISNULL(tbltemp.Qty,0))AvialableQty,PackSize,NetAmount,tblInvoice.InvoiceId FROM dbo.tblInvoice
+            string query = @"SELECT ComUnitName,ROUND(DeliveryNetAmount/Quantity, 4) AS UnitPrice,*,(DeliveryTotalQuantity-ISNULL(tbltemp.Qty,0))AvialableQty,PackSize,NetAmount,tblInvoice.InvoiceId FROM dbo.tblInvoice
             LEFT JOIN dbo.tblInvoiceDetail ON tblInvoiceDetail.InvoiceId = tblInvoice.InvoiceId
+            LEFT JOIN tblCompanyUnit AS UNT ON tblInvoice.ComUnitId = UNT.ComUnitId
             LEFT JOIN (SELECT InvoiceDetailId,ISNULL(SUM(ReturnQty),0)Qty FROM dbo.tblCustomerReturnDetail GROUP BY InvoiceDetailId)AS  tbltemp
             ON tbltemp.InvoiceDetailId = tblInvoiceDetail.InvoiceDetailId
             LEFT JOIN (SELECT InvoiceId,SUM(PaymentAmount)Amnt FROM dbo.tblCustPayDetail GROUP BY InvoiceId) AS tbltemp2 ON tbltemp2.InvoiceId = tblInvoice.InvoiceId
-            WHERE DelivaryInvoiceNo='" + delinvno + "' AND (IsDirect IS NULL or IsDirect=0) AND tblInvoice.InvoiceId NOT IN (SELECT DISTINCT A.InvoiceId FROM dbo.tblCustomerReturnMaster A)";
+            WHERE DelivaryInvoiceNo='" + delinvno + "' AND ISNULL(IsDirect,0) = 0  AND tblInvoice.InvoiceId NOT IN (SELECT DISTINCT A.InvoiceId FROM dbo.tblCustomerReturnMaster A)";
+
+            //AND ISNULL(PaymentAmount,0) = 0 
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -137,7 +141,7 @@ LEFT JOIN dbo.tblCustMaster ON tblCustMaster.CustomerMasterId = tblInvoice.Custo
 
             aSqlParameterList.Add(new SqlParameter("@ReturnId", custReturnId));
 
-            return aCommonInternalDal.UpdateAction("sp_DeliverySalesReturnPosting", aSqlParameterList);
+            return aCommonInternalDal.UpdateAction("sp_Sales_DeliverySalesReturnPosting", aSqlParameterList);
         }
     }
 }

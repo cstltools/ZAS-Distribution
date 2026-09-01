@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Expressions;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
@@ -102,6 +103,10 @@ public partial class SInventory_UI_InvoiceBatchEntry : System.Web.UI.Page
             };
 
             int id = aInvoiceBatchBll.SaveInvoiceBatch(aBatchDao);
+
+            //New Code
+
+            bool ststus = aInvoiceBatchBll.UpdateBachCodeById(id);
            
             if (id > 0)
             {

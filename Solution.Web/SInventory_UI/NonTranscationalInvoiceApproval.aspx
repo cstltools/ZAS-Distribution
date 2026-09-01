@@ -293,7 +293,7 @@
         <ProgressTemplate>
             <div class="divWaiting">
                 <asp:Image ID="imgWait" CssClass="position-set" runat="server" ImageAlign="Middle"
-                    ImageUrl="~/images/progress-bar-opt.gif" Height="80" Width="80" />
+                    ImageUrl="~/images/loading-icon-big.gif" Height="80" Width="80" />
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>

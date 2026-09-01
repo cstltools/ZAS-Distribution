@@ -24,22 +24,23 @@ public partial class SInventory_RPTVIEW_WingsWiseSalesReportViewer : System.Web.
         string UnitId = Session["UnitId"].ToString();
         string FDate = Session["FDate"].ToString();
         string TDate = Session["TDate"].ToString();
+        int userId = Convert.ToInt32(Session["UserId"]);
 
         string parameter = "";
 
         if (ComId != "" && UnitId == "")
         {
-            asmDataTable = aReportDal.LoadWingsSalesInfoByCompany(ComId, FDate, TDate).Copy();
+            asmDataTable = aReportDal.LoadWingsSalesInfoByCompany(ComId, FDate, TDate, userId).Copy();
         }
 
         if (ComId != "" && UnitId != "")
         {
-            asmDataTable = aReportDal.LoadWingsSalesInfoByUnit(UnitId, FDate, TDate).Copy();
+            asmDataTable = aReportDal.LoadWingsSalesInfoByUnit(UnitId, FDate, TDate, userId).Copy();
         }
 
         if (ComId == "" && UnitId == "")
         {
-            asmDataTable = aReportDal.LoadWingsSalesInfoByPram(parameter, FDate, TDate).Copy();
+            asmDataTable = aReportDal.LoadWingsSalesInfoByPram(parameter, FDate, TDate, userId).Copy();
         }
 
         //asmDataTable = aReportDal.LoadWingsSalesInfo(parameter).Copy();
@@ -52,7 +53,7 @@ public partial class SInventory_RPTVIEW_WingsWiseSalesReportViewer : System.Web.
             asmDataTable.TableName = "WingsSalesDataTable";
             ds.Tables.Add(asmDataTable);
 
-
+           
             rptdoc.Load(ReportPath("crpWingsWiseSales.rpt"));
             rptdoc.SetDataSource(ds);
             crvCustMasterRpt.ReportSource = rptdoc;

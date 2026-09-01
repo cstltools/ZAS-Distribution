@@ -191,7 +191,7 @@
                                 </asp:DropDownList>
                             </td>
                     </tr>
-                    <tr>
+                    <tr >
                         <td class="TDLeft" width="13%">
                             &nbsp;
                         </td>
@@ -287,17 +287,20 @@
                                         <asp:BoundField DataField="ConPerson" HeaderText="Contact Person" />
                                         <asp:BoundField DataField="Address" HeaderText="Address" />
                                         <asp:BoundField DataField="CellNo" HeaderText="CellNo" />
+                                        <asp:BoundField DataField="TradelicenseNo" HeaderText="Drug License No" />
                                         <asp:BoundField DataField="MarketName" HeaderText="Market Name" />
                                         <asp:BoundField DataField="TerritoryName" HeaderText="Territory Name" />
                                         <asp:BoundField DataField="AreaName" HeaderText="Area Name" />
                                         <asp:BoundField DataField="RegionName" HeaderText="Region Name" />
                                         <asp:BoundField DataField="CategoryName" HeaderText="Category" />
+
                                         <asp:TemplateField HeaderText="Edit">
                                             <ItemTemplate>
                                                 <asp:ImageButton ID="editImageButton" runat="server" CommandArgument="<%# Container.DataItemIndex %>"
                                                     CommandName="EditData" ImageUrl="~/images/edit.png" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+
                                         <%--  <asp:TemplateField HeaderText="Invoice Detail">
                                         <ItemTemplate>
                                             <asp:ImageButton ID="viewImageButton" runat="server" 

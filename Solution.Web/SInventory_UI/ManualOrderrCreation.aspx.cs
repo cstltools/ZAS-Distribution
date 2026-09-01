@@ -384,6 +384,8 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
     {
         string code = string.Empty;
         string Id = id.ToString();
+
+
         if (Id.Length == 1)
         {
             Id = "000000" + Id;

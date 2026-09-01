@@ -1,5 +1,5 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2010
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Solution.Web", "Solution.Web\", "{D5121C7E-F331-451C-9DF4-49BE00D04AFB}"
 	ProjectSection(WebsiteProperties) = preProject
@@ -20,7 +20,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Solution.Web", "Solution.We
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "59637"
+		VWDPort = "42664"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject

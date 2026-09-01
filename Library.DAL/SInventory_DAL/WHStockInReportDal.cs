@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
 using Library.DAL.InternalCls;
+using Library.DAO.SInventory_Entities;
 
 namespace Library.DAL.SInventory_DAL
 {
@@ -64,6 +66,15 @@ namespace Library.DAL.SInventory_DAL
                              WHERE WHM.Status = 'Approved' " + pram;
 
             return aInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public int DeleteWHStockIn(string whStockInCode, string userId)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
+            aSqlParameterList.Add(new SqlParameter("@WhStockInCode", whStockInCode));
+            aSqlParameterList.Add(new SqlParameter("@userId", userId));
+            return aInternalDal.RunStoreProcedure("sp_Delete_WHStockIn", aSqlParameterList, "SSIDB");
         }
     }
 }

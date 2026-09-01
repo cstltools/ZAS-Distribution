@@ -23,6 +23,7 @@ public partial class HTMLReport_ProformaHTMLReport : System.Web.UI.Page
         {
             
             DataTable comUnitDetailDataTable = new DataTable();
+
             if (ComUnitId != "")
             {
                 comUnitDetailDataTable = aDcStockReportBll.DCReportDetailDataDAL((ComUnitId)).Copy();
@@ -49,6 +50,7 @@ public partial class HTMLReport_ProformaHTMLReport : System.Web.UI.Page
         if (i == 0 && j==1)
         {
             DataTable comUnitDetailDataTable = new DataTable();
+
             if (ComUnitId == "")
             {
                 comUnitDetailDataTable = aDcStockReportBll.DCReportDetailDataDAL("").Copy();

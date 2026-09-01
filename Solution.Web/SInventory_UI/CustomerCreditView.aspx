@@ -233,13 +233,26 @@
                                         <asp:BoundField DataField="LimitAmount" HeaderText="Limit Amount" />                                        
                                         <asp:BoundField DataField="Validity" HeaderText="Validity (Day)" />                                        
                                         <asp:BoundField DataField="ActionStatus" HeaderText="Status" />
-
+                                        <asp:BoundField DataField="DaysRemaining" HeaderText="Days Remaining" />
+                                        <asp:BoundField DataField="InvoiceNo" HeaderText="Invoice No" />
+                                        <asp:BoundField DataField="InvoiceDate" HeaderText="Invoice Date" DataFormatString="{0:dd-MMM-yyyy}" />
+                                        <asp:BoundField DataField="ActiveStatus" HeaderText="Active Status" />
+                                        <asp:BoundField DataField="ApprovedBy" HeaderText="Approved By" />
+                                        <asp:BoundField DataField="ApprovedDate" HeaderText="Approved Date" />
                                         <asp:TemplateField HeaderText="Edit">
                                             <ItemTemplate>
                                                 <asp:ImageButton ID="editImageButton" runat="server" CommandArgument="<%# Container.DataItemIndex %>"
                                                     CommandName="EditData" ImageUrl="~/images/edit.png" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                        
+                                         <asp:TemplateField HeaderText="Delete">
+                                            <ItemTemplate>
+                                                <asp:ImageButton ID="deleteImageButton" runat="server" CommandArgument="<%# Container.DataItemIndex %>"
+                                                    CommandName="DeleteData" ImageUrl="~/images/DeleteIcon.jpg" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
                                     </Columns>
                                 </asp:GridView>
 

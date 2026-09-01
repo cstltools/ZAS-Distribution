@@ -162,5 +162,10 @@ namespace Library.BLL.Panal_BLL
        {
            aPanalDal.ApprovalManuDropDown(userDropDownList, userId, parantId);
        }
+
+       public DataTable GetVersionData()
+       {
+           return aPanalDal.GetVersionData();
+       }
     }
 }

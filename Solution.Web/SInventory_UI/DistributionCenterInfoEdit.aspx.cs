@@ -39,6 +39,7 @@ public partial class SInventory_UI_DistributionCenterInfoEdit : System.Web.UI.Pa
                 MobileNo = mobileNoTextBox.Text,
                 FaxNo = faxNoTextBox.Text,
                 CompanyId = Convert.ToInt32(companyNameDropDownList.SelectedValue),
+                CashGlId = ddlCashAccount.SelectedValue != "" ? Convert.ToInt32(ddlCashAccount.SelectedValue) : 0,
                 DcTypeId = Convert.ToInt32(ddlDcType.SelectedValue),
                 UpdateBy = Session["LoginName"].ToString(),
                 UpdateDate = DateTime.Now
@@ -75,9 +76,15 @@ public partial class SInventory_UI_DistributionCenterInfoEdit : System.Web.UI.Pa
         mobileNoTextBox.Text = companyUnit.MobileNo;
         faxNoTextBox.Text = companyUnit.FaxNo;
         companyNameDropDownList.SelectedValue = companyUnit.CompanyId.ToString(CultureInfo.InvariantCulture);
+        _companyUnitBll.LoadCashAccount(ddlCashAccount, Convert.ToInt32(companyNameDropDownList.SelectedValue));
+
+       
+
         ddlDcType.SelectedValue = companyUnit.DcTypeId.ToString(CultureInfo.InvariantCulture);
         nameHiddenField.Value = companyUnit.ComUnitName;
         shortNameHiddenField.Value = companyUnit.ShortName;
+
+        ddlCashAccount.SelectedValue = companyUnit.CashGlId.ToString(CultureInfo.InvariantCulture);
 
     }
 

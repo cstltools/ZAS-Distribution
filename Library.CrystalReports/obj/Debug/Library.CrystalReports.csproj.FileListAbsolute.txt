@@ -200,3 +200,9 @@ F:\AFTER CORONA BREAK\ZAS\Solution\Library.CrystalReports\obj\Debug\Library.Crys
 F:\GIT Project\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
 F:\GIT Project\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.dll
 F:\GIT Project\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\Tareq\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\Tareq\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.CrystalReports\obj\Debug\Library.CrystalReports.csproj.AssemblyReference.cache
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.CrystalReports\obj\Debug\Library.CrystalReports.csproj.CoreCompileInputs.cache

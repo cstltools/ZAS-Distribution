@@ -1,0 +1,6 @@
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\build_dao_bin\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\build_dao_bin\Library.DAO.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\build_dao_obj\Debug\Library.DAO.csproj.AssemblyReference.cache
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\build_dao_obj\Debug\Library.DAO.csproj.CoreCompileInputs.cache
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\build_dao_obj\Debug\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\build_dao_obj\Debug\Library.DAO.pdb

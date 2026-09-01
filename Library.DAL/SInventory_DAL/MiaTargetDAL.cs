@@ -28,9 +28,9 @@ namespace Library.DAL.SInventory_DAL
 
         public void LoadMIOInformation(DropDownList ddl, string companyId)
         {
-            string query = @"SELECT MIO.MIOId,TTR.TerritoryCode + ':' + EGI.EmpName AS MIOName FROM dbo.tblMIOInfo AS MIO
+            string query = @"SELECT MIO.MIOId,EGI.EmpName + ' (' + TTR.TerritoryName + ')' AS MIOName FROM dbo.tblMIOInfo AS MIO
                             INNER JOIN dbo.tblEmpGeneralInfo AS EGI ON  MIO.EmployeeId = EGI.EmpInfoId
-                            INNER JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = MIO.TerritoryId WHERE MIO.IsActive = 1 AND MIO.CompanyId = " + companyId;
+                            INNER JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = MIO.TerritoryId WHERE MIO.IsActive = 1 AND MIO.CompanyId = " + companyId + " ORDER BY EGI.EmpName";
             aCommonInternalDal.LoadDropDownValue(ddl, "MIOName", "MIOId", query, "SSIDB");
         }
 
@@ -59,10 +59,11 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable LoadMiaTargetView()
         {
-            string query = @"SELECT MT.MiaTargetId,CI.CompanyName,EGI.EmpMasterCode AS MiaCode, EGI.EmpName AS MiaName,MT.MiaTargetAmount,MT.Period from tblMIATarget AS MT
+            string query = @"SELECT MT.MiaTargetId,Year,CI.CompanyName,EGI.EmpMasterCode AS MiaCode, EGI.EmpName AS MiaName,MT.MiaTargetAmount,MT.Period from tblMIATarget AS MT
                              LEFT JOIN dbo.tblMIOInfo AS MIO ON MT.MiaId = MIO.MIOId
                              LEFT JOIN dbo.tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId
-                             LEFT JOIN dbo.tblCompanyInfo AS CI ON MT.CompanyId  = CI.CompanyId";
+                             LEFT JOIN dbo.tblCompanyInfo AS CI ON MT.CompanyId  = CI.CompanyId 
+							 ORDER BY Year DESC,MT.Period,CI.CompanyName DESC";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
@@ -101,23 +102,23 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetActiveProduct(string companyId)
         {
-            string query = @"SELECT PD.ProductId,PD.ProductCode,PD.ProductName,PD.PackSize FROM tblProduct AS PD 
+            string query = @"SELECT PD.ProductId,PD.ProductCode,PD.ProductName,PD.PackSize, AVG(UP.UnitPrice) AvgUnitPrice FROM tblProduct AS PD 
                              LEFT JOIN tblUnitPrice AS UP ON PD.ProductId = UP.ProductId
-                             WHERE UP.IsActive = 1 AND PD.CompanyId = " + companyId;
+                             WHERE UP.IsActive = 1 AND PD.CompanyId = " + companyId + " GROUP BY PD.ProductId,PD.ProductCode,PD.ProductName,PD.PackSize ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
         public bool SaveMiaTargetProductWise(MIOTargetProductWise aMiaTarget)
         {
-            string insertQuery = @"INSERT INTO dbo.tblMIATargetProductWise (ProductId,MiaId,TargetQty,Period, Year,CompanyId) VALUES ( "
-                + aMiaTarget.ProductId + ",'" + aMiaTarget.MiaId + "','" + aMiaTarget.TargetQty + "','" + aMiaTarget.Period + "','" + aMiaTarget.Year + "','" + aMiaTarget.CompanyId + "')";
+            string insertQuery = @"INSERT INTO dbo.tblMIATargetProductWise (ProductId,MiaId,TargetQty,Period, Year,CompanyId, TargetAmount) VALUES ( "
+                + aMiaTarget.ProductId + ",'" + aMiaTarget.MiaId + "','" + aMiaTarget.TargetQty + "','" + aMiaTarget.Period + "','" + aMiaTarget.Year + "','" + aMiaTarget.CompanyId + "','" + aMiaTarget.TargetAmount + "')";
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
 
         public DataTable GetExistingData(string year, string month,string mioId)
         {
-            string query = @"SELECT PDT.ProductId,TargetQty FROM tblMIATargetProductWise AS PDT
+            string query = @"SELECT PDT.ProductId,TargetQty,TargetAmount FROM tblMIATargetProductWise AS PDT
                              WHERE PDT.MiaId = " + mioId + " AND PDT.Period = '" + month + "' AND PDT.Year = '" + year + "'";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");

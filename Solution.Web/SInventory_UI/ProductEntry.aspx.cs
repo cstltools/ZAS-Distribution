@@ -16,7 +16,13 @@ public partial class SInventory_UI_ProductEntry : System.Web.UI.Page
         if (!IsPostBack)
         {
             LoadProductCategory();
+            LoadRawMaterial();
         }
+    }
+
+    private void LoadRawMaterial()
+    {
+        aProductBLL.LoadRawMaterial(ddlRawMaterials);
     }
 
     private void LoadProductCategory()
@@ -111,6 +117,15 @@ public partial class SInventory_UI_ProductEntry : System.Web.UI.Page
             return false;
         }
 
+        //if (cbxTradeOrRecipe.SelectedValue == "Trade")
+        //{
+        //    if (ddlRawMaterials.SelectedIndex == 0)
+        //    {
+        //        showMessageBox("Please select Raw Material Name !!!");
+        //        return false;
+        //    }
+        //}
+
         return true;
     }
 
@@ -132,17 +147,65 @@ public partial class SInventory_UI_ProductEntry : System.Web.UI.Page
                 ProTypeId = Convert.ToInt32(typeDropDownList.SelectedValue),
                 ProductBrandId = Convert.ToInt32(productSQDropDownList.SelectedValue),
                 CaseId= Convert.ToInt32(shippingCartonSizeDropDownList.SelectedValue),
-                CompanyId = Convert.ToInt32(companyNameDropDownList.SelectedValue)
+                CompanyId = Convert.ToInt32(companyNameDropDownList.SelectedValue),
+                IsTrade = cbxTradeOrRecipe.SelectedValue == "Trade" ? true: false,
+                IsRecipe = cbxTradeOrRecipe.SelectedValue != "Trade" ? true : false
 
             };
 
             var aProductBLL = new ProductBLL();
-            
+
             if (aProductBLL.SaveProduct(aProduct))
             {
+                // Save
+
+                int ItemDescriptionId = aProductBLL.CretaeItem(aProduct);
+
+                // Save Raw Material Details
+
+                if (cbxTradeOrRecipe.SelectedValue == "Trade")
+                {
+                    DataTable aTable = aProductBLL.GetPoductByCode(productCodeTextBox.Text.Trim());
+
+                    if (aTable != null && aTable.Rows.Count > 0)
+                    {
+                        object productIdObj = aTable.Rows[0]["ProductId"];
+
+                        if (productIdObj != null && productIdObj != DBNull.Value)
+                        {
+                            int productId = Convert.ToInt32(productIdObj);
+
+                            int rawMaterialId = 0;
+
+                            if (!string.IsNullOrEmpty(ddlRawMaterials.SelectedValue))
+                            {
+                                rawMaterialId = Convert.ToInt32(ddlRawMaterials.SelectedValue);
+                            }
+                            else if (ItemDescriptionId > 0)
+                            {
+                                rawMaterialId = ItemDescriptionId;
+                            }
+
+                            // Only save if RawMaterialId is valid (> 0)
+
+                            if (rawMaterialId > 0)
+                            {
+                                var productRawMaterialDetailsDao = new ProductRawMaterialDetailsDao
+                                {
+                                    RawMaterialId = rawMaterialId,
+                                    ProductId = productId
+                                };
+
+                                aProductBLL.SaveRawMaterialDetails(productRawMaterialDetailsDao);
+                            }
+                        }
+                    }
+                }
+
                 showMessageBox("Data Saved Successfully !!!");
-                Clear();    
+                Clear();
             }
+
             else
             {
                 showMessageBox("Product Code Already Exist !!!");
@@ -187,4 +250,17 @@ public partial class SInventory_UI_ProductEntry : System.Web.UI.Page
         GotoPermissionSetUp(info, productNameTextBox, "Product Name already Exist !!!");
     }
 
+
+    protected void cbxTradeOrRecipe_Clicked(object sender, EventArgs e)
+    {
+        if (cbxTradeOrRecipe.SelectedValue == "Trade")
+        {
+            ddlRawMaterials.Enabled = true; // Enable the dropdown
+        }
+        else
+        {
+            ddlRawMaterials.SelectedValue = "";
+            ddlRawMaterials.Enabled = false; // Disable the dropdown
+        }
+    }
 }

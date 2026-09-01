@@ -2,11 +2,13 @@
     AutoEventWireup="true" CodeFile="WarehouseStockInApproval.aspx.cs" Inherits="SInventory_UI_WarehouseStockInApproval" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+        
     <style type="text/css">
-        .align-middle
-        {
-            margin-left: 37px;
-        }
+        
+         .align-middle
+         {
+             margin-left: 37px;
+         }
         
         .pd-left {
             padding-left: 5px;
@@ -27,7 +29,15 @@
         {
             display: inline;
         }
+
+        #ContentPlaceHolder1_statusRadioButtonList_0,
+        #ContentPlaceHolder1_statusRadioButtonList_1 {
+
+            margin-right: 4px !important;
+
+        }
     </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
@@ -123,7 +133,7 @@
                         <td class="TDLeft" colspan="6">
                             <div id="gridContainer1" style="height: auto; overflow: auto; width: 97%; margin: 0 auto;">
                                 <asp:GridView ID="loadGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview"
-                                DataKeyNames="WHStockInMasterID" OnRowCommand="loadGridView_RowCommand">
+                                DataKeyNames="WHStockInMasterID,MaterialConversionCount" OnRowCommand="loadGridView_RowCommand">
                                 <Columns>
                                     <asp:BoundField DataField="WHStockInCode" HeaderText="Code" />
                                     <asp:BoundField DataField="WHStockInDate" HeaderText="StockIn Date" DataFormatString="{0:dd-MMM-yyyy}" />

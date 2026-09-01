@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -25,12 +26,43 @@ public partial class SInventory_RPTVIEW_MioWiseProductSalesReportViewer : System
         var asmDataTable = new DataTable();
         string parameter = Session["PRAM"].ToString();
         string parameter2 = Session["PRAM2"].ToString();
+        string parameter3 = Session["PRAM3"].ToString();
+
+        string parameter4 = Session["PRAM4"].ToString();
         Int32 comId = Convert.ToInt32(Session["COMID"].ToString());
 
         string fromDate = Session["FromDate"].ToString();
         string toDate = Session["ToDate"].ToString();
 
-        asmDataTable = aReportDal.GetMioWiseProductSales(parameter, fromDate, toDate, parameter2, comId).Copy();
+        DateTime currentDate = Convert.ToDateTime(fromDate);
+        DateTime endDate = Convert.ToDateTime(toDate);
+
+        List<string> monthNames = new List<string>();
+
+        while (currentDate <= endDate)
+        {
+            string monthName = currentDate.ToString("MMMM", CultureInfo.InvariantCulture);
+
+            if (!monthNames.Contains(monthName))
+            {
+                monthNames.Add(monthName);
+            }
+            currentDate = currentDate.AddMonths(1);
+        }
+
+        string monthNamePram = " AND Period IN ('";
+        string monthNamePram2 = " AND TGRT.Period IN ('";
+
+        foreach (var monthName in monthNames)
+        {
+            monthNamePram = monthNamePram + monthName + "','";
+            monthNamePram2 = monthNamePram2 + monthName + "','";
+        }
+
+        monthNamePram = monthNamePram.Substring(0, monthNamePram.Length - 2) + ")";
+        monthNamePram2 = monthNamePram2.Substring(0, monthNamePram2.Length - 2) + ")";
+
+        asmDataTable = aReportDal.GetMioWiseProductSales(parameter, fromDate, toDate, parameter2, comId, parameter3, monthNamePram, monthNamePram2, parameter4).Copy();
 
         var ds = new DataSet();
 

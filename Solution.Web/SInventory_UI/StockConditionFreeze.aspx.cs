@@ -537,7 +537,7 @@ public partial class SInventory_UI_StockConditionFreeze : System.Web.UI.Page
 
                                         // Journal Posting
 
-                                        aStockConditionFreezeBll.PostJournal(StockConditionFreezeID, Convert.ToDecimal(B.Trim()));
+                                        aStockConditionFreezeBll.PostJournal(DCID, Convert.ToDecimal(B.Trim()));
 
                                     }
                                 }

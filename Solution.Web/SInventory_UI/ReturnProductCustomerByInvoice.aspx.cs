@@ -46,13 +46,13 @@ public partial class SInventory_UI_ReturnProductCustomerByInvoice : System.Web.U
             aDataTable = aInvoiceBll.CustomerMaster(custCode);
             if (aDataTable.Rows.Count > 0)
             {
-                hdComUnitId.Value = aDataTable.Rows[0]["ComUnitId"].ToString();
+                
                 hdCustomerMasterId.Value = aDataTable.Rows[0]["CustomerMasterId"].ToString();
                 custNameTextBox.Text = aDataTable.Rows[0]["CustomerName"].ToString();
                 custAddressTextBox.Text = aDataTable.Rows[0]["Address"].ToString();
                 //districtNameTextBox.Text = aDataTable.Rows[0]["DistrictName"].ToString();
                 areaNameTextBox.Text = aDataTable.Rows[0]["AreaName"].ToString();
-                comUnitNameTextBox.Text = aDataTable.Rows[0]["ComUnitCode"].ToString() + ":" + aDataTable.Rows[0]["ComUnitName"].ToString();
+                
                 miaCodeTextBox.Text = aDataTable.Rows[0]["EmpMasterCode"].ToString();
                 hdMiaId.Value = aDataTable.Rows[0]["MIOId"].ToString();
                 marketNameTextBox.Text = aDataTable.Rows[0]["MarketName"].ToString();
@@ -82,6 +82,9 @@ public partial class SInventory_UI_ReturnProductCustomerByInvoice : System.Web.U
             orderDateTextBox.Text = Convert.ToDateTime(dtinvoice.Rows[0]["OrderDate"].ToString())
                 .ToString("dd-MMM-yyyy");
             invoiceHiddenField.Value = invoiceId;
+
+            hdComUnitId.Value = dtinvoice.Rows[0]["ComUnitId"].ToString();
+            comUnitNameTextBox.Text = dtinvoice.Rows[0]["ComUnitCode"].ToString() + ":" + dtinvoice.Rows[0]["ComUnitName"].ToString();
 
             //LoadAdjustableInvoiceNo(dtinvoice.Rows[0]["CustomerCode"].ToString());
 
@@ -192,11 +195,6 @@ public partial class SInventory_UI_ReturnProductCustomerByInvoice : System.Web.U
                         }
                     }
                 }
-
-
-
-
-
             }
              
             if (id>0)
@@ -255,7 +253,7 @@ public partial class SInventory_UI_ReturnProductCustomerByInvoice : System.Web.U
     protected void Button2_Click(object sender, EventArgs e)
     {
         CustomerReturnBLL aCustomerReturnBll=new CustomerReturnBLL();
-        DataTable dt = aCustomerReturnBll.LoadInvoiceNew(delInvNoTextBox0.Text);
+        DataTable dt = aCustomerReturnBll.LoadInvoiceNew((delInvNoTextBox0.Text).Trim());
         if (dt.Rows.Count > 0)
         {
             uiel.Visible = true;
@@ -269,7 +267,7 @@ public partial class SInventory_UI_ReturnProductCustomerByInvoice : System.Web.U
         {
             loadGridView.DataSource = null;
             loadGridView.DataBind();
-            ShowMessageBox("Already Returned or Invalid Delivery Invoice No. !!!");
+            ShowMessageBox("Already Returned or Payment Exist or Invalid Delivery Invoice No. !!!");
             
         }
     }
@@ -303,7 +301,8 @@ public partial class SInventory_UI_ReturnProductCustomerByInvoice : System.Web.U
             {
                 decimal tp = Convert.ToDecimal(loadGridView.DataKeys[i][2].ToString()) +
                          Convert.ToDecimal(loadGridView.DataKeys[i][3].ToString());
-                ((TextBox)loadGridView.Rows[i].FindControl("retamountTextBox")).Text = (qty * tp).ToString();    
+                ((TextBox)loadGridView.Rows[i].FindControl("retamountTextBox")).Text = (qty * tp).ToString("F4");
+   
             }
             
         }

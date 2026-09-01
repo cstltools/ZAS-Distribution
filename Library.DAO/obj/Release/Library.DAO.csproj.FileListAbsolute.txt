@@ -3,3 +3,41 @@ F:\GIT Project\ZAS Sales\Library.DAO\bin\Release\Library.DAO.pdb
 F:\GIT Project\ZAS Sales\Library.DAO\obj\Release\Library.DAO.csprojResolveAssemblyReference.cache
 F:\GIT Project\ZAS Sales\Library.DAO\obj\Release\Library.DAO.dll
 F:\GIT Project\ZAS Sales\Library.DAO\obj\Release\Library.DAO.pdb
+D:\JEWEL\ZAS Sales\Library.DAO\bin\Release\Library.DAO.dll
+D:\JEWEL\ZAS Sales\Library.DAO\bin\Release\Library.DAO.pdb
+D:\JEWEL\ZAS Sales\Library.DAO\obj\Release\Library.DAO.csprojResolveAssemblyReference.cache
+D:\JEWEL\ZAS Sales\Library.DAO\obj\Release\Library.DAO.dll
+D:\JEWEL\ZAS Sales\Library.DAO\obj\Release\Library.DAO.pdb
+D:\Tareq\ZAS Sales\Library.DAO\bin\Release\Library.DAO.dll
+D:\Tareq\ZAS Sales\Library.DAO\bin\Release\Library.DAO.pdb
+D:\Tareq\ZAS Sales\Library.DAO\obj\Release\Library.DAO.csprojResolveAssemblyReference.cache
+D:\Tareq\ZAS Sales\Library.DAO\obj\Release\Library.DAO.dll
+D:\Tareq\ZAS Sales\Library.DAO\obj\Release\Library.DAO.pdb
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAO\bin\Release\Library.DAO.dll
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAO\bin\Release\Library.DAO.pdb
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAO\obj\Release\Library.DAO.csprojResolveAssemblyReference.cache
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAO\obj\Release\Library.DAO.dll
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAO\obj\Release\Library.DAO.pdb
+D:\01. ERP Projects\ZAS Sales_new\Library.DAO\bin\Release\Library.DAO.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAO\bin\Release\Library.DAO.pdb
+D:\01. ERP Projects\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.csproj.AssemblyReference.cache
+D:\01. ERP Projects\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.csproj.CoreCompileInputs.cache
+D:\01. ERP Projects\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.pdb
+D:\01. My_project_folder\ZAS Sales_new\Library.DAO\bin\Release\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_new\Library.DAO\bin\Release\Library.DAO.pdb
+D:\01. My_project_folder\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.csprojResolveAssemblyReference.cache
+D:\01. My_project_folder\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.pdb
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAO\bin\Release\Library.DAO.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAO\bin\Release\Library.DAO.pdb
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.csproj.AssemblyReference.cache
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.csproj.CoreCompileInputs.cache
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAO\obj\Release\Library.DAO.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\bin\Release\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\bin\Release\Library.DAO.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Release\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Release\Library.DAO.pdb
+d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Release\Library.DAO.csproj.AssemblyReference.cache
+d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Release\Library.DAO.csproj.CoreCompileInputs.cache

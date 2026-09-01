@@ -15,7 +15,11 @@ namespace Library.DAO.SInventory_Entities
         public int BankAccId { get; set; }
         public int CashAccId { get; set; }
 
+        public int CustomerMasterId { get; set; }
+        public int BatchId { get; set; }
+
         public string Remarks { get; set; }
+        public string PayType { get; set; }
 
         public int TransctionDetailId { get; set; }
         public DateTime ProcessTime { get; set; }

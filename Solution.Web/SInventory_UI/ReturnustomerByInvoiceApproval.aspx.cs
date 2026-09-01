@@ -108,6 +108,7 @@ public partial class SInventory_UI_ReturnustomerByInvoiceApproval : System.Web.U
                                     DCStockNew aDcStockNew = new DCStockNew();
                                     {
                                         aDcStockNew.DCStoreId = Convert.ToInt32(dtdata.Rows[j]["DCStoreId"].ToString());
+                                        aDcStockNew.CustReturnDetailId = Convert.ToInt32(dtdata.Rows[j]["CustReturnDetailId"].ToString());
                                         aDcStockNew.InvoiceDetailId =
                                             Convert.ToInt32(dtdata.Rows[j]["InvoiceDetailId"].ToString());
                                         aDcStockNew.StorageLocation = dtdcinfo.Rows[0]["StorageLocation"].ToString();
@@ -182,13 +183,13 @@ public partial class SInventory_UI_ReturnustomerByInvoiceApproval : System.Web.U
         }
 
 
-        DataTable aTable1 = aInvoiceBll.CheckChartOfAccount(loadGridView.DataKeys[0][3].ToString());
+        //DataTable aTable1 = aInvoiceBll.CheckChartOfAccount(loadGridView.DataKeys[0][3].ToString());
 
-        if (aTable1.Rows.Count == 0)
-        {
-            showMessageBox("Customer does not exist in chart of accounts !!");
-            return false;
-        }
+        //if (aTable1.Rows.Count == 0)
+        //{
+        //    showMessageBox("Customer does not exist in chart of accounts !!");
+        //    return false;
+        //}
 
 
         return true;

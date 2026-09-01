@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master" AutoEventWireup="true" CodeFile="CustMasterEntry.aspx.cs" Inherits="SInventory_UI_CustMasterEntry" %>
 
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
     <style type="text/css">
        
@@ -131,6 +132,35 @@
                         <td width="13%" class="TDLeft">&nbsp;</td>
                         <td width="20%" class="TDRight"></td>
                     </tr>
+                    
+                    <tr>
+                        <td width="13%" class="TDLeft"></td>
+                        <td width="20%" class="TDRight">&nbsp;</td>
+                        <td width="13%" class="TDLeft">
+                            Drug License No </td>
+                        <td width="20%" class="TDRight">
+                            <asp:TextBox ID="tbxTradeLicenseNo" runat="server" CssClass="TextBox"></asp:TextBox></td>
+                        <td width="13%" class="TDLeft">&nbsp;</td>
+                        <td width="20%" class="TDRight"></td>
+                    </tr>
+                    <tr>
+                        <td width="13%" class="TDLeft"></td>
+                        <td width="20%" class="TDRight">&nbsp;</td>
+                        <td width="13%" class="TDLeft">
+                            Drug License Expiry Date</td>
+                        <td width="20%" class="TDRight">
+                            <asp:TextBox ID="tbxTradeLicenseExpiryDate" runat="server" Width="145px" CssClass="TextBoxCalander"></asp:TextBox>
+                            <asp:ImageButton ID="imgTradeLicenseExpiryDate" runat="server" AlternateText="Click to show calendar"
+                                ImageUrl="~/Images/Calendar_scheduleHS.png" />
+                            <asp:CalendarExtender ID="tradeLicenseExpiryDateCalendar" runat="server" Format="dd-MMM-yyyy"
+                                PopupButtonID="imgTradeLicenseExpiryDate" TargetControlID="tbxTradeLicenseExpiryDate">
+                            </asp:CalendarExtender>
+                        </td>
+                        <td width="13%" class="TDLeft">&nbsp;</td>
+                        <td width="20%" class="TDRight">
+                            &nbsp;</td>
+                    </tr>
+
                     <tr>
                         <td class="TDLeft" width="13%">
                             &nbsp;</td>

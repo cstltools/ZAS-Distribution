@@ -652,6 +652,8 @@ namespace Library.CrystalReports.SInventory_DS {
             
             private global::System.Data.DataColumn columnQuantity;
             
+            private global::System.Data.DataColumn columnBatchCode;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public marketwisepickingDataTableDataTable() {
@@ -743,6 +745,14 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn BatchCodeColumn {
+                get {
+                    return this.columnBatchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -778,7 +788,7 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public marketwisepickingDataTableRow AddmarketwisepickingDataTableRow(string MarketName, System.DateTime InvoiceDate, string ProductCode, string ProductName, string BatchNo, string PackSize, decimal Quantity) {
+            public marketwisepickingDataTableRow AddmarketwisepickingDataTableRow(string MarketName, System.DateTime InvoiceDate, string ProductCode, string ProductName, string BatchNo, string PackSize, decimal Quantity, string BatchCode) {
                 marketwisepickingDataTableRow rowmarketwisepickingDataTableRow = ((marketwisepickingDataTableRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         MarketName,
@@ -787,7 +797,8 @@ namespace Library.CrystalReports.SInventory_DS {
                         ProductName,
                         BatchNo,
                         PackSize,
-                        Quantity};
+                        Quantity,
+                        BatchCode};
                 rowmarketwisepickingDataTableRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowmarketwisepickingDataTableRow);
                 return rowmarketwisepickingDataTableRow;
@@ -817,6 +828,7 @@ namespace Library.CrystalReports.SInventory_DS {
                 this.columnBatchNo = base.Columns["BatchNo"];
                 this.columnPackSize = base.Columns["PackSize"];
                 this.columnQuantity = base.Columns["Quantity"];
+                this.columnBatchCode = base.Columns["BatchCode"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -836,6 +848,8 @@ namespace Library.CrystalReports.SInventory_DS {
                 base.Columns.Add(this.columnPackSize);
                 this.columnQuantity = new global::System.Data.DataColumn("Quantity", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnQuantity);
+                this.columnBatchCode = new global::System.Data.DataColumn("BatchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBatchCode);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1468,6 +1482,23 @@ namespace Library.CrystalReports.SInventory_DS {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string BatchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tablemarketwisepickingDataTable.BatchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BatchCode\' in table \'marketwisepickingDataTable\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tablemarketwisepickingDataTable.BatchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsMarketNameNull() {
                 return this.IsNull(this.tablemarketwisepickingDataTable.MarketNameColumn);
             }
@@ -1548,6 +1579,18 @@ namespace Library.CrystalReports.SInventory_DS {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetQuantityNull() {
                 this[this.tablemarketwisepickingDataTable.QuantityColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsBatchCodeNull() {
+                return this.IsNull(this.tablemarketwisepickingDataTable.BatchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetBatchCodeNull() {
+                this[this.tablemarketwisepickingDataTable.BatchCodeColumn] = global::System.Convert.DBNull;
             }
         }
         

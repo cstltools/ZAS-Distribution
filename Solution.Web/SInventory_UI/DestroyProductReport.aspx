@@ -124,7 +124,7 @@
                         <td class="TDRight" width="20%">
                         </td>
                          <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
-                            (Stock Out) From Date: <span class="star-mark"> * </span>
+                            (Approve) From Date: <span class="star-mark"> * </span>
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="fromDateTextBox" runat="server" CssClass="TextBoxCalander"></asp:TextBox>
@@ -145,7 +145,7 @@
                         <td class="TDRight" width="20%">
                         </td>
                         <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
-                            (Stock Out) To Date: <span class="star-mark"> * </span>
+                            (Approve) To Date: <span class="star-mark"> * </span>
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="toDateTextBox" runat="server" CssClass="TextBoxCalander"></asp:TextBox>

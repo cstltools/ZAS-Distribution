@@ -164,6 +164,27 @@
                         <td width="20%" class="TDRight">
                         </td>
                     </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                        <td class="TDLeft" style="text-align: right; padding-right: 10px;" width="13%">
+                            Is Active
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:CheckBox ID="isActiveCheckBox" runat="server" />
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;
+                        </td>
+                    </tr>
 
                     <tr runat="server" Visible="False">
                         <td width="13%" class="TDLeft">

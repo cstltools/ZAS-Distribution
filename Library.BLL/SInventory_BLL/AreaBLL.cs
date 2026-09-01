@@ -77,7 +77,10 @@ namespace Library.BLL.SInventory_BLL
         {
             aAreaDAL.LoadDistrictName(ddl,regionId);
         }
-
+        public void LoadDDLBll_Zas(DropDownList ddl)
+        {
+            aAreaDAL.LoadDDLDal_Zas(ddl);
+        }
 
         public void LoadRegionDropdownList(DropDownList ddl)
         {

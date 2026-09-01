@@ -284,5 +284,13 @@ VALUES  ( @UWAId ,
         )";
           return aCommonInternalDal.SaveDataByInsertCommand(query, aSqlParameterlist, "SSIDB");
       }
+
+      public DataTable GetVersionData()
+      {
+          List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+          //aSqlParameterlist.Add(new SqlParameter("@ManuSL", manuSL));
+          string query = @"SELECT TOP 1 VersionName,ReleaseDate FROM Table_VersionControl ORDER BY VersionId DESC";
+          return aCommonInternalDal.DataContainerDataTable(query, aSqlParameterlist, "SSIDB");
+      }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="StockHTMLReport.aspx.cs"
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="StockHTMLReport.aspx.cs"
     Inherits="HTMLReport_ProformaHTMLReport" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -55,6 +55,8 @@
                 <asp:BoundField DataField="RestrictedValue" HeaderText="Freeze Value" />
                 <asp:BoundField DataField="BQty" HeaderText="Blocked Qty" />
                 <asp:BoundField DataField="BlockedValue" HeaderText="Block Value" />
+                <asp:BoundField DataField="ReturnRcvQty" HeaderText="Return Rcv" />
+                <asp:BoundField DataField="ReturnRcvValue" HeaderText="Return Rcv Value" />
                 <asp:BoundField DataField="GrandTotal" HeaderText="Grand Total" />
                 <%--<asp:BoundField DataField="DelivaryInvoiceNo" HeaderText="DelivaryInvoiceNo" />--%>
                 <%--<asp:BoundField DataField="UpdateDate" HeaderText="UpdateDate" />--%>
@@ -80,6 +82,7 @@
                 <asp:BoundField DataField="RQty" HeaderText="Restricted Qty" />
                 <%--<asp:BoundField DataField="ReturnReason" HeaderText="ReturnReason" />--%>
                 <asp:BoundField DataField="BQty" HeaderText="Blocked Qty" />
+                <asp:BoundField DataField="ReturnRcvQty" HeaderText="Return Rcv" />
             </Columns>
         </asp:GridView>
         <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CssClass="responstable">
@@ -96,6 +99,7 @@
                 <asp:BoundField DataField="RQty" HeaderText="Restricted Qty" />
                 <%--<asp:BoundField DataField="ReturnReason" HeaderText="ReturnReason" />--%>
                 <asp:BoundField DataField="BQty" HeaderText="Blocked Qty" />
+                <asp:BoundField DataField="ReturnRcvQty" HeaderText="Return Rcv" />
             </Columns>
         </asp:GridView>
     </div>

@@ -142,6 +142,8 @@ public partial class SInventory_UI_MIOSalesSummeryReport : System.Web.UI.Page
             parameter = parameter + " AND INV.MiaId = '" + mioDropDownList.SelectedValue + "'";
         }
 
+        parameter = parameter + " AND CI.CompanyId IN ( SELECT DISTINCT CompanyId FROM tblUserCompanyUnit AS CU LEFT JOIN tblCompanyUnit AS CI ON CU.CompanyUnitId = CI.ComUnitId WHERE UserId = " + Convert.ToInt32(Session["UserId"]) + ")"; 
+
        
         return parameter;
 

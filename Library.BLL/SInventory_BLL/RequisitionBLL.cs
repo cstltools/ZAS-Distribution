@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -323,6 +323,12 @@ namespace Library.BLL.SInventory_BLL
                       aStockInTransfar.StockInTransfarId = aClsPrimaryKeyFind.PrimaryKeyMax("StockInTransfarId", "tblStockInTransfar", "SSIDB");
                       aRequisitionDal.StockInTransfarInsertDAL(aStockInTransfar);
                       aRequisitionDal.UpdateCentralStockStockOut(0, receiveId);
+
+
+                      // Process Weighted Average
+
+                      aRequisitionDal.ProcessWeightedAvg(aStockInTransfar.StockInTransfarId);
+
                   }
                   else
                   {
@@ -356,6 +362,11 @@ namespace Library.BLL.SInventory_BLL
                       aStockInTransfar.StockInTransfarId= aClsPrimaryKeyFind.PrimaryKeyMax("StockInTransfarId", "tblStockInTransfar", "SSIDB");
                       aRequisitionDal.StockInTransfarInsertDAL(aStockInTransfar);
                       aRequisitionDal.UpdateCentralStockStockOut(restQty, receiveId);
+
+                      // Process Weighted Average
+
+                      aRequisitionDal.ProcessWeightedAvg(aStockInTransfar.StockInTransfarId);
+
                       break;
                   }
                  
@@ -410,15 +421,37 @@ namespace Library.BLL.SInventory_BLL
       public int DCStockIn2(DCStockNew aDcStockNew)
       {
           string msg = "Data Save Successfully!!";
-          int DCStoreId = 0;
 
-          
-              DCStoreId=aDcStockNew.DCStoreId = aClsPrimaryKeyFind.PrimaryKeyMax("DCStoreId", "tblDCStore", "SSIDB");
-              aRequisitionDal.DCStockInDAL(aDcStockNew);
+          int DCStoreId = 0;
+          bool dcStoreStatus = false;
+
+          // Check Duplicate 
+
+          DataTable aTable = new DataTable();
+          aTable = aRequisitionDal.CheckStoExistOrNotInDcStore(aDcStockNew);
+
+          if (aTable.Rows.Count == 0)
+          {
+              DCStoreId = aDcStockNew.DCStoreId = aClsPrimaryKeyFind.PrimaryKeyMax("DCStoreId", "tblDCStore", "SSIDB");
+              dcStoreStatus = aRequisitionDal.DCStockInDAL(aDcStockNew);
               aRequisitionDal.StockInTransfarStatusUpdate(aDcStockNew.StockInTransfarId.ToString());
               aRequisitionDal.UpdateReceiveIssueStatus(aDcStockNew.ReqId.ToString(), aDcStockNew.StockRcvDate);
-          
 
+              // Insert Into Weighted Average 
+
+              if (DCStoreId > 0 && dcStoreStatus)
+              {
+                  // Update CentralStoreId in DCStore
+
+                  aRequisitionDal.UpdateTempReceiveId();
+
+                  // Weighted Avg (Disabled as per user request to not maintain DC Store WAC)
+
+                  // var stat = aRequisitionDal.ProcessWeightedAverage(DCStoreId);
+              }
+          }
+
+          
           return DCStoreId;
       }
        public DataTable StockTransportOrderGridDataBLL(DateTime date)

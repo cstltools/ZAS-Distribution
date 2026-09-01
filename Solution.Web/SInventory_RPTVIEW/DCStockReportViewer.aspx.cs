@@ -25,7 +25,9 @@ public partial class SInventory_RPTVIEW_DCStockReportViewer : System.Web.UI.Page
         if (i == 1 && rpt == 0)
         {
             string ComUnitId = Request.QueryString["comUnitId"];
+
             DataTable comUnitDetailDataTable = new DataTable();
+
             if (ComUnitId != "")
             {
                 comUnitDetailDataTable = aDcStockReportBll.DCReportDetailDataDAL((ComUnitId)).Copy();

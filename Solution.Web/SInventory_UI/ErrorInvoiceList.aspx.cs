@@ -53,7 +53,7 @@ public partial class SInventory_UI_ErrorInvoiceList : System.Web.UI.Page
                 if (dataKey != null) invoiceNo = dataKey[0].ToString();
 
                 aInvoiceReturnBll.ProformaReturnPosting(invoiceNo.Trim());
-                aInvoiceReturnBll.DeleteProforma(invoiceNo.Trim());
+                aInvoiceReturnBll.DeleteProforma(invoiceNo.Trim(), Session["LoginName"].ToString());
             }
 
             ShowMessageBox("Invoice Canceled Successfully !!");

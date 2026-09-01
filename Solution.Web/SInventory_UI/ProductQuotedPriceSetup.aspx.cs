@@ -81,6 +81,7 @@ public partial class SInventory_UI_ProductQuotedPriceSetup : System.Web.UI.Page
             if (CheckDiscountExistOrNot())
             {
                 CustomerMaster aCustomerMaster;
+
                 QuotedPriceSetup aProductDiscount = new QuotedPriceSetup()
                 {
                     ProductId = Convert.ToInt32(productIdHiddenField.Value.Trim()),
@@ -94,6 +95,7 @@ public partial class SInventory_UI_ProductQuotedPriceSetup : System.Web.UI.Page
                     ActionStatus = "Posted"
 
                 };
+
                 if (aProductDiscountBll.SaveQuotedPrice(aProductDiscount))
                 {
                     showMessageBox("Data Saved Successfully !!");

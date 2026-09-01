@@ -17,7 +17,7 @@ namespace Library.DAL.SInventory_DAL
       }
       public DataTable StockTransportOrderReportMainData(string reqId)
       {
-          string query = @"SELECT R.ReqId,R.ReqNo,R.ReqDate,R.IssueChalanNo,R.IssuChalanDate,WH.WearhouseCode, "+
+          string query = @"SELECT DISTINCT R.ReqId,R.ReqNo,R.ReqDate,R.IssueChalanNo,R.IssuChalanDate,WH.WearhouseCode, "+
                             " WH.WearhouseName,WH.Address AS WHAddress , "+
                             " CU.ComUnitCode,CU.ComUnitName,CU.Address AS CUAddress,R.TruckNo,R.DriverName,R.PickingNo,R.PickingDate " +
                             " FROM dbo.tblRequisition R "+
@@ -40,7 +40,7 @@ namespace Library.DAL.SInventory_DAL
       //}
       public DataTable StockTransportOrderReportDetailData(string reqId)
       {
-          string query = @"SELECT RC.ReqId,RC.ProductCode,(RC.ProductName+' '+RC.PackSize) AS ProductName ,RC.CaseQty,ST.BatchNo,ST.PickingQty AS Quantity,ST.PriceAmount,ST.VATAmount,ST.TotalPriceAmount,ST.PickingQty,PD.ProductId, SUOM.StockUOMName, ST.ExpDate 
+          string query = @"SELECT DISTINCT RC.ReqId,RC.ProductCode,(RC.ProductName+' '+RC.PackSize) AS ProductName ,RC.CaseQty,ST.BatchNo,ST.PickingQty AS Quantity,ST.PriceAmount,ST.VATAmount,ST.TotalPriceAmount,ST.PickingQty,PD.ProductId, SUOM.StockUOMName, ST.ExpDate 
                            FROM dbo.tblRequsitionChild RC
                            INNER JOIN dbo.tblProduct AS PD ON PD.ProductCode = RC.ProductCode
                            INNER JOIN dbo.tblStockUOM AS SUOM ON SUOM.StockUOMId = PD.StockUOMId

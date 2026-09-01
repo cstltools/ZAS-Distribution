@@ -21,9 +21,9 @@ namespace Library.DAL.SInventory_DAL
 
         public bool SaveDataForSalesCenter(CompanyUnit aCompanyUnit)
         {
-            string insertQuery = @"insert into tblCompanyUnit (CompanyId,DcTypeId,ComUnitCode,ComUnitName,ShortName,Address,PhoneNo,MobileNo,FaxNo,EntryBy,EntryDate) 
+            string insertQuery = @"insert into tblCompanyUnit (CompanyId,DcTypeId,ComUnitCode,ComUnitName,ShortName,Address,PhoneNo,MobileNo,FaxNo,CashGlId,EntryBy,EntryDate) 
             values ('" + aCompanyUnit.CompanyId + "','" + aCompanyUnit.DcTypeId + "','" + aCompanyUnit.ComUnitCode + "','" + aCompanyUnit.ComUnitName + "','" + aCompanyUnit.ShortName + "','" + aCompanyUnit.Address + "'," +
-                                 "'" + aCompanyUnit.PhoneNo + "','" + aCompanyUnit.MobileNo + "','" + aCompanyUnit.FaxNo + "','" + aCompanyUnit.EntryBy + "','" + aCompanyUnit.EntryDate + "')";
+                                 "'" + aCompanyUnit.PhoneNo + "','" + aCompanyUnit.MobileNo + "','" + aCompanyUnit.FaxNo + "','" + aCompanyUnit.CashGlId + "','" + aCompanyUnit.EntryBy + "','" + aCompanyUnit.EntryDate + "')";
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
 
@@ -50,7 +50,7 @@ namespace Library.DAL.SInventory_DAL
 
         public CompanyUnit SalesCenterEditLoad(string ComUnitId)
         {
-            string query = @"SELECT * FROM tblCompanyUnit AS CU 
+            string query = @"SELECT CASE WHEN CashGlId IS NULL THEN 0 ELSE CashGlId END CashGlId ,* FROM tblCompanyUnit AS CU 
                             INNER JOIN tblCompanyInfo AS CI ON CU.CompanyId = CI.CompanyId
                             WHERE CU.ComUnitId = '" + ComUnitId + "'";
 
@@ -63,6 +63,7 @@ namespace Library.DAL.SInventory_DAL
                 while (dataReader.Read())
                 {
                     aCompanyUnit.ComUnitId = Int32.Parse(dataReader["ComUnitId"].ToString());
+                    aCompanyUnit.CashGlId = Int32.Parse(dataReader["CashGlId"].ToString());
                     aCompanyUnit.ComUnitCode = dataReader["ComUnitCode"].ToString();
                     aCompanyUnit.ShortName = dataReader["ShortName"].ToString();
                     aCompanyUnit.ComUnitName = dataReader["ComUnitName"].ToString();
@@ -80,7 +81,7 @@ namespace Library.DAL.SInventory_DAL
 
         public bool UpdateSalesCenter(CompanyUnit aCompanyUnit)
         {
-            string query = @"UPDATE tblCompanyUnit SET ComUnitName='" + aCompanyUnit.ComUnitName + "',CompanyId='" + aCompanyUnit.CompanyId + "',DcTypeId=" + aCompanyUnit.DcTypeId + ",ShortName='" + aCompanyUnit.ShortName + "',Address='" + aCompanyUnit.Address + "',MobileNo='" + aCompanyUnit.MobileNo + "',PhoneNo='" + aCompanyUnit.PhoneNo + "',FaxNo='" + aCompanyUnit.FaxNo + "',UpdateBy='" + aCompanyUnit.UpdateBy + "',UpdateDate='" + aCompanyUnit.UpdateDate + "' WHERE ComUnitId=" + aCompanyUnit.ComUnitId + "";
+            string query = @"UPDATE tblCompanyUnit SET ComUnitName='" + aCompanyUnit.ComUnitName + "',CashGlId='" + aCompanyUnit.CashGlId + "',CompanyId='" + aCompanyUnit.CompanyId + "',DcTypeId=" + aCompanyUnit.DcTypeId + ",ShortName='" + aCompanyUnit.ShortName + "',Address='" + aCompanyUnit.Address + "',MobileNo='" + aCompanyUnit.MobileNo + "',PhoneNo='" + aCompanyUnit.PhoneNo + "',FaxNo='" + aCompanyUnit.FaxNo + "',UpdateBy='" + aCompanyUnit.UpdateBy + "',UpdateDate='" + aCompanyUnit.UpdateDate + "' WHERE ComUnitId=" + aCompanyUnit.ComUnitId + "";
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
         }
 
@@ -130,6 +131,23 @@ namespace Library.DAL.SInventory_DAL
         {
             string queryStr = "SELECT DcTypeId,DcTypeName FROM tblDistributionType";
             aCommonInternalDal.LoadDropDownValueWithoutDataBase(ddl, "DcTypeName", "DcTypeId", queryStr);
+        }
+
+        public void LoadCashAccount(DropDownList ddl, int companyId)
+        {
+            //            string query = @"SELECT CA.CashAccountId,AccountName FROM ZAS_ACCDB..tblCashAccount AS CA
+            //                             LEFT JOIN ZAS_ACCDB..tblMultipleCompanySameCashAccount CASC ON CA.CashAccountId = CASC.CashAccountId
+            //                             WHERE CA.CashAccountId IN (
+            //                             SELECT CashAccountId FROM ZAS_ACCDB..tblChartOfAccounts WHERE CashAccountId IS NOT NULL )
+            //                             AND CASC.CompanyId = " + companyId;
+
+            string query = @"SELECT CA.CashAccountId,AccountName FROM CSTL_ACCDB..tblCashAccount AS CA
+                             LEFT JOIN CSTL_ACCDB..tblMultipleCompanySameCashAccount CASC ON CA.CashAccountId = CASC.CashAccountId
+                             WHERE CA.CashAccountId IN (
+                             SELECT CashAccountId FROM CSTL_ACCDB..tblChartOfAccounts WHERE CashAccountId IS NOT NULL )
+                             AND CASC.CompanyId = " + companyId;
+
+            aCommonInternalDal.LoadDropDownValue(ddl, "AccountName", "CashAccountId", query, "SSIDB");
         }
     }
 }

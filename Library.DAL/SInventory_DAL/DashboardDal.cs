@@ -39,5 +39,11 @@ namespace Library.DAL.SInventory_DAL
             string query = @"SELECT * FROM dbo.tblUser WHERE IsCreditApproval = 1 AND UserId = " + userId;
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public bool DeleteCredit(string creditId)
+        {
+            string query = @"DELETE FROM tblCustomerCreditLimit WHERE CreditLimitId = " + creditId;
+            return aCommonInternalDal.DeleteDataByCommand(query, "SSIDB");
+        }
     }
 }

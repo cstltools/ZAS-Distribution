@@ -94,7 +94,7 @@
                     </tr>
                     <tr>
                         <td width="13%" class="TDLeft"  style="text-align: right; padding-right: 10px;">
-                            Territory
+                            Territory:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:DropDownList ID="territoryDropDownList" runat="server" AutoPostBack="True" CssClass="DropDown"
@@ -102,7 +102,7 @@
                             </asp:DropDownList>
                         </td>
                         <td width="13%" class="TDLeft"  style="text-align: right; padding-right: 10px;">
-                            Market
+                            Market:
                         </td>
                         <td width="20%" class="TDRight">
                             <asp:DropDownList ID="marketDropDownList" runat="server" CssClass="DropDown" AutoPostBack="True"
@@ -115,6 +115,27 @@
                         <td width="20%" class="TDRight">
                              <asp:DropDownList ID="custDropDownList" runat="server" AutoPostBack="True" CssClass="DropDown">
                             </asp:DropDownList>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">
+                            Delivery Man: 
+                        </td>
+                        <td width="20%" class="TDRight">
+                            <asp:DropDownList ID="delDropDownList" runat="server" CssClass="DropDown" AutoPostBack="True" OnSelectedIndexChanged="delDropDownList_OnSelectedIndexChanged" >
+                            </asp:DropDownList>
+                        </td>
+                        <td width="13%" class="TDLeft"  style="text-align: right; padding-right: 10px;">
+                           Batch No :
+                        </td>
+                        <td width="20%" class="TDRight">
+                            <asp:DropDownList ID="batchDropDownList" runat="server" CssClass="DropDown">
+                            </asp:DropDownList>
+                        </td>
+                        <td width="13%" class="TDLeft">
+                        </td>
+                        <td width="20%" class="TDRight">
                         </td>
                     </tr>
                     
@@ -165,8 +186,8 @@
                         <td width="20%" class="TDRight">
                             
                             <asp:Button ID="Button1" runat="server" CssClass="button-margin-right" OnClick="Button_Click" Text="Search" />
-                            <asp:Button ID="clearButton" runat="server" Text="Clear" CssClass="margin-right"
-                                OnClick="clearButton_OnClick" BackColor="#F47322" />
+                            <asp:Button ID="printButton" runat="server" CssClass="margin-right" BackColor="#F42222" OnClick="viewRptButton_Click" Text="Print" />
+                            <asp:Button ID="clearButton" runat="server" Text="Clear" CssClass="margin-right" OnClick="clearButton_OnClick" BackColor="#F47322" />
                         </td>
                         <td width="13%" class="TDLeft">
                         </td>
@@ -196,8 +217,9 @@
                             <div id="gridContainer" style=" text-align: center; height: auto; overflow: auto; width: 97%; margin: 0 auto;">
                                 
                                 <asp:GridView ID="invoiceGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview"
-                                DataKeyNames="InvoiceNo">
+                                DataKeyNames="InvoiceNo,InvoiceId">
                                 <Columns>
+                                    
                                     <asp:BoundField DataField="Wings" HeaderText="Wings" />
                                     <asp:BoundField DataField="InvoiceNo" HeaderText="Invoice No" />
                                     <asp:BoundField DataField="InvoiceDate" HeaderText="Invoice Date" DataFormatString="{0:dd-MMM-yyyy}" />
@@ -205,12 +227,24 @@
                                     <asp:BoundField DataField="Customer" HeaderText="Customer Name" />
                                     <asp:BoundField DataField="TpGrandTotal" HeaderText="Invoice Value" />
                                     <asp:BoundField DataField="DeliveryMan" HeaderText="Delivery Man" />
+                                    
+                                    <asp:TemplateField>
+                                        <HeaderTemplate>
+                                            <asp:CheckBox ID="chkSelectAll" runat="server" AutoPostBack="True" OnCheckedChanged="chkSelectAll_CheckedChanged" />
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <asp:CheckBox ID="chkSelect" AutoPostBack="True" runat="server" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
                                     <asp:TemplateField HeaderText="Action" >
                                         <ItemTemplate>
                                             <asp:LinkButton ID="invoiceButton" runat="server" Text="Preview Invoice &gt; &gt; &gt;" ForeColor="#DE751F"
                                                 OnClick="invoiceButton_Click" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                    
+
                                 </Columns>
                             </asp:GridView>
                                  

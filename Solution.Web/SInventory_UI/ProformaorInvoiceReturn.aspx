@@ -9,7 +9,7 @@
                 <table width="100%" class="TableWorkArea">
                     <tr>
                         <td colspan="6" class="TableHeading">
-                            Proforma Invoice Return
+                            RollBack Operations
                         </td>
                     </tr>
                     <tr>
@@ -81,13 +81,33 @@
                         <td class="TDRight" width="20%">
                         </td>
                     </tr>
+                    
+                    <tr id="Tr2" runat="server">
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">  
+                        </td>
+                        <td class="TDRight" width="20%" >
+                            <asp:CheckBox ID="chkWHStockIn" runat="server" AutoPostBack="True" 
+                                oncheckedchanged="chkWHStockIn_CheckedChanged"   /> 
+                            Is WH Stock In
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                    </tr>
+
                     <tr runat="server"  id="DIVProforma">
                         <td class="TDLeft" width="13%">
                         </td>
                         <td class="TDRight" width="20%">
                         </td>
                         <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
-                           Invoice No:
+                            WH Stock in Code / Invoice No:
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="proformaInvoiceTextBox" runat="server" 

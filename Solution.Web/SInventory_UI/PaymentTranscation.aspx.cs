@@ -121,9 +121,55 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         for (int i = 0; i < orderGridView.Rows.Count; i++)
         {
             CheckBox ChkBoxRows = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
-            if (ChkBoxHeader.Checked == true)
+            string dueAmount =  orderGridView.DataKeys[i][5].ToString();
+            TextBox amountBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
+
+            DropDownList ddlBank = (DropDownList)orderGridView.Rows[i].Cells[0].FindControl("ddlBank");
+            DropDownList ddlCash = (DropDownList)orderGridView.Rows[i].Cells[0].FindControl("ddlCash");
+
+            CheckBox cbBank = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("isBank");
+            CheckBox cbCash = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("isCash");
+
+            var paymentTypeName = orderGridView.DataKeys[i]["PaymentTypeName"].ToString();
+
+            // Reset All
+
+            cbCash.Checked = false;
+            cbBank.Checked = false;
+
+            ddlBank.Items.Clear();
+            ddlCash.Items.Clear();
+
+            amountBox.Text = "";
+
+
+            
+            if (ChkBoxHeader.Checked)
             {
-                ChkBoxRows.Checked = true;
+                ChkBoxRows.Checked = true;   
+                amountBox.Text = dueAmount;
+
+                if (paymentTypeName.Trim() == "Cash")
+                {
+                    cbCash.Checked = true;
+                    cbBank.Checked = false;
+
+                    ddlBank.Items.Clear();
+
+                    SetBankOrCashAccount(i, "Cash");
+                }
+                else
+                {
+                    cbCash.Checked = false;
+                    cbBank.Checked = true;
+
+                    ddlCash.Items.Clear();
+
+                    SetBankOrCashAccount(i, "Bank");
+                }
+
+                
+
             }
             else
             {
@@ -210,23 +256,21 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         //    }
         //}
 
-        for (int i = 0; i < orderGridView.Rows.Count; i++)
-        {
-            CheckBox cbReject = (CheckBox)orderGridView.Rows[i].FindControl("chkSelect");
+        //for (int i = 0; i < orderGridView.Rows.Count; i++)
+        //{
+        //    CheckBox cbReject = (CheckBox)orderGridView.Rows[i].FindControl("chkSelect");
 
-            if (cbReject.Checked)
-            {
-                DataTable aTable1 = aInvoiceBll.CheckChartOfAccount(orderGridView.DataKeys[i][2].ToString());
+        //    if (cbReject.Checked)
+        //    {
+        //        DataTable aTable1 = aInvoiceBll.CheckChartOfAccount(orderGridView.DataKeys[i][2].ToString());
 
-                if (aTable1.Rows.Count == 0)
-                {
-                    ShowMessageBox("Customer does not exist in chart of accounts !!");
-                    return false;
-                }
-            }
-        }
-
-
+        //        if (aTable1.Rows.Count == 0)
+        //        {
+        //            ShowMessageBox("Customer does not exist in chart of accounts !!");
+        //            return false;
+        //        }
+        //    }
+        //}
 
 
         int CK = 0;
@@ -402,9 +446,6 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
             for (int i = 0; i < orderGridView.Rows.Count; i++)
             {
-
-
-
                 CheckBox ChkBoxRows = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
                 TextBox payAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
                 TextBox remarksTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("remarksTextBox");
@@ -793,6 +834,28 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
                 }
             }
+
+
+
+
+        if (orderGridView.Rows.Count > 0)
+        {
+            for (int i = 0; i < orderGridView.Rows.Count; i++)
+            {
+                TextBox tbxDiscount = (TextBox)orderGridView.Rows[i].Cells[0].FindControl("discountTextBox");
+
+
+
+                if (Session["UserType"].ToString() == "Admin")
+                {
+                    orderGridView.Columns[16].Visible = true;
+                }
+                else
+                {
+                    orderGridView.Columns[16].Visible =  false;
+                }
+            }
+        }
         //}
         //else
         //{
@@ -884,8 +947,55 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
     protected void chkSelect_CheckedChanged(object sender, EventArgs e)
     {
-        int selRowIndex = ((GridViewRow)(((CheckBox)sender).Parent.Parent)).RowIndex;
-        CheckBox cb = (CheckBox)orderGridView.Rows[selRowIndex].Cells[0].FindControl("chkSelect");
+        int i = ((GridViewRow)(((CheckBox)sender).Parent.Parent)).RowIndex;
+        CheckBox cb = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
+
+        CheckBox ChkBoxRows = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
+        string dueAmount = orderGridView.DataKeys[i][5].ToString();
+        TextBox amountBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
+
+        DropDownList ddlBank = (DropDownList)orderGridView.Rows[i].Cells[0].FindControl("ddlBank");
+        DropDownList ddlCash = (DropDownList)orderGridView.Rows[i].Cells[0].FindControl("ddlCash");
+
+        CheckBox cbBank = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("isBank");
+        CheckBox cbCash = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("isCash");
+
+        var paymentTypeName = orderGridView.DataKeys[i]["PaymentTypeName"].ToString();
+
+        if (cb.Checked)
+        {
+            amountBox.Text = dueAmount.ToString();
+        }
+        else
+        {
+            amountBox.Text = "";
+        }
+
+        
+
+        if (paymentTypeName.Trim() == "Cash")
+        {
+            cbCash.Checked = true;
+            cbBank.Checked = false;
+
+            ddlBank.Items.Clear();
+
+            SetBankOrCashAccount(i, "Cash");
+        }
+        else
+        {
+            cbCash.Checked = false;
+            cbBank.Checked = true;
+
+            ddlCash.Items.Clear();
+
+            SetBankOrCashAccount(i, "Bank");
+        }
+
+        //cbCash.Checked = true;
+        //SetBankOrCashAccount(i, "Cash");
+
+        //amountBox.Text = dueAmount.ToString();
         //if (cb.Checked)
         //{
         ClaculatePaymentAmount();
@@ -894,7 +1004,7 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         SaveButtonVisibility();
 
 
-        Setddl(selRowIndex);
+        //Setddl(selRowIndex);
     }
 
     private void Setddl(int selRowIndex)
@@ -1182,20 +1292,35 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             ddlCash.Items.Clear();
         }
 
-        
 
         if (cbBank.Checked)
         {
-            
 
+            //ddlCash.Enabled = false;
+            //ddlBank.Enabled = true;
             aCustPaymentBll.LoadBankAccount(ddlBank, orderGridView.DataKeys[selRowIndex]["CompanyId"].ToString());
         }
 
         if (cbCash.Checked)
         {
-          
+
+            //ddlCash.Enabled = false;
+            //ddlBank.Enabled = false;
 
             aCustPaymentBll.LoadCashAccount(ddlCash, orderGridView.DataKeys[selRowIndex]["CompanyId"].ToString());
+
+            DataTable aTable = aTranscationDal.GetCashGlByUnitId(orderGridView.DataKeys[selRowIndex]["ComUnitId"].ToString());
+
+            if (aTable.Rows.Count > 0)
+            {
+
+                if (aTable.Rows[0].Field<int>("CashGlId") > 0)
+                {
+                    ddlCash.SelectedValue = aTable.Rows[0].Field<int>("CashGlId").ToString(CultureInfo.InvariantCulture);
+                    //ddlCash.Enabled = false;
+                }
+
+            }
         }
 
     }

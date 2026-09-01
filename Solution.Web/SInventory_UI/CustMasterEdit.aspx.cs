@@ -122,6 +122,17 @@ public partial class SInventory_UI_CustMasterEdit : System.Web.UI.Page
         return true;
     }
 
+    private DateTime? ParseNullableDate(string text)
+    {
+        DateTime parsedDate;
+        if (DateTime.TryParse(text, out parsedDate))
+        {
+            return parsedDate;
+        }
+
+        return null;
+    }
+
     protected void updateButton_Click(object sender, EventArgs e)
     {
         if (Validation() == true)
@@ -147,6 +158,7 @@ public partial class SInventory_UI_CustMasterEdit : System.Web.UI.Page
 
                 CellNo = contactTextBox.Text,
                 City = cityTextBox.Text,
+                TradelicenseNo = tbxTradeLicenseNo.Text,
 
                 ConPerson = contactPersonTextBox.Text,
                 ShippingCond = null,
@@ -158,7 +170,8 @@ public partial class SInventory_UI_CustMasterEdit : System.Web.UI.Page
                 UpdateBy = Session["LoginName"].ToString(),
                 UpdateDate = DateTime.Now,
                 IsVatApplicable = isVatApplicable.Checked,
-                AITGLId = ddlAIT.SelectedValue != "" ? Convert.ToInt32(ddlAIT.SelectedValue) : 0
+                AITGLId = ddlAIT.SelectedValue != "" ? Convert.ToInt32(ddlAIT.SelectedValue) : 0,
+                TradeLicenseExpiryDate = ParseNullableDate(tbxTradeLicenseExpiryDate.Text)
             };
             //CustomerMasterBLL aCustomerMasterBLL = new CustomerMasterBLL();
 
@@ -233,9 +246,12 @@ public partial class SInventory_UI_CustMasterEdit : System.Web.UI.Page
         isVatApplicable.Checked = aCustomerMaster.IsVatApplicable;
         addressTextBox.Text = aCustomerMaster.Address;
         contactTextBox.Text = aCustomerMaster.CellNo;
+        tbxTradeLicenseNo.Text = aCustomerMaster.TradelicenseNo;
+        tbxTradeLicenseExpiryDate.Text = aCustomerMaster.TradeLicenseExpiryDate.HasValue
+            ? aCustomerMaster.TradeLicenseExpiryDate.Value.ToString("yyyy-MM-dd")
+            : string.Empty;
         paymentTypeDropDownList.SelectedValue = aCustomerMaster.PaymentType;
-
-     
+  
 
         categoryNameDropDownList.SelectedValue = aCustomerMaster.CategoryId.ToString();
         addressTextBox2.Text = aCustomerMaster.Addrees2;
@@ -244,6 +260,21 @@ public partial class SInventory_UI_CustMasterEdit : System.Web.UI.Page
         shippingConditionTextBox.Text = aCustomerMaster.ShippingCond;
         paymentTypeDropDownList.SelectedValue = aCustomerMaster.TermOfPayment;
         fbDropDownList.SelectedValue = fbDropDownList.Items.FindByText(aCustomerMaster.FixedCustomer.ToString()).Value;
+
+        string loginUserName = Session["LoginName"].ToString();
+
+        if (loginUserName.Trim() == "rezaul")
+        {
+            divCategoryType.Visible = true;
+            divpaymentType.Visible = true;
+        }
+        else
+        {
+            divCategoryType.Visible = false;
+            divpaymentType.Visible = false;
+        }
+
+
     }
 
 

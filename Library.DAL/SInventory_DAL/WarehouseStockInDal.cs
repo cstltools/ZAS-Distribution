@@ -53,10 +53,43 @@ namespace Library.DAL.SInventory_DAL
              
         }
 
+
+        public string GetNextReturnSerialNo(int comUnitId, DateTime returnDate)
+        {
+            string date = returnDate.ToString("yyyy-MM-dd");
+
+            string query = @"
+        SELECT 
+            ISNULL(MAX(TRY_CAST(RIGHT(ReturnCode, 8) AS INT)), 0) + 1 AS NextSerial
+        FROM dbo.tblNonTranscationalInvoiceMaster
+        WHERE ComUnitId = " + comUnitId + @"
+          AND CAST(ReturnDate AS DATE) = '" + date + @"'
+          AND ReturnCode LIKE 'RTN-INV-%'
+    ";
+
+            DataTable dt = aInternalDal.DataContainerDataTable(query, "SSIDB");
+
+            int nextSerial = 1;
+
+            if (dt != null && dt.Rows.Count > 0 && dt.Rows[0]["NextSerial"] != DBNull.Value)
+            {
+                nextSerial = Convert.ToInt32(dt.Rows[0]["NextSerial"]);
+            }
+
+            return nextSerial.ToString("00000000");
+        }
+
+        public DataTable CheckEntryWithinlastMinute(WarehouseStockInMasterDao aStockInMasterDao)
+        {
+
+            string validationQuery = "SELECT 1 FROM tblWHStockInMaster WHERE LTRIM(RTRIM(UPPER(EntryBy))) = LTRIM(RTRIM(UPPER('" + aStockInMasterDao.EntryBy + "'))) AND DATEDIFF(SECOND, EntryDate, GETDATE()) < 60";
+            return aInternalDal.DataContainerDataTable(validationQuery, "SSIDB");
+
+        }
+
         public bool SaveStockInMasterInformation(WarehouseStockInMasterDao aStockInMasterDao)
         {
 
-           
 
             string insertQuery = @"INSERT INTO dbo.tblWHStockInMaster
         ( WHStockInMasterID,
@@ -91,7 +124,7 @@ namespace Library.DAL.SInventory_DAL
                                  "'" + aStockInMasterDao.Remarks + "'," +
                                  "'" + aStockInMasterDao.Status + "'," +
                                  "'" + aStockInMasterDao.EntryBy + "'," +
-                                 "'" + aStockInMasterDao.EntryDate + "', " + aStockInMasterDao.SupplierId + ")";
+                                 "GETDATE(), " + aStockInMasterDao.SupplierId + ")";
 
             return aInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
@@ -158,12 +191,21 @@ namespace Library.DAL.SInventory_DAL
 
         }
 
+        public DataTable CheckDetailsExistOrNot(WharehouseStockInDetailsDao aDetailDao)
+        {
+            string query = @"SELECT * FROM tblWHStockInDetail WHERE WHStockInMasterID = '" + aDetailDao.WHStockInMasterID +
+                "' AND ProductId = '" + aDetailDao.ProductId + "' AND LTRIM(RTRIM(UPPER(Batch))) = LTRIM(RTRIM(UPPER('" + aDetailDao.Batch +
+                "'))) AND ExpDate = '" + aDetailDao.ExpDate + "' AND Qty = " + aDetailDao.Qty + " AND TotalAmount = " + aDetailDao.TotalAmount;
+
+            return aInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
 
         public bool SaveWarehouseStockInDetail(WharehouseStockInDetailsDao aDetailDao)
         {
             string insertQuery = @"INSERT INTO dbo.tblWHStockInDetail
         ( 
-          WHStockInMasterID,ProductId,Batch, ExpDate, MfgDate, Qty, Price, VAT, TotalAmount 
+          WHStockInMasterID,ProductId,Batch, ExpDate, MfgDate, Qty, Price, VAT, MaterialConversionMasterId,TotalAmount 
         )
         VALUES  ('" + aDetailDao.WHStockInMasterID + "'," + 
                                  "'" + aDetailDao.ProductId + "'," +
@@ -173,6 +215,7 @@ namespace Library.DAL.SInventory_DAL
                                  "'" + aDetailDao.Qty + "'," +
                                  "'" + aDetailDao.Price + "'," +
                                  "'" + aDetailDao.VAT + "'," +
+                                 "'" + aDetailDao.MaterialConversionMasterId + "'," +
                                  "'" + aDetailDao.TotalAmount + "' " + ")";
 
             return aInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");

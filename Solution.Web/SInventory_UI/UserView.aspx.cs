@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -18,14 +18,21 @@ public partial class HRM_UI_TDLUserView : System.Web.UI.Page
         {
             UserLoad();
         }
-
-
     }
 
-    private void UserLoad()
+    private void UserLoad(string searchText = "")
     {
         aDataTable = aUserBll.LoadUserInfo();
-        loadGridView.DataSource = aDataTable;
+        if (!string.IsNullOrEmpty(searchText))
+        {
+            DataView dv = aDataTable.DefaultView;
+            dv.RowFilter = string.Format("UserName LIKE '%{0}%' OR LoginName LIKE '%{0}%' OR Email LIKE '%{0}%'", searchText.Replace("'", "''"));
+            loadGridView.DataSource = dv.ToTable();
+        }
+        else
+        {
+            loadGridView.DataSource = aDataTable;
+        }
         loadGridView.DataBind();
     }
 
@@ -36,13 +43,13 @@ public partial class HRM_UI_TDLUserView : System.Web.UI.Page
         ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
     }
 
-
     protected void addImageButton_Click(object sender, ImageClickEventArgs e)
     {
         Response.Redirect("UserEntry.aspx");
     }
     protected void reloadLinkButton_Click(object sender, ImageClickEventArgs e)
     {
+        txtSearch.Text = "";
         UserLoad();
     }
     private void ShowMessageBox(string message)
@@ -55,21 +62,29 @@ public partial class HRM_UI_TDLUserView : System.Web.UI.Page
     {
         if (e.CommandName == "EditData")
         {
-            int rowindex = Convert.ToInt32(e.CommandArgument);
-            string userId = loadGridView.DataKeys[rowindex][0].ToString();
+            string userId = e.CommandArgument.ToString();
             PopUp(userId);
         }
         if (e.CommandName == "DeleteData")
         {
-            int rowindex = Convert.ToInt32(e.CommandArgument);
-            string userId = loadGridView.DataKeys[rowindex][0].ToString();
+            string userId = e.CommandArgument.ToString();
             bool ststus = aUserBll.DeleteUserInfo(userId);
             if (ststus == true)
             {
                 ShowMessageBox("User Delete Successfully");
-                UserLoad();
+                UserLoad(txtSearch.Text.Trim());
             }
         }
+    }
 
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        UserLoad(txtSearch.Text.Trim());
+    }
+
+    protected void btnClearSearch_Click(object sender, EventArgs e)
+    {
+        txtSearch.Text = "";
+        UserLoad();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -14,9 +15,18 @@ namespace Library.DAL.SInventory_DAL
         private ClsCommonInternalDAL aCommonInternalDal = new ClsCommonInternalDAL();
         public bool SaveDataForChalanInfo(ChalanInfo aChalanInfo)
         {
-            string insertQuery = @"insert into tblChalanInfo (ChalanId,ChalanDate,ChalanNo,TrackNo,DriverName,FromComUnitCode,FromComUnitName,FromComUnitAddress,ToComUnitCode,ToComUnitName,ToComUnitAddress,TotalValue,TotalVat,GrandTotal,ManufacId,FromComUnitId,IsDeliver) 
-            values (" + aChalanInfo.ChalanId + ",'" + aChalanInfo.ChalanDate + "','" + aChalanInfo.ChalanNo + "','" + aChalanInfo.TrackNo + "','" + aChalanInfo.DriverName + "','" + aChalanInfo.FromComUnitCode + "','" + aChalanInfo.FromComUnitName + "','" + aChalanInfo.FromComUnitAddress + "','" + aChalanInfo.ToComUnitCode + "','" + aChalanInfo.ToComUnitName + "','" + aChalanInfo.ToComUnitAddress + "','" + aChalanInfo.TotalValue + "','" + aChalanInfo.TotalVat + "','" + aChalanInfo.GrandTotal + "','" + aChalanInfo.ManufacId + "','" + aChalanInfo.FromComUnitId + "','" + false + "')";
+            string insertQuery = @"insert into tblChalanInfo (ChalanId,ChalanDate,ChalanNo,TrackNo,DriverName,FromComUnitCode,FromComUnitName,FromComUnitAddress,ToComUnitCode,ToComUnitName,ToComUnitAddress,TotalValue,TotalVat,GrandTotal,ManufacId,ChalanBy,FromComUnitId,IsDeliver) 
+            values (" + aChalanInfo.ChalanId + ",'" + aChalanInfo.ChalanDate + "','" + aChalanInfo.ChalanNo + "','" + aChalanInfo.TrackNo + "','" + aChalanInfo.DriverName + "','" + aChalanInfo.FromComUnitCode + "','" + aChalanInfo.FromComUnitName + "','" + aChalanInfo.FromComUnitAddress + "','" + aChalanInfo.ToComUnitCode + "','" + aChalanInfo.ToComUnitName + "','" + aChalanInfo.ToComUnitAddress + "','" + aChalanInfo.TotalValue + "','" + aChalanInfo.TotalVat + "','" + aChalanInfo.GrandTotal + "','" + aChalanInfo.ManufacId +  "','" + aChalanInfo.ChalanBy + "','" + aChalanInfo.FromComUnitId + "','" + false + "')";
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
+        }
+
+        public DataTable CheckDetailsExistOrNot(ChalanDetail aDetailDao)
+        {
+            string query = @"SELECT * FROM tblChalanDetail WHERE ChalanId = '" + aDetailDao.ChalanId +
+                "' AND LTRIM(RTRIM(UPPER(ProductCode))) = LTRIM(RTRIM(UPPER('" + aDetailDao.ProductCode + "')))  AND LTRIM(RTRIM(UPPER(BatchNo))) = LTRIM(RTRIM(UPPER('" + aDetailDao.BatchNo +
+                "'))) AND DCStoreId = '" + aDetailDao.DCStoreId + "' AND Quantity = " + aDetailDao.Quantity;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
         public bool SaveDataForChalanDetail(ChalanDetail aChalanDetail)
@@ -37,6 +47,18 @@ namespace Library.DAL.SInventory_DAL
 
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
+
+
+        public DataTable CheckB2BExistOrNotInDcStore(DCStockNew aDetailDao)
+        {
+            string query = @"SELECT * FROM tblDCStore WHERE CONVERT(DATE,ReceiveDateTime) = CONVERT(DATE,GETDATE()) AND  ChalanDetailsId = '" + aDetailDao.ChalanDetailsId +
+                "' AND LTRIM(RTRIM(UPPER(ProductCode))) = LTRIM(RTRIM(UPPER('" + aDetailDao.ProductCode + "')))  AND LTRIM(RTRIM(UPPER(BatchNo))) = LTRIM(RTRIM(UPPER('" + aDetailDao.BatchNo + "'))) AND TotalQuantity = " + aDetailDao.TotalQuantity;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+
+       
         public bool DCStockInDALMain(DCStockNew aDcStockNew)
         {
             string query = @"INSERT INTO dbo.tblDCStore " +
@@ -156,6 +178,8 @@ namespace Library.DAL.SInventory_DAL
             string query = @"SELECT *  FROM tblChalanInfo ";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+
         public DataTable ChalanLoadInReceive(string comunitId)
         {
             string query = @"SELECT * FROM dbo.tblChalanInfo
@@ -198,6 +222,14 @@ namespace Library.DAL.SInventory_DAL
         {
             string query = @"SELECT * FROM dbo.tblCompanyUnit WHERE ComUnitCode='"+comunitCode+"'";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable CheckEntryWithinlastMinute(ChalanInfo aStockInMasterDao)
+        {
+
+            string validationQuery = "SELECT 1 FROM tblChalanInfo WHERE ChalanBy IS NOT NULL AND LTRIM(RTRIM(UPPER(ChalanBy))) = LTRIM(RTRIM(UPPER('" + aStockInMasterDao.ChalanBy + "'))) AND DATEDIFF(SECOND, EntryDate, GETDATE()) < 60";
+            return aCommonInternalDal.DataContainerDataTable(validationQuery, "SSIDB");
+
         }
         public ChalanInfo ChalanEditLoad(string ChalanId)
         {
@@ -328,5 +360,33 @@ WHERE tblChalanInfo.ChalanNo='" + id + "'";
                             WHERE ReceiveIssue IN ('OK') AND ComUnitId  = '" + comunitId + "' " + parameter;
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public bool ProcessWeightedAverage(int dcStoreId)
+       {
+           var aSqlParameterList = new List<SqlParameter>();
+
+           aSqlParameterList.Add(new SqlParameter("@DCStoreId", dcStoreId));
+
+           return aCommonInternalDal.UpdateAction("sp_Process_WeightedAverage", aSqlParameterList);
+       }
+
+
+        public bool ProcessWeightedAverageFreezeStock(int DCStoreFreezeId)
+        {
+            var aSqlParameterList = new List<SqlParameter>();
+
+            aSqlParameterList.Add(new SqlParameter("@DCStoreFreezeId", DCStoreFreezeId));
+            return aCommonInternalDal.UpdateAction("sp_Process_WeightedAverageFreezeStock", aSqlParameterList);
+        }
+
+        public bool ProcessWeightedAverageB2BTransfer(int chalanDetailId)
+        {
+            var aSqlParameterList = new List<SqlParameter>();
+
+           aSqlParameterList.Add(new SqlParameter("@ChalanDetailsId", chalanDetailId));
+
+           return aCommonInternalDal.UpdateAction("sp_Process_WeightedAverageB2BTransfer", aSqlParameterList);
+        }
     }
 }
+

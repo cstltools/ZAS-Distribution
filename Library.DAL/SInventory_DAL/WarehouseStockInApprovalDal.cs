@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -25,8 +26,12 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetWarehouseStockInInformation()
         {
-            const string query = @"SELECT * FROM dbo.tblWHStockInMaster AS WHSM
-                            INNER JOIN tblWearhouse AS WH ON WHSM.WarehouseId = WH.WearhouseId WHERE WHSM.Status = 'Posted'";
+            const string query = @"SELECT ISNULL(MaterialConversionCount,0) MaterialConversionCount,* FROM dbo.tblWHStockInMaster AS WHSM
+INNER JOIN tblWearhouse AS WH ON WHSM.WarehouseId = WH.WearhouseId 
+LEFT JOIN (SELECT WM.WHStockInMasterID, Count(WHStockInDetailID) MaterialConversionCount FROM tblWHStockInDetail AS SD 
+LEFT JOIN tblWHStockInMaster AS WM ON SD.WHStockInMasterID = WM.WHStockInMasterID
+WHERE ISNULL(SD.MaterialConversionMasterId,0) != 0 GROUP BY WM.WHStockInMasterID) AS MC ON WHSM.WHStockInMasterID = MC.WHStockInMasterID
+WHERE WHSM.Status = 'Posted' ORDER BY EntryDate DESC";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
@@ -47,7 +52,15 @@ namespace Library.DAL.SInventory_DAL
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
-        public void SaveWHStockIntoCenterlWarehouse(WHStockInToCenteralStore aCenteralStore)
+        public DataTable CheckDetailsExistOrNot(WHStockInToCenteralStore aDetailDao)
+        {
+            string query = @"SELECT * FROM tblCentralStore WHERE LTRIM(RTRIM(UPPER(ProductCode))) = LTRIM(RTRIM(UPPER('" + aDetailDao.ProductCode + "')))  AND StockInQty = " 
+                + aDetailDao.StockInQty + " AND MigoDetailID = " + aDetailDao.MigoDetailID;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public bool SaveWHStockIntoCenterlWarehouse(WHStockInToCenteralStore aCenteralStore)
         {
             string insertQuery = @"INSERT INTO dbo.tblCentralStore
         ( 
@@ -96,7 +109,30 @@ namespace Library.DAL.SInventory_DAL
                                  "'" + aCenteralStore.ProductId + "'," +
                                  "'" + aCenteralStore.StockCondition + "' " + ")";
 
-            aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
+            return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
+        }
+
+        public bool PostJournal(int stockInMasterId)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+            aSqlParameterList.Add(new SqlParameter("@MasterId", stockInMasterId));
+
+            return aCommonInternalDal.UpdateAction("sp_WHStockInPosting", aSqlParameterList);
+        }
+
+       
+
+        public bool ApproveWarehouseStockInMaster(WarehouseStockInMasterDao aMasterDao)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
+
+            aSqlParameterList.Add(new SqlParameter("@ApprovalStatus", aMasterDao.Status));
+            aSqlParameterList.Add(new SqlParameter("@MasterId", aMasterDao.WHStockInMasterID));
+            aSqlParameterList.Add(new SqlParameter("@ApprovalBy", aMasterDao.ApproveBy));
+            aSqlParameterList.Add(new SqlParameter("@ApprovalDate", aMasterDao.ApproveDate));
+
+            return aCommonInternalDal.UpdateAction("sp_Acc_MaterialConversionReceive", aSqlParameterList);
         }
     }
 }

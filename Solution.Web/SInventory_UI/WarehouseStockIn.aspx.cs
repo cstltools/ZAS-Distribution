@@ -458,6 +458,8 @@ public partial class SInventory_UI_WarehouseStockIn : System.Web.UI.Page
     {
         int maxRowId;
 
+        string msg = "";
+
         WarehouseStockInMasterDao aStockInMasterDao = new WarehouseStockInMasterDao();
 
         aStockInMasterDao.WHStockInDate = Convert.ToDateTime(stockInDateTextBox.Text.Trim());
@@ -490,41 +492,53 @@ public partial class SInventory_UI_WarehouseStockIn : System.Web.UI.Page
         aStockInMasterDao.EntryDate = DateTime.Now;
         
 
-
         bool stockInSave = aWarehouseStockInBll.SaveStockInMasterInfo(aStockInMasterDao,out maxRowId);
 
-        WharehouseStockInDetailsDao aWharehouseStockInDetailsDao;
-        List<WharehouseStockInDetailsDao> aDetailList = new List<WharehouseStockInDetailsDao>();
-        
 
-        for (int i = 0; i < productGridView.Rows.Count; i++)
+        if (maxRowId > 0)
         {
 
-            HiddenField productidHiddenField = (HiddenField)productGridView.Rows[i].Cells[1].FindControl("productidHiddenField");
-            TextBox batchTextBox = (TextBox)productGridView.Rows[i].Cells[4].FindControl("batchTextBox");
-            TextBox expDateTextBox = (TextBox)productGridView.Rows[i].Cells[6].FindControl("expDateDateTextBox");
-            TextBox mfgDateTextBox = (TextBox)productGridView.Rows[i].Cells[5].FindControl("mfgDateTextBox");
-            TextBox quantityTextBox = (TextBox)productGridView.Rows[i].Cells[7].FindControl("reqQtyTextBox");
-            TextBox costPriceTextBox = (TextBox)productGridView.Rows[i].Cells[8].FindControl("costPriceTextBox");
-            TextBox vatTextBox = (TextBox)productGridView.Rows[i].Cells[9].FindControl("vatTextBox");
-            TextBox totalValueTextBox = (TextBox)productGridView.Rows[i].Cells[10].FindControl("totalValueTextBox");
+            WharehouseStockInDetailsDao aWharehouseStockInDetailsDao;
+            List<WharehouseStockInDetailsDao> aDetailList = new List<WharehouseStockInDetailsDao>();
 
-            aWharehouseStockInDetailsDao = new WharehouseStockInDetailsDao();
 
-            aWharehouseStockInDetailsDao.WHStockInMasterID = maxRowId;
-            aWharehouseStockInDetailsDao.ProductId = Convert.ToInt32(productidHiddenField.Value);
-            aWharehouseStockInDetailsDao.Batch = batchTextBox.Text;
-            aWharehouseStockInDetailsDao.ExpDate = Convert.ToDateTime(expDateTextBox.Text);
-            aWharehouseStockInDetailsDao.MfgDate = Convert.ToDateTime(mfgDateTextBox.Text);
-            aWharehouseStockInDetailsDao.Qty = Convert.ToDecimal(quantityTextBox.Text);
-            aWharehouseStockInDetailsDao.Price = Convert.ToDecimal(costPriceTextBox.Text);
-            aWharehouseStockInDetailsDao.VAT = Convert.ToDecimal(vatTextBox.Text);
-            aWharehouseStockInDetailsDao.TotalAmount = Convert.ToDecimal(totalValueTextBox.Text);
+            for (int i = 0; i < productGridView.Rows.Count; i++)
+            {
 
-            aDetailList.Add(aWharehouseStockInDetailsDao);
+                HiddenField productidHiddenField =
+                    (HiddenField) productGridView.Rows[i].Cells[1].FindControl("productidHiddenField");
+                TextBox batchTextBox = (TextBox) productGridView.Rows[i].Cells[4].FindControl("batchTextBox");
+                TextBox expDateTextBox = (TextBox) productGridView.Rows[i].Cells[6].FindControl("expDateDateTextBox");
+                TextBox mfgDateTextBox = (TextBox) productGridView.Rows[i].Cells[5].FindControl("mfgDateTextBox");
+                TextBox quantityTextBox = (TextBox) productGridView.Rows[i].Cells[7].FindControl("reqQtyTextBox");
+                TextBox costPriceTextBox = (TextBox) productGridView.Rows[i].Cells[8].FindControl("costPriceTextBox");
+                TextBox vatTextBox = (TextBox) productGridView.Rows[i].Cells[9].FindControl("vatTextBox");
+                TextBox totalValueTextBox = (TextBox) productGridView.Rows[i].Cells[10].FindControl("totalValueTextBox");
+
+                aWharehouseStockInDetailsDao = new WharehouseStockInDetailsDao();
+
+                aWharehouseStockInDetailsDao.WHStockInMasterID = maxRowId;
+                aWharehouseStockInDetailsDao.ProductId = Convert.ToInt32(productidHiddenField.Value);
+                aWharehouseStockInDetailsDao.Batch = batchTextBox.Text;
+                aWharehouseStockInDetailsDao.ExpDate = Convert.ToDateTime(expDateTextBox.Text);
+                aWharehouseStockInDetailsDao.MfgDate = Convert.ToDateTime(mfgDateTextBox.Text);
+                aWharehouseStockInDetailsDao.Qty = Convert.ToDecimal(quantityTextBox.Text);
+                aWharehouseStockInDetailsDao.Price = Convert.ToDecimal(costPriceTextBox.Text);
+                aWharehouseStockInDetailsDao.VAT = Convert.ToDecimal(vatTextBox.Text);
+                aWharehouseStockInDetailsDao.TotalAmount = Convert.ToDecimal(totalValueTextBox.Text);
+
+                aDetailList.Add(aWharehouseStockInDetailsDao);
+            }
+
+            msg = aWarehouseStockInBll.SaveWarehouseStockInDetail(aDetailList);
+
+        }
+        else
+        {
+            msg = "Info Already Exist !";
         }
 
-        string msg = aWarehouseStockInBll.SaveWarehouseStockInDetail(aDetailList);
+
         Clear();
         showMessageBox(msg);
 
@@ -717,6 +731,7 @@ public partial class SInventory_UI_WarehouseStockIn : System.Web.UI.Page
             aWharehouseStockInDetailsDao.Price = Convert.ToDecimal(costPriceTextBox.Text);
             aWharehouseStockInDetailsDao.VAT = Convert.ToDecimal(vatTextBox.Text);
             aWharehouseStockInDetailsDao.TotalAmount = Convert.ToDecimal(totalValueTextBox.Text);
+            aWharehouseStockInDetailsDao.MaterialConversionMasterId = 0;
 
             aDetailList.Add(aWharehouseStockInDetailsDao);
         }

@@ -19,6 +19,22 @@ public partial class SInventory_UI_DepositList : System.Web.UI.Page
         if (!IsPostBack)
         {
             Loaddropdownlist();
+            SetNewEntryVisibility();
+        }
+    }
+
+    private void SetNewEntryVisibility()
+    {
+        if (Session["UserId"] != null || Session["UserId"].ToString() != "")
+        {
+            if (Convert.ToInt32(Session["UserId"]) == 9 || Convert.ToInt32(Session["UserId"]) == 10)
+            {
+                entry.Visible = false;
+            }
+            else
+            {
+                entry.Visible = true;
+            }
         }
     }
 

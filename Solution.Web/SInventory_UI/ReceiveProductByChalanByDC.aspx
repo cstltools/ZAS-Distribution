@@ -117,7 +117,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="UnRcvQty">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="damageTextBox" runat="server" AutoPostBack="True" OnTextChanged="damageTextBox_TextChanged">0</asp:TextBox>
+                                                <asp:TextBox ID="damageTextBox" runat="server" AutoPostBack="True" ReadOnly="True" OnTextChanged="damageTextBox_TextChanged">0</asp:TextBox>
                                                 <ajaxToolkit:FilteredTextBoxExtender ID="fcurrentStockTextBox" runat="server" TargetControlID="damageTextBox"
                                                     FilterType="Custom, Numbers" ValidChars="." />
                                             </ItemTemplate>

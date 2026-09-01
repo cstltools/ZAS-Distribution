@@ -21,7 +21,8 @@ namespace Library.DAO.SInventory_Entities
         public int IngridentsId { get; set; }
         public int ProductBrandId { get; set; }
         public int CaseId { get; set; }
-
         public int CompanyId { get; set; }
+        public bool IsTrade { get; set; }
+        public bool IsRecipe { get; set; }
     }
 }

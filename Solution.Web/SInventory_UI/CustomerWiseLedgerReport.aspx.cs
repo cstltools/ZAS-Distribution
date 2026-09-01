@@ -136,32 +136,29 @@ public partial class SInventory_UI_CustomerWiseLedgerReport : System.Web.UI.Page
         string fromDate = fromDateTextBox.Text;
         string toDate = toDateTextBox.Text;
 
-        string customer = "";
 
-        if (custIdHiddenField.Value != "")
-        {
-            customer = custIdHiddenField.Value;
-        }
-        else
-        {
-            customer = "";
-        }
-
-        string url = "../SInventory_RPTVIEW/CustomerWiseLedgerReportViewer.aspx?fromDate=" + fromDate + "&toDate=" + toDate + "&customer=" + customer;
+        string url = "../SInventory_RPTVIEW/CustomerWiseLedgerReportViewer.aspx?fromDate=" + fromDate + "&toDate=" + toDate ;
         string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
         ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
 
-        custIdHiddenField.Value = "";
     }
 
     private String GetPrameterList()
     {
         string parameter = "";
 
-        //if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
-        //{
-        //    parameter = parameter + " WHERE INV.DeliveryInvoiceStatus IN ('Reject','Partial') AND INV.InvoiceDate BETWEEN '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "' AND ' " + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
-        //}
+        if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
+        {
+            parameter = parameter + " AND INV.InvoiceDate BETWEEN '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "' AND ' " + Convert.ToDateTime(toDateTextBox.Text.Trim()) + "'";
+        }
+        else if (fromDateTextBox.Text != "" && toDateTextBox.Text == "")
+        {
+            parameter = parameter + " AND INV.InvoiceDate >= '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "'";
+        }
+        else if (fromDateTextBox.Text == "" && toDateTextBox.Text != "")
+        {
+            parameter = parameter + " AND INV.InvoiceDate <= '" + Convert.ToDateTime(fromDateTextBox.Text.Trim()) + "'";
+        }
 
         if (companyNameDropDownList.SelectedValue != "")
         {
@@ -173,10 +170,10 @@ public partial class SInventory_UI_CustomerWiseLedgerReport : System.Web.UI.Page
             parameter = parameter + " AND UNT.ComUnitId = '" + dcDropDownList.SelectedValue + "'";
         }
 
-        //if (customerDropDownList.SelectedValue != "")
-        //{
-        //    parameter = parameter + " AND INV.CustomerMasterId = '" + customerDropDownList.SelectedValue + "'";
-        //}
+        if (custIdHiddenField.Value != "")
+        {
+            parameter = parameter + " AND INV.CustomerMasterId = '" + custIdHiddenField.Value + "'";
+        }
 
        
         return parameter;

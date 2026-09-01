@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CustMasterEdit.aspx.cs" Inherits="SInventory_UI_CustMasterEdit" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="CustMasterEdit.aspx.cs" Inherits="SInventory_UI_CustMasterEdit" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -91,6 +92,33 @@
                             Contact No</td>
                         <td width="20%" class="TDRight">
                             <asp:TextBox ID="contactTextBox" runat="server" CssClass="TextBox"></asp:TextBox></td>
+                        <td width="13%" class="TDLeft">&nbsp;</td>
+                        <td width="20%" class="TDRight"></td>
+                    </tr>
+                    
+                     <tr>
+                        <td width="13%" class="TDLeft"></td>
+                        <td width="20%" class="TDRight">&nbsp;</td>
+                        <td width="13%" class="TDLeft">
+                            Drug License No </td> 
+                        <td width="20%" class="TDRight">
+                            <asp:TextBox ID="tbxTradeLicenseNo" runat="server" CssClass="TextBox"></asp:TextBox></td>
+                        <td width="13%" class="TDLeft">&nbsp;</td>
+                        <td width="20%" class="TDRight"></td>
+                    </tr>
+                    <tr>
+                        <td width="13%" class="TDLeft"></td>
+                        <td width="20%" class="TDRight">&nbsp;</td>
+                        <td width="13%" class="TDLeft">
+                            Drug License Expiry Date</td>
+                        <td width="20%" class="TDRight">
+                            <asp:TextBox ID="tbxTradeLicenseExpiryDate" runat="server" CssClass="TextBoxCalander" Width="145px"></asp:TextBox>
+                            <asp:ImageButton ID="imgTradeLicenseExpiryDate" runat="server" AlternateText="Click to show calendar"
+                                ImageUrl="~/Images/Calendar_scheduleHS.png" />
+                            <asp:CalendarExtender ID="tradeLicenseExpiryDateCalendar" runat="server" Format="dd-MMM-yyyy"
+                                PopupButtonID="imgTradeLicenseExpiryDate" TargetControlID="tbxTradeLicenseExpiryDate">
+                            </asp:CalendarExtender>
+                        </td>
                         <td width="13%" class="TDLeft">&nbsp;</td>
                         <td width="20%" class="TDRight"></td>
                     </tr>
@@ -238,7 +266,7 @@
                         <td class="TDRight" width="20%">
                             &nbsp;</td>
                     </tr>
-                    <tr>
+                    <tr runat="server" id="divCategoryType" Visible="True">
                         <td class="TDLeft" width="13%">
                             &nbsp;</td>
                         <td class="TDRight" width="20%">
@@ -257,7 +285,7 @@
                     </tr>
                     
                     
-                    <tr>
+                    <tr runat="server" id="divpaymentType" Visible="True">
                         <td class="TDLeft" width="13%">&nbsp;</td>
                         <td class="TDRight" width="20%">&nbsp;</td>
                         <td class="TDLeft" width="13%">

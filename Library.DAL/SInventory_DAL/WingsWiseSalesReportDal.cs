@@ -154,33 +154,36 @@ namespace Library.DAL.SInventory_DAL
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }
 
-        public DataTable LoadWingsSalesInfoByPram(string parameter, string fDate, string tdate)
+        public DataTable LoadWingsSalesInfoByPram(string parameter, string fDate, string tdate, int userId)
         {
             List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
 
             aSqlParameterlist.Add(new SqlParameter("@parameter", parameter));
+            aSqlParameterlist.Add(new SqlParameter("@userId", userId));
             aSqlParameterlist.Add(new SqlParameter("@fDate", Convert.ToDateTime(fDate)));
             aSqlParameterlist.Add(new SqlParameter("@tdate", Convert.ToDateTime(tdate)));
 
             return aCommonInternalDAL.GetDataTableAction("sp_GET_WingsSalesReport",aSqlParameterlist, "SSIDB");
         }
 
-        public DataTable LoadWingsSalesInfoByCompany(string comId, string fDate, string tdate)
+        public DataTable LoadWingsSalesInfoByCompany(string comId, string fDate, string tdate, int userId)
         {
             List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
 
             aSqlParameterlist.Add(new SqlParameter("@parameter", comId));
+            aSqlParameterlist.Add(new SqlParameter("@userId", userId));
             aSqlParameterlist.Add(new SqlParameter("@fDate", Convert.ToDateTime(fDate)));
             aSqlParameterlist.Add(new SqlParameter("@tdate", Convert.ToDateTime(tdate)));
 
             return aCommonInternalDAL.GetDataTableAction("sp_GET_WingsSalesReportByCompany", aSqlParameterlist, "SSIDB");
         }
 
-        public DataTable LoadWingsSalesInfoByUnit(string unitId, string fDate, string tdate)
+        public DataTable LoadWingsSalesInfoByUnit(string unitId, string fDate, string tdate, int userId)
         {
             List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
 
             aSqlParameterlist.Add(new SqlParameter("@parameter", unitId));
+            aSqlParameterlist.Add(new SqlParameter("@userId", userId));
             aSqlParameterlist.Add(new SqlParameter("@fDate", Convert.ToDateTime(fDate)));
             aSqlParameterlist.Add(new SqlParameter("@tdate", Convert.ToDateTime(tdate)));
 
@@ -217,7 +220,7 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetDCStockOutInfo(string parameter)
         {
-            string query = @"SELECT DISTINCT StockOutCode,StockOutDate,[EntryBy],[EntryDate],StockOutReason,StockOutType FROM tblDirectStockOut WHERE StockOutCode IS NOT NULL " + parameter;
+            string query = @"SELECT  DISTINCT StockOutCode,CONVERT(DATE, StockOutDate) StockOutDate,[EntryBy],CONVERT(DATE,[EntryDate]) EntryDate ,StockOutReason,StockOutType FROM tblDirectStockOut WHERE StockOutCode IS NOT NULL " + parameter;
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }
 

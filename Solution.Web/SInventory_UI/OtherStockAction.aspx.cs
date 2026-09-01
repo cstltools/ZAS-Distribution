@@ -273,7 +273,12 @@ public partial class SInventory_UI_OtherStockAction : System.Web.UI.Page
 
                                     // Posting Journal
 
-                                    if (aOtherStockActionBLL.FreezeStockReleasePosting(DCStoreFreezeId, Convert.ToDecimal(a.Trim())))
+                                    if (aOtherStockActionBLL.FreezeStockReleasePosting(DCStoreFreezeId,
+                                        Convert.ToDecimal(a.Trim())))
+                                    {
+                                        showMessageBox("Stock Return Successfully !!");
+                                    }
+                                    else
                                     {
                                         showMessageBox("Stock Return Successfully !!");
                                     }

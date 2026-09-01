@@ -16,8 +16,15 @@ public partial class SInventory_UI_DepositSlipEntry : System.Web.UI.Page
         if (!IsPostBack)
         {
             LoadDropdownList();
+            
+            DateTime dta = DateTime.Now;
+            chkDateTextBox.Text = dta.ToString("dd-MMM-yyyy");
+
         }
+
+        
     }
+
 
     private void LoadDropdownList()
     {

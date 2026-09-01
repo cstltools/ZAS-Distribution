@@ -68,20 +68,11 @@ public partial class SInventory_UI_DistributionCenterInformation : System.Web.UI
             return false;
         }
 
-        //if (dcShortNameTextBox.Text == "")
-        //{
-        //    ShowMessageBox("Please DC Short Name!!");
-        //    return false;
-        //}
-
         if (addressTextBox.Text == "")
         {
             ShowMessageBox("Please Input Address!!");
             return false;
         }
-
-
-       
 
         return true;
     }
@@ -100,6 +91,7 @@ public partial class SInventory_UI_DistributionCenterInformation : System.Web.UI
                 MobileNo = mobileNoTextBox.Text,
                 FaxNo = faxNoTextBox.Text,
                 CompanyId = Convert.ToInt32(companyNameDropDownList.SelectedValue),
+                CashGlId = ddlCashAccount.SelectedValue != "" ? Convert.ToInt32(ddlCashAccount.SelectedValue) : 0,
                 DcTypeId = Convert.ToInt32(ddlDcType.SelectedValue),
                 EntryBy = Session["LoginName"].ToString(),
                 EntryDate = DateTime.Now
@@ -154,5 +146,15 @@ public partial class SInventory_UI_DistributionCenterInformation : System.Web.UI
     protected void clearButton_OnClick(object sender, EventArgs e)
     {
         Clear();
+    }
+
+    protected void companyNameDropDownList_OnSelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (companyNameDropDownList.SelectedValue != "")
+        {
+            aCompanyUnitBll.LoadCashAccount(ddlCashAccount, Convert.ToInt32(companyNameDropDownList.SelectedValue));
+        }
+
+        
     }
 }

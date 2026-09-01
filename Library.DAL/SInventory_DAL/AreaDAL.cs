@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -65,6 +66,32 @@ namespace Library.DAL.SInventory_DAL
             return areaInfo;
         }
 
+        public void LoadDDLDal_Zas(DropDownList ddl)
+        {
+            ClsCommonInternalDAL.LoadDropDownValue2(ddl, "ProductName", "ProductId", "sp_GET_AllItemDropDown_Zas", "SSIDB");
+        }
+
+        public void LoadUnitByPermissionByModule_Zas(DropDownList ddl, Int32 userId, Int32 moduleId)
+        {
+            List<SqlParameter> gSqlParameterList = new List<SqlParameter>();
+
+            gSqlParameterList.Add(new SqlParameter("@UserId", userId));
+            gSqlParameterList.Add(new SqlParameter("@ModuleId", moduleId));
+
+            ClsCommonInternalDAL.LoadDropDownListData(ddl, "UnitName", "UnitId", "sp_Common_GetUnitByPermissionByModule", gSqlParameterList);
+        }
+
+        public DataTable GetStockValuationReport_Zas(string param, string forOpeningParam, string forClosingParam)
+        {
+            List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+            //string formattedParam = string.IsNullOrWhiteSpace(param) ? "" : " AND 1=1";
+
+            aSqlParameterlist.Add(new SqlParameter("@Param", param));
+            aSqlParameterlist.Add(new SqlParameter("@OpenParam", forOpeningParam));
+            aSqlParameterlist.Add(new SqlParameter("@CloseParam", forClosingParam));
+
+            return aCommonInternalDal.GetDataTableAction("sp_INV_WeightedAverage_Report", aSqlParameterlist);
+        }
         public bool UpdateAreaInfo(AreaInfo areaInfo)
         {
             string query = @"UPDATE tblArea SET AreaName='" + areaInfo.AreaName + "',AreaCode='" + areaInfo.AreaCode + "',RegionId='" + areaInfo.RegionId + "',Description='" + areaInfo.Description + "',AreaShortName='" + areaInfo.AreaShortName + "',Remarks='" + areaInfo.Remarks + "',IsActive='" + areaInfo.IsActive + "',UpdateBy='" + areaInfo.UpdateBy + "',UpdateDate='" + areaInfo.UpdateDate + "' WHERE AreaId=" + areaInfo.AreaId + "";
@@ -87,6 +114,15 @@ namespace Library.DAL.SInventory_DAL
             ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
             const string queryStr = "SELECT distinct RGN.RegionId, RGN.RegionCode + ' : ' + RGN.RegionName AS RegionName FROM tblRegion AS RGN WHERE RGN.IsActive ='True'";
             aInternalDal.LoadDropDownValueWithoutDataBase(ddl, "RegionName", "RegionId", queryStr);
+        }
+
+        public void LoadUnitWiseLocation_Zas(DropDownList ddl, string businessUnitId)
+        {
+            ClsCommonInternalDAL aInternalDal = new ClsCommonInternalDAL();
+            List<SqlParameter> gSqlParameterList = new List<SqlParameter>();
+
+            gSqlParameterList.Add(new SqlParameter("@CompanyId", businessUnitId));
+            ClsCommonInternalDAL.LoadDropDownListData(ddl, "UnitName", "UnitId", "sp_Common_GetUnitWiseLocation_Zas", gSqlParameterList);
         }
 
         public DataTable CodeExistOrNot(string code)

@@ -68,6 +68,7 @@
                                     <asp:BoundField DataField="ProductCode" HeaderText="Product Code" />
                                     <asp:BoundField DataField="ProductName" HeaderText="Product Name" />
                                     <asp:BoundField DataField="UnitPrice" HeaderText="Unit Price " />
+                                    <asp:BoundField DataField="MRPPrice" HeaderText="MRP" />
                                      <asp:BoundField DataField="VATPercentage" HeaderText="VAT Percentage " />
                                       <asp:BoundField DataField="VATAmountPerUnit" HeaderText="VAT Amount PerUnit" />
                                     <asp:BoundField DataField="EntryBy" HeaderText="Create By" />

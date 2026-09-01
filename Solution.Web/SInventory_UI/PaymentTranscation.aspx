@@ -326,14 +326,14 @@
                         <td class="TDLeft" width="13%" colspan="6">
                             <div id="gridContainer1" style="height: auto; overflow: auto; width: 97%; margin: 0 auto;">
                                 <asp:GridView ID="orderGridView" runat="server" AutoGenerateColumns="False" CssClass="gridview"
-                                    DataKeyNames="InvoiceId,CustomerMasterId,CustomerCode,CompanyId">
+                                    DataKeyNames="InvoiceId,CustomerMasterId,CustomerCode,CompanyId,ComUnitId,Due,PaymentTypeName">
                                     <Columns>
                                         <asp:TemplateField>
                                             <HeaderTemplate>
                                                 <asp:CheckBox ID="chkSelectAll" runat="server" AutoPostBack="True" OnCheckedChanged="chkSelectAll_CheckedChanged" />
                                             </HeaderTemplate>
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="chkSelect" AutoPostBack="True" runat="server" OnCheckedChanged="chkSelect_CheckedChanged" />
+                                                <asp:CheckBox ID="chkSelect" AutoPostBack="True"  runat="server" OnCheckedChanged="chkSelect_CheckedChanged" />
                                             </ItemTemplate>
                                         </asp:TemplateField>    
                                         <asp:BoundField DataField="ComUnitName" HeaderText="Unit Name" />
@@ -357,26 +357,26 @@
                                         
                                         <asp:TemplateField HeaderText="Is Bank">
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="isBank" AutoPostBack="True" runat="server" OnCheckedChanged="isBank_CheckedChanged" />
+                                                <asp:CheckBox ID="isBank" AutoPostBack="True"  runat="server" OnCheckedChanged="isBank_CheckedChanged" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         
                                         <asp:TemplateField HeaderText="Bank Account">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="ddlBank" Width="80px" runat="server" AutoPostBack="True"></asp:DropDownList>
+                                                <asp:DropDownList ID="ddlBank" Width="80px" runat="server"  AutoPostBack="True"></asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         
                                         
-                                        <asp:TemplateField HeaderText="Is Cash">
+                                        <asp:TemplateField HeaderText="Is Cash" >
                                             <ItemTemplate>
-                                                <asp:CheckBox ID="isCash" AutoPostBack="True" runat="server" OnCheckedChanged="isCash_CheckedChanged" />
+                                                <asp:CheckBox ID="isCash" AutoPostBack="True"  runat="server"  OnCheckedChanged="isCash_CheckedChanged" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         
                                         <asp:TemplateField HeaderText="Cash Account">
                                             <ItemTemplate>
-                                                <asp:DropDownList ID="ddlCash" Width="80px" runat="server" AutoPostBack="True"></asp:DropDownList>
+                                                <asp:DropDownList ID="ddlCash" Width="80px" runat="server" ></asp:DropDownList>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         

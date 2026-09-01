@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -38,6 +38,19 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
             customeridHiddenField.Value = aTable.Rows[0].Field<int>("CustomerMasterId").ToString(CultureInfo.InvariantCulture);
             limitAmntTextBox.Text = aTable.Rows[0].Field<Decimal>("LimitAmount").ToString(CultureInfo.InvariantCulture);
             limitDaysTextBox.Text = aTable.Rows[0].Field<Int32>("DayLimit").ToString(CultureInfo.InvariantCulture);
+
+            if (!string.IsNullOrEmpty(aTable.Rows[0]["IsActive"].ToString()))
+            {
+                if (Convert.ToBoolean(aTable.Rows[0]["IsActive"]))
+                {
+                    isActiveCheckBox.Checked = true;
+                }
+
+            }
+            else
+            {
+                isActiveCheckBox.Checked = false;
+            }
             
             if (!string.IsNullOrEmpty(aTable.Rows[0]["StartDate"].ToString()))
             {
@@ -50,6 +63,11 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
             }
 
             Button1.Text = "Update";
+
+            if (Session["LoginName"] != null && string.Equals(Session["LoginName"].ToString().Trim(), "ZAS643", StringComparison.OrdinalIgnoreCase))
+            {
+                customerTextBox.Enabled = false;
+            }
         }
     }
 
@@ -65,6 +83,7 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
         fromDateTextBox.Text = "";
         toDateTextBox.Text = "";
         Button1.Text = "Save";
+        customerTextBox.Enabled = true;
     }
 
     private void ShowMessageBox(string message)
@@ -136,29 +155,38 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
 
             if (creditHiddenField.Value == "")
             {
-                CreditLimitDAO aCreditLimitDao = new CreditLimitDAO()
-                {
-                    CompanyId = Convert.ToInt32(companyDropDownList.SelectedValue),
-                    CustomerMasterId = Convert.ToInt32(customeridHiddenField.Value),
-                    LimitAmount = Convert.ToDecimal(limitAmntTextBox.Text.Trim()),
-                    DayLimit = Convert.ToInt32(limitDaysTextBox.Text.Trim()),
-                    EntryBy = Session["LoginName"].ToString(),
-                    EntryDate = DateTime.Now,
-                    IsActive = true,
+                CreditLimitDAO aCreditLimitDao = new CreditLimitDAO();
+                //{
+                aCreditLimitDao.CompanyId = Convert.ToInt32(companyDropDownList.SelectedValue);
+                aCreditLimitDao.CustomerMasterId = Convert.ToInt32(customeridHiddenField.Value);
+                aCreditLimitDao.LimitAmount = Convert.ToDecimal(limitAmntTextBox.Text.Trim());
+                aCreditLimitDao.DayLimit = Convert.ToInt32(limitDaysTextBox.Text.Trim());
+                aCreditLimitDao.EntryBy = Session["LoginName"].ToString();
+                aCreditLimitDao.EntryDate = DateTime.Now;
+                aCreditLimitDao.IsActive = isActiveCheckBox.Checked;
 
                     //StartDate = Convert.ToDateTime(fromDateTextBox.Text),
                     //EndDate = Convert.ToDateTime(toDateTextBox.Text)
 
-                };
-                bool status = aCreditLimitDal.SaveCreditLimit(aCreditLimitDao);
-                if (status)
+                //};
+
+                DataTable exisTable = 
+                aCreditLimitDal.CheckExistorNot(Convert.ToInt32(companyDropDownList.SelectedValue),
+                    Convert.ToInt32(customeridHiddenField.Value));
+
+                if (exisTable.Rows.Count == 0)
                 {
-                    ShowMessageBox("Data Saved Successfully");
-                    Clear();
+                    bool status = aCreditLimitDal.SaveCreditLimit(aCreditLimitDao);
+
+                    if (status)
+                    {
+                        ShowMessageBox("Data Saved Successfully");
+                        Clear();
+                    }
                 }
                 else
                 {
-                    ShowMessageBox("Data not saved !!!!!!!!!!!!");
+                    ShowMessageBox("Data Already Exist !");
                 }
             }
             else
@@ -170,22 +198,32 @@ public partial class SInventory_UI_CustomerCreditLimitEntry : System.Web.UI.Page
                     CustomerMasterId = Convert.ToInt32(customeridHiddenField.Value),
                     LimitAmount = Convert.ToDecimal(limitAmntTextBox.Text),
                     DayLimit = Convert.ToInt32(limitDaysTextBox.Text.Trim()),
+                    IsActive = isActiveCheckBox.Checked,
                     UpdateBy = Session["LoginName"].ToString(),
                     UpdateDate = DateTime.Now,
-                    IsActive = true,
                     //StartDate = Convert.ToDateTime(fromDateTextBox.Text),
                     //EndDate = Convert.ToDateTime(toDateTextBox.Text)
 
                 };
-                bool status = aCreditLimitDal.UpdateCreditLimit(aCreditLimitDao);
-                if (status)
+                
+
+                DataTable exisTable = aCreditLimitDal.CheckExistorNotUpdate(Convert.ToInt32(companyDropDownList.SelectedValue),
+                   Convert.ToInt32(customeridHiddenField.Value), Convert.ToInt32(creditHiddenField.Value));
+
+
+                if (exisTable.Rows.Count == 0)
                 {
-                    ShowMessageBox("Data Saved Successfully");
-                    Clear();
+                    bool status = aCreditLimitDal.UpdateCreditLimit(aCreditLimitDao);
+
+                    if (status)
+                    {
+                        ShowMessageBox("Data Updated Successfully");
+                        Clear();
+                    }
                 }
                 else
                 {
-                    ShowMessageBox("Data not saved !!!!!!!!!!!!");
+                    ShowMessageBox("Data Already Exist !");
                 }
             }
             

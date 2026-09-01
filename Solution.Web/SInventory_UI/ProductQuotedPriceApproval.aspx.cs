@@ -77,6 +77,7 @@ public partial class SInventory_UI_ManualOrderApproval : System.Web.UI.Page
                             {
                                 QuotedPriceId = Convert.ToInt32(dataKey[0].ToString()),
                                 ActionStatus = actionRadioButtonList.SelectedItem.Text,
+                                IsActive = true,
                                 ApprovedBy = Session["LoginName"].ToString(),
                                 ApprovedDate = DateTime.Today,
                             };

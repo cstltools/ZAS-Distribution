@@ -137,7 +137,7 @@ namespace Library.DAL.SInventory_DAL
             " SELECT SUM(DeliveryTpGrandTotal-ISNULL(tbltemp.Amount,0))RemainAmount FROM dbo.tblInvoice " +
             " LEFT JOIN  " +
             " (SELECT InvoiceId,ISNULL(SUM(PaymentAmount),0)Amount FROM dbo.tblCustPayDetail GROUP BY InvoiceId) AS tbltemp ON tbltemp.InvoiceId = tblInvoice.InvoiceId " +
-            " WHERE CustomerMasterId='" + customerId + "' AND PaymentStatus<>'Full')AS tbltemp";
+            " WHERE CustomerMasterId='" + customerId + "' AND PaymentStatus<>'Full' AND IsBadDue = 0 )AS tbltemp";
             aDataTable = aInternalDal.DataContainerDataTable(query, "SSIDB");
 
             return aDataTable;
@@ -337,7 +337,10 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetCustomerDueInfo(string customerId)
         {
-            string query = @"SELECT ISNULL(SUM(DeliveryTpGrandTotal-ISNULL(PaymentAmount,0)),0) AS Due FROM dbo.tblInvoice WHERE (DeliveryInvoiceStatus IS NOT NULL OR DeliveryInvoiceStatus != 'Reject') AND CustomerMasterId = " + customerId;
+            string query = @"SELECT ISNULL(SUM(DD.Due),0) AS Due FROM (SELECT InvoiceNo,(DeliveryTpGrandTotal - TotalPay) Due FROM tblInvoice AS INV WITH (NOLOCK)
+LEFT JOIN (SELECT CD.InvoiceId,SUM(CD.PaymentAmount) + SUM(CD.AIT) + SUM(CD.Discount) TotalPay FROM tblCustPayDetail AS CD WITH (NOLOCK)
+LEFT JOIN tblInvoice AS INV WITH (NOLOCK) ON CD.InvoiceId = INV.InvoiceId GROUP BY CD.InvoiceId) AS PD ON INV.InvoiceId = PD.InvoiceId
+WHERE IsBadDue != 1 AND (DeliveryInvoiceStatus IS NOT NULL OR DeliveryInvoiceStatus != 'Reject') AND CustomerMasterId = " + customerId + "  AND  (DeliveryTpGrandTotal - TotalPay) > 0) AS DD" ;
             return aInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 

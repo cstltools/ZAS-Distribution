@@ -16,9 +16,16 @@ public partial class SInventory_UI_ProductEdit : System.Web.UI.Page
         if (!IsPostBack)
         {
             LoadProductCategory();
+            LoadRawMaterial();
+
             productIdHiddenField.Value = Request.QueryString["ID"];
             ProductEditLoad(productIdHiddenField.Value);
         }
+    }
+
+    private void LoadRawMaterial()
+    {
+        ProductBLL.LoadRawMaterial(ddlRawMaterials);
     }
 
     private void LoadProductCategory()
@@ -97,7 +104,29 @@ public partial class SInventory_UI_ProductEdit : System.Web.UI.Page
             return false;
         }
 
+        if (cbxTradeOrRecipe.SelectedValue == "Trade")
+        {
+            if (ddlRawMaterials.SelectedIndex == 0)
+            {
+                showMessageBox("Please select Raw Material Name !!!");
+                return false;
+            }
+        }
+
         return true;
+    }
+
+    protected void cbxTradeOrRecipe_Clicked(object sender, EventArgs e)
+    {
+        if (cbxTradeOrRecipe.SelectedValue == "Trade")
+        {
+            ddlRawMaterials.Enabled = true; // Enable the dropdown
+        }
+        else
+        {
+            ddlRawMaterials.SelectedValue = "";
+            ddlRawMaterials.Enabled = false; // Disable the dropdown
+        }
     }
 
     protected void updateButton_Click(object sender, EventArgs e)
@@ -119,7 +148,9 @@ public partial class SInventory_UI_ProductEdit : System.Web.UI.Page
                 ProTypeId = Convert.ToInt32(typeDropDownList.SelectedValue),
                 ProductBrandId = Convert.ToInt32(productSQDropDownList.SelectedValue),
                 CaseId = Convert.ToInt32(shippingCartonSizeDropDownList.SelectedValue),
-                CompanyId = Convert.ToInt32(companyNameDropDownList.SelectedValue)
+                CompanyId = Convert.ToInt32(companyNameDropDownList.SelectedValue),
+                IsTrade = cbxTradeOrRecipe.SelectedValue == "Trade" ? true : false,
+                IsRecipe = cbxTradeOrRecipe.SelectedValue != "Trade" ? true : false
             };
             
             ProductBLL aProductBLL = new ProductBLL();
@@ -131,6 +162,61 @@ public partial class SInventory_UI_ProductEdit : System.Web.UI.Page
             }
             else
             {
+                DataTable aTable = aProductBLL.GetPoductByCode(productCodeTextBox.Text.Trim());
+
+                if (aTable != null && aTable.Rows.Count > 0)
+                {
+                    // Check if the column value is not null or DBNull
+
+                    object productIdObj = aTable.Rows[0]["ProductId"];
+
+                    if (productIdObj != null && productIdObj != DBNull.Value)
+                    {
+                        int productId = Convert.ToInt32(productIdObj);
+                        aProductBLL.BeleteRawDetailsById(productId);
+
+                    }
+
+
+                }
+
+                // Save Raw Material Details
+
+                if (cbxTradeOrRecipe.SelectedValue == "Trade")
+                {
+
+
+                   
+
+                    // Check if the DataTable has rows
+
+                    if (aTable != null && aTable.Rows.Count > 0)
+                    {
+                        // Check if the column value is not null or DBNull
+
+                        object productIdObj = aTable.Rows[0]["ProductId"];
+
+                        if (productIdObj != null && productIdObj != DBNull.Value)
+                        {
+                            int productId = Convert.ToInt32(productIdObj);
+
+                                var productRawMaterialDetailsDao = new ProductRawMaterialDetailsDao();
+
+
+                                productRawMaterialDetailsDao.RawMaterialId = Convert.ToInt32(ddlRawMaterials.SelectedValue);
+                                productRawMaterialDetailsDao.ProductId = productId;
+
+                                aProductBLL.SaveRawMaterialDetails(productRawMaterialDetailsDao);
+
+                            
+
+                        }
+
+
+                    }
+
+
+                }
                 ShowMessageBox("Data Update Successfully!!! Please Reload");
                 
             }
@@ -164,8 +250,29 @@ public partial class SInventory_UI_ProductEdit : System.Web.UI.Page
         productCodeTextBox.Text = Product.ProductCode;
         companyNameDropDownList.SelectedValue = Convert.ToString(Product.CompanyId);
 
+
+        if (Product.IsTrade)
+        {
+            cbxTradeOrRecipe.SelectedValue = "Trade";
+
+            DataTable aTable = ProductBLL.GetRawMaterialIsItem(productId);
+
+            if (aTable.Rows.Count > 0)
+            {
+                ddlRawMaterials.SelectedValue = aTable.Rows[0].Field<Int32>("RawMaterialId").ToString();
+            }
+        }
+        else
+        {
+            cbxTradeOrRecipe.SelectedValue = "Recipe";
+
+            ddlRawMaterials.SelectedValue = "";
+            ddlRawMaterials.Enabled = false; // Disable the dropdown
+        }
+
         codeHiddenField.Value = Product.ProductCode;
         nameHiddenField.Value = Product.ProductName;
+
     }
     
     protected void closeButton_Click(object sender, EventArgs e)

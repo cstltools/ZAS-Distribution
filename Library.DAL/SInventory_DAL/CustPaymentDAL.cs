@@ -4,8 +4,10 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI.WebControls;
 using Library.DAL.InternalCls;
+using Library.DAL.MAIN_FUNCTION;
 using Library.DAO.SInventory_Entities;
 
 namespace Library.DAL.SInventory_DAL
@@ -13,6 +15,10 @@ namespace Library.DAL.SInventory_DAL
     public class CustPaymentDAL
     {
         private ClsCommonInternalDAL aCommonInternalDal = new ClsCommonInternalDAL();
+
+
+
+        private DB_Manager aManager = new DB_Manager();
         public bool SaveCustPayment(CustPayment aCustPayment)
         {
             string insertQuery = @"INSERT INTO dbo.tblCustomerPay
@@ -47,8 +53,54 @@ namespace Library.DAL.SInventory_DAL
                     ")";
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
+
+        public int SaveFullInvoice(CustPayment aCustPayment)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+            aSqlParameterList.Add(new SqlParameter("@CustPayId", aCustPayment.CustPayId));
+            aSqlParameterList.Add(new SqlParameter("@CustomerMasterId", aCustPayment.CustomerMasterId));
+            aSqlParameterList.Add(new SqlParameter("@PaymentDate", aCustPayment.PaymentDate));
+            aSqlParameterList.Add(new SqlParameter("@PaymentAmount", aCustPayment.PaymentAmount));
+            aSqlParameterList.Add(new SqlParameter("@PayType", aCustPayment.PayType));
+            aSqlParameterList.Add(new SqlParameter("@RefNo", aCustPayment.RefNo));
+            aSqlParameterList.Add(new SqlParameter("@RefDate", aCustPayment.RefDate));
+            aSqlParameterList.Add(new SqlParameter("@CreateBy", aCustPayment.CreateBy));
+            return aCommonInternalDal.RunStoreProcedure("sp_Save_SaveCustPayment", aSqlParameterList, "SSIDB");
+        }
+
+
+        public int SaveCode()
+        {
+            int id = 0;
+            try
+            {
+                aManager.CreateConnection("SalesRollDB_ZAS");
+                List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
+                aSqlParameterList.Add(new SqlParameter("@CreateBy", HttpContext.Current.Session["UserId"].ToString()));
+                id = aManager.SaveAction("sp_Save_PayCode", aSqlParameterList, "@PayCodeId");
+
+                return aCommonInternalDal.SaveAction("sp_Save_SaveCustPayment", aSqlParameterList, "@PayCodeId");
+            }
+            catch (Exception)
+            {
+                aManager.CloseConnection();
+            }
+            finally
+            {
+                aManager.CloseConnection();
+            }
+
+            return id;
+        }
+
+
+
         public bool SaveCustDetail(CustPaymentDetail aCustPaymentDetail)
         {
+
+
+
             string insertQuery = @"INSERT INTO dbo.tblCustPayDetail
         ( CustPayDetailId ,
           InvoiceId ,
@@ -171,14 +223,16 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
 //            INNER JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
 //            WHERE  DeliveryTpGrandTotal > 0 AND BatchId='" + batchId + "' AND dbo.tblInvoice.CustomerMasterId='" + customerId + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL ";
 
-            string query = @"SELECT PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,(DeliveryTpGrandTotal-isnull(PaymentAmount,0)) AS Due,
-                             tblCompanyInfo.CompanyId,tblCustMaster.CustomerMasterId FROM dbo.tblInvoice           
-                             LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
-                             LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
-                             LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
-                             LEFT JOIN tblPaymentType ON tblInvoice.PaymentTypeId = tblPaymentType.PaymentTypeId
-                             WHERE  DeliveryTpGrandTotal > 0 AND BatchId='" + batchId
-                             + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (DeliveryTpGrandTotal-isnull(PaymentAmount,0)) > 0";
+            string query = @"SELECT PaymentTypeName,CustomerCode,ISNULL(PaymentAmount,0)PaymentAmount,*,(ISNULL(TotalDelivery,0) - (ISNULL(PP,0) + ISNULL(P.AIT,0) + ISNULL(P.DiscountAmount,0))) AS Due,
+tblCompanyInfo.CompanyId,tblCustMaster.CustomerMasterId FROM dbo.tblInvoice   
+LEFT JOIN (SELECT InvoiceId,SUM(PaymentAmount) AS PP,SUM(ISNULL(AIT,0)) AIT, SUM(ISNULL(Discount,0)) DiscountAmount FROM tblCustPayDetail GROUP BY InvoiceId) AS P ON tblInvoice.InvoiceId = P.InvoiceId 
+LEFT JOIN (SELECT InvoiceId,SUM(DeliveryNetAmount) AS TotalDelivery FROM tblInvoiceDetail AS IVD WITH(NOLOCK) GROUP BY InvoiceId) AS TD ON tblInvoice.InvoiceId = TD.InvoiceId 
+LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
+LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
+LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
+LEFT JOIN tblPaymentType ON tblInvoice.PaymentTypeId = tblPaymentType.PaymentTypeId
+WHERE (ISNULL(TotalDelivery,0) - (ISNULL(PP,0) + ISNULL(P.AIT,0) + ISNULL(P.DiscountAmount,0))) > 0 AND BatchId ='" + batchId
+                             + "' AND DelivaryInvoiceNo IS NOT NULL AND tblInvoice.InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (DeliveryTpGrandTotal-isnull(PaymentAmount,0)) > 0";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
 
@@ -199,6 +253,14 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
             WHERE  DeliveryTpGrandTotal > 0 AND MarketId='" + marketId + "' AND dbo.tblInvoice.ComUnitId='" + comUnitId + "'  AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND (DelivaryInvoiceNo IS NOT NULL) AND (DeliveryInvoiceStatus ='Partial' or DeliveryInvoiceStatus ='Full')";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public DataTable LoadCoustomerPaymentMaster(string param)
+        {
+            string query = @"Select CustPayId,PaymentDate,PaymentCode from tblCustomerPay WHere PaymentCode IS NOT NULL "+param+" ";
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+
         public DataTable GetPrevAmount(string invoiceId)
         {
             string query = @"SELECT PaymentAmount, 
@@ -210,6 +272,18 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
             string query = @"SELECT * FROM dbo.tblCustMaster WHERE CustomerMasterId='"+custId+"'";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public DataTable GetCustPayMaster(string custId)
+        {
+            string query = @"Select  com.ComUnitName,Cus.CustomerName,I.InvoiceNo, M.PaymentDate,P.AIT,P.PaymentAmount, P.Discount, M.PaymentCode as Blank1 ,'' as Blank2, '' as Blank3 from  tblCustomerPay M
+              left join  tblCustPayDetail P ON M.CustPayId = P.CustPayId
+              LEFt JOIN tblInvoice I On P.InvoiceId= I.InvoiceId
+              LEFT join tblCustMaster Cus ON I.CustomerMasterId= Cus.CustomerMasterId
+              left join tblCompanyUnit com On I.ComUnitId= com.ComUnitId
+              Where M.CustPayId='" + custId + "'";
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
         public CustomerMaster CustomerLoad(string CustomerCode)
         {
             string query = @"SELECT CustomerMasterId FROM dbo.tblCustMaster WHERE CustomerCode= '" + CustomerCode + "'";
@@ -306,13 +380,33 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
 
         public DataTable GetInvoiceByCustomer(string custmerId,string dcId)
         {
-            string query = @"SELECT tblPaymentType.PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0) AS Due FROM dbo.tblInvoice           
-            LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
-            LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
-            LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
-            LEFT JOIN tblPaymentType ON tblPaymentType.PaymentTypeId = tblInvoice.PaymentTypeId
-            WHERE  DeliveryTpGrandTotal > 0 AND tblCustMaster.CustomerMasterId='" + custmerId
-            + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0)) > 0 ";
+//            string query = @"SELECT tblPaymentType.PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,(ISNULL(TotalDelivery,0) - (ISNULL(PP,0) + ISNULL(P.AIT,0) + ISNULL(P.DiscountAmount,0))) AS Due FROM dbo.tblInvoice  
+//
+//LEFT JOIN (SELECT InvoiceId,SUM(PaymentAmount) AS PP,SUM(ISNULL(AIT,0)) AIT, SUM(ISNULL(Discount,0)) DiscountAmount FROM tblCustPayDetail GROUP BY InvoiceId) AS P ON tblInvoice.InvoiceId = P.InvoiceId 
+//LEFT JOIN (SELECT InvoiceId,SUM(DeliveryNetAmount) AS TotalDelivery FROM tblInvoiceDetail AS IVD WITH(NOLOCK) GROUP BY InvoiceId) AS TD ON tblInvoice.InvoiceId = TD.InvoiceId 
+//            LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
+//            LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
+//            LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
+//            LEFT JOIN tblPaymentType ON tblPaymentType.PaymentTypeId = tblInvoice.PaymentTypeId
+//            WHERE  ISNULL(TotalDelivery,0) > 0 AND tblCustMaster.CustomerMasterId='" + custmerId
+//            + "'  AND DelivaryInvoiceNo IS NOT NULL AND  tblInvoice.InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(TotalDelivery,0) - (ISNULL(PP,0) + ISNULL(P.AIT,0) + ISNULL(P.DiscountAmount,0))) >= 1 ";
+
+
+            string query = @"SELECT INV.InvoiceId,INV.CustomerMasterId,CustomerCode,CI.CompanyId,INV.ComUnitId,
+            TermOfPayment PaymentTypeName,ComUnitName,InvoiceNo,InvoiceDate,DelivaryInvoiceNo,INV.UpdateDate,DeliveryTpGrandTotal,
+            (ISNULL(INV.PaymentAmount,0) + ISNULL(INV.AIT,0) + ISNULL(INV.DiscountOnPayment,0)) PaymentAmount,
+            (ISNULL(INV.DeliveryTpGrandTotal, 0) - (ISNULL(INV.PaymentAmount, 0) + ISNULL(INV.AIT, 0) + ISNULL(INV.DiscountOnPayment, 0))) - ISNULL(RTN.ReturnAmount,0) AS Due FROM tblInvoice AS INV
+            LEFT JOIN (SELECT M.CommonPK_ID,SUM(DebitAmountBDT) AS ReturnAmount FROM CSTL_ACCDB..tblDebitCreditVoucherMaster AS M
+            			LEFT JOIN CSTL_ACCDB..tblDebitCreditVoucherDetail AS D ON M.VoucherMasterId = D.VoucherMasterId
+            			LEFT JOIN tblInvoice AS INV ON M.CommonPK_ID = INV.InvoiceId
+            			WHERE ISNULL(M.IsInventoryValuation,0) = 0 AND M.TableID = 2018 GROUP BY M.CommonPK_ID) AS RTN ON INV.InvoiceId = RTN.CommonPK_ID
+            
+            
+            LEFT JOIN tblCustMaster AS CST ON INV.CustomerMasterId = CST.CustomerMasterId
+            LEFT JOIN tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId
+            INNER JOIN tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId
+            
+            WHERE INV.CustomerMasterId = '" + custmerId + "' AND   INV.InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(INV.DeliveryTpGrandTotal, 0) - (ISNULL(INV.PaymentAmount, 0) + ISNULL(INV.AIT, 0) + ISNULL(INV.DiscountOnPayment, 0))) - ISNULL(RTN.ReturnAmount,0) >= 1";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");  
         }
@@ -320,13 +414,34 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
 
         public DataTable GetInvoiceByCustomer(string custmerId, string userId, string dcId)
         {
-            string query = @"SELECT tblPaymentType.PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0) AS Due FROM dbo.tblInvoice           
-            LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
-            LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
-            LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
-      LEFT JOIN tblPaymentType ON tblPaymentType.PaymentTypeId = tblInvoice.PaymentTypeId
-            WHERE  DeliveryTpGrandTotal > 0 AND tblCustMaster.CustomerMasterId='" + custmerId + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND tblInvoice.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userId
-            + " ) AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(DeliveryTpGrandTotal-(ISNULL(PaymentAmount,0) + ISNULL(DiscountOnPayment,0) + ISNULL(AIT,0)),0)) > 0 ";
+//            string query = @"SELECT tblPaymentType.PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,(ISNULL(TotalDelivery,0) - (ISNULL(PP,0) + ISNULL(P.AIT,0) + ISNULL(P.DiscountAmount,0))) AS Due FROM dbo.tblInvoice  
+//
+//LEFT JOIN (SELECT InvoiceId,SUM(PaymentAmount) AS PP,SUM(ISNULL(AIT,0)) AIT, SUM(ISNULL(Discount,0)) DiscountAmount FROM tblCustPayDetail GROUP BY InvoiceId) AS P ON tblInvoice.InvoiceId = P.InvoiceId 
+//LEFT JOIN (SELECT InvoiceId,SUM(DeliveryNetAmount) AS TotalDelivery FROM tblInvoiceDetail AS IVD WITH(NOLOCK) GROUP BY InvoiceId) AS TD ON tblInvoice.InvoiceId = TD.InvoiceId 
+//            LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
+//            LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
+//            LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
+//            LEFT JOIN tblPaymentType ON tblPaymentType.PaymentTypeId = tblInvoice.PaymentTypeId
+//            WHERE  ISNULL(TotalDelivery,0) > 0 AND tblCustMaster.CustomerMasterId='" + custmerId + "' AND DelivaryInvoiceNo IS NOT NULL AND tblInvoice.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userId
+//            + " ) AND tblInvoice.InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(TotalDelivery,0) - (ISNULL(PP,0) + ISNULL(P.AIT,0) + ISNULL(P.DiscountAmount,0))) >= 1 ";
+
+
+
+            string query = @"SELECT INV.InvoiceId,INV.CustomerMasterId,CustomerCode,CI.CompanyId,INV.ComUnitId,
+TermOfPayment PaymentTypeName,ComUnitName,InvoiceNo,InvoiceDate,DelivaryInvoiceNo,INV.UpdateDate,DeliveryTpGrandTotal,
+(ISNULL(INV.PaymentAmount,0) + ISNULL(INV.AIT,0) + ISNULL(INV.DiscountOnPayment,0)) PaymentAmount,
+(ISNULL(DeliveryTpGrandTotal, 0) - (ISNULL(INV.PaymentAmount,0) + ISNULL(INV.AIT,0) + ISNULL(INV.DiscountOnPayment,0))) - ISNULL(RTN.ReturnAmount,0) AS Due FROM tblInvoice AS INV
+LEFT JOIN (SELECT M.CommonPK_ID,SUM(DebitAmountBDT) AS ReturnAmount FROM CSTL_ACCDB..tblDebitCreditVoucherMaster AS M
+			LEFT JOIN CSTL_ACCDB..tblDebitCreditVoucherDetail AS D ON M.VoucherMasterId = D.VoucherMasterId
+			LEFT JOIN tblInvoice AS INV ON M.CommonPK_ID = INV.InvoiceId
+			WHERE ISNULL(M.IsInventoryValuation,0) = 0 AND M.TableID = 2018 GROUP BY M.CommonPK_ID) AS RTN ON INV.InvoiceId = RTN.CommonPK_ID
+
+LEFT JOIN tblCustMaster AS CST ON INV.CustomerMasterId = CST.CustomerMasterId
+LEFT JOIN tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId
+INNER JOIN tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId
+
+WHERE INV.CustomerMasterId = '" + custmerId + "'   AND INV.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userId + " )  AND INV.InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(DeliveryTpGrandTotal, 0) - (ISNULL(INV.PaymentAmount,0) + ISNULL(INV.AIT,0) + ISNULL(INV.DiscountOnPayment,0))) - ISNULL(RTN.ReturnAmount,0) >= 1";
+
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -354,26 +469,42 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
             //            INNER JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
             //            WHERE  DeliveryTpGrandTotal > 0 AND BatchId='" + batchId + "' AND dbo.tblInvoice.CustomerMasterId='" + customerId + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL ";
 
-            string query = @"SELECT tblPaymentType.PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,(DeliveryTpGrandTotal-isnull(PaymentAmount,0)) AS Due,
-                             tblCompanyInfo.CompanyId,tblCustMaster.CustomerMasterId FROM dbo.tblInvoice           
+            string query = @"SELECT tblPaymentType.PaymentTypeName,ISNULL(PaymentAmount,0)PaymentAmount,*,(ISNULL(TotalDelivery,0) - (ISNULL(PP,0) + ISNULL(P.AIT,0) + ISNULL(P.DiscountAmount,0)))  - ISNULL(RTN.ReturnAmount,0)  - ISNULL(RTN.ReturnAmount,0) AS Due,
+                             tblCompanyInfo.CompanyId,tblCustMaster.CustomerMasterId FROM dbo.tblInvoice    
+
+
+							 LEFT JOIN (SELECT M.CommonPK_ID,SUM(DebitAmountBDT) AS ReturnAmount FROM CSTL_ACCDB..tblDebitCreditVoucherMaster AS M
+			LEFT JOIN CSTL_ACCDB..tblDebitCreditVoucherDetail AS D ON M.VoucherMasterId = D.VoucherMasterId
+			LEFT JOIN tblInvoice AS INV ON M.CommonPK_ID = INV.InvoiceId
+			WHERE ISNULL(M.IsInventoryValuation,0) = 0 AND M.TableID = 2018 GROUP BY M.CommonPK_ID) AS RTN ON InvoiceId = RTN.CommonPK_ID    
+
+LEFT JOIN (SELECT InvoiceId,SUM(PaymentAmount) AS PP,SUM(ISNULL(AIT,0)) AIT, SUM(ISNULL(Discount,0)) DiscountAmount FROM tblCustPayDetail GROUP BY InvoiceId) AS P ON tblInvoice.InvoiceId = P.InvoiceId 
+LEFT JOIN (SELECT InvoiceId,SUM(DeliveryNetAmount) AS TotalDelivery FROM tblInvoiceDetail AS IVD WITH(NOLOCK) GROUP BY InvoiceId) AS TD ON tblInvoice.InvoiceId = TD.InvoiceId 
+   
                              LEFT JOIN dbo.tblCustMaster  ON dbo.tblInvoice.CustomerMasterId=dbo.tblCustMaster.CustomerMasterId
                              LEFT JOIN dbo.tblCompanyUnit ON tblCompanyUnit.ComUnitId = tblInvoice.ComUnitId
                              LEFT JOIN dbo.tblCompanyInfo ON tblCompanyInfo.CompanyId = tblCompanyUnit.CompanyId
                              LEFT JOIN tblPaymentType ON tblPaymentType.PaymentTypeId = tblInvoice.PaymentTypeId
-                             WHERE  DeliveryTpGrandTotal > 0 AND BatchId='" + batchId + "' AND (PaymentStatus IS NULL OR PaymentStatus='Partial') AND DelivaryInvoiceNo IS NOT NULL AND tblInvoice.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userId
-                             + ") AND InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (DeliveryTpGrandTotal-isnull(PaymentAmount,0)) > 0"; 
+                             WHERE  DeliveryTpGrandTotal > 0 AND BatchId='" + batchId + "'  AND DelivaryInvoiceNo IS NOT NULL AND tblInvoice.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userId
+                             + ") AND tblInvoice.InvoiceId NOT IN  ( SELECT InvoiceId FROM dbo.tblPaymentTranscationMaster INNER JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPayId = tblPaymentTranscationMaster.CustPayId WHERE IsProcess = 0 AND IsReject = 0) AND (ISNULL(TotalDelivery,0) - (ISNULL(PP,0) + ISNULL(P.AIT,0) + ISNULL(P.DiscountAmount,0)))  - ISNULL(RTN.ReturnAmount,0)  - ISNULL(RTN.ReturnAmount,0) >= 1"; 
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
         public void LoadBankAccount(DropDownList ddl, string companyId)
         {
-            string query = @"SELECT CB.BankAccountId,BankName + ' (' + AccountName + ' - ' + AccountNo + ')' AS BankAcount FROM ZAS_ACCDB..tblBankAccount AS CB
-                             LEFT JOIN ZAS_ACCDB..tblBankInformation AS B ON b.BankId = CB.BankId
-                             LEFT JOIN ZAS_ACCDB..tblMultipleCompanySameBankAccount AS CABC ON CABC.BankAccountId = CB.BankAccountId
+//            string query = @"SELECT CB.BankAccountId,BankName + ' (' + AccountName + ' - ' + AccountNo + ')' AS BankAcount FROM ZAS_ACCDB..tblBankAccount AS CB
+//                             LEFT JOIN ZAS_ACCDB..tblBankInformation AS B ON b.BankId = CB.BankId
+//                             LEFT JOIN ZAS_ACCDB..tblMultipleCompanySameBankAccount AS CABC ON CABC.BankAccountId = CB.BankAccountId
+//                             WHERE CB.BankAccountId IN (
+//                             SELECT BankAccountId FROM ZAS_ACCDB..tblChartOfAccounts WHERE BankAccountId IS NOT NULL )
+//                             AND CABC.CompanyId = " + companyId;
+
+            string query = @"SELECT CB.BankAccountId,BankName + ' (' + AccountName + ' - ' + AccountNo + ')' AS BankAcount,CABC.CompanyUnitId FROM CSTL_ACCDB..tblBankAccount AS CB
+                             LEFT JOIN CSTL_ACCDB..tblBankInformation AS B ON b.BankId = CB.BankId
+                             LEFT JOIN CSTL_ACCDB..tblBankAccountUnitdtl AS CABC ON CABC.BankAccountId = CB.BankAccountId
                              WHERE CB.BankAccountId IN (
-                             SELECT BankAccountId FROM ZAS_ACCDB..tblChartOfAccounts WHERE BankAccountId IS NOT NULL )
-                             AND CABC.CompanyId = " + companyId;
+                             SELECT BankAccountId FROM CSTL_ACCDB..tblChartOfAccounts WHERE BankAccountId IS NOT NULL) AND CABC.CompanyUnitId = " + companyId;
 
             aCommonInternalDal.LoadDropDownValue(ddl, "BankAcount", "BankAccountId", query, "SSIDB");
         }
@@ -381,14 +512,21 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
 
         public void LoadCashAccount(DropDownList ddl, string companyId)
         {
-            string query = @"SELECT CA.CashAccountId,AccountName FROM ZAS_ACCDB..tblCashAccount AS CA
-                             LEFT JOIN ZAS_ACCDB..tblMultipleCompanySameCashAccount CASC ON CA.CashAccountId = CASC.CashAccountId
+//            string query = @"SELECT CA.CashAccountId,AccountName FROM ZAS_ACCDB..tblCashAccount AS CA
+//                             LEFT JOIN ZAS_ACCDB..tblMultipleCompanySameCashAccount CASC ON CA.CashAccountId = CASC.CashAccountId
+//                             WHERE CA.CashAccountId IN (
+//                             SELECT CashAccountId FROM ZAS_ACCDB..tblChartOfAccounts WHERE CashAccountId IS NOT NULL )
+//                             AND CASC.CompanyId = " + companyId;
+
+            string query = @"SELECT CA.CashAccountId,AccountName FROM CSTL_ACCDB..tblCashAccount AS CA
+                             LEFT JOIN CSTL_ACCDB..tblMultipleCompanySameCashAccount CASC ON CA.CashAccountId = CASC.CashAccountId
                              WHERE CA.CashAccountId IN (
-                             SELECT CashAccountId FROM ZAS_ACCDB..tblChartOfAccounts WHERE CashAccountId IS NOT NULL )
+                             SELECT CashAccountId FROM CSTL_ACCDB..tblChartOfAccounts WHERE CashAccountId IS NOT NULL )
                              AND CASC.CompanyId = " + companyId;
 
             aCommonInternalDal.LoadDropDownValue(ddl, "AccountName", "CashAccountId", query, "SSIDB");
         }
+
 
         public bool PaymentJournalPosting(int custPayId, int invoiceId)
         {
@@ -397,7 +535,8 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
             aSqlParameterList.Add(new SqlParameter("@CustPayId", custPayId));
             aSqlParameterList.Add(new SqlParameter("@InvoiceId", invoiceId));
 
-            return aCommonInternalDal.UpdateAction("sp_CustomerPaymentPosting", aSqlParameterList);
+            return aCommonInternalDal.UpdateAction("sp_Sales_CustomerPaymentPosting", aSqlParameterList);
+            //return aCommonInternalDal.UpdateAction("sp_CustomerPaymentPosting", aSqlParameterList);
         }
 
         //private bool DeletePaymentMasterInfo(CustPayment aCustPayment)
@@ -409,6 +548,25 @@ WHERE BatchId='"+batchId+"' AND DeliveryTpGrandTotal > 0 AND (PaymentStatus IS N
         {
             string query = @"DELETE FROM tblCustomerPay WHERE CustPayId =  " + aCustPayment.CustPayId;
             return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
+        }
+
+        public DataTable GetInvoiceExistOrNot(int invoiceId)
+        {
+            string query = @"SELECT * FROM tblCustPayDetail AS PD
+                             LEFT JOIN tblCustomerPay AS CP ON PD.CustPayId = CP.CustPayId
+                             WHERE DATEDIFF(MINUTE, ProcessTime, GETDATE()) <= 5 AND InvoiceId IS NOT NULL AND PaymentDate BETWEEN '" + DateTime.Today + "' AND '" + DateTime.Today + "' AND InvoiceId = " + invoiceId;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+
+        public DataTable CheckCustomerPaymentExistOrNot(CustPaymentDetail aCustPayment)
+        {
+            string query = @"SELECT CONVERT(DATE,PaymentDate) FROM dbo.tblCustPayDetail AS PD
+            LEFT JOIN tblCustomerPay AS PM ON PD.CustPayId = PM.CustPayId
+            WHERE CONVERT(DATE,PaymentDate) = CONVERT(DATE,GETDATE()) AND PD.InvoiceId='" + aCustPayment.InvoiceId + "' AND PD.PaymentAmount='" + aCustPayment.PaymentAmount + "'";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
     }
 }

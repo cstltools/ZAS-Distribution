@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master"
+<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master"
     AutoEventWireup="true" CodeFile="NationalStockReport.aspx.cs" Inherits="SInventory_UI_NationalStockReport" %>
 
 <%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.0.20820.28364, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
@@ -63,7 +63,8 @@
                             <br />
                             <asp:Button ID="reportButton" runat="server" CssClass="button-padding-right" BackColor="#cc6600"
                                 Text="View Report" OnClick="reportButton_OnClick" />
-                            <%--<asp:Button ID="excelButton" runat="server" BackColor="#006666" Text="Excel" OnClick="excelButton_OnClick" />--%>
+                            <asp:Button ID="htmlReportButton" runat="server" CssClass="button-padding-right" BackColor="#006699"
+                                Text="HTML Preview" OnClick="htmlReportButton_OnClick" Style="margin-left: 10px;" />
                         </td>
                         <td width="13%" class="TDLeft">
                         </td>

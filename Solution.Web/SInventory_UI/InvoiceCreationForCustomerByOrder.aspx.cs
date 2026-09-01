@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Library.BLL.SInventory_BLL;
+using Library.CrystalReports.SInventory_DS;
 using Library.DAO.SInventory_Entities;
 
 public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Page
@@ -78,13 +79,13 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
             return false;
         }
 
-         DataTable aTable = aInvoiceBll.GetFinancialYearInfo(invDateTextBox.Text, hdComUnitId.Value);
+         //DataTable aTable = aInvoiceBll.GetFinancialYearInfo(invDateTextBox.Text, hdComUnitId.Value);
 
-         if (aTable.Rows.Count == 0)
-          {
-                showMessageBox("You should declare financial year !!");
-                return false;
-          }
+         //if (aTable.Rows.Count == 0)
+         // {
+         //       showMessageBox("You should declare financial year !!");
+         //       return false;
+         // }
             
 
         if (Convert.ToDecimal(tpTptalTextBox.Text.Trim()) == 0)
@@ -210,7 +211,10 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
         {
             string ProductCode = ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text;
-            int Qty = Convert.ToInt32(((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("qtyTextBox")).Text);
+            int Qty = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("qtyTextBox")).Text)
+     ? Convert.ToInt32(((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("qtyTextBox")).Text.Trim())
+     : 0;
+
             if (ProductCode == "AID01" && Qty >= 2)
             {
                 return true;
@@ -238,328 +242,197 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
     public void LoadAllDataByOrder(string orderId)
     {
         if (OrderExists(orderHiddenField.Value) == false)
-            {
-        OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
-        DataTable aTable = new DataTable();
-        aTable = aOrderInfoBll.LoadOrderWithDetail(orderId);
-        //deliverypersonMobileTextBox.Text = aTable.Rows[0]["PhoneNo"].ToString();
-        //deliverypersonNameTextBox.Text = aTable.Rows[0]["DeliveryManName"].ToString();
-        orderNoTextBox.Text = aTable.Rows[0]["OrderCode"].ToString();
-        orderIdHiddenField.Value = aTable.Rows[0]["OrderId"].ToString();
-        orderDateTextBox.Text = Convert.ToDateTime(aTable.Rows[0]["SubmissionDate"].ToString()).ToString("dd-MMM-yyyy");
-        GetCustInfo(aTable.Rows[0]["CustomerCode"].ToString());
-        comUnitNameTextBox.Text = aTable.Rows[0]["ComUnitName"].ToString();
-        hdComUnitId.Value = aTable.Rows[0]["ComUnitId"].ToString();
-        isVatApplicable.Value = aTable.Rows[0].Field<bool>("IsVatApplicable").ToString(CultureInfo.InvariantCulture);
-        hdgrossValue.Value = aTable.Rows[0].Field<Decimal>("GrossValue").ToString(CultureInfo.InvariantCulture);
-
-
-        //New
-
-        miaCodeTextBox.Text = aTable.Rows[0]["MIOCode"].ToString();
-        miaNameTextBox.Text = aTable.Rows[0]["MIOName"].ToString();
-        hdMiaId.Value = aTable.Rows[0]["MIOId"].ToString();
-
-        decimal discountPerRow = 0;
-        decimal percentagePerRow = 0;
-        if (aTable.Rows.Count > 0)
         {
-            DataTable fixedDiscount = aInvoiceBll.GetFixedDiscount(hdCustomerMasterId.Value, hdComUnitId.Value);
+            OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
+            DataTable aTable = new DataTable();
 
-            if (fixedDiscount.Rows.Count > 0)
+            aTable = aOrderInfoBll.LoadOrderWithDetail(orderId);
+
+            orderNoTextBox.Text = aTable.Rows[0]["OrderCode"].ToString();
+            orderIdHiddenField.Value = aTable.Rows[0]["OrderId"].ToString();
+            orderDateTextBox.Text = Convert.ToDateTime(aTable.Rows[0]["SubmissionDate"].ToString()).ToString("dd-MMM-yyyy");
+            GetCustInfo(aTable.Rows[0]["CustomerCode"].ToString());
+            comUnitNameTextBox.Text = aTable.Rows[0]["ComUnitName"].ToString();
+            hdComUnitId.Value = aTable.Rows[0]["ComUnitId"].ToString();
+            isVatApplicable.Value = aTable.Rows[0].Field<bool>("IsVatApplicable").ToString(CultureInfo.InvariantCulture);
+            hdgrossValue.Value = aTable.Rows[0].Field<Decimal>("GrossValue").ToString(CultureInfo.InvariantCulture);
+
+            miaCodeTextBox.Text = aTable.Rows[0]["MIOCode"].ToString();
+            miaNameTextBox.Text = aTable.Rows[0]["MIOName"].ToString();
+            hdMiaId.Value = aTable.Rows[0]["MIOId"].ToString();
+
+            decimal discountPerRow = 0;
+            decimal percentagePerRow = 0;
+
+            if (aTable.Rows.Count > 0)
             {
-                percentagePerRow =  fixedDiscount.Rows[0].Field<decimal>("DiscountParcentage") /  aTable.Rows.Count;
-                discountPerRow = (Convert.ToDecimal(hdgrossValue.Value) * fixedDiscount.Rows[0].Field<decimal>("DiscountParcentage") / 100) / aTable.Rows.Count; 
+                DataTable fixedDiscount = aInvoiceBll.GetFixedDiscount(hdCustomerMasterId.Value, hdComUnitId.Value);
+                if (fixedDiscount.Rows.Count > 0)
+                {
+                    percentagePerRow = fixedDiscount.Rows[0].Field<decimal>("DiscountParcentage") / aTable.Rows.Count;
+                    discountPerRow = (Convert.ToDecimal(hdgrossValue.Value) * fixedDiscount.Rows[0].Field<decimal>("DiscountParcentage") / 100) / aTable.Rows.Count;
+                }
             }
-            
-        }
-        
 
-        for (int i = 0; i < aTable.Rows.Count; i++)
-        {
-            AddFunc();
-            ((HiddenField) gridLineItemGridView.Rows[i].Cells[1].FindControl("orderdetailIdHiddenField")).Value =
-                aTable.Rows[i]["OrderDetailId"].ToString();
-            GetProduct(i, aTable.Rows[i]["ProductCode"].ToString());
-            /////SMC Low Stock Method /////
-            decimal cstock = 0;
+            // Add Product
 
-            if (((TextBox) gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text != "")
+            for (int i = 0; i < aTable.Rows.Count; i++)
             {
-                cstock =
-                    Convert.ToDecimal(
-                        ((TextBox) gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text);
+                AddFunc();
+                ((HiddenField)gridLineItemGridView.Rows[i].Cells[1].FindControl("orderdetailIdHiddenField")).Value =
+                    aTable.Rows[i]["OrderDetailId"].ToString();
+
+                GetProduct(i, aTable.Rows[i]["ProductCode"].ToString());
+
+                decimal cstock = 0;
+                if (((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text != "")
+                {
+                    cstock = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text);
+                }
+
+                if (cstock < Convert.ToDecimal(aTable.Rows[i]["Quantity"].ToString()))
+                {
+                    gridLineItemGridView.Rows[i].BackColor = Color.Red;
+                    GetQty(cstock, i, discountPerRow, percentagePerRow);
+                }
+                else
+                {
+                    GetQty(Convert.ToDecimal(aTable.Rows[i]["Quantity"].ToString()), i, discountPerRow, percentagePerRow);
+                }
             }
-           
-            if (cstock < Convert.ToDecimal(aTable.Rows[i]["Quantity"].ToString()))
+
+            AddCampaignProduct();
+
+            decimal totalprice = Convert.ToDecimal(tpTptalTextBox.Text);
+            decimal percentage = 0;
+
             {
-                GetQty(cstock, i, discountPerRow, percentagePerRow);
+                DataTable dttradepolicy = aOrderInfoBll.GetTradeTerm(totalprice.ToString());
+                if (dttradepolicy.Rows.Count > 0)
+                {
+                    percentage = Convert.ToDecimal(dttradepolicy.Rows[0]["DiscountPerc"].ToString());
+                }
             }
-            ///////////////////
-            else
+
+            decimal totaldiscount = 0;
+            totaldiscount = (percentage * Convert.ToDecimal(tpTptalTextBox.Text)) / 100;
+
+            disTotalTextBox.Text = (string.IsNullOrEmpty(disTotalTextBox.Text) ? 0 : Convert.ToDecimal(disTotalTextBox.Text) + totaldiscount).ToString();
+
+            for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
             {
-                GetQty(Convert.ToDecimal(aTable.Rows[i]["Quantity"].ToString()), i, discountPerRow, percentagePerRow);    
+                ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text = "0.00";
+
+                decimal tqty = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text)
+                    ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text.Trim())
+                    : 0m;
+
+                decimal cstock = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text)
+                    ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text.Trim())
+                    : 0m;
+
+                if (cstock == 0 || cstock < tqty)
+                {
+                    gridLineItemGridView.Rows[i].BackColor = Color.Red;
+                    GetQty(cstock, i, 0, 0);
+                }
+                else
+                {
+                    DataTable dtproductvat = aOrderInfoBll.ProductVat(
+                        ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text);
+
+                    DataTable dtdiscount = aOrderInfoBll.ProductDiscount(
+                        ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text,
+                        hdCustomerMasterId.Value, invDateTextBox.Text);
+
+                    decimal percamount = 0;
+                    if (dtdiscount.Rows.Count > 0)
+                    {
+                        percamount = Convert.ToDecimal(dtdiscount.Rows[0]["DiscountPercentage"].ToString());
+                    }
+
+                    decimal totalamount = Convert.ToDecimal(tpTptalTextBox.Text);
+
+                    decimal productamount = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text)
+                        ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())
+                        : 0m;
+
+                    decimal productperc = 0;
+                    decimal mainper = (percentage * productperc) / 100;
+
+                    if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "AID01" && ChkProductOffer() == true)
+                    {
+                        ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text = 0.ToString();
+                        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text = 0.ToString("F");
+                    }
+
+                    decimal withdiscount = (
+                        !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text)
+                            ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())
+                            : 0m
+                    )
+                    -
+                    (
+                        !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)
+                            ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text.Trim())
+                            : 0m
+                    )
+                    -
+                    (
+                        !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text)
+                            ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text.Trim())
+                            : 0m
+                    );
+
+                    TextBox tpVatTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
+                    TextBox npTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
+
+                    decimal tp = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text)
+                        ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())
+                        : 0m;
+
+                    decimal dpAmt = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)
+                        ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text.Trim())
+                        : 0m;
+
+                    decimal sd = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text)
+                        ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text.Trim())
+                        : 0m;
+
+                    decimal tpVat = !string.IsNullOrEmpty(tpVatTextBox.Text)
+                        ? Convert.ToDecimal(tpVatTextBox.Text.Trim())
+                        : 0m;
+
+                    npTextBox.Text = (tp - dpAmt - sd + tpVat).ToString();
+
+                    TotalValueCalculation();
+                }
             }
-            
 
-        }
-                decimal totalprice = Convert.ToDecimal(tpTptalTextBox.Text);
+            if (B() == true)
+            {
+                addImageButton_Click(this, null);
+            }
 
-                //if (ChkProductOffer2FlexidolParagesic() == true && ChkProductOfferFlexidolParagesic() == true)
-                //{
-                //    for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
-                //    {
-                //        string ProductCode1 =
-                //            ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text;
-                //        int Qty1 =
-                //            Convert.ToInt32(
-                //                ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("qtyTextBox")).Text);
+            GetDiscounttotalValue();
 
-                //        string ProductCode2 =
-                //            ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text;
-
-
-                //        int Qty2 =
-                //            Convert.ToInt32(
-                //                ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("qtyTextBox")).Text);
-
-                //        if (ChkProductOfferFlexidolParagesic() == true && ProductCode1 == "AID01")
-                //        {
-                //            totalprice -=
-                //                Convert.ToDecimal(
-                //                    ((TextBox)gridLineItemGridView.Rows[i].FindControl("tpTextBox")).Text);
-                //        }
-                //        if (ChkProductOffer2FlexidolParagesic() == true && ProductCode2 == "ANA02")
-                //        {
-                //            totalprice -=
-                //                Convert.ToDecimal(
-                //                    ((TextBox)gridLineItemGridView.Rows[i].FindControl("tpTextBox")).Text);
-                //        }
-                //    }
-                //}
-                if (ChkProductOffer() == true)
+            if (gridLineItemGridView.Rows.Count > 0)
+            {
+                if (Session["LoginName"].ToString() == "rezaul")
                 {
                     for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
                     {
-                        string ProductCode1 =
-                            ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text;
-
-
-                        if (ChkProductOffer() == true && ProductCode1 == "AID01")
-                        {
-                            totalprice -=
-                                Convert.ToDecimal(
-                                    ((TextBox)gridLineItemGridView.Rows[i].FindControl("tpTextBox")).Text);
-                        }
+                        ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("sdTextBox")).ReadOnly = false;
                     }
                 }
-                // Campaing 2
-                decimal percentage = 0;
-
-              
-                
-                    //DataTable dtFixedCustomer = aOrderInfoBll.GetFixedCustomer(aTable.Rows[0]["CustomerCode"].ToString());
-                    //if (Convert.ToBoolean(dtFixedCustomer.Rows[0]["FixedCustomer"]) == true)
-                    //{
-                    //    //2
-                    //    DataTable dttradepolicy = aOrderInfoBll.GetTradeTerm(totalprice.ToString());
-                    //    if (dttradepolicy.Rows.Count > 0)
-                    //    {
-                    //        percentage = 2;
-                    //    }
-                    //}
-                    //else
-                    {
-                        //1
-                        DataTable dttradepolicy = aOrderInfoBll.GetTradeTerm(totalprice.ToString());
-                        if (dttradepolicy.Rows.Count > 0)
-                        {
-                            percentage = Convert.ToDecimal(dttradepolicy.Rows[0]["DiscountPerc"].ToString());
-                        }
-                    }
-                
-              
-                // Campaing 
-
-
-
-
-
-
-        decimal totaldiscount = 0;
-        totaldiscount = (percentage*Convert.ToDecimal(tpTptalTextBox.Text))/100;
-            disTotalTextBox.Text =(string.IsNullOrEmpty(disTotalTextBox.Text)?0:Convert.ToDecimal(disTotalTextBox.Text)+ totaldiscount).ToString();
-        for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
-        {
-            ((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text = "0.00";
-            decimal cstock = 0;
-            decimal tqty = 0;
-            tqty = Convert.ToDecimal(((TextBox) gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text);
-            cstock =
-                Convert.ToDecimal(
-                    ((TextBox) gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text);
-            DataTable dtdata = aInvoiceBll.LoadProductQty(orderIdHiddenField.Value,
-                ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text);
-
-            if (!string.IsNullOrEmpty(dtdata.Rows[0][0].ToString()))
-            {
-                tqty = Convert.ToDecimal(dtdata.Rows[0][0].ToString());
             }
-            else
-            {
-                tqty = Convert.ToDecimal(0);
-            }
-
-            
-            if (cstock < tqty)
-            {
-                gridLineItemGridView.Rows[i].BackColor = Color.Red;
-                /////////SMC Low Order Method//////////
-                //if (cstock != 0)
-                {
-                    GetQty(cstock, i,0,0);
-                }
-                ///////////////////////
-            }
-            //////// SMC Low Stock Method////////
-            //else
-            /////////////////
-            {
-                DataTable dtproductvat =
-                    aOrderInfoBll.ProductVat(
-                        ((TextBox) gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text);
-                DataTable dtdiscount =
-                   aOrderInfoBll.ProductDiscount(
-                       ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text,
-                       hdCustomerMasterId.Value, invDateTextBox.Text);
-                decimal percamount = 0;
-                if (dtdiscount.Rows.Count > 0)
-                {
-                    percamount = Convert.ToDecimal(dtdiscount.Rows[0]["DiscountPercentage"].ToString());
-                }
-                decimal totalamount = 0;
-                totalamount = Convert.ToDecimal(tpTptalTextBox.Text);
-                decimal productamount = 0;
-                productamount =
-                    Convert.ToDecimal(
-                        ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim());
-                decimal productperc = 0;
-                //productperc = (productamount*100)/totalamount;
-                decimal mainper = 0;
-                mainper = (percentage*productperc)/100;
-
-
-
-         ////Esomimum Offer S      if (ChkProductOffer2FlexidolParagesic() == true && ChkProductOfferFlexidolParagesic() == true)
-                //if (ChkProductOffer2FlexidolParagesic() == true && ChkProductOfferFlexidolParagesic() == true
-                //    && ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "AID01")
-                //{
-
-                //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text =
-                //  0.ToString();
-                //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                //       0.ToString("F");
-                //}
-
-                //else if (ChkProductOffer2FlexidolParagesic() == true && ChkProductOfferFlexidolParagesic() == true
-                //  && ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "ANA02")
-                //{
-
-                //    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text =
-                //  0.ToString();
-                //    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                //       0.ToString("F");
-                //}
-         //       //Esomimum Offer End
-
-
-         //       // Resectin FOC Offer Discount Start//
-                if (((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "AID01" && ChkProductOffer() == true)
-                {
-
-                    ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text =
-                  0.ToString();
-                    ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-                       0.ToString("F");
-                }
-                // Resectin FOC Offer Discount Start end//
-               //else
-               // {
-               //     ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text =
-               //        percentage.ToString();
-               //     ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text =
-               //         (Convert.ToDecimal(
-               //             ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) *
-               //          (percentage / 100)).ToString("F");
-               // }
-                // Resectin FOC Offer Discount End//
-
-                //////////Modified Version/////////////
-                //decimal vat = 0;
-                //vat = Convert.ToDecimal(dtproductvat.Rows[0]["VATPercentage"].ToString());
-                //((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                //    (Convert.ToDecimal(((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text)*
-                //     (percamount/100)).ToString();
-
-                decimal withdiscount = 0;
-                withdiscount =
-                    (Convert.ToDecimal(
-                        ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                     Convert.ToDecimal(
-                         (((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text)) -
-                     Convert.ToDecimal(((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text));
-                decimal vatamount = 0;
-                //vatamount = (Convert.ToDecimal(
-                //    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim())*vat)/100;
-                TextBox tpVatTextBox = (TextBox) gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox");
-                //tpVatTextBox.Text = vatamount.ToString("F");
-                //((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text =
-                //    (Convert.ToDecimal(((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text)*
-                //     (percamount/100)).ToString();
-
-                TextBox npTextBox = (TextBox) gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox");
-                npTextBox.Text = ((Convert.ToDecimal(
-                    ((TextBox) gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim()) -
-                                   Convert.ToDecimal(
-                                       ((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox"))
-                                           .Text.Trim()) -
-                                   Convert.ToDecimal(
-                                       ((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text)) +
-                                  Convert.ToDecimal(tpVatTextBox.Text)).ToString();
-
-
-                TotalValueCalculation();
-            }
-        }
-            //FOC Applied Start//
-        if (B() == true)
-        {
-            addImageButton_Click(this, null);
-        }
-        //FOC Applied End//
-
-        // GetOrderDetailValue(orderId);
-         GetDiscounttotalValue();
-
-            if (gridLineItemGridView.Rows.Count > 0)
-         {
-             if (Session["LoginName"].ToString() == "rezaul")
-             {
-                 for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
-                 {
-                     ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("sdTextBox")).ReadOnly = false;
-                 }
-             }    
-         }
-
-         
-        
         }
         else
         {
             showMessageBox("Order Information already Exists !!");
         }
     }
+
 
     private void GetOrderDetailValue(string orderId)
     {
@@ -581,7 +454,10 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
 
         for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
         {
-            tqty = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text);
+             tqty = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text)
+    ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text.Trim())
+    : 0m;
+
 
             //if (((TextBox) gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text == "FGD02" && tqty >= 3)
             //{
@@ -606,7 +482,11 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
         {
             string ProductCode = ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text;
-            int Qty = Convert.ToInt32(((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("qtyTextBox")).Text);
+            
+            int Qty = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("qtyTextBox")).Text)
+            ? Convert.ToInt32(((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("qtyTextBox")).Text.Trim())
+            : 0;
+
             if (ProductCode == "AID01" && Qty >= 2)
             {
 
@@ -1030,6 +910,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
     private void GetProduct(int rowindex, string productCode)
     {
         DataTable aDataTable = new DataTable();
+
         if (!string.IsNullOrEmpty(productCode))
         {
             if (ProductCodeValidation(productCode, rowindex) == true)
@@ -1136,111 +1017,106 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
 
         ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[13].FindControl("tQtyTextBox")).Text = qtyTextBox1.Text.Trim();
 
-        //Campaign Code
-
-        string ProductCode = ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[1].FindControl("codeTextBox")).Text;
-        int Qty = Convert.ToInt32(((TextBox)gridLineItemGridView.Rows[rowindex].Cells[1].FindControl("qtyTextBox")).Text);
-
-        DataTable aTable = aInvoiceBll.GetBonusCampaignInfo(ProductCode, Convert.ToDateTime(invDateTextBox.Text), DateTime.Now.TimeOfDay, Qty);
-
-        if (aTable.Rows.Count > 0)
-        {
-            if (Convert.ToBoolean(aTable.Rows[0]["IsSame"]))
-            {
-                ((TextBox) gridLineItemGridView.Rows[rowindex].Cells[12].FindControl("bQtyTextBox")).Text =
-                    aTable.Rows[0]["BonusQty"].ToString();
-                TotalQtyCalulation(rowindex);
-            }
-            else
-            {
-                //DataTable aDataTable = new DataTable();
-                //aDataTable.Columns.Add("SL");
-                //aDataTable.Columns.Add("ProductCode");
-                //aDataTable.Columns.Add("ProductName");
-
-                //aDataTable.Columns.Add("StockQty");
-                //aDataTable.Columns.Add("UnitPrice");
-                //aDataTable.Columns.Add("UnitVAT");
-
-                //aDataTable.Columns.Add("Quantity");
-
-                //aDataTable.Columns.Add("TotalPrice");
-                //aDataTable.Columns.Add("VAT");
-
-                //aDataTable.Columns.Add("DiscountPercentage");
-                //aDataTable.Columns.Add("DiscountAmount");
-
-                //aDataTable.Columns.Add("NetPrice");
-                //aDataTable.Columns.Add("SpecialAmount");
-
-                //aDataTable.Columns.Add("BonusQty");
-                //aDataTable.Columns.Add("TotalQty");
-                //aDataTable.Columns.Add("OrderDetailsId");
-                //DataRow dataRow;
-
-                //if (gridLineItemGridView.Rows.Count > 0)
-                //{
-                //    for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
-                //    {
-                //        dataRow = aDataTable.NewRow();
-
-                //        dataRow["SL"] = Convert.ToString(i + 1);
-                //        dataRow["ProductCode"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text.Trim();
-                //        dataRow["OrderDetailsId"] = ((HiddenField)gridLineItemGridView.Rows[i].Cells[1].FindControl("orderdetailIdHiddenField")).Value.Trim();
-                //        dataRow["SpecialAmount"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text.Trim();
-                //        dataRow["ProductName"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[2].FindControl("nameTextBox")).Text.Trim();
-                //        dataRow["StockQty"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text.Trim();
-                //        dataRow["UnitPrice"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[4].FindControl("unitPriceTextBox")).Text.Trim();
-                //        dataRow["UnitVAT"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[5].FindControl("upVatTextBox")).Text.Trim(); ;
-                //        dataRow["Quantity"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[6].FindControl("qtyTextBox")).Text.Trim();
-                //        dataRow["TotalPrice"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim();
-                //        dataRow["VAT"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox")).Text.Trim();
-                //        dataRow["DiscountPercentage"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text.Trim();
-                //        dataRow["DiscountAmount"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text.Trim();
-                //        dataRow["NetPrice"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox")).Text.Trim();
-                //        dataRow["BonusQty"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[12].FindControl("bQtyTextBox")).Text.Trim();
-                //        dataRow["TotalQty"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[13].FindControl("tQtyTextBox")).Text.Trim();
-                //        aDataTable.Rows.Add(dataRow);
-                //    }
-                //}
-
-                //int sl = aDataTable.Rows.Count;
-                //dataRow = aDataTable.NewRow();
+        
 
 
-                //DataTable csTable = aInvoiceBll.ProductInfo(hdComUnitId.Value, aTable.Rows[0]["BonusProductCode"].ToString());
+        //if (aTable.Rows.Count > 0)
+        //{
+        //    if (Convert.ToBoolean(aTable.Rows[0]["IsSame"]))
+        //    {
+        //        ((TextBox) gridLineItemGridView.Rows[rowindex].Cells[12].FindControl("bQtyTextBox")).Text = aTable.Rows[0]["BonusQty"].ToString();
+        //        TotalQtyCalulation(rowindex);
+        //    }
+        //    else
+        //    {
+        //        DataTable aDataTable = new DataTable();
+        //        aDataTable.Columns.Add("SL");
+        //        aDataTable.Columns.Add("ProductCode");
+        //        aDataTable.Columns.Add("ProductName");
 
-                //dataRow["SL"] = Convert.ToString(sl + 1);
-                //dataRow["ProductCode"] = aTable.Rows[0]["BonusProductCode"];
-                //dataRow["OrderDetailsId"] = 0;
-                //dataRow["ProductName"] = aTable.Rows[0]["ProductName"];
-                //dataRow["StockQty"] = csTable.Rows[0]["StockQty"];
-                //dataRow["UnitPrice"] = 0;
-                //dataRow["UnitVAT"] = 0;
-                //dataRow["Quantity"] = 0;
-                //dataRow["TotalPrice"] = 0;
-                //dataRow["VAT"] = 0;
-                //dataRow["DiscountPercentage"] = 0;
-                //dataRow["DiscountAmount"] = 0;
-                //dataRow["SpecialAmount"] = 0;
-                //dataRow["NetPrice"] = 0;
-                //dataRow["BonusQty"] = aTable.Rows[0]["BonusQty"].ToString();
-                //dataRow["TotalQty"] = aTable.Rows[0]["BonusQty"].ToString();
-                //aDataTable.Rows.Add(dataRow);
+        //        aDataTable.Columns.Add("StockQty");
+        //        aDataTable.Columns.Add("UnitPrice");
+        //        aDataTable.Columns.Add("UnitVAT");
 
-                //gridLineItemGridView.DataSource = null;
-                //gridLineItemGridView.DataBind();
-                //gridLineItemGridView.DataSource = aDataTable;
-                //gridLineItemGridView.DataBind();
+        //        aDataTable.Columns.Add("Quantity");
 
-                ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[12].FindControl("bQtyTextBox")).Text = "0";
-            }
+        //        aDataTable.Columns.Add("TotalPrice");
+        //        aDataTable.Columns.Add("VAT");
+
+        //        aDataTable.Columns.Add("DiscountPercentage");
+        //        aDataTable.Columns.Add("DiscountAmount");
+
+        //        aDataTable.Columns.Add("NetPrice");
+        //        aDataTable.Columns.Add("SpecialAmount");
+
+        //        aDataTable.Columns.Add("BonusQty");
+        //        aDataTable.Columns.Add("TotalQty");
+        //        aDataTable.Columns.Add("OrderDetailsId");
+        //        DataRow dataRow;
+
+        //        if (gridLineItemGridView.Rows.Count > 0)
+        //        {
+        //            for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
+        //            {
+        //                dataRow = aDataTable.NewRow();
+
+        //                dataRow["SL"] = Convert.ToString(i + 1);
+        //                dataRow["ProductCode"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text.Trim();
+        //                dataRow["OrderDetailsId"] = ((HiddenField)gridLineItemGridView.Rows[i].Cells[1].FindControl("orderdetailIdHiddenField")).Value.Trim();
+        //                dataRow["SpecialAmount"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text.Trim();
+        //                dataRow["ProductName"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[2].FindControl("nameTextBox")).Text.Trim();
+        //                dataRow["StockQty"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text.Trim();
+        //                dataRow["UnitPrice"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[4].FindControl("unitPriceTextBox")).Text.Trim();
+        //                dataRow["UnitVAT"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[5].FindControl("upVatTextBox")).Text.Trim(); ;
+        //                dataRow["Quantity"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[6].FindControl("qtyTextBox")).Text.Trim();
+        //                dataRow["TotalPrice"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim();
+        //                dataRow["VAT"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox")).Text.Trim();
+        //                dataRow["DiscountPercentage"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text.Trim();
+        //                dataRow["DiscountAmount"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text.Trim();
+        //                dataRow["NetPrice"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox")).Text.Trim();
+        //                dataRow["BonusQty"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[12].FindControl("bQtyTextBox")).Text.Trim();
+        //                dataRow["TotalQty"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[13].FindControl("tQtyTextBox")).Text.Trim();
+        //                aDataTable.Rows.Add(dataRow);
+        //            }
+        //        }
+
+        //        int sl = aDataTable.Rows.Count;
+        //        dataRow = aDataTable.NewRow();
+
+
+        //        DataTable csTable = aInvoiceBll.ProductInfo(hdComUnitId.Value, aTable.Rows[0]["BonusProductCode"].ToString());
+
+        //        dataRow["SL"] = Convert.ToString(sl + 1);
+        //        dataRow["ProductCode"] = aTable.Rows[0]["BonusProductCode"];
+        //        dataRow["OrderDetailsId"] = 0;
+        //        dataRow["ProductName"] = aTable.Rows[0]["ProductName"];
+        //        dataRow["StockQty"] = csTable.Rows[0]["StockQty"];
+        //        dataRow["UnitPrice"] = 0;
+        //        dataRow["UnitVAT"] = 0;
+        //        dataRow["Quantity"] = 0;
+        //        dataRow["TotalPrice"] = 0;
+        //        dataRow["VAT"] = 0;
+        //        dataRow["DiscountPercentage"] = 0;
+        //        dataRow["DiscountAmount"] = 0;
+        //        dataRow["SpecialAmount"] = 0;
+        //        dataRow["NetPrice"] = 0;
+        //        dataRow["BonusQty"] = aTable.Rows[0]["BonusQty"].ToString();
+        //        dataRow["TotalQty"] = aTable.Rows[0]["BonusQty"].ToString();
+        //        aDataTable.Rows.Add(dataRow);
+
+        //        gridLineItemGridView.DataSource = null;
+        //        gridLineItemGridView.DataBind();
+        //        gridLineItemGridView.DataSource = aDataTable;
+        //        gridLineItemGridView.DataBind();
+
+        //        ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[12].FindControl("bQtyTextBox")).Text = "0";
+        //    }
             
-        }
-        else
-        {
-            ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[12].FindControl("bQtyTextBox")).Text = "0";
-        }
+        //}
+        //else
+        //{
+        //    ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[12].FindControl("bQtyTextBox")).Text = "0";
+        //}
 
 
         
@@ -1310,6 +1186,183 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         TotalValueCalculation();
     }
 
+
+
+    private void AddCampaignProduct()
+    {
+        for (int rowindex = 0; rowindex < gridLineItemGridView.Rows.Count; rowindex++)
+        {
+            string productCode = ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[1].FindControl("codeTextBox")).Text;
+            int qty;
+
+            try
+            {
+                qty = Convert.ToInt32(((TextBox)gridLineItemGridView.Rows[rowindex].Cells[1].FindControl("qtyTextBox")).Text);
+            }
+            catch
+            {
+                continue; // Skip this row if quantity is invalid
+            }
+
+            DataTable aTable = aInvoiceBll.GetBonusCampaignInfoByCompany(productCode, Convert.ToDateTime(invDateTextBox.Text), orderIdHiddenField.Value);
+
+            if (aTable.Rows.Count > 0)
+            {
+                // 🟡 Instead of DB, read orderDetails from grid (no `out`)
+                DataTable orderDetails = new DataTable();
+                orderDetails.Columns.Add("ProductId", typeof(int));
+                orderDetails.Columns.Add("Quantity", typeof(decimal));
+
+                for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
+                {
+                    TextBox codeTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox");
+                    TextBox qtyTextBox = (TextBox)gridLineItemGridView.Rows[i].Cells[6].FindControl("qtyTextBox");
+
+                    if (codeTextBox != null && qtyTextBox != null)
+                    {
+                        string code = codeTextBox.Text.Trim();
+                        string quantity = qtyTextBox.Text.Trim();
+
+                        try
+                        {
+                            int pid = Convert.ToInt32(code);
+                            decimal q = Convert.ToDecimal(quantity);
+
+                            DataRow dr = orderDetails.NewRow();
+                            dr["ProductId"] = pid;
+                            dr["Quantity"] = q;
+                            orderDetails.Rows.Add(dr);
+                        }
+                        catch
+                        {
+                            // Ignore invalid rows
+                        }
+                    }
+                }
+
+                int campaignId = Convert.ToInt32(aTable.Rows[0]["CampgainMasterId"]);
+                DataTable campaignDetails = aInvoiceBll.GetCampaignDetailsByCampaignId(campaignId);
+
+                bool allProductsPresent = true;
+                List<decimal> setCounts = new List<decimal>();
+
+                foreach (DataRow campaignRow in campaignDetails.Rows)
+                {
+                    int pointProductId = Convert.ToInt32(campaignRow["ProductCode"]);
+                    decimal requiredQty = Convert.ToDecimal(campaignRow["Quantity"]);
+
+                    var matchedRows = orderDetails.AsEnumerable()
+                        .Where(r => Convert.ToInt32(r["ProductId"]) == pointProductId)
+                        .ToList();
+
+                    if (!matchedRows.Any())
+                    {
+                        allProductsPresent = false;
+                        break;
+                    }
+
+                    decimal totalOrderedQty = matchedRows.Sum(r => Convert.ToDecimal(r["Quantity"]));
+                    decimal setCount = Math.Floor(totalOrderedQty / requiredQty);
+
+                    if (setCount <= 0)
+                    {
+                        allProductsPresent = false;
+                        break;
+                    }
+
+                    setCounts.Add(setCount);
+                }
+
+                if (allProductsPresent)
+                {
+                    decimal bonusPerSet = Convert.ToDecimal(aTable.Rows[0]["BonusProductQuantity"]);
+                    decimal totalBonusQty = setCounts.Min() * bonusPerSet;
+
+                    DataTable aDataTable = new DataTable();
+                    aDataTable.Columns.Add("SL");
+                    aDataTable.Columns.Add("ProductCode");
+                    aDataTable.Columns.Add("ProductName");
+                    aDataTable.Columns.Add("StockQty");
+                    aDataTable.Columns.Add("UnitPrice");
+                    aDataTable.Columns.Add("UnitVAT");
+                    aDataTable.Columns.Add("Quantity");
+                    aDataTable.Columns.Add("TotalPrice");
+                    aDataTable.Columns.Add("VAT");
+                    aDataTable.Columns.Add("DiscountPercentage");
+                    aDataTable.Columns.Add("DiscountAmount");
+                    aDataTable.Columns.Add("NetPrice");
+                    aDataTable.Columns.Add("SpecialAmount");
+                    aDataTable.Columns.Add("BonusQty");
+                    aDataTable.Columns.Add("TotalQty");
+                    aDataTable.Columns.Add("OrderDetailsId");
+
+                    for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
+                    {
+                        DataRow dataRow = aDataTable.NewRow();
+                        dataRow["SL"] = (i + 1).ToString();
+                        dataRow["ProductCode"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text.Trim();
+                        dataRow["OrderDetailsId"] = ((HiddenField)gridLineItemGridView.Rows[i].Cells[1].FindControl("orderdetailIdHiddenField")).Value.Trim();
+                        dataRow["SpecialAmount"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text.Trim();
+                        dataRow["ProductName"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[2].FindControl("nameTextBox")).Text.Trim();
+                        dataRow["StockQty"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text.Trim();
+                        dataRow["UnitPrice"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[4].FindControl("unitPriceTextBox")).Text.Trim();
+                        dataRow["UnitVAT"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[5].FindControl("upVatTextBox")).Text.Trim();
+                        dataRow["Quantity"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[6].FindControl("qtyTextBox")).Text.Trim();
+                        dataRow["TotalPrice"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[7].FindControl("tpTextBox")).Text.Trim();
+                        dataRow["VAT"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox")).Text.Trim();
+                        dataRow["DiscountPercentage"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text.Trim();
+                        dataRow["DiscountAmount"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text.Trim();
+                        dataRow["NetPrice"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox")).Text.Trim();
+                        dataRow["BonusQty"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[12].FindControl("bQtyTextBox")).Text.Trim();
+                        dataRow["TotalQty"] = ((TextBox)gridLineItemGridView.Rows[i].Cells[13].FindControl("tQtyTextBox")).Text.Trim();
+                        aDataTable.Rows.Add(dataRow);
+                    }
+
+                    string bonusProductCode = aTable.Rows[0]["BonusProductCode"].ToString();
+
+                    bool bonusExists = aDataTable.AsEnumerable()
+                        .Any(r => r["ProductCode"].ToString() == bonusProductCode && Convert.ToDecimal(r["BonusQty"]) > 0);
+
+                    if (!bonusExists)
+                    {
+                        DataTable csTable = aInvoiceBll.ProductInfo(hdComUnitId.Value, bonusProductCode);
+
+                        if (csTable != null && csTable.Rows.Count > 0)
+                        {
+                            DataRow bonusRow = aDataTable.NewRow();
+                            bonusRow["SL"] = (aDataTable.Rows.Count + 1).ToString();
+                            bonusRow["ProductCode"] = bonusProductCode;
+                            bonusRow["OrderDetailsId"] = 0;
+                            bonusRow["ProductName"] = aTable.Rows[0]["ProductName"];
+                            bonusRow["StockQty"] = csTable.Rows[0]["StockQty"];
+                            bonusRow["UnitPrice"] = 0;
+                            bonusRow["UnitVAT"] = 0;
+                            bonusRow["Quantity"] = 0;
+                            bonusRow["TotalPrice"] = 0;
+                            bonusRow["VAT"] = 0;
+                            bonusRow["DiscountPercentage"] = 0;
+                            bonusRow["DiscountAmount"] = 0;
+                            bonusRow["SpecialAmount"] = 0;
+                            bonusRow["NetPrice"] = 0;
+                            bonusRow["BonusQty"] = totalBonusQty.ToString();
+                            bonusRow["TotalQty"] = totalBonusQty.ToString();
+
+                            aDataTable.Rows.Add(bonusRow);
+                        }
+                    }
+
+                    gridLineItemGridView.DataSource = null;
+                    gridLineItemGridView.DataBind();
+                    gridLineItemGridView.DataSource = aDataTable;
+                    gridLineItemGridView.DataBind();
+
+                    ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[12].FindControl("bQtyTextBox")).Text = "0";
+                }
+            }
+        }
+    }
+
+
     private void TotalQtyCalulation(int rowindex)
     {
         ((TextBox)gridLineItemGridView.Rows[rowindex].Cells[13].FindControl("tQtyTextBox")).Text =
@@ -1348,31 +1401,71 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                     try
                     {
                         int invId = aInvoiceBll.SaveInvoiceMater(PrepareMasterData());
+
                         if (invId > 0)
                         {
                             bool dtl = SaveInvoiceDetail(invId);
+
                             if (dtl)
                             {
 
+                               
+
+                                OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
+
+                                aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
+                                Clear();
+
+                                DataTable aTable = aInvoiceBll.GetInvoiceNoById(invId);
+
+                                if (aTable.Rows.Count > 0)
+                                {
+
+                                    invTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
+                                    rptInvoiceId.Text = invId.ToString();
+
+                                    showMessageBox("Proforma Invoice Created Successsfully!!");
+                                    //ModalPopupExtender10.Show();
+
+                                    
+                                }
+
                                 // Journal Posting
 
-                                if (aInvoiceBll.PostJournal(invId))
-                                {
-                                    OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
-                                    aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
-                                    Clear();
+                                //if (aInvoiceBll.PostJournal(invId))
+                                //{
+                                //    OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
+                                //    aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
+                                //    Clear();
 
-                                    DataTable aTable = aInvoiceBll.GetInvoiceNoById(invId);
+                                //    DataTable aTable = aInvoiceBll.GetInvoiceNoById(invId);
 
-                                    if (aTable.Rows.Count > 0)
-                                    {
-                                        invoiceNoTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
-                                        showMessageBox("Proforma Invoice Created Successsfully!!");
-                                        //ModalPopupExtender10.Show();
+                                //    if (aTable.Rows.Count > 0)
+                                //    {
+                                //        invoiceNoTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
+                                //        showMessageBox("Proforma Invoice Created Successsfully!!");
+                                //        //ModalPopupExtender10.Show();
 
-                                        invTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
-                                    }
-                                }
+                                //        invTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
+                                //    aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
+                                //    Clear();
+
+                                //    DataTable aTable = aInvoiceBll.GetInvoiceNoById(invId);
+
+                                //    if (aTable.Rows.Count > 0)
+                                //    {
+                                //        invoiceNoTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
+                                //        showMessageBox("Proforma Invoice Created Successsfully!!");
+                                //        //ModalPopupExtender10.Show();
+
+                                //        invTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
+                                //    }
+                                //}
 
                             }
                             else
@@ -1520,7 +1613,10 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                 aInvoiceDetail.Quantity = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[6].FindControl("qtyTextBox")).Text);
                 aInvoiceDetail.DiscountPercentage = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text);
                 aInvoiceDetail.DiscountAmount = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text);
-                aInvoiceDetail.BonusQuantity = Convert.ToDecimal(((TextBox) gridLineItemGridView.Rows[i].Cells[12].FindControl("bQtyTextBox")).Text.Trim());
+                aInvoiceDetail.BonusQuantity = string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[12].FindControl("bQtyTextBox")).Text.Trim())
+    ? 0
+    : Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[12].FindControl("bQtyTextBox")).Text.Trim());
+
                 aInvoiceDetail.SpecialAmount = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("sdTextBox")).Text.Trim());
                 string id = ((HiddenField) gridLineItemGridView.Rows[i].Cells[1].FindControl("orderdetailIdHiddenField")).Value;
                 aInvoiceDetail.OrderDetailsId = Convert.ToInt32(id);
@@ -1550,7 +1646,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                 cstock = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text);
                 DataTable dtdata = aInvoiceBll.LoadProductQty(orderIdHiddenField.Value,
                 ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text);
-                tqty = Convert.ToDecimal(dtdata.Rows[0][0].ToString());
+                //tqty = Convert.ToDecimal(dtdata.Rows[0][0].ToString());
                 /////SMC Low Order Method /////
                 //if (tqty>cstock)
                 //{
@@ -1697,10 +1793,15 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
            
             for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
             {
-                decimal cstock = 0;
-                decimal tqty = 0;
-                tqty = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text);
-                cstock = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text);
+                decimal tqty = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text)
+     ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text.Trim())
+     : 0m;
+
+
+                decimal cstock = !string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text)
+    ? Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text.Trim())
+    : 0m;
+
                 DataTable dtdata = aInvoiceBll.LoadProductQty(orderIdHiddenField.Value,
                 ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text);
                 /////SMC Low Stock Method/////
@@ -1745,7 +1846,11 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         Session["customer"] = "";
         Session["customer"] = hdfCustomer.Value;
 
-        string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invTextBox.Text.Trim());
+        //string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invTextBox.Text.Trim());
+
+        // Create the URL for the report viewer page with encoded parameters
+        string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invTextBox.Text.Trim()) + "&invoiceId=" + Server.UrlEncode(rptInvoiceId.Text.Trim());
+
         // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
         string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
         ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
@@ -1820,7 +1925,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
 
         if (aInvoiceReturnBll.ProformaReturnPosting(invTextBox.Text.Trim()))
         {
-            if (aInvoiceReturnBll.DeleteProforma(invTextBox.Text.Trim()) > 0)
+            if (aInvoiceReturnBll.DeleteProforma(invTextBox.Text.Trim(), Session["LoginName"].ToString()) > 0)
             {
                 ModalPopupExtender10.Hide();
                 Clear();

@@ -235,10 +235,11 @@
                                     <asp:BoundField DataField="CustomerCode" HeaderText="Customer Code" />
                                     <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
                                     <asp:BoundField DataField="MarketName" HeaderText="Market" />
-                                    <%--<asp:BoundField DataField="SalesCenterCode" HeaderText="Sales Center Code" />
-                                    <asp:BoundField DataField="SalesCenterName" HeaderText="Sales Center Name" />--%>
-                                    <asp:BoundField DataField="MIOCode" HeaderText="MIO Code" />
-                                    <asp:BoundField DataField="MIOName" HeaderText="MIO Name" />
+                                    <asp:BoundField DataField="MIOCode" HeaderText="MIO" />
+                                    <%--<asp:BoundField DataField="MIOName" HeaderText="MIO Name" />--%>
+                                    <asp:BoundField DataField="Remarks" HeaderText="Remarks" />
+                                    <asp:BoundField DataField="ReceiveAble" HeaderText="Value(Due + Current Order)" />
+                                    <asp:BoundField DataField="LimitAmount" HeaderText="Credit Limit" />
                                     <asp:TemplateField HeaderText="Go To Invoice">
                                         <ItemTemplate>
                                             <asp:Button ID="gotoinvoiceButton" runat="server" Text="Go To Invoice" ToolTip="" CssClass="button"

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -21,6 +21,29 @@ namespace Library.BLL.SInventory_BLL
             aInvoiceDal.CreateConnection_DAL();
         }
 
+
+        public DataTable InvoiceDetailDataForReportBLL2(string invNo)
+        {
+            return aInvoiceDal.InvoiceDetailDataForReport2(invNo);
+        }
+public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
+        {
+            return aInvoiceDal.GroupInvoiceDetailDataForReport2(invNo);
+        }
+
+
+
+
+        public DataTable InvoiceMainDataForReportBLL2(string invNo)
+        {
+            return aInvoiceDal.InvoiceMainDataForReport2(invNo);
+        }
+        
+        
+        public DataTable GroupInvoiceMainDataForReportBLL2(string invNo)
+        {
+            return aInvoiceDal.GroupInvoiceMainDataForReport2(invNo);
+        }
         public bool SaveConsumerCustomer(ConsumerCustomerDAO aConsumerCustomerDao,out int id)
         {
             ClsPrimaryKeyFind aClsPrimaryKeyFind = new ClsPrimaryKeyFind();
@@ -133,11 +156,37 @@ namespace Library.BLL.SInventory_BLL
             aInvoiceDetail.InvoiceDetailId = aClsPrimaryKeyFind.PrimaryKeyMax("ReuturnInvoiceDetailId", "tblReturnInvoiceDetail");
             return aInvoiceDal.SaveDataForReturnInvoiceDetails(aInvoiceDetail);
         }
+
         public bool SaveDCStoreFreeze(DCStockNew aStockNew)
         {
-            aStockNew.DCStoreFreezeId = aClsPrimaryKeyFind.PrimaryKeyMax("DCStoreFreezeId", "tblDCStoreFreeze");
-            return aInvoiceDal.DCStockInDAL(aStockNew);
+            bool status = false;
+
+
+            DataTable aTable = aInvoiceDal.CheckReturnExistOrNotInFreezeStore(aStockNew);
+
+            if (aTable.Rows.Count == 0)
+            {
+                aStockNew.DCStoreFreezeId = aClsPrimaryKeyFind.PrimaryKeyMax("DCStoreFreezeId", "tblDCStoreFreeze");
+                status = aInvoiceDal.DCStockInDAL(aStockNew);
+
+                // Weighted Average (Disabled as per user request to not maintain DC Store WAC)
+
+                // if (status)
+                // {
+                //     ChalanDAL aChalanDal = new ChalanDAL();
+                //     aChalanDal.ProcessWeightedAverageFreezeStock(aStockNew.DCStoreFreezeId);
+                // }
+            }
+
+            return status;
+
         }
+
+        //public bool SaveDCStoreFreeze(DCStockNew aStockNew)
+        //{
+        //    aStockNew.DCStoreFreezeId = aClsPrimaryKeyFind.PrimaryKeyMax("DCStoreFreezeId", "tblDCStoreFreeze");
+        //    return aInvoiceDal.DCStockInDAL(aStockNew);
+        //}
         public DataTable DCInfoWithDCId(string dcstoreId)
         {
             return aInvoiceDal.DCInfoWithDCId(dcstoreId);
@@ -319,11 +368,14 @@ namespace Library.BLL.SInventory_BLL
             //aDetailForInsert.SpecialAmount = aDetailForInsert.TotalPrice * (aInvoiceDetail.SpecialAmountPer / 100);
             aDetailForInsert.SpecialAmount = aInvoiceDetail.SpecialAmount;
             
-            aDetailForInsert.TotalPriceVatAmount = 
-                aInvoiceDetail.UnitVatAmount*qty;
+            aDetailForInsert.TotalPriceVatAmount = aInvoiceDetail.UnitVatAmount*qty;
             //aDetailForInsert.SpecialAmount = (aDetailForInsert.TotalPrice + aDetailForInsert.TotalPriceVatAmount)*
             //                                 aInvoiceDetail.SpecialAmountPer;
-            aDetailForInsert.SpecialAmount = (aInvoiceDetail.SpecialAmount / aInvoiceDetail.Quantity) * aDetailForInsert.Quantity;
+
+            aDetailForInsert.SpecialAmount = aInvoiceDetail.Quantity > 0
+                                             ? (aInvoiceDetail.SpecialAmount / aInvoiceDetail.Quantity) * aDetailForInsert.Quantity
+                                             : 0;
+
                 
                 //(aDetailForInsert.TotalPrice) * (vatper / 100);
                                                    
@@ -753,14 +805,14 @@ namespace Library.BLL.SInventory_BLL
              return aInvoiceDal.ProformaReportDAl(fromDate, toDate);
          }
          ///////////////////////////////////////////////////////////////////////////////
-         public DataTable InvoiceMainDataForReportBLL(string invNo)
+         public DataTable InvoiceMainDataForReportBLL(string invNo, string invoiceId)
          {
-             return aInvoiceDal.InvoiceMainDataForReport(invNo);
+             return aInvoiceDal.InvoiceMainDataForReport(invNo, invoiceId);
          }
          ///////////////////////////////////////////////////////////////////////////////
-         public DataTable InvoiceDetailDataForReportBLL(string invNo)
+         public DataTable InvoiceDetailDataForReportBLL(string invNo, string invoiceId)
          {
-             return aInvoiceDal.InvoiceDetailDataForReport(invNo);
+             return aInvoiceDal.InvoiceDetailDataForReport(invNo, invoiceId);
          }
          ///////////////////////////////////////////////////////////////////////////////
          public DataTable ReturnInvoiceMainDataForReportBLL(string invNo)
@@ -899,6 +951,21 @@ namespace Library.BLL.SInventory_BLL
         {
             return aInvoiceDal.GetInvoiceNoById(invId);
             
+        }
+
+        public DataTable GetBonusCampaignInfoByCompany(string productCode, DateTime invDate, string orderId)
+        {
+            return aInvoiceDal.GetBonusCampaignInfoByCompany(productCode, invDate, orderId);
+        }
+
+        public DataTable GetOrderDetailsByOrderId(int orderId)
+        {
+            return aInvoiceDal.GetOrderDetailsByOrderId(orderId);
+        }
+
+        public DataTable GetCampaignDetailsByCampaignId(int campaignId)
+        {
+            return aInvoiceDal.GetCampaignDetailsByCampaignId(campaignId);
         }
     }
 }

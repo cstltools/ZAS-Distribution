@@ -59,6 +59,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ASMInformationDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SInventory_DS\CusPayList.cs">
+      <DependentUpon>CusPayList.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SInventory_DS\CusPayList.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CusPayList.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\DayWiseBusinessDataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -170,6 +179,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsCustomerLedger.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SInventory_DS\dsCustomerLedgerNew.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsCustomerLedgerNew.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\dsCustomerMaster.cs">
       <DependentUpon>dsCustomerMaster.xsd</DependentUpon>
       <SubType>Component</SubType>
@@ -203,6 +217,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsCustomerWiseLedgerTable.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsCustomerWiseProductSales.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsCustomerWiseProductSales.xsd</DependentUpon>
     </Compile>
     <Compile Include="SInventory_DS\dsCustomerWiseReturnByProduct.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -312,10 +331,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsExpireProduct.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SInventory_DS\dsFieldForceSalesSummery.cs">
+      <DependentUpon>dsFieldForceSalesSummery.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SInventory_DS\dsFieldForceSalesSummery.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsFieldForceSalesSummery.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\dsFreezeStockInfo.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsFreezeStockInfo.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsInvoiceForCustomer.cs">
+      <DependentUpon>dsInvoiceForCustomer.xsd</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="SInventory_DS\dsInvoiceForCustomer.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -395,6 +427,11 @@
       <DependentUpon>dsNTInvoiceReturnTable.xsd</DependentUpon>
     </Compile>
     <Compile Include="SInventory_DS\dsOrderInformation.Designer.cs" />
+    <Compile Include="SInventory_DS\dsPaymentConfirmation.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsPaymentConfirmation.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\dsPettyCash.cs">
       <DependentUpon>dsPettyCash.xsd</DependentUpon>
       <SubType>Component</SubType>
@@ -500,6 +537,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dsSalesReportInfo.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SInventory_DS\dsSalesSummeryForAccounts.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SInventory_DS\dsSalesSummeryForAccounts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsSalesSummeryForAccounts.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SInventory_DS\dsSalesTracking.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -534,6 +579,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsTopSheet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsUserCredentialLog.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsUserCredentialLog.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SInventory_DS\dsUserMenuPermission.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsUserMenuPermission.xsd</DependentUpon>
     </Compile>
     <Compile Include="SInventory_DS\dsWhBinCard.cs">
       <DependentUpon>dsWhBinCard.xsd</DependentUpon>
@@ -658,6 +713,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>rptCountryStock.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SInventory_RPT\rptCusPaymentList.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>rptCusPaymentList.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SInventory_RPT\rptCustMaster.cs">
@@ -844,6 +905,10 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptCountryStock.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="SInventory_RPT\rptCusPaymentList.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>rptCusPaymentList.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="SInventory_RPT\rptCustMaster.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>rptCustMaster.cs</LastGenOutput>
@@ -962,6 +1027,17 @@
     </None>
     <None Include="SInventory_DS\ASMInformationDataSet.xss">
       <DependentUpon>ASMInformationDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\CusPayList.xsc">
+      <DependentUpon>CusPayList.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\CusPayList.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CusPayList.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\CusPayList.xss">
+      <DependentUpon>CusPayList.xsd</DependentUpon>
     </None>
     <None Include="SInventory_DS\DayWiseBusinessDataSet.xsc">
       <DependentUpon>DayWiseBusinessDataSet.xsd</DependentUpon>
@@ -1167,6 +1243,17 @@
     <None Include="SInventory_DS\dsCustomerLedger.xss">
       <DependentUpon>dsCustomerLedger.xsd</DependentUpon>
     </None>
+    <None Include="SInventory_DS\dsCustomerLedgerNew.xsc">
+      <DependentUpon>dsCustomerLedgerNew.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsCustomerLedgerNew.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsCustomerLedgerNew.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsCustomerLedgerNew.xss">
+      <DependentUpon>dsCustomerLedgerNew.xsd</DependentUpon>
+    </None>
     <None Include="SInventory_DS\dsCustomerMaster.xsc">
       <DependentUpon>dsCustomerMaster.xsd</DependentUpon>
     </None>
@@ -1228,6 +1315,17 @@
     </None>
     <None Include="SInventory_DS\dsCustomerWiseLedgerTable.xss">
       <DependentUpon>dsCustomerWiseLedgerTable.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsCustomerWiseProductSales.xsc">
+      <DependentUpon>dsCustomerWiseProductSales.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsCustomerWiseProductSales.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsCustomerWiseProductSales.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SInventory_DS\dsCustomerWiseProductSales.xss">
+      <DependentUpon>dsCustomerWiseProductSales.xsd</DependentUpon>
     </None>
     <None Include="SInventory_DS\dsCustomerWiseReturnByProduct.xsc">
       <DependentUpon>dsCustomerWiseReturnByProduct.xsd</DependentUpon>
@@ -1430,6 +1528,17 @@
     <None Include="SInventory_DS\dsExpireProduct.xss">
       <DependentUpon>dsExpireProduct.xsd</DependentUpon>
     </None>
+    <None Include="SInventory_DS\dsFieldForceSalesSummery.xsc">
+      <DependentUpon>dsFieldForceSalesSummery.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsFieldForceSalesSummery.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsFieldForceSalesSummery.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsFieldForceSalesSummery.xss">
+      <DependentUpon>dsFieldForceSalesSummery.xsd</DependentUpon>
+    </None>
     <None Include="SInventory_DS\dsFreezeStockInfo.xsc">
       <DependentUpon>dsFreezeStockInfo.xsd</DependentUpon>
     </None>
@@ -1613,6 +1722,17 @@
     <None Include="SInventory_DS\dsOrderInformation.xss">
       <DependentUpon>dsOrderInformation.xsd</DependentUpon>
     </None>
+    <None Include="SInventory_DS\dsPaymentConfirmation.xsc">
+      <DependentUpon>dsPaymentConfirmation.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsPaymentConfirmation.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsPaymentConfirmation.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsPaymentConfirmation.xss">
+      <DependentUpon>dsPaymentConfirmation.xsd</DependentUpon>
+    </None>
     <None Include="SInventory_DS\dsPettyCash.xsc">
       <DependentUpon>dsPettyCash.xsd</DependentUpon>
     </None>
@@ -1792,6 +1912,17 @@
     <None Include="SInventory_DS\dsSalesReportInfo.xss">
       <DependentUpon>dsSalesReportInfo.xsd</DependentUpon>
     </None>
+    <None Include="SInventory_DS\dsSalesSummeryForAccounts.xsc">
+      <DependentUpon>dsSalesSummeryForAccounts.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsSalesSummeryForAccounts.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsSalesSummeryForAccounts.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsSalesSummeryForAccounts.xss">
+      <DependentUpon>dsSalesSummeryForAccounts.xsd</DependentUpon>
+    </None>
     <None Include="SInventory_DS\dsSalesTracking.xsc">
       <DependentUpon>dsSalesTracking.xsd</DependentUpon>
     </None>
@@ -1875,6 +2006,28 @@
     </None>
     <None Include="SInventory_DS\dsTopSheet.xss">
       <DependentUpon>dsTopSheet.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsUserCredentialLog.xsc">
+      <DependentUpon>dsUserCredentialLog.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsUserCredentialLog.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsUserCredentialLog.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsUserCredentialLog.xss">
+      <DependentUpon>dsUserCredentialLog.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsUserMenuPermission.xsc">
+      <DependentUpon>dsUserMenuPermission.xsd</DependentUpon>
+    </None>
+    <None Include="SInventory_DS\dsUserMenuPermission.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsUserMenuPermission.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="SInventory_DS\dsUserMenuPermission.xss">
+      <DependentUpon>dsUserMenuPermission.xsd</DependentUpon>
     </None>
     <None Include="SInventory_DS\dsWhBinCard.xsc">
       <DependentUpon>dsWhBinCard.xsd</DependentUpon>

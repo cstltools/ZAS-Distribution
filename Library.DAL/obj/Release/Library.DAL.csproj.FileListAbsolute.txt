@@ -1,1 +1,44 @@
 F:\GIT Project\ZAS Sales\Library.DAL\obj\Release\Library.DAL.csprojResolveAssemblyReference.cache
+D:\JEWEL\ZAS Sales\Library.DAL\obj\Release\Library.DAL.csprojResolveAssemblyReference.cache
+D:\Tareq\ZAS Sales\Library.DAL\obj\Release\Library.DAL.csprojResolveAssemblyReference.cache
+F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.DAL\obj\Release\Library.DAL.csprojResolveAssemblyReference.cache
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.csprojResolveAssemblyReference.cache
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Release\Library.DAL.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Release\Library.DAL.pdb
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Release\Library.DAO.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\bin\Release\Library.DAO.pdb
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.dll
+D:\01. ERP Projects\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.pdb
+D:\01. My_project_folder\ZAS Sales_new\Library.DAL\bin\Release\Library.DAL.dll
+D:\01. My_project_folder\ZAS Sales_new\Library.DAL\bin\Release\Library.DAL.pdb
+D:\01. My_project_folder\ZAS Sales_new\Library.DAL\bin\Release\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_new\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\01. My_project_folder\ZAS Sales_new\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\01. My_project_folder\ZAS Sales_new\Library.DAL\bin\Release\Library.DAO.pdb
+D:\01. My_project_folder\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.csprojResolveAssemblyReference.cache
+D:\01. My_project_folder\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.dll
+D:\01. My_project_folder\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.pdb
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Release\Library.DAL.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Release\Library.DAL.pdb
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Release\Library.DAO.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\bin\Release\Library.DAO.pdb
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.csproj.AssemblyReference.cache
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.csproj.CoreCompileInputs.cache
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.csproj.CopyComplete
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.dll
+D:\Rana\Zas Sales Roll Updated\ZAS Sales_new\Library.DAL\obj\Release\Library.DAL.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Release\Library.DAL.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Release\Library.DAL.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Release\Library.DAO.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\bin\Release\Library.DAO.pdb
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Release\Library.DAL.dll
+D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Release\Library.DAL.pdb
+d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Release\Library.DAL.csproj.AssemblyReference.cache
+d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Release\Library.DAL.csproj.CoreCompileInputs.cache
+d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Release\Library..61D7EBAF.Up2Date

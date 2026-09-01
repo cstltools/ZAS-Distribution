@@ -27,7 +27,7 @@ namespace Library.DAL.SInventory_DAL
 //        }
 
 
-        public DataTable GetExpireProductReport(string companyId, string unitId, int noOfMonths)
+        public DataTable GetExpireProductReport(string companyId, string unitId, int noOfMonths, bool isNational)
         {
             string pram = "";
             string pram2 = "";
@@ -38,7 +38,7 @@ namespace Library.DAL.SInventory_DAL
                 pram2 = pram2 + " AND CI.CompanyId = " + companyId;
             }
 
-            if (unitId != "0")
+            if (unitId != "0" && isNational == false)
             {
                 pram = pram + " AND CU.ComUnitId = " + unitId;
                 pram = pram + " AND CI.CompanyId = " + 0;
@@ -54,7 +54,15 @@ namespace Library.DAL.SInventory_DAL
 
             aSqlParameterList.Add(new SqlParameter("@pram", pram));
             aSqlParameterList.Add(new SqlParameter("@pram2", pram2));
-            return aCommonInternalDal.GetDataTableAction("sp_GetExpireproductList", aSqlParameterList, "SSIDB");
+
+            if (isNational)
+            {
+                return aCommonInternalDal.GetDataTableAction("sp_GetExpireproductListNational", aSqlParameterList, "SSIDB");
+            }
+            else
+            {
+                return aCommonInternalDal.GetDataTableAction("sp_GetExpireproductList", aSqlParameterList, "SSIDB");
+            }
         }
 
         public DataTable GetAreaWiseMonthlyInventoryReport(string fromDate, string toDate, string CiD, string DC, string comId)

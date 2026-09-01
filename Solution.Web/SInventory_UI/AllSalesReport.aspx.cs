@@ -92,52 +92,90 @@ public partial class SInventory_UI_AllSalesReport : System.Web.UI.Page
         Session["SalesReport"] = "";
         Session["SalesReport"] = 0;
 
-        if (InvoiceDateTextBox.Text != "" && todateTextBox.Text != "" && dcDropDownList1.SelectedValue != "")
-        {
-            if (todateTextBox.Text == "")
-            {
-                InvoiceDateTextBox.Text = todateTextBox.Text;
-            }
 
+        Session["Param"] = "";
+       
+
+        string param = "";
+
+        if (companyNameDropDownList.SelectedValue != "")
+        {
+            param = param + " AND CU.CompanyId = " + companyNameDropDownList.SelectedValue;
+        }
+
+        if (dcDropDownList1.SelectedValue != "")
+        {
+            param = param + " AND I.ComUnitId = " + dcDropDownList1.SelectedValue;
+        }
+
+
+        Session["Param"] = param;
+
+        if (InvoiceDateTextBox.Text != "" && todateTextBox.Text != "")
+        {
             string fromDate = InvoiceDateTextBox.Text;
             string toDate = todateTextBox.Text;
-            string districtId = dcDropDownList1.SelectedValue;
 
-            //string url = "../SInventory_RPTVIEW/AllSalesreportViewer.aspx?fromDate=" + fromDate + "&toDate=" + toDate + "&districtId=" + districtId;
-            //string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
-            //string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
-            //ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
-
-
-            string url = "../HTMLReport/AllSalesreportHTMLReport.aspx?fromDate=" + fromDate + "&toDate=" + toDate +
-                         "&districtId=" + districtId;
+            string url = "../HTMLReport/AllSalesreportHTMLReport.aspx?fromDate=" + fromDate + "&toDate=" + toDate + "&districtId=" + 0;
             // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
-            string fullURL =
-                "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url +
+            string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url +
                 "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
-            ScriptManager.RegisterStartupScript(this, typeof (string), "OPEN_WINDOW", fullURL, true);
-        }
-
-        else
-        {
-            showMessageBox("Please ensure Date Range (From-To) & DC !!! ");
-        }
-        if (CheckBox1.Checked && todateTextBox.Text != "" && InvoiceDateTextBox.Text != "")
-        {
-            string fromDate = InvoiceDateTextBox.Text;
-            string toDate = todateTextBox.Text;
-            int i = 1;
-            //string url = "../SInventory_RPTVIEW/AllSalesreportViewer.aspx?NationalReport=" + 1 + "&fromDate=" + fromDate + "&toDate=" + toDate;
-            //// string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
-            //string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
-            //ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
-
-
-            string url = "../HTMLReport/AllSalesreportHTMLReport.aspx?NationalReport=" + 1 + "&fromDate=" + fromDate + "&toDate=" + toDate;
-            // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
-            string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
             ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
         }
+        else
+        {
+            showMessageBox("Please Select a date range !!");
+        }
+
+
+        //if (InvoiceDateTextBox.Text != "" && todateTextBox.Text != "" && dcDropDownList1.SelectedValue != "")
+        //{
+        //    if (todateTextBox.Text == "")
+        //    {
+        //        InvoiceDateTextBox.Text = todateTextBox.Text;
+        //    }
+
+        //    string fromDate = InvoiceDateTextBox.Text;
+        //    string toDate = todateTextBox.Text;
+        //    string districtId = dcDropDownList1.SelectedValue;
+
+        //    //string url = "../SInventory_RPTVIEW/AllSalesreportViewer.aspx?fromDate=" + fromDate + "&toDate=" + toDate + "&districtId=" + districtId;
+        //    //string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
+        //    //string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
+        //    //ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
+
+
+        //    string url = "../HTMLReport/AllSalesreportHTMLReport.aspx?fromDate=" + fromDate + "&toDate=" + toDate +
+        //                 "&districtId=" + districtId;
+        //    // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
+        //    string fullURL =
+        //        "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url +
+        //        "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
+        //    ScriptManager.RegisterStartupScript(this, typeof (string), "OPEN_WINDOW", fullURL, true);
+        //}
+
+        //else
+        //{
+        //    showMessageBox("Please ensure Date Range (From-To) & DC !!! ");
+        //}
+
+        //if (CheckBox1.Checked && todateTextBox.Text != "" && InvoiceDateTextBox.Text != "")
+        //{
+        //    string fromDate = InvoiceDateTextBox.Text;
+        //    string toDate = todateTextBox.Text;
+        //    int i = 1;
+        //    //string url = "../SInventory_RPTVIEW/AllSalesreportViewer.aspx?NationalReport=" + 1 + "&fromDate=" + fromDate + "&toDate=" + toDate;
+        //    //// string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
+        //    //string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
+        //    //ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
+
+
+        //    string url = "../HTMLReport/AllSalesreportHTMLReport.aspx?NationalReport=" + 1 + "&fromDate=" + fromDate + "&toDate=" + toDate;
+        //    // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
+        //    string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
+        //    ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
+        //}
+
     }
     protected void dcDropDownList1_SelectedIndexChanged(object sender, EventArgs e)
     {

@@ -41,7 +41,7 @@
                             &nbsp;
                         </td>
                     </tr>
-                     <tr>
+                     <tr runat="server" ID="entry" Visible="True">
                         <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">&nbsp; Add New </td>
                         <td width="20%" class="TDRight">
                             <asp:ImageButton ID="productListImageButton" runat="server"

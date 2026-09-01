@@ -2,6 +2,43 @@
 <%@ Register TagPrefix="cc1" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit, Version=3.0.20820.28364, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.css" rel="stylesheet" />
+        <style type="text/css">
+        
+        .balance {
+            color: #008080;
+            font-size: 20px;
+        }
+
+        .deliveryMan {
+
+            width:250px !important;
+            display: block;
+    width: 100%;
+    padding: .375rem 2.25rem .375rem .75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e);
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+            margin-bottom: 1px !important;
+        }
+
+            </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     
@@ -66,7 +103,7 @@
                            Delivery Man: 
                         </td>
                         <td width="20%" class="TDRight">
-                            <asp:DropDownList ID="delDropDownList" runat="server" CssClass="DropDown"  AutoPostBack="True" OnTextChanged="delDropDownList_OnTextChanged" >
+                            <asp:DropDownList ID="delDropDownList" runat="server" CssClass="DropDown deliveryMan"  AutoPostBack="True" OnTextChanged="delDropDownList_OnTextChanged" >
                             </asp:DropDownList>
                         </td>
                         <td width="13%" class="TDLeft">
@@ -417,6 +454,27 @@
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
+    
+    
+     <!-- Select2 Initialization Script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".deliveryMan").select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+            $(".deliveryMan").select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+    </script>
 
 
 </asp:Content>

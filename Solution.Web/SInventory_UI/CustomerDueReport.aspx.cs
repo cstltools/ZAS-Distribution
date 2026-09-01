@@ -12,6 +12,7 @@ using Library.DAL.SInventory_DAL;
 public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
 {
     DeliveryInvoiceReportDal aDal = new DeliveryInvoiceReportDal();
+    private CustPaymentBLL aCustPaymentBll = new CustPaymentBLL();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -26,6 +27,7 @@ public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
     private void DropDownlist()
     {
         aDal.LoadManufac(manufacDropDownList);
+        aCustPaymentBll.PaymentTypeLoadBLL(payTypeDDL);
     }
 
     protected void Button_Click(object sender, EventArgs e)
@@ -126,10 +128,28 @@ public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
             param = param + " AND VC.MarketId = '" + marketDropDownList.SelectedValue + "'";
         }
 
+        if (payTypeDDL.SelectedIndex > 0)
+        {
+            var termOfPayment = "";
+
+            if (payTypeDDL.SelectedValue == "1")
+            {
+                termOfPayment = "Cash";
+            }
+            else if ((payTypeDDL.SelectedValue == "2"))
+            {
+                termOfPayment = "Credit";
+            }
+
+            param = param + " AND VC.TermOfPayment = '" + termOfPayment + "'";
+        }
+
         if (custDropDownList.SelectedIndex > 0)
         {
             param = param + " AND INV.CustomerMasterId = '" + custDropDownList.SelectedValue + "'";
         }
+
+        param = param + " AND ((DeliveryTpGrandTotal - (ISNULL(PMNT.PaymentAmount,0) + ISNULL(PMNT.AIT,0) + ISNULL(PMNT.Discount,0))) - ISNULL(RTN.ReturnAmount,0)) > 1 ";
 
         return param;
     }
@@ -150,6 +170,8 @@ public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
 
         return true;
     }
+
+   
 
     private void ShowMessageBox(string message)
     {
@@ -271,15 +293,33 @@ public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
         int rowindex = 0;
         rowindex = currentRow.RowIndex;
 
-        PopupReport(invoiceGridView.DataKeys[rowindex]["InvoiceNo"].ToString());
+        // Retrieve the values of InvoiceNo and InvoiceId from the DataKeys of the GridView
+
+        string invoiceNo = invoiceGridView.DataKeys[rowindex]["InvoiceNo"].ToString();
+        string invoiceId = invoiceGridView.DataKeys[rowindex]["InvoiceId"].ToString();
+
+
+        PopupReport(invoiceNo, invoiceId);
     }
 
-    private void PopupReport(string invoiceNo)
+    private void PopupReport(string invoiceNo, string invoiceId)
     {
-        string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invoiceNo);
-        // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
-        string fullURL = "var Mleft = (screen.width/2)-(1150/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=1150,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
+
+        // Create the URL for the report viewer page with encoded parameters
+        string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invoiceNo) + "&invoiceId=" + Server.UrlEncode(invoiceId);
+
+        // JavaScript code for opening the popup window with customized size and position
+        string fullURL = "var Mleft = (screen.width / 2) - (1150 / 2);" +
+                         "var Mtop = (screen.height / 2) - (700 / 2);" +
+                         "window.open('" + url + "', null, 'height=700,width=1150,status=yes,toolbar=no,addressbar=no,scrollbars=yes,menubar=no,location=no,top=' + Mtop + ',left=' + Mleft + '');";
+
+        // Register the script to open the popup window
         ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
+
+        //string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invoiceNo);
+        //// string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
+        //string fullURL = "var Mleft = (screen.width/2)-(1150/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=1150,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
+        //ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
     }
 
     protected void clearButton_OnClick(object sender, EventArgs e)

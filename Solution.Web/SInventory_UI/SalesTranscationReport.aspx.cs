@@ -149,6 +149,8 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
             parameter = parameter + " AND CI.CompanyId = '" + companyNameDropDownList.SelectedValue + "'";
         }
 
+        parameter = parameter + " AND CI.CompanyId IN ( SELECT DISTINCT CompanyId FROM tblUserCompanyUnit AS CU LEFT JOIN tblCompanyUnit AS CI ON CU.CompanyUnitId = CI.ComUnitId WHERE UserId = " + Convert.ToInt32(Session["UserId"]) + ")";
+
         return parameter;
     }
 

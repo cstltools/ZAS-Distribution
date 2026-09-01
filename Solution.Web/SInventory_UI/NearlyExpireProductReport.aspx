@@ -61,6 +61,22 @@
                         <td class="TDRight" width="20%">
                         </td>
                         <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            Is National:
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:CheckBox ID="nationalCheckBox" runat="server" AutoPostBack="True" OnCheckedChanged="nationalCheckBox_CheckedChanged" />
+                        </td>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                        </td>
+                        <td class="TDRight" width="20%">
+                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
                             Group Name:
                         </td>
                         <td class="TDRight" width="20%">

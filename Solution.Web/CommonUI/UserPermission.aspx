@@ -1,6 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master" AutoEventWireup="true" CodeFile="UserPermission.aspx.cs" Inherits="CommonUI_UserPermission" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.css" rel="stylesheet" />
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
       <asp:UpdatePanel ID="UpdatePanel1" runat="server">
@@ -35,7 +38,7 @@
                         <td width="13%" class="TDLeft">
                             User Name :</td>
                         <td width="20%" class="TDRight">
-                            <asp:DropDownList ID="userDropDownList" runat="server" CssClass="DropDown" 
+                            <asp:DropDownList ID="userDropDownList" runat="server" CssClass="DropDown userName" 
                                 AutoPostBack="True" 
                                 onselectedindexchanged="userDropDownList_SelectedIndexChanged">
                             </asp:DropDownList>
@@ -210,5 +213,29 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+    
+    
+    
+    <!-- Select2 Initialization Script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".userName").select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+            $(".userName").select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+    </script>
+    
+
 </asp:Content>
 

@@ -26,6 +26,7 @@ namespace Library.DAO.SInventory_Entities
         public int? ReqChildId { get; set; }
         public int? ChalanId { get; set; }
         public int? StockInTransfarId { get; set; }
+        public int? CustReturnDetailId { get; set; }
         public int InvoiceDetailId { get; set; }
         public int DCStoreFreezeId { get; set; }
         public int? ChalanDetailsId { get; set; }

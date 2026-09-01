@@ -25,6 +25,7 @@ public partial class SInventory_RPTVIEW_WingsWiseSalesReportViewer : System.Web.
         string UnitId = Session["UnitId"].ToString();
         string FDate = Session["FDate"].ToString();
         string TDate = Session["TDate"].ToString();
+        int userId = Convert.ToInt32(Session["UserId"]);
 
         string parameter = "";
 
@@ -39,7 +40,7 @@ public partial class SInventory_RPTVIEW_WingsWiseSalesReportViewer : System.Web.
         }
 
         //asmDataTable = aReportDal.LoadWingsSalesInfo(parameter).Copy();
-        asmDataTable = aReportDal.LoadWingsSalesInfoByPram(parameter, FDate, TDate).Copy();
+        asmDataTable = aReportDal.LoadWingsSalesInfoByPram(parameter, FDate, TDate, userId).Copy();
 
         //asmDataTable = aReportDal.LoadWingsSalesInfo(parameter).Copy();
 

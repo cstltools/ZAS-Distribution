@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -71,7 +71,18 @@ namespace Library.DAL.SInventory_DAL
        
         public DataTable LoadUserView()
         {
-            string query = @"SELECT tblUser.UserId,tblUser.UserName,tblUser.UserType,tblUser.LoginName,tblUser.Password,tblUser.UserStatus,tblUser.Email,tblUser.ContactNo FROM tblUser WHERE UserId != 1 ";
+            string query = @"SELECT 
+    tblUser.UserId,
+    tblUser.UserName,
+    tblUser.UserType,
+    tblUser.LoginName,
+    tblUser.Password,
+    tblUser.UserStatus,
+    tblUser.Email,
+    tblUser.ContactNo 
+FROM tblUser 
+WHERE UserId != 1 
+  AND ISNULL(IsAppsUser,0) = 0";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 

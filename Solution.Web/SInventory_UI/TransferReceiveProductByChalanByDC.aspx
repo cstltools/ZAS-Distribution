@@ -118,7 +118,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Unreceive Qty">
                                             <ItemTemplate>
-                                                <asp:TextBox ID="damageTextBox" runat="server" AutoPostBack="True" OnTextChanged="damageTextBox_TextChanged">0</asp:TextBox>
+                                                <asp:TextBox ID="damageTextBox" runat="server" ReadOnly="True" AutoPostBack="True" OnTextChanged="damageTextBox_TextChanged">0</asp:TextBox>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:BoundField DataField="mfgdate" DataFormatString="{0:dd-MMM-yyyy}" HeaderText="Mfg. date" />

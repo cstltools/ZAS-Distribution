@@ -77,7 +77,7 @@
                         <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
                             Company Name: <span class="star-mark"> * </span> </td>
                         <td class="TDRight" width="20%">
-                            <asp:DropDownList ID="companyNameDropDownList" runat="server" 
+                            <asp:DropDownList ID="companyNameDropDownList" runat="server" AutoPostBack="True" OnSelectedIndexChanged="companyNameDropDownList_OnSelectedIndexChanged"
                                 CssClass="DropDown" >
                             </asp:DropDownList>
                         </td>
@@ -198,6 +198,22 @@
                             <asp:TextBox ID="faxNoTextBox" runat="server" CssClass="TextBox"></asp:TextBox>
                             <cc1:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server"
                             Enabled="True" TargetControlID="faxNoTextBox" FilterType="Custom" ValidChars="0123456789+"></cc1:FilteredTextBoxExtender>
+                        </td>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">
+                            &nbsp;</td>
+                        <td class="TDRight" width="20%">
+                            &nbsp;</td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">
+                            Cash-GL Account:</td>
+                        <td class="TDRight" width="20%">
+                            <asp:DropDownList ID="ddlCashAccount" runat="server" CssClass="DropDown" ></asp:DropDownList>
                         </td>
                         <td class="TDLeft" width="13%">
                             &nbsp;</td>

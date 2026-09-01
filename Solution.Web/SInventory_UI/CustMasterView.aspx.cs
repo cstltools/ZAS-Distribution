@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Mime;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using CrystalDecisions.Shared.Json;
 using Library.BLL.SInventory_BLL;
 
 public partial class SInventory_UI_CustMasterView : System.Web.UI.Page
@@ -27,17 +29,34 @@ public partial class SInventory_UI_CustMasterView : System.Web.UI.Page
 
     private void CustomerMasterLoad()
     {
-
+        loadGridView.DataSource = null;
+        loadGridView.DataBind();
 
         string parameter = "";
 
         parameter = GenerateParameter();
+
+        string loginUserName = Session["LoginName"].ToString();
 
         if (parameter != "")
         {
             aDataTable = aCustomerMasterBLL.LoadCustomerMaster(parameter);
             loadGridView.DataSource = aDataTable;
             loadGridView.DataBind();
+
+            //for (int i = 0; i < loadGridView.Rows.Count; i++)
+            //{
+            //    ImageButton editImageButton = (ImageButton)loadGridView.Rows[i].FindControl("editImageButton");
+
+            //    if (loginUserName.Trim() == "rezaul")
+            //    {
+            //        editImageButton.Visible = true;
+            //    }
+            //    else
+            //    {
+            //        editImageButton.Visible = false;
+            //    }
+            //}
         }
 
        

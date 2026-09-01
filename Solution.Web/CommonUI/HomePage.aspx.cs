@@ -33,6 +33,7 @@ public partial class CommonUI_HomePage : System.Web.UI.Page
             DataTable dtTable = aDal.GetIsHeadInfo(Session["UserId"].ToString());
 
             order.Visible = dtTable.Rows.Count > 0;
+            LoadPendingInvoice();
         }
     }
 
@@ -49,14 +50,11 @@ public partial class CommonUI_HomePage : System.Web.UI.Page
 
             if (dtTable.Rows.Count > 0)
             {
-
                 DataTable aTable = aOrderInfoDal.LoadOrderForOrderCreation(GenerateParameter());
-
                 if (aTable.Rows.Count > 0)
                 {
                     orderGridView.DataSource = aTable;
                     orderGridView.DataBind();
-
 
                     for (int i = 0; i < aTable.Rows.Count; i++)
                     {
@@ -103,6 +101,36 @@ public partial class CommonUI_HomePage : System.Web.UI.Page
 
     }
 
+
+    protected void OrderButton_Click(object sender, EventArgs e)
+    {
+        var button = (LinkButton)sender;
+        var currentRow = (GridViewRow)button.Parent.Parent;
+
+        int rowindex = 0;
+        rowindex = currentRow.RowIndex;
+
+        var dataKey = orderGridView.DataKeys[rowindex];
+        //if (dataKey != null)
+        //PopupReport(dataKey["CustPayDetailId"].ToString());
+        ModalPopupExtender2.Show();
+
+        DataTable aTable = aOrderInfoBll.LoadOrderDetails(dataKey["OrderId"].ToString());
+
+        if (aTable.Rows.Count > 0)
+        {
+            GridView1.DataSource = aTable;
+            GridView1.DataBind();
+            GridView1.Columns[2].HeaderStyle.Width = 20;
+        }
+        else
+        {
+            GridView1.DataSource = null;
+            GridView1.DataBind();
+        }
+    }
+
+
     private void LoadDueHistory(string customerMasterId)
     {
         DataTable aTable = aOrderInfoBll.LoadCustomerDueHistory(customerMasterId);
@@ -139,14 +167,16 @@ public partial class CommonUI_HomePage : System.Web.UI.Page
 
         if (orderDateTextBox.Text != string.Empty)
         {
-            param = param + " AND tblOrder.SubmissionDate='" + orderDateTextBox.Text + "'";
+            param = param + " AND ODR.SubmissionDate='" + orderDateTextBox.Text + "'";
         }
 
         if (Session["UserId"] != null && Session["UserId"].ToString() != "")
         {
-            param = param + " AND (CASE WHEN ((ISNULL(D.DUE,0) > ISNULL(CR.LimitAmount,0)) OR (ISNULL(DATEDIFF(day, InvoiceDate,GETDATE()),0) > ISNULL(CR.DayLimit,0))) AND TermOfPayment = 'Credit'  THEN 0 ELSE 1 END) = 0 AND CI.CompanyId IN (SELECT DISTINCT CI.CompanyId FROM tblUserCompanyUnit AS UNT LEFT JOIN tblCompanyUnit AS DC ON UNT.CompanyUnitId = DC.ComUnitId LEFT JOIN tblCompanyInfo AS CI ON DC.CompanyId = CI.CompanyId WHERE UserId = " + Session["UserId"].ToString() + ")";
+            param = param + "  AND UNT.CompanyId IN (SELECT DISTINCT CI.CompanyId FROM tblUserCompanyUnit AS UNT LEFT JOIN tblCompanyUnit AS DC ON UNT.CompanyUnitId = DC.ComUnitId LEFT JOIN tblCompanyInfo AS CI ON DC.CompanyId = CI.CompanyId WHERE UserId = " + Session["UserId"].ToString() + ")";
 
         }
+
+        param = param + " AND TermOfPayment = 'Credit' AND CASE WHEN TermOfPayment = 'Credit' THEN CASE WHEN CASE WHEN ISNULL(LimitAmount,0) > 0 AND ISNULL(Due,0) > 0 AND (ISNULL(GrossValue,0) + ISNULL(Due,0) >  ISNULL(LimitAmount,0)) THEN 0 ELSE 1 END = 1 AND CASE WHEN ISNULL(DayLimit,0) > 0 AND (ISNULL(DATEDIFF(day, InvoiceDate, GETDATE()), 0) > ISNULL(DayLimit,0)) THEN 0 ELSE 1 END = 1 THEN 1 ELSE 0 END ELSE 1 END = 0";
        
 
         return param;
@@ -181,6 +211,13 @@ public partial class CommonUI_HomePage : System.Web.UI.Page
     protected void Button41_OnClick(object sender, EventArgs e)
     {
         ModalPopupExtender10.Hide();
+    }
+
+
+
+    protected void Button42_OnClick(object sender, EventArgs e)
+    {
+        ModalPopupExtender2.Hide();
     }
 
     protected void Button1_Click(object sender, EventArgs e)

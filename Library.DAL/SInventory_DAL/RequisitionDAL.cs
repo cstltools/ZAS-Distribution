@@ -143,10 +143,21 @@ namespace Library.DAL.SInventory_DAL
        }
        public DataTable GetAllNonPickReqDAL()
        {
-           const string query = @"SELECT * FROM tblRequisition AS REQ
-                                   INNER JOIN tblCompanyInfo AS CI ON REQ.CompanyId = CI.CompanyId 
-                                   INNER JOIN tblCompanyUnit AS CU ON REQ.ComUnitId = CU.ComUnitId
-                                   where CreatePicking is null or CreatePicking = ''";
+//           const string query = @"SELECT * FROM tblRequisition AS REQ
+//                                   INNER JOIN tblCompanyInfo AS CI ON REQ.CompanyId = CI.CompanyId 
+//                                   INNER JOIN tblCompanyUnit AS CU ON REQ.ComUnitId = CU.ComUnitId
+//                                   where CreatePicking is null or CreatePicking = ''"; 
+
+           const string query = @"SELECT DISTINCT REQ.ReqId,CompanyCode,CompanyName,CU.ComUnitId,CU.ComUnitCode,CU.ComUnitName, ReqNo, ReqDate, CreatePicking FROM tblRequisition AS REQ
+           LEFT JOIN tblRequsitionChild AS RQD ON REQ.ReqId = RQD.ReqId
+           INNER JOIN (SELECT ProductCode,WH.WarehouseId,SUM(Quantity) AS CurrentStockQty FROM tblCentralStore AS CS
+           LEFT JOIN tblWHStockInDetail AS WD ON CS.MigoDetailID = WD.WHStockInDetailID
+           LEFT JOIN tblWHStockInMaster AS WH ON WD.WHStockInMasterID = WH.WHStockInMasterID
+           GROUP BY ProductCode,WH.WarehouseId HAVING SUM(Quantity) > 0) AS CS ON RQD.ProductCode = CS.ProductCode AND REQ.WarehouseId = CS.WarehouseId 
+           INNER JOIN dbo.tblUnitPrice U ON RQD.ProductCode = U.ProductCode 
+           INNER JOIN tblCompanyInfo AS CI ON REQ.CompanyId = CI.CompanyId 
+           INNER JOIN tblCompanyUnit AS CU ON REQ.ComUnitId = CU.ComUnitId
+           WHERE REQ.ReqId IS NOT NULL AND ISNULL(CurrentStockQty,0) > 0 AND CreatePicking IS NULL  ORDER BY REQ.ReqId DESC";
            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
        }
 
@@ -244,48 +255,112 @@ LEFT JOIN dbo.tblRequsitionChild ON dbo.tblRequisition.ReqId = dbo.tblRequsition
            return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
        }
 
+
        public bool StockInTransfarInsertDAL(StockInTransfar aStockInTransfar)
+        {
+            string duplicateCheckQuery = @"SELECT COUNT(*) ExistCount
+                               FROM dbo.tblStockInTransfar 
+                               WHERE ReceiveId = '" + aStockInTransfar.ReceiveId + "' AND ReqChildId = '" + aStockInTransfar.ReqChildId + "'  AND ReqId = '" + aStockInTransfar.ReqId + "'";
+
+            // Perform the duplicate check using your existing method
+
+            DataTable existingRecordTable = aCommonInternalDal.DataContainerDataTable(duplicateCheckQuery, "SSIDB");
+        
+            // Check if there are any rows returned (i.e., duplicate record exists)
+
+            if (existingRecordTable.Rows.Count > 0)
+            {
+                Int32 isExist = Convert.ToInt32(existingRecordTable.Rows[0]["ExistCount"]);
+
+                if (isExist > 0)
+                {
+                    return false; // Duplicate found, returning false
+                }
+              
+                
+            }
+
+    
+
+    // Step 2: Proceed with the insert if no duplicate exists
+    string query = @"INSERT INTO dbo.tblStockInTransfar (" +
+                    "StockInTransfarId, ReqId, ReqChildId, ProductCode, ProductName, PackSize, BatchNo, Quantity, " +
+                    "UnitPrice, PriceAmount, VATAmount, TotalPriceAmount, ExpDate, MfgDate, ReceiveDate, PickingQty, ReceiveId) " +
+                    "VALUES ('" + aStockInTransfar.StockInTransfarId + "' , " +
+                    "'" + aStockInTransfar.ReqId + "' , " +
+                    "'" + aStockInTransfar.ReqChildId + "' , " +
+                    "'" + aStockInTransfar.ProductCode + "' , " +
+                    "'" + aStockInTransfar.ProductName + "' , " +
+                    "'" + aStockInTransfar.PackSize + "' , " +
+                    "'" + aStockInTransfar.BatchNo + "' , " +
+                    "'" + aStockInTransfar.Quantity + "' , " +
+                    "'" + aStockInTransfar.UnitPrice + "' , " +
+                    "'" + aStockInTransfar.PriceAmount + "' , " +
+                    "'" + aStockInTransfar.VATAmount + "' , " +
+                    "'" + aStockInTransfar.TotalPriceAmount + "' , " +
+                    "'" + aStockInTransfar.ExpDate + "' , " +
+                    "'" + aStockInTransfar.MfgDate + "' , " +
+                    "'" + aStockInTransfar.ReceiveDate + "' , " +
+                    "'" + aStockInTransfar.PickingQty + "' , " +
+                    "'" + aStockInTransfar.ReceiveId + "' )";
+
+    // Insert the data
+    return aCommonInternalDal.SaveDataByInsertCommand(query, "SSIDB");
+}
+
+
+       public bool ProcessWeightedAvg(int stockInTransferId)
        {
+           List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
 
-           string query = @"INSERT INTO dbo.tblStockInTransfar "+
-    "    ( StockInTransfarId , "+
-        "    ReqId , "+
-        "    ReqChildId , "+
-        "    ProductCode , "+
-        "    ProductName , "+
-         "   PackSize , "+
-          "   BatchNo , "+
-          "  Quantity , "+
-         "   UnitPrice , "+
-         "   PriceAmount , "+
-         "   VATAmount , "+
-          "  TotalPriceAmount , "+
-          "  ExpDate , "+
-          "  MfgDate , " +
-         "   ReceiveDate ,"+
-         "   PickingQty,ReceiveId " +
-        "  ) "+
-      " VALUES  ( '" + aStockInTransfar.StockInTransfarId + "' , " +
-        "    '" + aStockInTransfar.ReqId + "'  ,  " +
-        "    '" + aStockInTransfar.ReqChildId + "' ,  " +
-       "     '" + aStockInTransfar.ProductCode + "'  ,  " +
-       "    '" + aStockInTransfar.ProductName + "'  ,  " +
-       "     '" + aStockInTransfar.PackSize + "'  , " +
-       "    '" + aStockInTransfar.BatchNo + "' , " +
-       "     '" + aStockInTransfar.Quantity + "'  ,  " +
-       "     '" + aStockInTransfar.UnitPrice + "'  ,  " +
-        "    '" + aStockInTransfar.PriceAmount + "'  ,  " +
-        "    '" + aStockInTransfar.VATAmount + "'  ,  " +
-         "   '" + aStockInTransfar.TotalPriceAmount + "'  ,  " +
-        "    '" + aStockInTransfar.ExpDate + "'  , " +
-          "    '" + aStockInTransfar.MfgDate + "'  , " +
-        "    '" + aStockInTransfar.ReceiveDate + "'   , " +
-         "    '" + aStockInTransfar.PickingQty + "'  ,  " +
-         "    '" + aStockInTransfar.ReceiveId + "'    " +
-       "   )";
+           aSqlParameterList.Add(new SqlParameter("@StockInTransfarId", stockInTransferId));
 
-           return aCommonInternalDal.SaveDataByInsertCommand(query, "SSIDB");
+           //return aCommonInternalDal.UpdateAction("sp_DeliveryConfirmationFullPosting", aSqlParameterList);
+           return aCommonInternalDal.UpdateAction("tbl_INV_CentralStoreStoIssue", aSqlParameterList);
        }
+
+    //   public bool StockInTransfarInsertDAL(StockInTransfar aStockInTransfar)
+    //   {
+
+    //       string query = @"INSERT INTO dbo.tblStockInTransfar "+
+    //"    ( StockInTransfarId , "+
+    //    "    ReqId , "+
+    //    "    ReqChildId , "+
+    //    "    ProductCode , "+
+    //    "    ProductName , "+
+    //     "   PackSize , "+
+    //      "   BatchNo , "+
+    //      "  Quantity , "+
+    //     "   UnitPrice , "+
+    //     "   PriceAmount , "+
+    //     "   VATAmount , "+
+    //      "  TotalPriceAmount , "+
+    //      "  ExpDate , "+
+    //      "  MfgDate , " +
+    //     "   ReceiveDate ,"+
+    //     "   PickingQty,ReceiveId " +
+    //    "  ) "+
+    //  " VALUES  ( '" + aStockInTransfar.StockInTransfarId + "' , " +
+    //    "    '" + aStockInTransfar.ReqId + "'  ,  " +
+    //    "    '" + aStockInTransfar.ReqChildId + "' ,  " +
+    //   "     '" + aStockInTransfar.ProductCode + "'  ,  " +
+    //   "    '" + aStockInTransfar.ProductName + "'  ,  " +
+    //   "     '" + aStockInTransfar.PackSize + "'  , " +
+    //   "    '" + aStockInTransfar.BatchNo + "' , " +
+    //   "     '" + aStockInTransfar.Quantity + "'  ,  " +
+    //   "     '" + aStockInTransfar.UnitPrice + "'  ,  " +
+    //    "    '" + aStockInTransfar.PriceAmount + "'  ,  " +
+    //    "    '" + aStockInTransfar.VATAmount + "'  ,  " +
+    //     "   '" + aStockInTransfar.TotalPriceAmount + "'  ,  " +
+    //    "    '" + aStockInTransfar.ExpDate + "'  , " +
+    //      "    '" + aStockInTransfar.MfgDate + "'  , " +
+    //    "    '" + aStockInTransfar.ReceiveDate + "'   , " +
+    //     "    '" + aStockInTransfar.PickingQty + "'  ,  " +
+    //     "    '" + aStockInTransfar.ReceiveId + "'    " +
+    //   "   )";
+
+    //       return aCommonInternalDal.SaveDataByInsertCommand(query, "SSIDB");
+    //   }
 
        public bool ReqDetailUpdateAfterIssue(int rcId, decimal totalQuantity, decimal totalPriceAmount, decimal totalVATAmount, decimal totalPriceAmountSum)
        {
@@ -315,6 +390,14 @@ LEFT JOIN dbo.tblRequsitionChild ON dbo.tblRequisition.ReqId = dbo.tblRequsition
        public DataTable GetStockInTransfarByReqIdDAL(string reqId)
        {
            string query = @"SELECT * FROM dbo.tblStockInTransfar WHERE IsTransfared is null and ReqId='" + reqId.Trim() + "'";
+           return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+       }
+
+       public DataTable CheckStoExistOrNotInDcStore(DCStockNew aDetailDao)
+       {
+           string query = @"SELECT * FROM tblDCStore WHERE CONVERT(DATE,ReceiveDateTime) = CONVERT(DATE,GETDATE()) AND ReqId = '" + aDetailDao.ReqId
+               + "' AND ReqChildId = '" + aDetailDao.ReqChildId + "' AND LTRIM(RTRIM(UPPER(ProductCode))) = LTRIM(RTRIM(UPPER('" + aDetailDao.ProductCode + "')))  AND LTRIM(RTRIM(UPPER(BatchNo))) = LTRIM(RTRIM(UPPER('" + aDetailDao.BatchNo + "'))) AND TotalQuantity = " + aDetailDao.TotalQuantity + " AND StockInTransfarId = " + aDetailDao.StockInTransfarId;
+
            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
        }
 
@@ -426,15 +509,28 @@ WHERE tblUnitPrice.IsActive=1 AND tblDCStore.ReqId='" + reqId + "'";
 
        public DataTable CheckDuplicateEntry(int? id)
        {
-           string query = @"SELECT * FROM tblDCStore WHERE ReceiveDateTime BETWEEN DATEADD(MINUTE,-5,GETDATE()) AND  DATEADD(MINUTE,5,GETDATE()) AND (StockInTransfarId = " + id + " OR ChalanDetailsId = " + id + ")";
+           string query = @"SELECT * FROM tblDCStore WHERE ReceiveDateTime BETWEEN DATEADD(MINUTE,-5,GETDATE()) AND  DATEADD(MINUTE,5,GETDATE()) AND StockInTransfarId = " + id;
            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
        }
 
        public bool UpdateTempReceiveId()
        {
            var aSqlParameterList = new List<SqlParameter>();
-
            return aCommonInternalDal.UpdateAction("sp_UD_ReceiveIdInDc", aSqlParameterList);
+       }
+
+       public bool ProcessWeightedAverage(int dcStoreId)
+       {
+           //EXEC sp_Process_WeightedAverage @DCStoreId = 59170
+
+           //string query = @"EXEC sp_Process_WeightedAverage @DCStoreId ='" + dcStoreId + "'";
+           //return aCommonInternalDal.UpdateDataByUpdateCommand(query, "SSIDB");
+
+           var aSqlParameterList = new List<SqlParameter>();
+
+           aSqlParameterList.Add(new SqlParameter("@DCStoreId", dcStoreId));
+
+           return aCommonInternalDal.UpdateAction("sp_Process_WeightedAverage", aSqlParameterList);
        }
     }
 }

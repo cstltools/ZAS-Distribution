@@ -27,7 +27,9 @@ public partial class SInventory_RPTVIEW_InvoiceReportViewer : System.Web.UI.Page
             string unitId = Request.QueryString["branchId"];
             string nomberOfMonths = Request.QueryString["nomberOfMonths"];
 
-            DataTable mainDataTable = aDal.GetExpireProductReport(companyId, unitId, Convert.ToInt32(nomberOfMonths)).Copy();
+            bool isNational = Convert.ToBoolean(Session["National"]);
+
+            DataTable mainDataTable = aDal.GetExpireProductReport(companyId, unitId, Convert.ToInt32(nomberOfMonths), isNational).Copy();
             DataTable companyInfoDataTable = aOrderReportBll.CompanyInfoBLL().Copy();
 
             //rptInvoiceForCustomer aRptInvoiceForCustomer = new rptInvoiceForCustomer();

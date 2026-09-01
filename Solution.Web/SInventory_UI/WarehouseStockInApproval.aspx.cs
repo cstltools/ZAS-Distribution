@@ -150,14 +150,34 @@ public partial class SInventory_UI_WarehouseStockInApproval : System.Web.UI.Page
 
                     aMasterDao.WHStockInMasterID = Convert.ToInt32(loadGridView.DataKeys[i][0].ToString());
 
+
+                    aMasterDao.WHStockInMasterID = Convert.ToInt32(loadGridView.DataKeys[i][0].ToString());
+
                     
                     aMasterDao.Status = "Approved";
                     aMasterDao.ApproveBy = Session["LoginName"].ToString();
                     aMasterDao.ApproveDate = DateTime.Today;
 
-
                     Int32 stockInMasterId = aMasterDao.WHStockInMasterID;
-                    approvalBll.InsertDataIntoCenterlWarehouse(PrepareData(stockInMasterId));
+
+                    var MaterialConversionCount = Convert.ToInt32(loadGridView.DataKeys[i][1].ToString());
+
+                    if (MaterialConversionCount > 0)
+                    {
+                        approvalBll.ApproveWarehouseStockInMaster(aMasterDao); // Insert from Material Conversion
+                    }
+                    else
+                    {
+                        approvalBll.InsertDataIntoCenterlWarehouse(PrepareData(stockInMasterId));
+                    }
+
+
+                   
+
+                   // if (approvalBll.InsertDataIntoCenterlWarehouse(PrepareData(stockInMasterId)))
+                   // {
+                   //     approvalBll.PostJournal(stockInMasterId);
+                   // }
 
                    approvalBll.ApprovalUpdateBLL(aMasterDao);
 

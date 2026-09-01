@@ -177,6 +177,7 @@ public partial class SInventory_UI_PickingSlipGenerate : System.Web.UI.Page
     public string GetParameter()
     {
         string parameter = " AND INV.InvoiceId IN (";
+
         for (int i = 0; i < loadGridView.Rows.Count; i++)
         {
 
@@ -186,6 +187,7 @@ public partial class SInventory_UI_PickingSlipGenerate : System.Web.UI.Page
                 parameter = parameter + "'" + loadGridView.DataKeys[i][0].ToString() + "',";
             }
         }
+
         parameter = parameter.TrimEnd(',');
         parameter = parameter + ")";
         return parameter;

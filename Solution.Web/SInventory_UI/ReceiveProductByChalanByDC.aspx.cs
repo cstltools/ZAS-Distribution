@@ -102,7 +102,13 @@ public partial class SInventory_UI_ReceiveProductByChalanByDC : System.Web.UI.Pa
 
                 if (aTable.Rows.Count == 0)
                 {
+
+                    // Depot StockIn
+
+
                     int DCStoreId = aRequisitionBll.DCStockIn2(aDcStockNew);
+
+
                     if (Convert.ToDecimal(damageTextBox.Text.Trim()) > 0)
                     {
                         DCStoreFreezeDAO aDCStoreFreezeDAO = new DCStoreFreezeDAO();

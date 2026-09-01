@@ -126,6 +126,7 @@
                                         <asp:BoundField DataField="RegionName" HeaderText="Region Name" />
                                         <asp:BoundField DataField="AreaName" HeaderText="Area Name" />
                                         <asp:BoundField DataField="QTY" HeaderText="QTY" />
+                                        <asp:BoundField DataField="GrossValue" HeaderText="Gross Value" />
                                         <asp:BoundField DataField="Due" HeaderText="Total Due" />
                                         <asp:TemplateField>
                                             <HeaderTemplate>

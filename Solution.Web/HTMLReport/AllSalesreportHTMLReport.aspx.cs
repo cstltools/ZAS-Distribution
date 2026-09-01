@@ -21,12 +21,14 @@ public partial class HTMLReport_AllSalesreportHTMLReport : System.Web.UI.Page
         string districtId = Request.QueryString["districtId"];
         string fromDate = Request.QueryString["fromDate"];
         string toDate = Request.QueryString["toDate"];
+        string parameter = Session["Param"].ToString();
+        
         if (NationalReport != 1)
         {
             DateTime FromDate = Convert.ToDateTime(fromDate);
             DateTime ToDate = Convert.ToDateTime(toDate);
 
-            DataTable mainDataTable = aCompanySalesReportBll.SalesReportDAl(districtId, FromDate, ToDate);
+            DataTable mainDataTable = aCompanySalesReportBll.SalesReportDAl(parameter, FromDate, ToDate);
             loadGridView.DataSource = mainDataTable;
             loadGridView.DataBind();
 
@@ -55,12 +57,14 @@ public partial class HTMLReport_AllSalesreportHTMLReport : System.Web.UI.Page
         string districtId = Request.QueryString["districtId"];
         string fromDate = Request.QueryString["fromDate"];
         string toDate = Request.QueryString["toDate"];
+        string parameter = Session["Param"].ToString();
+
         if (NationalReport != 1)
         {
             DateTime FromDate = Convert.ToDateTime(fromDate);
             DateTime ToDate = Convert.ToDateTime(toDate);
 
-            DataTable mainDataTable = aCompanySalesReportBll.SalesReportDAl(districtId, FromDate, ToDate).Copy();
+            DataTable mainDataTable = aCompanySalesReportBll.SalesReportDAl(parameter, FromDate, ToDate).Copy();
 
             DataSet Ds = new DataSet();
 

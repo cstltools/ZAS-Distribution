@@ -1,4 +1,4 @@
-﻿ <%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master"
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPages/MainMasterPage.master"
     AutoEventWireup="true" CodeFile="InvoiceCreationForCustomerByOrder.aspx.cs" Inherits="SInventory_UI_InvoiceCreationForCustomer" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
@@ -6,6 +6,38 @@
 
     <link href="../PopCss/default.css" rel="stylesheet" type="text/css" />
     <link href="../PopCss/Styles.css" rel="stylesheet" type="text/css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.css" rel="stylesheet" />
+    
+    
+    <style type="text/css">
+        
+        .deliveryMan {
+
+            width:250px !important;
+            display: block;
+    width: 100%;
+    padding: .375rem 2.25rem .375rem .75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e);
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+            margin-bottom: 1px !important;
+        }
+
+    </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
@@ -132,15 +164,17 @@
                         <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Remarks:
                         </td>
                         <td width="20%" class="TDRight">
-                            <asp:TextBox ID="remarksTextBox" runat="server" CssClass="TextBox"></asp:TextBox>
+                            <asp:TextBox ID="remarksTextBox" runat="server" TextMode="MultiLine" Rows="3" CssClass="TextBox"></asp:TextBox>
                         </td>
 
                         <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Delivery Person Name:&nbsp;<span class="star-mark"> * </span>
                         </td>
                         <td width="20%" class="TDRight">
-                            <asp:DropDownList ID="deliverypersonNameTextBox" runat="server" CssClass="DropDown"
+                            <asp:DropDownList ID="deliverypersonNameTextBox" runat="server" CssClass="DropDown deliveryMan"
                                 AutoPostBack="True" OnSelectedIndexChanged="deliverypersonNameTextBox_SelectedIndexChanged">
                             </asp:DropDownList>
+                            
+
                         </td>
                     </tr>
                     <tr>
@@ -155,7 +189,11 @@
                             <asp:Label ID="districtNameTextBox" runat="server" CssClass="TextBox" ReadOnly="True"></asp:Label>
                         </td>
 
-                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">                                 PO Number:                        </td>                        <td class="TDRight" width="20%">                            <asp:TextBox ID="txtPONumber" runat="server" CssClass="TextBox"></asp:TextBox>                        </td>
+                        <td class="TDLeft" width="13%" style="text-align: right; padding-right: 10px;">PO Number:
+                        </td>
+                        <td class="TDRight" width="20%">
+                            <asp:TextBox ID="txtPONumber" runat="server" CssClass="TextBox"></asp:TextBox>
+                        </td>
                     </tr>
                     <tr>
                         <td class="TDLeft" width="13%">
@@ -238,6 +276,8 @@
                                                     Text='<%# Eval("Quantity")%>' AutoPostBack="True" OnTextChanged="qtyTextBox_TextChanged"></asp:TextBox>
                                                 <asp:FilteredTextBoxExtender ID="fqtyTextBox" runat="server" TargetControlID="qtyTextBox"
                                                     FilterType="Custom, Numbers" ValidChars="." />
+                                                
+                                                <asp:HiddenField ID="hdfActualOrderQuantity" runat="server" />
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField HeaderText="TP">
@@ -481,7 +521,7 @@
                                     </div>
                                     <div class="mainRight">
                                         <p align="center">Are you want to save the invoice ? </p>
-                                         <asp:TextBox ID="invoiceNoTextBox" runat="server" CssClass="TextBox" ></asp:TextBox>
+                                        <asp:TextBox ID="invoiceNoTextBox" runat="server" CssClass="TextBox"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="popup_Buttons" align="center">
@@ -549,6 +589,7 @@
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:Label ID="invTextBox" runat="server" CssClass="TextBox"></asp:Label>
+                            <asp:Label ID="rptInvoiceId" runat="server" Visible="False"  CssClass="TextBox"></asp:Label>
                         </td>
                         <td class="TDLeft" width="13%">
                             <asp:Button ID="printButton" BackColor="#cc6600" runat="server" OnClick="printButton_Click" Text="Print" />
@@ -591,5 +632,23 @@
         </ProgressTemplate>
     </asp:UpdateProgress>
 
+    <!-- Select2 Initialization Script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
 
+    <script type="text/javascript">
+        
+        $(document).ready(function () {
+            $(".deliveryMan").select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+            $(".deliveryMan").select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+    </script>
 </asp:Content>

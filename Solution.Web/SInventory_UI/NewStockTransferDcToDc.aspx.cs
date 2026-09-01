@@ -61,6 +61,18 @@ public partial class SInventory_UI_NewStockTransferDcToDc : System.Web.UI.Page
     protected void salescenterDropDownList1_SelectedIndexChanged(object sender, EventArgs e)
     {
 
+
+        // Reset Grid
+
+        prodctCodeTextBox.Text = "";
+
+        productGridView.DataSource = null;
+        productGridView.DataBind();
+
+        chalanGridView.DataSource = null;
+        chalanGridView.DataBind();
+
+
         if (salescenterDropDownList2.SelectedValue != "")
         {
             if (salescenterDropDownList2.SelectedValue == salescenterDropDownList1.SelectedValue)
@@ -227,17 +239,26 @@ public partial class SInventory_UI_NewStockTransferDcToDc : System.Web.UI.Page
             aChalanInfo.TotalVat = totalvat;
             aChalanInfo.GrandTotal = grandtotal;
 
+            aChalanInfo.ChalanBy = Session["LoginName"].ToString();
+
             int chalanId;
             bool status = aChalanBll.SaveDataForChalanInfo(aChalanInfo, out chalanId);
-            DataTable dt = aChalanBll.LoadChalanById(chalanId.ToString());
-            if (dt.Rows.Count > 0)
-            {
-                printChalanNoTextBox.Text = dt.Rows[0]["ChalanNo"].ToString();
-            }
-            List<ChalanDetail> aChalanDetailList = new List<ChalanDetail>();
 
-            if (status == true)
+
+            if (chalanId > 0)
             {
+                // Set Challan No for Report Preview
+
+                DataTable dt = aChalanBll.LoadChalanById(chalanId.ToString());
+                if (dt.Rows.Count > 0)
+                {
+                    printChalanNoTextBox.Text = dt.Rows[0]["ChalanNo"].ToString();
+                }
+
+                // Save Details
+
+                List<ChalanDetail> aChalanDetailList = new List<ChalanDetail>();
+
                 for (int i = 0; i < chalanGridView.Rows.Count; i++)
                 {
                     ChalanDetail aChalanDetail = new ChalanDetail()
@@ -261,17 +282,27 @@ public partial class SInventory_UI_NewStockTransferDcToDc : System.Web.UI.Page
                             Convert.ToDecimal(chalanGridView.Rows[i].Cells[2].Text)*
                             Convert.ToDecimal(chalanGridView.DataKeys[i][1].ToString())
                     };
+
                     aChalanDetailList.Add(aChalanDetail);
                 }
+
+
                 if (aChalanBll.SaveDataForChalanDetail(aChalanDetailList))
                 {
-                    showMessageBox("Data save successfully");
+                    showMessageBox("Data save successfully !!!");
                     Clear();
                     Todate();
                     ChalanId();
                 }
 
             }
+
+            else
+            {
+                showMessageBox("Already Exist !!");
+            }
+
+            
         }
     }
     public void ChalanId()
@@ -530,6 +561,17 @@ public partial class SInventory_UI_NewStockTransferDcToDc : System.Web.UI.Page
             AjaxControlToolkit.AutoCompleteExtender modal = (AjaxControlToolkit.AutoCompleteExtender)prodctCodeTextBox.FindControl("productNameTextBox_AutoCompleteExtender");
             modal.ContextKey = null;
         }
+
+
+        // Reset Grid
+
+        prodctCodeTextBox.Text = "";
+
+        productGridView.DataSource = null;
+        productGridView.DataBind();
+
+        chalanGridView.DataSource = null;
+        chalanGridView.DataBind();
 
         //if (ddlFromCmpany.SelectedValue != "")
         //{

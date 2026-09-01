@@ -64,6 +64,8 @@ public partial class SInventory_UI_WingsWiseSalesReport : System.Web.UI.Page
 
     }
 
+
+
     protected void ddlCompany_SelectedIndexChanged(object sender, EventArgs e)
     {
 

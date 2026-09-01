@@ -15,7 +15,8 @@ namespace Library.DAL.SInventory_DAL
 
         public void GetUserInfo(DropDownList ddl)
         {
-            string query = @"SELECT UserId,UserCode + ':' + UserName AS UserName FROM tblUser";
+            string query = @"SELECT UserId,ISNULL(EmpMasterCode,UserCode) + CASE WHEN EmpName IS NULL THEN ':' + UserName ELSE EmpName END AS UserName FROM tblUser AS USR
+                             LEFT JOIN tblEmpGeneralInfo AS EGI ON USR.EmpInfoId = EGI.EmpInfoId";
             aCommonInternalDal.LoadDropDownValue(ddl, "UserName", "UserId", query, "SSIDB");
         }
 

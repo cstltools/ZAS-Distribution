@@ -18,6 +18,8 @@ namespace Library.DAO.SInventory_Entities
         public string City { get; set; }
         public string ConPerson { get; set; }
         public string ShippingCond { get; set; }
+        public string TradelicenseNo { get; set; }
+        public DateTime? TradeLicenseExpiryDate { get; set; }
         public string PaymentType { get; set; }
         public string TermOfPayment { get; set; }
         public string CustomerCodeOld { get; set; }

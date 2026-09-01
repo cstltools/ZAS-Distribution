@@ -22,14 +22,27 @@ public partial class SInventory_RPTVIEW_InvoiceReportViewer : System.Web.UI.Page
         try
         {
             string invNo = Server.UrlDecode(Request.QueryString["InvNo"]);
+
+            string invoiceId = Server.UrlDecode(Request.QueryString["invoiceId"]);
+
+            // If invoiceId is null or empty, assign it a default value of "0"
+
+            if (string.IsNullOrEmpty(invoiceId))
+            {
+                invoiceId = "0";
+            }
+
+
             string invColl = aInvoiceBll.InvoiceNoCollectionFormate(invNo);
             //string customer = Session["customer"].ToString();
 
-            DataTable mainDataTable = aInvoiceBll.InvoiceMainDataForReportBLL(invColl).Copy();
-            DataTable detailDataTable = aInvoiceBll.InvoiceDetailDataForReportBLL(invColl).Copy();
+            DataTable mainDataTable = aInvoiceBll.InvoiceMainDataForReportBLL(invColl, invoiceId).Copy();
+
+            DataTable detailDataTable = aInvoiceBll.InvoiceDetailDataForReportBLL(invColl, invoiceId).Copy();
             DataTable companyInfoDataTable = aOrderReportBll.CompanyInfoBLL().Copy();
 
             //rptInvoiceForCustomer aRptInvoiceForCustomer = new rptInvoiceForCustomer();
+
 
             DataSet Ds = new DataSet();
 

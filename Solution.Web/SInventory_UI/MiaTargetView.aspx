@@ -69,10 +69,11 @@
                                 onrowcommand="loadGridView_RowCommand" >
                                 <Columns>
                                     <asp:BoundField DataField="CompanyName" HeaderText="Company" />
+                                    <asp:BoundField DataField="Year" HeaderText="Year" />
+                                    <asp:BoundField DataField="Period" HeaderText="Period" />
                                     <asp:BoundField DataField="MiaCode" HeaderText="Mia Code" />
                                     <asp:BoundField DataField="MiaName" HeaderText="Mia Name" />
-                                    <asp:BoundField DataField="MiaTargetAmount" HeaderText="Mia Target Amount " />
-                                    <asp:BoundField DataField="Period" HeaderText="Period" />
+                                    <asp:BoundField DataField="MiaTargetAmount" HeaderText="Mia Target Amount " /> 
                                     <asp:TemplateField HeaderText="Edit">
                                         <ItemTemplate>
                                             <asp:ImageButton ID="editImageButton" runat="server" 

@@ -4,6 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <script src="Extension.min.js" type="text/javascript"></script>
     
        <script type="text/javascript">
            function MutExChkList(chk) {
@@ -22,7 +23,7 @@
             <div>
                 <table width="100%" class="TableWorkArea">
                     <tr>
-                        <td colspan="6" class="TableHeading">Deposit Slip Entry
+                        <td colspan="6" class="TableHeading"> Deposit Slip Entry
                         </td>
                     </tr>
 
@@ -201,7 +202,7 @@
                             <asp:DropDownList ID="DropDownList3" Width="180px" runat="server" CssClass="DropDown"
                                 Visible="False">
                             </asp:DropDownList>
-                            <asp:TextBox ID="chkDateTextBox" Width="160px" runat="server" CssClass="TextBoxCalander"></asp:TextBox>
+                            <asp:TextBox ID="chkDateTextBox" Width="160px" runat="server" CssClass="TextBoxCalander disable_past_dates"></asp:TextBox>
                             <asp:ImageButton ID="ImageButton1" runat="server" AlternateText="Click to show calendar"
                                 ImageUrl="~/Images/Calendar_scheduleHS.png" TabIndex="4" />
                             <ajaxToolkit:CalendarExtender ID="CalendarExtender12" runat="server" Format="dd-MMM-yyyy"

@@ -948,17 +948,19 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
 
                 if (CheckDataSavedOrNot(masterId))
                 {
+                    // Post journal
 
-                    if (aOrderCreationDal.PostJournal(masterId))
+                    aOrderCreationDal.PostJournal(masterId);
+
+                    // Get Issue Code
+
+                    DataTable aTable = aOrderCreationDal.GetSampleIssueCode(masterId);
+
+                    if (aTable.Rows.Count > 0)
                     {
-                        DataTable aTable = aOrderCreationDal.GetSampleIssueCode(masterId);
-
-                        if (aTable.Rows.Count > 0)
-                        {
-                            code.Text = aTable.Rows[0].Field<string>("OrderCode");
-                            ShowMessageBox("Sample Issued Successfully !!");
-                            Clear();
-                        }
+                        code.Text = aTable.Rows[0].Field<string>("OrderCode");
+                        ShowMessageBox("Sample Issued Successfully !!");
+                        Clear();
                     }
                     
                 }
@@ -991,7 +993,7 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
         foreach (var aOrderInfoDetail in aOrderInfoDetails)
         {
             id = aOrderCreationDal.SaveOrderDetailInfo(aOrderInfoDetail);
-            aOrderCreationDal.SampleStockIssue(aOrderInfoDetail,id,dcDropDownList.SelectedValue);
+            //aOrderCreationDal.SampleStockIssue(aOrderInfoDetail,id,dcDropDownList.SelectedValue);
         }
 
         return id;
@@ -1084,15 +1086,15 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
 
         aListMasterDao.GrossValue = totalprice;
 
-        if (isSpecialAppCheckBox.Checked == false)
-        {
-            aListMasterDao.ActionStatus = "Accepted";
-            aListMasterDao.ApprovedBy = Session["LoginName"].ToString();
-        }
-        else
-        {
+        //if (isSpecialAppCheckBox.Checked == false)
+        //{
+        //    aListMasterDao.ActionStatus = "Accepted";
+        //    aListMasterDao.ApprovedBy = Session["LoginName"].ToString();
+        //}
+        //else
+        //{
             aListMasterDao.ActionStatus = "Posted"; 
-        }
+        //}
 
         aListMasterDao.ApprovedDate = DateTime.Now;
 
@@ -1255,5 +1257,10 @@ public partial class SInventory_UI_ManualOrderrCreation : System.Web.UI.Page
         {
             deliverypersonMobileTextBox.Text = dt.Rows[0]["CellNumber"].ToString();
         }
+    }
+
+    protected void productImageButton_Click(object sender, ImageClickEventArgs e)
+    {
+        Response.Redirect("SampleInvoiceList.aspx");
     }
 }

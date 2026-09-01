@@ -39,15 +39,13 @@ namespace Library.DAL.SInventory_DAL
             string query = @"SELECT CMU.ComUnitId,CMU.ComUnitCode + ':' + CMU.ComUnitName AS UnitName FROM dbo.tblCompanyUnit AS CMU 
             WHERE CMU.CompanyId = " + companyId;
             aCommonInternalDAL.LoadDropDownValue(ddl, "UnitName", "ComUnitId", query, "SSIDB");
-
-
         }
 
         public DataTable GetMioSalesSummery(string parameter, string fromDate, string toDate)
         {
 
             string query = @"SELECT CI.CompanyName,UNT.ComUnitName AS Depot,INV.MiaId,H.MIOId,H.MIO,H.RSMId,H.RSM,H.ASMId,H.ASM,SUM(CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END) AS Sales,
-              ISNULL(INVA.InvoiceValue,0) AS InTransit,ISNULL(RJT.ReturnSales,0) ReturnSales,PMNT.SalesCollection, H.RegionName,H.AreaName,H.TerritoryName,ISNULL(TG.MiaTargetAmount,0) AS MiaTargetAmount,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,ISNULL((SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END))*100)/TG.MiaTargetAmount,0)/2 AS Achivment,ISNULL(D.Dues,0) AS Dues FROM tblInvoice AS INV "
+              ISNULL(INVA.InvoiceValue,0) AS InTransit,ISNULL(RJT.ReturnSales,0) ReturnSales,PMNT.SalesCollection, H.RegionName,H.AreaName,H.TerritoryName,ISNULL(TG.MiaTargetAmount,0) AS MiaTargetAmount,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,CASE WHEN TG.MiaTargetAmount = 0 THEN 0 ELSE ISNULL((SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN INVD.DeliveryNetAmount  ELSE 0 END))*100)/TG.MiaTargetAmount,0) END  AS Achivment,ISNULL(D.Dues,0) AS Dues FROM tblInvoice AS INV "
               +" LEFT JOIN tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId "
               +" LEFT JOIN tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId"
               +" LEFT JOIN tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId"
@@ -80,7 +78,7 @@ namespace Library.DAL.SInventory_DAL
               +" LEFT JOIN tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId "
               +" LEFT JOIN tblTerritory AS TTR ON MIO.TerritoryId = TTR.TerritoryId ) AS H ON Inv.OrderId = H.OrderId "
               + " LEFT JOIN (SELECT TGRT.MiaId,TGRT.MiaTargetAmount FROM tblMIATarget AS TGRT WHERE TGRT.Year = DATENAME(year,'" + fromDate + "') AND  (TGRT.Period = DATENAME(month,'" + toDate + "'))) AS TG ON TG.MiaId = INV.MiaId "
-              + " WHERE INV.DeliveryInvoiceStatus IN ('Full','Partial') AND INVD.Quantity > 0  " + parameter + " GROUP BY CI.CompanyName,UNT.ComUnitName,INV.MiaId,H.MIOId,H.MIO,H.RSMId,H.RSM,H.ASMId,H.ASM,INVA.InvoiceValue,RJT.ReturnSales,PMNT.SalesCollection,H.RegionName,H.AreaName,H.TerritoryName,TG.MiaTargetAmount,D.Dues "
+              + " WHERE (INV.DeliveryInvoiceStatus IN ('Full','Partial') OR INV.DeliveryInvoiceStatus IS NULL) AND INVD.Quantity > 0  " + parameter + " GROUP BY CI.CompanyName,UNT.ComUnitName,INV.MiaId,H.MIOId,H.MIO,H.RSMId,H.RSM,H.ASMId,H.ASM,INVA.InvoiceValue,RJT.ReturnSales,PMNT.SalesCollection,H.RegionName,H.AreaName,H.TerritoryName,TG.MiaTargetAmount,D.Dues "
               +" ORDER BY MIO";
 
 //            string query = @"SELECT CI.CompanyName,UNT.ComUnitName AS Depot,INV.MiaId,EGIM.EmpMasterCode AS MIOId,

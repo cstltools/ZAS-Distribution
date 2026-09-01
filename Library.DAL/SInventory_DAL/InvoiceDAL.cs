@@ -23,6 +23,156 @@ namespace Library.DAL.SInventory_DAL
         {
             aDbManager.CloseConnection();
         }
+
+
+        public DataTable InvoiceDetailDataForReport2(string invNo)
+        {
+            string query = @"SELECT IVD.ProductCode,(IVD.ProductName) AS Product,tblProduct.Description AS GenericName,SUM(IVD.Quantity) Quantity,SUM(IVD.BonusQuantity) BonusQuantity, IVD.UnitPrice,   
+IVD.UnitVatAmount,SUM(IVD.TotalPrice) TotalPrice, IVD.TotalPriceVatAmount, (IVD.DiscountPercentage+ISNULL(PD.DiscountPercentage,0))DiscountPercentage,SUM((IVD.DiscountAmount+IVD.SpecialAmount)) DiscountAmount,  
+SUM(IVD.NetAmount) NetAmount,IVD.PackSize AS InvoiceId FROM dbo.tblInvoice AS IV 
+LEFT JOIN dbo.tblInvoiceDetail AS IVD ON IVD.InvoiceId = IV.InvoiceId
+LEFT JOIN dbo.tblProduct ON tblProduct.ProductCode = IVD.ProductCode
+LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductDiscount WHERE IsActive = 1 AND ActionStatus = 'Accepted' ) PD  ON PD.CustomerMasterId = IV.CustomerMasterId AND PD.ProductId = dbo.tblProduct.ProductId " + invNo.Trim() + " GROUP BY IVD.ProductCode,IVD.ProductName,tblProduct.Description, IVD.UnitPrice,IVD.UnitVatAmount, IVD.TotalPriceVatAmount, IVD.DiscountPercentage, PD.DiscountPercentage,IVD.PackSize ";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+public DataTable GroupInvoiceDetailDataForReport2(string invNo)
+        {
+            string query = @"SELECT IVD.ProductCode,(IVD.ProductName) AS Product,tblProduct.Description AS GenericName,SUM(IVD.Quantity) Quantity,SUM(IVD.BonusQuantity) BonusQuantity, IVD.UnitPrice,   
+IVD.UnitVatAmount,SUM(IVD.TotalPrice) TotalPrice, IVD.TotalPriceVatAmount, (IVD.DiscountPercentage+ISNULL(PD.DiscountPercentage,0))DiscountPercentage,SUM((IVD.DiscountAmount+IVD.SpecialAmount)) DiscountAmount,  
+SUM(IVD.NetAmount) NetAmount,IVD.PackSize AS InvoiceId FROM dbo.tblInvoice AS IV 
+LEFT JOIN dbo.tblInvoiceDetail AS IVD ON IVD.InvoiceId = IV.InvoiceId
+LEFT JOIN dbo.tblProduct ON tblProduct.ProductCode = IVD.ProductCode
+LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductDiscount WHERE IsActive = 1 AND ActionStatus = 'Accepted' ) PD  ON PD.CustomerMasterId = IV.CustomerMasterId AND PD.ProductId = dbo.tblProduct.ProductId  WHERE  GroupInvoiceNo = '" + invNo.Trim() + "' GROUP BY IVD.ProductCode,IVD.ProductName,tblProduct.Description, IVD.UnitPrice,IVD.UnitVatAmount, IVD.TotalPriceVatAmount, IVD.DiscountPercentage, PD.DiscountPercentage,IVD.PackSize ";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable InvoiceMainDataForReport2(string invNo)
+        {
+            string query = @"SELECT GroupInvoiceNo,EGI.EmpName AS DeliveryPersonName,tblEmpGeneralInfo.CellNumber AS DeliveryPersonPhNo,IV.InvoiceId,IV.InvoiceNo,IV.InvoiceDate,IV.OrderNo,IV.OrderDate,
+    IV.TpTotal,IV.TpVat,(IV.TpDiscount+isnull(IV.TotalSpecialAmount,0))TpDiscount,IV.TpGrandTotal,CU.ComUnitCode,CU.ComUnitName as 
+    CompanyName,  (CU.Address) AS CUAddress,  CM.CustomerCode,CM.CustomerName, (CM.Address) AS 
+    CMAddress,CM.Addrees2,CC.CategoryName,PT.PaymentTypeName,  dbo.tblEmpGeneralInfo.EmpMasterCode AS MiaCode,dbo.tblEmpGeneralInfo.EmpName AS MiaName,MarketName as UserName,IV.Remarks,PONumber,U.UserName AS PreparedBy  
+    FROM tblInvoice IV 
+    LEFT JOIN dbo.tblOrder ON tblOrder.OrderId = IV.OrderId
+    LEFT JOIN dbo.tblDeliveryManInfo ON IV.DeliveryManId=dbo.tblDeliveryManInfo.DeliveryManId
+     LEFT JOIN tblCompanyUnit CU ON IV.ComUnitId = CU.ComUnitId  
+     LEFT JOIN tblCustMaster CM ON IV.CustomerMasterId=CM.CustomerMasterId  
+     LEFT JOIN dbo.tblMarket ON tblMarket.MarketId = CM.MarketId
+     LEFT JOIN tblPaymentType PT ON IV.PaymentTypeId=PT.PaymentTypeId  
+     LEFT JOIN dbo.tblMIOInfo MIA ON IV.MiaId=MIA.MIOId  
+     LEFT JOIN tblUser U ON IV.UserId=U.UserId  
+     LEFT JOIN dbo.tblEmpGeneralInfo ON MIA.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId
+	 LEFT JOIN dbo.tblEmpGeneralInfo AS EGI ON EGI.EmpInfoId = dbo.tblDeliveryManInfo.EmpInfoId
+     LEFT JOIN dbo.tblCustCategory CC ON CM.CategoryId=CC.CategoryId " + invNo.Trim() + " ORDER BY IV.InvoiceId ";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+
+        public DataTable GroupInvoiceMainDataForReport2(string invNo)
+        {
+            string query = @"
+        SELECT 
+            INV.GroupInvoiceNo,
+            CONVERT(DATE, INV.GroupInvoiceDate, 101) AS InvoiceDate,
+            CSTMR.CustomerCode,
+            CSTMR.CustomerName,
+            CSTMR.Address,
+            CSTMR.Addrees2,
+            CSTMR.TermOfPayment,
+            MKT.MarketName,
+            EGI.EmpName AS DeliveryPersonName,
+            EGI.CellNumber AS DeliveryPersonPhNo,
+            INV.Remarks,
+            INV.PONumber,
+            U.UserName AS PreparedBy,
+            INV.InvoiceNo,
+            INV.OrderNo,
+            CONVERT(DATE, ODR.SubmissionDate, 101) AS OrderDate,
+            IVD.ProductCode,
+            IVD.ProductName AS Product,
+            PD.Description AS GenericName,
+            SUM(IVD.Quantity) AS Quantity,
+            SUM(IVD.BonusQuantity) AS BonusQuantity,
+            SUM(IVD.Quantity) + SUM(IVD.BonusQuantity) AS TotalQuantity,
+            IVD.UnitPrice,
+            IVD.UnitVatAmount,
+            SUM(IVD.TotalPrice) AS TotalPrice,
+            IVD.TotalPriceVatAmount,
+            (IVD.DiscountPercentage + ISNULL(DS.DiscountPercentage, 0)) AS DiscountPercentage,
+            SUM(IVD.DiscountAmount + IVD.SpecialAmount) AS DiscountAmount,
+            SUM(IVD.NetAmount) AS NetAmount,
+            IVD.PackSize
+        FROM tblInvoice AS INV
+        LEFT JOIN tblUser AS U 
+            ON INV.UserId = U.UserId
+        LEFT JOIN tblOrder AS ODR 
+            ON INV.OrderId = ODR.OrderId
+        LEFT JOIN tblInvoiceDetail AS IVD 
+            ON INV.InvoiceId = IVD.InvoiceId
+        LEFT JOIN tblProduct AS PD 
+            ON IVD.ProductCode = PD.ProductCode
+        INNER JOIN dbo.tblDeliveryManInfo AS DLV 
+            ON DLV.DeliveryManId = INV.DeliveryManId
+        INNER JOIN dbo.tblEmpGeneralInfo AS EGI 
+            ON EGI.EmpInfoId = DLV.EmpInfoId
+        INNER JOIN dbo.tblCustMaster AS CSTMR 
+            ON CSTMR.CustomerMasterId = INV.CustomerMasterId
+        LEFT JOIN tblMarket AS MKT 
+            ON CSTMR.MarketId = MKT.MarketId
+        LEFT JOIN (
+            SELECT CustomerMasterId, ProductId, DiscountPercentage
+            FROM tblProductDiscount
+            WHERE IsActive = 1 
+              AND ActionStatus = 'Accepted'
+        ) AS DS
+            ON DS.CustomerMasterId = INV.CustomerMasterId
+           AND DS.ProductId = PD.ProductId
+        WHERE INV.GroupInvoiceNo = '" + invNo.Trim() + @"'
+        GROUP BY
+            INV.GroupInvoiceNo,
+            CONVERT(DATE, INV.GroupInvoiceDate, 101),
+            CSTMR.CustomerCode,
+            CSTMR.CustomerName,
+            CSTMR.Address,
+            CSTMR.Addrees2,
+            CSTMR.TermOfPayment,
+            MKT.MarketName,
+            EGI.EmpName,
+            EGI.CellNumber,
+            INV.Remarks,
+            INV.PONumber,
+            U.UserName,
+            INV.InvoiceNo,
+            INV.OrderNo,
+            CONVERT(DATE, ODR.SubmissionDate, 101),
+            IVD.ProductCode,
+            IVD.ProductName,
+            PD.Description,
+            IVD.UnitPrice,
+            IVD.UnitVatAmount,
+            IVD.TotalPriceVatAmount,
+            IVD.DiscountPercentage,
+            DS.DiscountPercentage,
+            IVD.PackSize
+        ORDER BY 
+            INV.InvoiceNo,
+            IVD.ProductCode";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public int GenerateGroupInvoiceNo(string InvoiceNo)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
+            aSqlParameterList.Add(new SqlParameter("@InvoiceNo", InvoiceNo));
+
+            return aCommonInternalDal.RunStoreProcedure("sp_Generate_InvoiceNo", aSqlParameterList, "SSIDB");
+        }
+
         public int SaveFullInvoice(string InvoiceNo, string updateby, string updatedate)
         {
             List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
@@ -563,13 +713,13 @@ namespace Library.DAL.SInventory_DAL
         public DataTable ProductInfoDAL(string comUnitId, string productCode,string customerMasterId)
         {
 
-            string query = @"   SELECT P.ProductCode,(P.ProductName+':'+P.PackSize) as  ProductName,P.PackSize, " +
+            string query = @"SELECT P.ProductCode,(P.ProductName+':'+P.PackSize) as  ProductName,P.PackSize, " +
            " CASE WHEN QTD.QuotedPrice IS NULL THEN ISNULL(UP.UnitPrice,0) ELSE ISNULL(QTD.QuotedPrice,0) END AS UnitPrice,ISNULL(VCS.TotalQty,0) AS StockQty, " +
            " (UP.VATAmountPerUnit) AS VAT, ISNULL(UP.CostPrice,0) AS CostPrice, " +
            " ISNULL(UP.VATPercentage,0)VATPercentage,MRPPrice,P.ProductId  FROM " +
            " dbo.tblProduct P  " +
            " LEFT JOIN dbo.tblUnitPrice UP ON P.ProductCode = UP.ProductCode  " +
-           " LEFT JOIN (SELECT ProductId,QuotedPrice FROM tblProductQuotedPrice AS Q LEFT JOIN tblCustMaster AS C ON Q.CustomerMasterId = C.CustomerMasterId WHERE '" + DateTime.Today + "' <= Q.InactiveDate AND ActionStatus = 'Accepted' AND Q.IsActive = 1 AND CustomerCode = " + customerMasterId.Trim() + ") AS QTD ON QTD.ProductId = P.ProductId" +
+           " LEFT JOIN (SELECT ProductId,QuotedPrice FROM tblProductQuotedPrice AS Q LEFT JOIN tblCustMaster AS C ON Q.CustomerMasterId = C.CustomerMasterId WHERE '" + DateTime.Today + "' <= Q.InactiveDate AND ActionStatus = 'Accepted' AND Q.IsActive = 1 AND CustomerCode = '" + customerMasterId.Trim() + "') AS QTD ON QTD.ProductId = P.ProductId" +
            " LEFT JOIN (select ComUnitId,ProductCode, TotalQty from View_DCStoreCurrentStock WHERE ComUnitId='" + comUnitId.Trim() + "' AND ProductCode='" + productCode.Trim() + "') VCS  " +
            " ON P.ProductCode=VCS.ProductCode   where  UP.ActionStatus = 'Accepted' AND UP.IsActive = 'TRUE' AND P.ProductCode='" + productCode.Trim() + "' ";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
@@ -744,8 +894,17 @@ LEFT JOIN dbo.tblOrderDetail ON dbo.tblOrder.OrderId = dbo.tblOrderDetail.OrderI
         }
         public void LoadDeliveryMan(DropDownList aDropDownList)
         {
-            string query = @"SELECT *,EmpName as DeliveryManName FROM dbo.tblDeliveryManInfo
-                            inner join tblEmpGeneralInfo on tblDeliveryManInfo.EmpInfoId=tblEmpGeneralInfo.EmpInfoId";
+//            string query = @"SELECT *,EmpName + CASE WHEN EmpMasterCode IS NOT NULL THEN ' (' + EmpMasterCode + ')' END  as DeliveryManName FROM dbo.tblDeliveryManInfo
+//                            inner join tblEmpGeneralInfo on tblDeliveryManInfo.EmpInfoId=tblEmpGeneralInfo.EmpInfoId ORDER BY EmpName "; 
+
+
+            string query = @"SELECT DL.DeliveryManId,ISNULL( HRGI.EmpName + ' (' + JobLocationName + ')', EGI.EmpName) DeliveryManName FROM tblDeliveryManInfo AS DL
+            INNER JOIN tblEmpGeneralInfo AS EGI ON DL.EmpInfoId = EGI.EmpInfoId
+            LEFT JOIN ZASHRIS..tblEmpGeneralInfo AS HRGI ON EGI.EmpMasterCode = HRGI.EmpMasterCode
+            LEFT JOIN ZASHRIS..tblJobLocation AS JL ON HRGI.JobLocationisionId = JL.JobLocationisionId
+            WHERE DL.IsActive = 1 ORDER BY JobLocationName ASC ";
+
+
             aCommonInternalDal.LoadDropDownValue(aDropDownList, "DeliveryManName", "DeliveryManId", query, "SSIDB");
         }
         public void ReturnReason(DropDownList aDropDownList)
@@ -1078,16 +1237,19 @@ LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = ORD.TerritoryId
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
         ///////////////////////////////////////////////////////////////////////////////
-        public DataTable InvoiceMainDataForReport(string invNo)
+        public DataTable InvoiceMainDataForReport(string invNo, string invoiceId)
         {
-            string query = @"SELECT EGI.EmpName AS DeliveryPersonName,tblEmpGeneralInfo.CellNumber AS DeliveryPersonPhNo,IV.InvoiceId,IV.InvoiceNo,IV.InvoiceDate,IV.OrderNo,IV.OrderDate,
+            string query = @"SELECT EGI.EmpName AS DeliveryPersonName,tblEmpGeneralInfo.CellNumber AS DeliveryPersonPhNo,IV.InvoiceId,IV.InvoiceNo,IV.InvoiceDate,IV.OrderNo,tblOrder.EntryDate OrderDate,
     IV.TpTotal,IV.TpVat,(IV.TpDiscount+isnull(IV.TotalSpecialAmount,0))TpDiscount,IV.TpGrandTotal,CU.ComUnitCode,CU.ComUnitName as 
     CompanyName,  (CU.Address) AS CUAddress,  CM.CustomerCode,CM.CustomerName, (CM.Address) AS 
-    CMAddress,CM.Addrees2,CC.CategoryName,PT.PaymentTypeName,  dbo.tblEmpGeneralInfo.EmpMasterCode AS MiaCode,dbo.tblEmpGeneralInfo.EmpName AS MiaName,MarketName as UserName,IV.Remarks,PONumber,U.UserName AS PreparedBy  
+    CMAddress,CM.Addrees2,CompanyName CategoryName,PT.PaymentTypeName,  dbo.tblEmpGeneralInfo.EmpMasterCode AS MiaCode,dbo.tblEmpGeneralInfo.EmpName AS MiaName,MarketName as UserName,IV.Remarks,PONumber,U.UserName AS PreparedBy,
+   CONVERT(VARCHAR,BatchNo) + ' - ( ' + CONVERT(varchar,Date,107) + ')' AS BatchNo 
     FROM tblInvoice IV 
     LEFT JOIN dbo.tblOrder ON tblOrder.OrderId = IV.OrderId
     LEFT JOIN dbo.tblDeliveryManInfo ON IV.DeliveryManId=dbo.tblDeliveryManInfo.DeliveryManId
+LEFT JOIN  tblInvoiceBatch AS B ON IV.BatchId = B.BatchId
      LEFT JOIN tblCompanyUnit CU ON IV.ComUnitId = CU.ComUnitId  
+LEFT JOIN tblCompanyInfo AS COM ON CU.CompanyId = COM.CompanyId
      LEFT JOIN tblCustMaster CM ON IV.CustomerMasterId=CM.CustomerMasterId  
      LEFT JOIN dbo.tblMarket ON tblMarket.MarketId = CM.MarketId
      LEFT JOIN tblPaymentType PT ON IV.PaymentTypeId=PT.PaymentTypeId  
@@ -1095,7 +1257,7 @@ LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = ORD.TerritoryId
      LEFT JOIN tblUser U ON IV.UserId=U.UserId  
      LEFT JOIN dbo.tblEmpGeneralInfo ON MIA.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId
 	 LEFT JOIN dbo.tblEmpGeneralInfo AS EGI ON EGI.EmpInfoId = dbo.tblDeliveryManInfo.EmpInfoId
-     LEFT JOIN dbo.tblCustCategory CC ON CM.CategoryId=CC.CategoryId  WHERE IV.InvoiceNo in (" + invNo.Trim() + ") ";
+     LEFT JOIN dbo.tblCustCategory CC ON CM.CategoryId=CC.CategoryId WHERE IV.InvoiceId = " + invoiceId  + " AND IV.InvoiceNo in (" + invNo.Trim() + ") ";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
         //public DataTable DelivaryInvoiceMainDataForReport(string invNo)
@@ -1116,7 +1278,7 @@ LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = ORD.TerritoryId
         //    return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         //}
         ///////////////////////////////////////////////////////////////////////////////
-        public DataTable InvoiceDetailDataForReport(string invNo)
+        public DataTable InvoiceDetailDataForReport(string invNo, string invoiceId)
         {
             //string query = @"SELECT IVD.ProductCode,(IVD.ProductName+':'+IVD.PackSize) AS Product,IVD.BatchNo,IVD.BonusQuantity,IVD.Quantity,IVD.UnitPrice, "+
             //                " IVD.UnitVatAmount,IVD.TotalPrice,IVD.TotalPriceVatAmount,IVD.DiscountPercentage,IVD.DiscountAmount,IVD.NetAmount,IV.InvoiceId " +
@@ -1125,11 +1287,11 @@ LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = ORD.TerritoryId
             //           " WHERE IV.InvoiceNo in (" + invNo.Trim() + ") ";
 
             string query = @"SELECT IVD.ProductCode,(IVD.ProductName) AS Product,tblProduct.Description AS GenericName,SUM(IVD.Quantity) Quantity,SUM(IVD.BonusQuantity) BonusQuantity, IVD.UnitPrice,   
-IVD.UnitVatAmount,SUM(IVD.TotalPrice) TotalPrice, IVD.TotalPriceVatAmount, (IVD.DiscountPercentage+ISNULL(PD.DiscountPercentage,0))DiscountPercentage,SUM((IVD.DiscountAmount+IVD.SpecialAmount)) DiscountAmount,  
+IVD.UnitVatAmount,SUM(IVD.TotalPrice) TotalPrice,SUM(IVD.TotalPriceVatAmount) TotalPriceVatAmount, (IVD.DiscountPercentage+ISNULL(PD.DiscountPercentage,0))DiscountPercentage,SUM((IVD.DiscountAmount+IVD.SpecialAmount)) DiscountAmount,  
 SUM(IVD.NetAmount) NetAmount,IVD.PackSize AS InvoiceId FROM dbo.tblInvoice AS IV 
 LEFT JOIN dbo.tblInvoiceDetail AS IVD ON IVD.InvoiceId = IV.InvoiceId
 LEFT JOIN dbo.tblProduct ON tblProduct.ProductCode = IVD.ProductCode
-LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductDiscount WHERE IsActive = 1 AND ActionStatus = 'Accepted' ) PD  ON PD.CustomerMasterId = IV.CustomerMasterId AND PD.ProductId = dbo.tblProduct.ProductId WHERE IV.InvoiceNo in (" + invNo.Trim() + ") GROUP BY IVD.ProductCode,IVD.ProductName,tblProduct.Description, IVD.UnitPrice,IVD.UnitVatAmount, IVD.TotalPriceVatAmount, IVD.DiscountPercentage, PD.DiscountPercentage,IVD.PackSize ";
+LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductDiscount WHERE IsActive = 1 AND ActionStatus = 'Accepted' ) PD  ON PD.CustomerMasterId = IV.CustomerMasterId AND PD.ProductId = dbo.tblProduct.ProductId WHERE IV.InvoiceId = " + invoiceId + " AND IV.InvoiceNo in (" + invNo.Trim() + ") GROUP BY IVD.ProductCode,IVD.ProductName,tblProduct.Description, IVD.UnitPrice,IVD.UnitVatAmount, IVD.DiscountPercentage, PD.DiscountPercentage,IVD.PackSize ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -1235,16 +1397,13 @@ LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductD
         {
 
             string query = @"SELECT IVD.ProductCode,(IVD.ProductName) AS Product,IVD.BatchNo,
-IVD.PackSize as BonusQuantity,IVD.DeliveryTotalQuantity as Quantity,IVD.UnitPrice,   
-IVD.UnitVatAmount,IVD.DeliveryTotalPrice as TotalPrice,IVD.DeliveryTotalPriceVatAmount as TotalPriceVatAmount,
-(IVD.DeliveryDiscountPercentage+ISNULL(PD.DiscountPercentage,0))DiscountPercentage,   
-(IVD.DeliveryDiscountAmount+((IVD.DelivarySpecialAmount/IVD.Quantity)*IVD.DeliveryQuantity))DiscountAmount,IVD.DeliveryNetAmount as NetAmount,IV.InvoiceId    
- FROM dbo.tblInvoiceDetail IVD 
- LEFT JOIN dbo.tblInvoice IV ON IVD.InvoiceId = IV.InvoiceId   
- INNER JOIN dbo.tblInvoice I ON I.InvoiceId = IV.InvoiceId    
- LEFT JOIN dbo.tblProduct ON tblProduct.ProductCode = IVD.ProductCode    
- LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductDiscount WHERE IsActive = 1) PD ON PD.CustomerMasterId = I.CustomerMasterId AND PD.ProductId = dbo.tblProduct.ProductId 
-                       WHERE IV.DelivaryInvoiceNo in (" + invNo.Trim() + ") and IVD.DeliveryStatus IN ('Full','Partial') ";
+                             IVD.PackSize as BonusQuantity,IVD.DeliveryTotalQuantity as Quantity,IVD.UnitPrice,   
+                             IVD.UnitVatAmount,IVD.DeliveryTotalPrice as TotalPrice,IVD.DeliveryTotalPriceVatAmount as TotalPriceVatAmount,
+                             DeliveryDiscountPercentage DiscountPercentage,   
+                             CASE WHEN IVD.Quantity > 0 THEN (IVD.DeliveryDiscountAmount+((IVD.DelivarySpecialAmount/IVD.Quantity)*IVD.DeliveryQuantity)) ELSE 0 END DiscountAmount,IVD.DeliveryNetAmount as NetAmount,IV.InvoiceId FROM tblInvoiceDetail AS  IVD 
+                             LEFT JOIN tblInvoice AS IV ON IVD.InvoiceId = IV.InvoiceId
+                             LEFT JOIN tblProduct AS PD ON IVD.ProductCode = PD.ProductCode 
+                             WHERE IV.DelivaryInvoiceNo in (" + invNo.Trim() + ") and IVD.DeliveryStatus IN ('Full','Partial') ";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -1285,6 +1444,33 @@ IVD.UnitVatAmount,IVD.DeliveryTotalPrice as TotalPrice,IVD.DeliveryTotalPriceVat
                        " WHERE IV.DelivaryInvoiceNo in (" + invNo.Trim() + ")   ";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public DataTable CheckReturnExistOrNotInFreezeStore(DCStockNew aDetailDao)
+        {
+            string query = "";
+
+            if (aDetailDao.InvoiceDetailId > 0) // For Delivery Confirmation 
+            {
+                query = @"SELECT * FROM tblDCStoreFreeze WHERE CONVERT(DATE,FreezeRcvDate) = CONVERT(DATE,GETDATE()) AND  InvoiceDetailId = '" +
+                    aDetailDao.InvoiceDetailId +
+                    "' AND LTRIM(RTRIM(UPPER(ProductCode))) = LTRIM(RTRIM(UPPER('" + aDetailDao.ProductCode +
+                    "')))  AND LTRIM(RTRIM(UPPER(BatchNo))) = LTRIM(RTRIM(UPPER('" + aDetailDao.BatchNo +
+                    "'))) AND TotalQuantity = " + aDetailDao.TotalQuantity;
+            }
+
+            else if (aDetailDao.CustReturnDetailId > 0) // For Sales Return 
+            {
+                query = @"SELECT * FROM tblDCStoreFreeze WHERE CONVERT(DATE,FreezeRcvDate) = CONVERT(DATE,GETDATE()) AND  CustReturnDetailId = '" +
+                   aDetailDao.CustReturnDetailId +
+                   "' AND LTRIM(RTRIM(UPPER(ProductCode))) = LTRIM(RTRIM(UPPER('" + aDetailDao.ProductCode +
+                   "')))  AND LTRIM(RTRIM(UPPER(BatchNo))) = LTRIM(RTRIM(UPPER('" + aDetailDao.BatchNo +
+                   "'))) AND TotalQuantity = " + aDetailDao.TotalQuantity;
+            }
+
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
         public bool DCStockInDAL(DCStockNew aDcStockNew)
         {
             string query = @"INSERT INTO dbo.tblDCStoreFreeze " +
@@ -1308,6 +1494,7 @@ IVD.UnitVatAmount,IVD.DeliveryTotalPrice as TotalPrice,IVD.DeliveryTotalPriceVat
          "    ReqId , " +
          "    ReqChildId , " +
          "    StockInTransfarId, " +
+         "    CustReturnDetailId, " +
          "    StockCondition,ChalanDetailsId " +
         "   ) " +
         "   VALUES  ( '" + aDcStockNew.DCStoreId + "' , " +
@@ -1330,10 +1517,12 @@ IVD.UnitVatAmount,IVD.DeliveryTotalPrice as TotalPrice,IVD.DeliveryTotalPriceVat
          "   '" + (aDcStockNew.ReqId ?? Convert.DBNull) + "' , " +
         "    '" + (aDcStockNew.ReqChildId ?? Convert.DBNull) + "', " +
        "      '" + (aDcStockNew.StockInTransfarId ?? Convert.DBNull) + "',  " +
+       "      '" + (aDcStockNew.CustReturnDetailId ?? Convert.DBNull) + "',  " +
        "      'ReturnStock','" + (aDcStockNew.ChalanDetailsId ?? Convert.DBNull) + "'  " +
       "     )";
             return aCommonInternalDal.SaveDataByInsertCommand(query, "SSIDB");
         }
+
         public DataTable IntransitReportDAl(string districtId, DateTime fromDate, DateTime toDate)
         {
             string query =
@@ -1387,12 +1576,12 @@ where I.TpTotal>0 AND I.DelivaryInvoiceNo IS NULL    and I.InvoiceDate between '
 
         public DataTable DelManPickinReport(string SC, int delman, string parameter)
         {
-            string query = @"SELECT EGI.EmpName AS MarketName,INV.InvoiceDate,INVD.ProductCode, INVD.ProductName, INVD.PackSize,INVD.BatchNo,SUM(INVD.TotalQuantity) AS Quantity FROM dbo.tblInvoiceDetail AS INVD 
+            string query = @"SELECT BatchCode,EGI.EmpName AS MarketName,INV.InvoiceDate,INVD.ProductCode, INVD.ProductName, INVD.PackSize,INVD.BatchNo,SUM(INVD.TotalQuantity) AS Quantity FROM dbo.tblInvoiceDetail AS INVD 
                              INNER JOIN dbo.tblInvoice AS INV ON INV.InvoiceId = INVD.InvoiceId
                              INNER JOIN dbo.tblInvoiceBatch AS INVB ON INVB.BatchId = INV.BatchId
                              INNER JOIN dbo.tblDeliveryManInfo AS DMI ON DMI.DeliveryManId = INV.DeliveryManId
                              INNER JOIN dbo.tblEmpGeneralInfo AS EGI ON EGI.EmpInfoId = DMI.EmpInfoId
-                           WHERE INVB.BatchId = '" + SC + "' AND INV.DeliveryManId = '" + delman + "' " + parameter + " GROUP BY EGI.EmpName,INV.InvoiceDate,INVD.ProductCode, INVD.ProductName, INVD.PackSize,INVD.BatchNo";
+                           WHERE INVB.BatchId = '" + SC + "' AND INV.DeliveryManId = '" + delman + "' " + parameter + " GROUP BY BatchCode,EGI.EmpName,INV.InvoiceDate,INVD.ProductCode, INVD.ProductName, INVD.PackSize,INVD.BatchNo";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -1455,7 +1644,7 @@ where I.TpTotal>0 AND I.DelivaryInvoiceNo IS NULL    and I.InvoiceDate between '
         {
             string query = @"SELECT DISTINCT FinancialYearId FROM dbo.tblCompanyUnit AS UNT
                              INNER JOIN dbo.tblCompanyInfo AS CI ON CI.CompanyId = UNT.CompanyId
-                             INNER JOIN ZAS_ACCDB..tblFinancialYear ON tblFinancialYear.CompanyId = CI.CompanyId
+                             INNER JOIN CSTL_ACCDB..tblFinancialYear ON tblFinancialYear.CompanyId = CI.CompanyId
                              WHERE UNT.ComUnitId = " + unitId + " AND Status IN ('Active') AND '" + invoiceDate + "' BETWEEN StartDate AND EndDate";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
@@ -1481,7 +1670,9 @@ where I.TpTotal>0 AND I.DelivaryInvoiceNo IS NULL    and I.InvoiceDate between '
 
             aSqlParameterList.Add(new SqlParameter("@InvoiceId", invoiceId));
 
-            return aCommonInternalDal.UpdateAction("sp_DeliveryConfirmationFullPosting", aSqlParameterList);
+            //return aCommonInternalDal.UpdateAction("sp_DeliveryConfirmationFullPosting", aSqlParameterList);
+            //return aCommonInternalDal.UpdateAction("sp_Sales_DeliverySalesPosting", aSqlParameterList);
+            return aCommonInternalDal.UpdateAction("sp_Sales_ExecuteDeliveryPipeline", aSqlParameterList);
         }
 
         public DataTable CheckChartOfAccount(string customerCode)
@@ -1498,7 +1689,8 @@ where I.TpTotal>0 AND I.DelivaryInvoiceNo IS NULL    and I.InvoiceDate between '
 
             aSqlParameterList.Add(new SqlParameter("@InvoiceId", invoiceId));
 
-            return aCommonInternalDal.UpdateAction("sp_DeliveryConfirmationPartiallPosting", aSqlParameterList);
+            //return aCommonInternalDal.UpdateAction("sp_DeliveryConfirmationPartiallPosting", aSqlParameterList);
+            return aCommonInternalDal.UpdateAction("sp_Sales_DeliverySalesPosting", aSqlParameterList);
         }
         public void UpdateInvoiceNull(Invoice aInvoice)
         {
@@ -1577,8 +1769,59 @@ where I.TpTotal>0 AND I.DelivaryInvoiceNo IS NULL    and I.InvoiceDate between '
 
         public DataTable GetInvoiceNoById(int invId)
         {
-            string query = @"SELECT InvoiceNo FROM tblInvoice WHERE InvoiceId  = " + invId ;
+            string query = @"SELECT InvoiceNo,InvoiceId FROM tblInvoice WHERE InvoiceId  = " + invId ;
 
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetBonusCampaignInfoByCompany(string productCode, DateTime invDate, string orderId)
+        {
+//            string query = @"SELECT CPM.CampgainMasterId,CPM.BonusProductQuantity,ProductCode AS BonusProductCode,ProductName + ':' + PackSize ProductName FROM Table_CPM_BonusCampaignMaster AS CPM
+//                             LEFT JOIN tblCompanyInfo AS CI ON CPM.CompanyId = CI.CompanyId
+//                             LEFT JOIN tblProduct AS PD ON CPM.BonusProductId = PD.ProductId
+//                             WHERE ProductCode = " + productCode + @" AND CPM.CompanyId IN (SELECT DISTINCT CompanyId FROM tblOrder AS ODR LEFT JOIN tblCompanyUnit 
+//                             AS UNT ON ODR.ComUnitId = UNT.ComUnitId WHERE OrderId = " + orderId + ") AND GETDATE() BETWEEN CPM.FromDate AND CPM.Todate";
+
+
+            string query = @" SELECT 
+    CPM.CampgainMasterId,
+    CPM.BonusProductQuantity,
+    PD.ProductCode AS BonusProductCode,
+    PD.ProductName + ':' + PD.PackSize AS ProductName
+FROM 
+    Table_CPM_BonusCampaignMaster AS CPM
+INNER JOIN Table_CPM_BonusCampaignDetail AS CPD 
+    ON CPM.CampgainMasterId = CPD.CampgainMasterId
+LEFT JOIN tblProduct AS PD 
+    ON CPM.BonusProductId = PD.ProductId
+WHERE 
+    CPD.PointProductId = (SELECT ProductId FROM tblProduct WHERE ProductCode = '" + productCode + @"')
+    AND CPM.CompanyId IN (
+        SELECT DISTINCT CompanyId
+        FROM tblOrder AS ODR 
+        LEFT JOIN tblCompanyUnit AS UNT ON ODR.ComUnitId = UNT.ComUnitId 
+        WHERE OrderId = " + orderId + @" ) AND GETDATE() BETWEEN CPM.FromDate AND CPM.ToDate";
+
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetOrderDetailsByOrderId(int orderId)
+        {
+            string query = @"SELECT * FROM tblOrderDetail WHERE OrderId =" + orderId;
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetCampaignDetailsByCampaignId(int campaignId)
+        {
+            string query = @"SELECT * FROM Table_CPM_BonusCampaignDetail AS CPD
+            LEFT JOIN tblProduct AS PD ON CPD.PointProductId = PD.ProductId WHERE CampgainMasterId = " + campaignId;
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetGroupInvoiceNo(string invoiceNo)
+        {
+            string query = @"SELECT DISTINCT GroupInvoiceNo FROM tblInvoice WHERE InvoiceNo IN (" + invoiceNo + ")";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
     }

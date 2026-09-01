@@ -91,26 +91,42 @@ public partial class SInventory_UI_DelivaryInvoiceCreationAuto : System.Web.UI.P
         }
         else if (statusDropDownList.SelectedItem.Text=="Full")
         {
-
-            DataTable aTable = aInvoiceBll.CheckChartOfAccount(orderGridView.Rows[rowindex].Cells[2].Text.Trim());
-
-            if (aTable.Rows.Count > 0)
-            {
-                int status = aInvoiceBll.SaveFullInvoice(orderGridView.Rows[rowindex].Cells[7].Text,
+            int status = aInvoiceBll.SaveFullInvoice(orderGridView.Rows[rowindex].Cells[7].Text,
                 Session["LoginName"].ToString(), DateTime.Now.ToString("dd-MMM-yyyy"));
 
-                // Journal Posting
+            // Journal Posting
 
-                if (aInvoiceBll.PostDeliveryConfFullJournal(Convert.ToInt32(orderGridView.DataKeys[rowindex]["InvoiceId"])))
+            if (
+                aInvoiceBll.PostDeliveryConfFullJournal(
+                    Convert.ToInt32(orderGridView.DataKeys[rowindex]["InvoiceId"])))
+            {
+                ShowMessageBox("Delivery Invoice Save Successfully !!");
+                GridView();
+            }
+            else
+            {
+
+                if (status == 1)
                 {
                     ShowMessageBox("Delivery Invoice Save Successfully !!");
                     GridView();
                 }
+
             }
-            else
-            {
-                ShowMessageBox("Delivery Confirmation is not pssible because Customer does not exist in chart of accounts !!");
-            }
+
+
+            //DataTable aTable = aInvoiceBll.CheckChartOfAccount(orderGridView.Rows[rowindex].Cells[2].Text.Trim());
+
+            //if (aTable.Rows.Count > 0)
+            //{
+                
+
+
+            //}
+            //else
+            //{
+            //    ShowMessageBox("Delivery Confirmation is not pssible because Customer does not exist in chart of accounts !!");
+            //}
 
             
            // if (status==1)
@@ -129,10 +145,21 @@ public partial class SInventory_UI_DelivaryInvoiceCreationAuto : System.Web.UI.P
                 {
                     // Journal Posting
 
-                    if (aInvoiceBll.PostProformaReturnJournal(Convert.ToInt32(orderGridView.DataKeys[rowindex]["InvoiceId"])))
+                    if (
+                        aInvoiceBll.PostProformaReturnJournal(
+                            Convert.ToInt32(orderGridView.DataKeys[rowindex]["InvoiceId"])))
                     {
                         ShowMessageBox("Delivery Invoice Reject Successfully");
                         GridView();
+                    }
+                    else
+                    {
+                        if (status == 1)
+                        {
+                            ShowMessageBox("Delivery Invoice Reject Successfully");
+                            GridView();
+                        }
+
                     }
                     
                     //for (int i = 0; i < orderGridView.Rows.Count; i++)
@@ -150,7 +177,7 @@ public partial class SInventory_UI_DelivaryInvoiceCreationAuto : System.Web.UI.P
 
         }
         //Session["OrderId"] = orderGridView.DataKeys[rowindex]["OrderId"].ToString();
-        
+       
 
     }
     protected void Button1_Click(object sender, EventArgs e)

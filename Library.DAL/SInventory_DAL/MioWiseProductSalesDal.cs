@@ -62,48 +62,95 @@ namespace Library.DAL.SInventory_DAL
 
         }
 
-        public DataTable GetMioWiseProductSales(string parameter, string fromDate, string toDate, string parameter2, Int32 comId)
+        public DataTable GetMioWiseProductSales(string parameter, string fromDate, string toDate, string parameter2, Int32 comId, string parameter3, string monthNamePram, string monthNamePram2, string parameter4)
         {
 
             string query = "";
 
-            if (comId == 2)
+            if (comId == 2 || comId == 4 || comId == 6 || comId == 7 || comId == 19 || comId == 18 || comId == 24)
             {
-                query =
-                    @"SELECT CI.CompanyCode,CI.CompanyName,SL.ComUnitCode,SL.ComUnitName,EmpName AS MIO,ARA.AreaName,
-                                             TTR.TerritoryName,PD.ProductCode,PD.ProductName,PD.PackSize,ISNULL(SL.Qty,0) Qty,ISNULL(SL.Value,0) Value, '" +
-                    fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,ISNULL(TGRT.TargetQty,0) TargetQty,"
-                    +
-                    " CASE WHEN TGRT.TargetQty IS NOT NULL THEN (ISNULL(SL.Qty,0) * 100) / NULLIF(TGRT.TargetQty,0) ELSE 0 END AS Achivment FROM tblMIATargetProductWise AS TGRT "
-                    + " LEFT JOIN tblCompanyInfo AS CI ON TGRT.CompanyId = CI.CompanyId "
-                    + " LEFT JOIN tblProduct AS PD ON TGRT.ProductId = PD.ProductId "
-                    + " LEFT JOIN dbo.tblMIOInfo ON dbo.tblMIOInfo.MIOId=TGRT.MiaId "
-                    + " LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = tblMIOInfo.TerritoryId "
-                    + " LEFT JOIN dbo.tblArea AS ARA ON ARA.AreaId = TTR.AreaId "
-                    + " LEFT JOIN dbo.tblEmpGeneralInfo ON dbo.tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId "
-                    + " LEFT JOIN (SELECT MiaId,UNT.ComUnitCode,UNT.ComUnitName,ProductCode,SUM(INVD.DeliveryNetAmount) AS Value,"
-                    + " ISNULL(SUM(DeliveryTotalQuantity),0) AS Qty FROM tblInvoice AS INV "
-                    + " LEFT JOIN tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId "
-                    + " LEFT JOIN tblCompanyUnit AS UNT ON UNT.ComUnitId = INV.ComUnitId" + parameter
-                    + " GROUP BY UNT.ComUnitCode,UNT.ComUnitName,ProductCode,MiaId) AS SL ON Sl.ProductCode = PD.ProductCode AND TGRT.MiaId = SL.MiaId "
-                    + " WHERE TGRT.Year = DATENAME(year,'" + fromDate + "') AND (TGRT.Period = DATENAME(month,'" + fromDate + "'))" + parameter2
-                    + "UNION ALL "
-                    + "SELECT CI.CompanyCode,CI.CompanyName,ComUnitCode,ComUnitName,EmpName AS MIO,ARA.AreaName, TTR.TerritoryName,"
-                    + " INVD.ProductCode,INVD.ProductName,INVD.PackSize,ISNULL(SUM(DeliveryTotalQuantity),0) Qty,SUM(INVD.DeliveryNetAmount) Value,"
-                    + " '" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,0 TargetQty,  0 AS Achivment FROM tblInvoice AS INV "  
-                    + " LEFT JOIN tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId "  
-                    + " LEFT JOIN tblCompanyUnit AS UNT ON UNT.ComUnitId = INV.ComUnitId  "
-                    + " LEFT JOIN tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId  "
-                    + " LEFT JOIN dbo.tblMIOInfo ON dbo.tblMIOInfo.MIOId=INV.MiaId "
-                    + " LEFT JOIN dbo.tblEmpGeneralInfo ON tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId  "
-                    + " LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = tblMIOInfo.TerritoryId  " 
-                    + " LEFT JOIN dbo.tblArea AS ARA ON ARA.AreaId = TTR.AreaId  "
-                    + parameter
-                    + " AND INVD.ProductCode NOT IN (SELECT PD.ProductCode FROM tblMIATargetProductWise AS TGRT  "
-                    + " LEFT JOIN tblProduct AS PD ON TGRT.ProductId = PD.ProductId  WHERE Year = DATENAME(year,'" + fromDate + "') "
-                    + " AND Period = DATENAME(month,'" + fromDate + "')" + parameter2 + ")"
-                    + " GROUP BY CI.CompanyCode,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,ProductCode,MiaId,EmpName,AreaName, "
-                    + " TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize";
+//                query =
+//                    @"SELECT CI.CompanyCode,CI.CompanyName,SL.ComUnitCode,SL.ComUnitName,EmpName AS MIO,ARA.AreaName,
+//                                             TTR.TerritoryName,PD.ProductCode,PD.ProductName,PD.PackSize,ISNULL(SL.Qty,0) Qty,ISNULL(SL.Value,0) Value, '" +
+//                    fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,ISNULL(TGRT.TargetQty,0) TargetQty,"
+//                    +
+//                    " CASE WHEN TGRT.TargetQty IS NOT NULL THEN (ISNULL(SL.Qty,0) * 100) / NULLIF(TGRT.TargetQty,0) ELSE 0 END AS Achivment FROM tblMIATargetProductWise AS TGRT "
+//                    + " LEFT JOIN tblCompanyInfo AS CI ON TGRT.CompanyId = CI.CompanyId "
+//                    + " LEFT JOIN tblProduct AS PD ON TGRT.ProductId = PD.ProductId "
+//                    + " LEFT JOIN dbo.tblMIOInfo ON dbo.tblMIOInfo.MIOId=TGRT.MiaId "
+//                    + " LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = tblMIOInfo.TerritoryId "
+//                    + " LEFT JOIN dbo.tblArea AS ARA ON ARA.AreaId = TTR.AreaId "
+//                    + " LEFT JOIN dbo.tblEmpGeneralInfo ON dbo.tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId "
+//                    + " LEFT JOIN (SELECT MiaId,UNT.ComUnitCode,UNT.ComUnitName,ProductCode,SUM(INVD.DeliveryNetAmount) AS Value,"
+//                    + " ISNULL(SUM(DeliveryTotalQuantity),0) AS Qty FROM tblInvoice AS INV "
+//                    + " LEFT JOIN tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId "
+//                    + " LEFT JOIN tblCompanyUnit AS UNT ON UNT.ComUnitId = INV.ComUnitId" + parameter
+//                    + " GROUP BY UNT.ComUnitCode,UNT.ComUnitName,ProductCode,MiaId) AS SL ON Sl.ProductCode = PD.ProductCode AND TGRT.MiaId = SL.MiaId "
+//                    + " WHERE TGRT.Year = DATENAME(year,'" + fromDate + "') AND (TGRT.Period = DATENAME(month,'" + fromDate + "'))" + parameter2
+//                    + "UNION ALL "
+//                    + "SELECT CI.CompanyCode,CI.CompanyName,ComUnitCode,ComUnitName,EmpName AS MIO,ARA.AreaName, TTR.TerritoryName,"
+//                    + " INVD.ProductCode,INVD.ProductName,INVD.PackSize,ISNULL(SUM(DeliveryTotalQuantity),0) Qty,SUM(INVD.DeliveryNetAmount) Value,"
+//                    + " '" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,0 TargetQty,  0 AS Achivment FROM tblInvoice AS INV "  
+//                    + " LEFT JOIN tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId "  
+//                    + " LEFT JOIN tblCompanyUnit AS UNT ON UNT.ComUnitId = INV.ComUnitId  "
+//                    + " LEFT JOIN tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId  "
+//                    + " LEFT JOIN dbo.tblMIOInfo ON dbo.tblMIOInfo.MIOId=INV.MiaId "
+//                    + " LEFT JOIN dbo.tblEmpGeneralInfo ON tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId  "
+//                    + " LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = tblMIOInfo.TerritoryId  " 
+//                    + " LEFT JOIN dbo.tblArea AS ARA ON ARA.AreaId = TTR.AreaId  "
+//                    + parameter + parameter3
+//                    + " AND INVD.ProductCode NOT IN (SELECT PD.ProductCode FROM tblMIATargetProductWise AS TGRT  "
+//                    + " LEFT JOIN tblProduct AS PD ON TGRT.ProductId = PD.ProductId  WHERE Year = DATENAME(year,'" + fromDate + "') "
+//                    + " AND Period = DATENAME(month,'" + fromDate + "')" + parameter2 + " AND MiaId = INV.MiaId )"
+//                    + " GROUP BY CI.CompanyCode,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,ProductCode,MiaId,EmpName,AreaName, "
+//                    + " TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize";
+
+
+
+
+                query = @"SELECT CI.CompanyCode,CI.CompanyName,ISNULL(SL.ComUnitCode,UNT.ComUnitCode) ComUnitCode ,ISNULL(SL.ComUnitName,UNT.ComUnitName) ComUnitName,EmpName AS MIO,ARA.AreaName, "
+                + "TTR.TerritoryName,PD.ProductCode,PD.ProductName,PD.PackSize,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,ISNULL(Qty,0) Qty,ISNULL(Value,0) Value,SUM(TargetQty) TargetQty,"
+                + "CASE WHEN SUM(ISNULL(TGRT.TargetQty,0)) > 0 THEN (ISNULL(SL.Qty,0)* 100) / SUM(ISNULL(TGRT.TargetQty,0)) ELSE 0 END AS Achivment  FROM tblMIATargetProductWise AS TGRT "  
+                
+                + "LEFT JOIN tblProduct AS PD ON TGRT.ProductId = PD.ProductId " 
+                + "LEFT JOIN dbo.tblMIOInfo ON dbo.tblMIOInfo.MIOId=TGRT.MiaId " 
+                + "LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = tblMIOInfo.TerritoryId  " 
+                + "LEFT JOIN dbo.tblArea AS ARA ON ARA.AreaId = TTR.AreaId "  
+                + "LEFT JOIN dbo.tblEmpGeneralInfo ON dbo.tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId "  
+                
+                + "LEFT JOIN tblCompanyInfo AS CI ON TGRT.CompanyId = CI.CompanyId   "  
+                + "LEFT JOIN (SELECT ComUnitId,AreaId,CompanyId FROM tblDcWiseAreaInfo AS DC "  
+                + "LEFT JOIN tblCompanyUnit AS UNT ON DC.DCId = UNT.ComUnitId "  
+                + "WHERE IsActive = 1) AS DCA ON ARA.AreaId = DCA.AreaId AND TGRT.CompanyId = DCA.CompanyId "
+                + "LEFT JOIN tblCompanyUnit AS UNT ON DCA.ComUnitId = UNT.ComUnitId "
+                
+                + "LEFT JOIN (SELECT INV.ComUnitId,MiaId,UNT.ComUnitCode,UNT.ComUnitName,ProductCode,SUM(INVD.DeliveryNetAmount) AS Value, ISNULL(SUM(DeliveryTotalQuantity),0) AS Qty FROM tblInvoice AS INV "  
+                + "LEFT JOIN tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId  "
+                + "LEFT JOIN tblCompanyUnit AS UNT ON UNT.ComUnitId = INV.ComUnitId " + parameter
+                + " GROUP BY INV.ComUnitId,UNT.ComUnitCode,UNT.ComUnitName,ProductCode,MiaId) AS SL ON Sl.ProductCode = PD.ProductCode AND TGRT.MiaId = SL.MiaId  "
+                + "WHERE TGRT.Year = DATENAME(year,'" + fromDate + "')  " + monthNamePram2 + parameter2 + parameter4
+                + " GROUP BY CI.CompanyCode,CI.CompanyName,SL.ComUnitCode,UNT.ComUnitCode,SL.ComUnitName,UNT.ComUnitName,EmpName,ARA.AreaName,TTR.TerritoryName,PD.ProductCode,PD.ProductName,PD.PackSize,SL.Qty,SL.Value" 
+                
+                + " UNION ALL "
+                
+                 + " SELECT CI.CompanyCode,CI.CompanyName,ComUnitCode,ComUnitName,EmpName AS MIO,ARA.AreaName, TTR.TerritoryName, INVD.ProductCode,INVD.ProductName,"
+                 + " INVD.PackSize,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate,ISNULL(SUM(DeliveryTotalQuantity),0) Qty,SUM(INVD.DeliveryNetAmount) Value, 0 TargetQty,  0 AS Achivment FROM tblInvoice AS INV  " 
+                 + " LEFT JOIN tblInvoiceDetail AS INVD ON INV.InvoiceId = INVD.InvoiceId   " 
+                 + " LEFT JOIN (SELECT DISTINCT TGRT.CompanyId,ComUnitId,PD.ProductCode,TGRT.MiaTargetId FROM tblMIATargetProductWise AS TGRT " 
+                 + " LEFT JOIN tblMIOInfo AS MIO ON TGRT.MiaId = MIO.MIOId   " 
+                 + " LEFT JOIN tblTerritory AS TTR ON MIO.TerritoryId = TTR.TerritoryId  " 
+                 + " LEFT JOIN (SELECT DISTINCT CompanyId,ComUnitId,AreaId FROM tblDcWiseAreaInfo AS DCA  " 
+                 + " LEFT JOIN tblCompanyUnit AS UNT ON DCA.DCId = UNT.ComUnitId) AS DC ON TGRT.CompanyId = DC.CompanyId AND TTR.AreaId = DC.AreaId  "
+                 + " LEFT JOIN tblProduct AS PD ON TGRT.ProductId = PD.ProductId  WHERE Year = DATENAME(year,'" + fromDate + "')  " + monthNamePram2 + ") AS TGT ON INV.ComUnitId = TGT.ComUnitId AND TGT.ProductCode = INVD.ProductCode  " 
+                 + " LEFT JOIN tblCompanyUnit AS UNT ON UNT.ComUnitId = INV.ComUnitId "   
+                 + " LEFT JOIN tblCompanyInfo AS CI ON UNT.CompanyId = CI.CompanyId  "  
+                 + " LEFT JOIN dbo.tblMIOInfo ON dbo.tblMIOInfo.MIOId=INV.MiaId  " 
+                 + " LEFT JOIN dbo.tblEmpGeneralInfo ON tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId   " 
+                 + " LEFT JOIN dbo.tblTerritory AS TTR ON TTR.TerritoryId = tblMIOInfo.TerritoryId  "  
+                 + " LEFT JOIN dbo.tblArea AS ARA ON ARA.AreaId = TTR.AreaId " + parameter + parameter3
+                 + " AND ISNULL(MiaTargetId,0) = 0 "
+                 + "  GROUP BY CI.CompanyCode,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,MiaId,EmpName,AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize";
+
             }
             else
             {
@@ -121,7 +168,7 @@ namespace Library.DAL.SInventory_DAL
                           + "LEFT JOIN tblProduct AS PD ON TGRT.ProductId = PD.ProductId "
                           + "WHERE TGRT.Year = DATENAME(year,'" + fromDate + "') AND (TGRT.Period = DATENAME(month,'" + fromDate + "'))) AS TG "
                           + "ON tblMIOInfo.MIOId = TG.MiaId AND INVD.ProductCode = TG.ProductCode "
-                          + parameter + " GROUP BY  CI.CompanyCode ,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,EmpName,ARA.AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize,TG.TargetQty  "
+                          + parameter + parameter3 + " GROUP BY  CI.CompanyCode ,CI.CompanyName,UNT.ComUnitCode,UNT.ComUnitName,EmpName,ARA.AreaName,TTR.TerritoryName,INVD.ProductCode,INVD.ProductName,INVD.PackSize,TG.TargetQty  "
                           + " HAVING SUM((CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END)) > 0";
             }
 
@@ -164,8 +211,6 @@ namespace Library.DAL.SInventory_DAL
 //                             + " WHERE TGRT.Year = DATENAME(year,'" + fromDate + "') AND (TGRT.Period = DATENAME(month,'" + fromDate + "'))" + parameter2; 
 
 
-            
-
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }
 
@@ -173,7 +218,7 @@ namespace Library.DAL.SInventory_DAL
         public DataTable GetMioWiseCustomerReturn(string parameter, string fromDate, string toDate)
         {
             string query = @"SELECT CI.CompanyName,UNT.ComUnitName AS Depot,CSTMR.CustomerCode,CSTMR.CustomerName,EGI.EmpMasterCode AS MIOCode,EGI.EmpName AS MIO,EGI.EmpName AS MIO,TTR.TerritoryCode,
-                          INV.InvoiceNo,INV.InvoiceDate,ISNULL(SUM(INVD.TotalQuantity),0) AS InvoiceValue,
+                          INV.InvoiceNo,INV.InvoiceDate,ISNULL(SUM(INVD.NetAmount),0) AS InvoiceValue,
                           SUM(CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END) AS SaleValue,
                           ISNULL(SUM(INVD.TotalPrice),0)-ISNULL(SUM(CASE WHEN INVD.DeliveryTotalPrice < 0 THEN 0 ELSE INVD.DeliveryTotalPrice END),0)  
                           AS ReturnValue,'" + fromDate + "' AS FromDate, '" + toDate + "' AS ToDate FROM tblInvoice AS INV "

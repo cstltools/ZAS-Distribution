@@ -39,5 +39,11 @@ namespace Library.DAL.SInventory_DAL
                                     LEFT JOIN tblRegion AS RGN ON AR.RegionId = RGN.RegionId WHERE CSTMR.CustomerName like '%" + prefixText + "%'";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public DataTable GetMoneyReceipt(string prefixText)
+        {
+            string query = @"SELECT CONVERT(NVARCHAR,MoneyReceiptId) + ':' + MoneyReceiptNo  AS MoneyReceiptNo FROM tblMoneyReceipt WHERE MoneyReceiptNo like '%" + prefixText + "%'";
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
     }
 }

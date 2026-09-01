@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -69,6 +70,48 @@ namespace Library.DAL.SInventory_DAL
                             LEFT JOIN tblDeliveryManInfo AS DM ON INV.DeliveryManId = DM.DeliveryManId
 							LEFT JOIN tblEmpGeneralInfo AS EGM ON DM.EmpInfoId = EGM.EmpInfoId
                             WHERE CPD.CustPayDetailId = " + payId;
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        } 
+        
+        
+        public DataTable MoneyReceiptById(string moneyReceitId)
+        {
+            string query = @"SELECT 
+                               
+                                MR.MoneyReceiptId,
+								CSTMR.CustomerName + '(' + CSTMR.CustomerCode + ')' AS CustomerName,
+								UNT.ComUnitName CompanyName,
+                                MR.MoneyReceiptNo AS MRNo,
+                                MR.MonyReceiptDate,
+                                MR.CreateDate AS MoneyReceiptCreateDate,
+                                INV.InvoiceNo,
+                                INV.InvoiceDate,
+								CONVERT(NVARCHAR(10), BCH.Date, 120) + ' (' +  CONVERT(NVARCHAR(10),BCH.BatchNo) + ')' AS BatchNo,
+                                BCH.Date AS BatchCreationDate,
+                                CP.PayType,
+                                CP.PaymentDate,
+                                CPD.PaymentAmount AS PaidAmount,
+								CPD.AIT,
+								CPD.Discount,
+								Inv.PaymentStatus,
+                                CP.PaymentRemarks,
+                                CSTMR.CustomerName,
+                                EGM.EmpName,
+                                ISNULL(UEGM.EmpName,USR.UserName) AS CreateBy,
+								FORMAT(MR.CreateDate, 'dd-MMM-yyyy hh:mm:ss tt') CreateDate
+                            FROM tblMoneyReceipt MR
+                            INNER JOIN tblCustPayDetail CPD ON ',' + MR.CustPayDetailsId + ',' LIKE '%,' + CAST(CPD.CustPayDetailId AS VARCHAR) + ',%'
+                            INNER JOIN tblCustomerPay CP ON CP.CustPayId = CPD.CustPayId
+                            INNER JOIN tblInvoice INV ON INV.InvoiceId = CPD.InvoiceId
+                            LEFT JOIN tblCompanyUnit AS UNT ON INV.ComUnitId = UNT.ComUnitId
+                            LEFT JOIN tblInvoiceBatch BCH ON BCH.BatchId = INV.BatchId
+                            INNER JOIN tblCustMaster CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId
+                            LEFT JOIN tblDeliveryManInfo DM ON INV.DeliveryManId = DM.DeliveryManId
+                            LEFT JOIN tblEmpGeneralInfo EGM ON DM.EmpInfoId = EGM.EmpInfoId
+                            LEFT JOIN tblUser AS USR ON CP.CreateBy = USR.LoginName
+							LEFT JOIN tblEmpGeneralInfo UEGM ON USR.EmpInfoId = UEGM.EmpInfoId
+                            WHERE MoneyReceiptId IS NOT NULL AND MoneyReceiptId = " + moneyReceitId + "  ORDER BY MR.MoneyReceiptId, CPD.CustPayDetailId";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
@@ -156,7 +199,7 @@ ISNULL(INV.PaymentStatus,'No Payment') AS PaymentStatus FROM tblInvoice AS INV
         {
             string query = @"SELECT INVM.InvReturnMasterID,CI.CompanyName,UNT.ComUnitName,CSTMR.CustomerCode,CSTMR.CustomerName,INV.InvoiceNo,INVM.ReturnCode,INVM.ReturnDate,INVM.TotalReturn,INVM.TotalValue
                              FROM dbo.tblNonTranscationalInvoiceMaster AS INVM 
-                             INNER JOIN tblInvoice AS INV ON INV.InvoiceId = INVM.InvoiceId
+                             LEFT JOIN tblInvoice AS INV ON INV.InvoiceId = INVM.InvoiceId
                              INNER JOIN dbo.tblCompanyUnit AS UNT ON UNT.ComUnitId = INVM.ComUnitId
                              INNER JOIN dbo.tblCompanyInfo AS CI ON CI.CompanyId = UNT.CompanyId
                              INNER JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INVM.CustomerMasterId
@@ -171,7 +214,7 @@ ISNULL(INV.PaymentStatus,'No Payment') AS PaymentStatus FROM tblInvoice AS INV
                              PD.ProductCode,PD.ProductName,INVD.Qty,INVD.Price,INVD.Batch,INVD.ExpDate,INVD.MfgDate,INVD.VAT,INVD.TotalAmount FROM dbo.tblNonTranscationalInvoiceMaster AS INVM 
                              INNER JOIN dbo.tblNonTranscationalInvoiceDetail AS INVD ON INVD.InvReturnMasterID = INVM.InvReturnMasterID
                              INNER JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INVM.CustomerMasterId
-                             INNER JOIN tblInvoice AS INV ON INV.InvoiceId = INVM.InvoiceId
+                             LEFT JOIN tblInvoice AS INV ON INV.InvoiceId = INVM.InvoiceId
                              INNER JOIN dbo.tblCompanyUnit AS UNT ON UNT.ComUnitId = INVM.ComUnitId
                              INNER JOIN dbo.tblCompanyInfo AS CI ON CI.CompanyId = UNT.CompanyId
                              INNER JOIN dbo.tblProduct AS PD ON PD.ProductId = INVD.ProductId
@@ -193,6 +236,75 @@ ISNULL(INV.PaymentStatus,'No Payment') AS PaymentStatus FROM tblInvoice AS INV
                              WHERE CPD.CustPayDetailId = " + payId;
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetMoneyReceiptWisePayment(string moneyReceiptId)
+        {
+            string query = @"SELECT 
+    MR.MoneyReceiptId,
+    MR.MoneyReceiptNo AS MRNo,
+    MR.MonyReceiptDate,
+    MR.CreateDate AS MoneyReceiptCreateDate,
+    INV.InvoiceNo,
+    INV.InvoiceDate,
+    BCH.BatchNo,
+    BCH.Date AS BatchCreationDate,
+    CP.PayType,
+    CP.PaymentDate,
+    CPD.PaymentAmount AS PaidAmount,
+    CPD.PaymentRemarks,
+    CSTMR.CustomerName,
+    EGM.EmpName,
+	CPD.InvoiceId,CPD.CustPayDetailId, ISNULL(CPD.AIT,0) AIT, ISNULL(CPD.Discount,0) Discount,CP.CustPayId
+FROM tblMoneyReceipt MR
+INNER JOIN tblCustPayDetail CPD ON ',' + MR.CustPayDetailsId + ',' LIKE '%,' + CAST(CPD.CustPayDetailId AS VARCHAR) + ',%'
+INNER JOIN tblCustomerPay CP ON CP.CustPayId = CPD.CustPayId
+INNER JOIN tblInvoice INV ON INV.InvoiceId = CPD.InvoiceId
+LEFT JOIN tblInvoiceBatch BCH ON BCH.BatchId = INV.BatchId
+INNER JOIN tblCustMaster CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId
+LEFT JOIN tblDeliveryManInfo DM ON INV.DeliveryManId = DM.DeliveryManId
+LEFT JOIN tblEmpGeneralInfo EGM ON DM.EmpInfoId = EGM.EmpInfoId
+WHERE MoneyReceiptId IS NOT NULL AND MoneyReceiptId = " + moneyReceiptId + "ORDER BY MR.MoneyReceiptId, CPD.CustPayDetailId";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+
+        public bool PaymentJournalPosting(int custPayId, int invoiceId)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
+            aSqlParameterList.Add(new SqlParameter("@CustPayId", custPayId));
+            aSqlParameterList.Add(new SqlParameter("@InvoiceId", invoiceId));
+
+            return aCommonInternalDal.UpdateAction("sp_Sales_CustomerPaymentReversePosting", aSqlParameterList);
+            //return aCommonInternalDal.UpdateAction("sp_CustomerPaymentPosting", aSqlParameterList);
+        }
+
+        public void LoadMoneyReceipt(DropDownList ddl, DateTime fromDate, DateTime toDate, string userId)
+        {
+            string query = @"
+SELECT DISTINCT
+    MR.MoneyReceiptId,
+    MR.MoneyReceiptNo
+FROM tblMoneyReceipt MR
+CROSS APPLY dbo.SplitString(MR.CustPayDetailsId, ',') AS Split
+INNER JOIN tblCustPayDetail CPD 
+    ON Split.Value = CPD.CustPayDetailId
+INNER JOIN tblInvoice INV 
+    ON CPD.InvoiceId = INV.InvoiceId
+WHERE 
+    MR.MonyReceiptDate >= '" + fromDate + @"' 
+    AND MR.MonyReceiptDate < DATEADD(DAY, 1, '" + toDate + @"')
+    AND ComUnitId IN (
+        SELECT CompanyUnitId 
+        FROM dbo.tblUserCompanyUnit 
+        WHERE UserId = " + userId + @"
+    )
+    AND MR.MoneyReceiptNo IS NOT NULL;";
+
+            aCommonInternalDal.LoadDropDownValue(ddl, "MoneyReceiptNo", "MoneyReceiptId", query, "SSIDB");
+
         }
     }
 }

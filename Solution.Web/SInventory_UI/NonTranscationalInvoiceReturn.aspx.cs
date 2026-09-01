@@ -460,11 +460,38 @@ public partial class SInventory_UI_NonTranscationalInvoiceReturn : System.Web.UI
 
         tblNonTranscationalInvoiceMasterDao aListMasterDao = new tblNonTranscationalInvoiceMasterDao();
 
-        aListMasterDao.InvoiceId = Convert.ToInt32(invDropDownList.SelectedValue);
+        aListMasterDao.InvoiceId =
+        string.IsNullOrWhiteSpace(invDropDownList.SelectedValue)
+        ? 0
+        : Convert.ToInt32(invDropDownList.SelectedValue);
 
-        string str = invDropDownList.SelectedItem.Text;
-        string[] productInfo = str.Split('(');
-        aListMasterDao.ReturnCode = "RTN-" + productInfo[0];
+        //string str = invDropDownList.SelectedItem.Text;
+        //string[] productInfo = str.Split('(');
+        //aListMasterDao.ReturnCode = "RTN-" + productInfo[0];
+
+        // DC text example: BD25:Dhaka (Ophthalmic )
+        string dcText = dcDropDownList.SelectedItem != null
+            ? dcDropDownList.SelectedItem.Text
+            : "";
+
+        string dcCode = "";
+
+        if (!string.IsNullOrWhiteSpace(dcText))
+        {
+            dcCode = dcText.Split(':')[0].Trim(); // BD25
+        }
+
+        // DB theke next serial ashbe
+
+        string serialNo = aDal.GetNextReturnSerialNo(
+            aListMasterDao.ComUnitId,
+            aListMasterDao.ReturnDate
+        );
+
+        // Final ReturnCode: RTN-INV-BD25-00000001
+        aListMasterDao.ReturnCode = "RTN-INV-" + dcCode + "-" + serialNo;
+
+
         aListMasterDao.ComUnitId = Convert.ToInt32(dcDropDownList.SelectedValue);
         aListMasterDao.SalesDate = Convert.ToDateTime(stockInDateTextBox.Text.Trim());
         aListMasterDao.ReturnDate = DateTime.Now;
@@ -572,14 +599,14 @@ public partial class SInventory_UI_NonTranscationalInvoiceReturn : System.Web.UI
             showMessageBox("Please select a sales center !!!");
         }
 
-        if (invDropDownList.SelectedValue == "")
-        {
-            showMessageBox("Please select an invoice !!!");
-        }
+        //if (invDropDownList.SelectedValue == "")
+        //{
+        //    showMessageBox("Please select an invoice !!!");
+        //}
 
         if (stockInDateTextBox.Text == "")
         {
-            showMessageBox("Please insert sales date date !!!");
+            showMessageBox("Please insert sales date !!!");
         }
 
 
@@ -922,21 +949,21 @@ public partial class SInventory_UI_NonTranscationalInvoiceReturn : System.Web.UI
 
     protected void stockInDateTextBox_OnTextChanged(object sender, EventArgs e)
     {
-        DateTime value;
+        //DateTime value;
 
-        if (DateTime.TryParse(stockInDateTextBox.Text, out value))
-        {
-            if (Convert.ToDateTime(stockInDateTextBox.Text) >= Convert.ToDateTime("2019-03-02 00:00:00.000"))
-            {
-                stockInDateTextBox.Text = "";
-                showMessageBox("Date must be less than (March 03, 2019) !!!");
-            }
-        }
-        else
-        {
-            stockInDateTextBox.Text = "";
-            showMessageBox("Please insert valid date !!!");
-        }
+        //if (DateTime.TryParse(stockInDateTextBox.Text, out value))
+        //{
+        //    if (Convert.ToDateTime(stockInDateTextBox.Text) >= Convert.ToDateTime("2019-03-02 00:00:00.000"))
+        //    {
+        //        stockInDateTextBox.Text = "";
+        //        showMessageBox("Date must be less than (March 03, 2019) !!!");
+        //    }
+        //}
+        //else
+        //{
+        //    stockInDateTextBox.Text = "";
+        //    showMessageBox("Please insert valid date !!!");
+        //}
     }
 
     protected void challanDateTextBox_OnTextChanged(object sender, EventArgs e)

@@ -54,8 +54,8 @@ public partial class SInventory_UI_CustMasterEntry : System.Web.UI.Page
         aMasterInfoBll.GetRegion(regionDropDownList);
 
         aMasterInfoBll.LoadCategoryName(categoryNameDropDownList);
-        aMasterInfoBll.GetLedgerHead(ddlLedgerHead);
-        aMasterInfoBll.LoadAIT(ddlAIT);
+        //aMasterInfoBll.GetLedgerHead(ddlLedgerHead);
+        //aMasterInfoBll.LoadAIT(ddlAIT);
     }
 
     private void Clear()
@@ -69,6 +69,8 @@ public partial class SInventory_UI_CustMasterEntry : System.Web.UI.Page
         addressTextBox2.Text = string.Empty;
         cityTextBox.Text = string.Empty;
         contactPersonTextBox.Text = string.Empty;
+        tbxTradeLicenseNo.Text = string.Empty;
+        tbxTradeLicenseExpiryDate.Text = string.Empty;
         //shippingConditionTextBox.Text = string.Empty;
 
         regionDropDownList.SelectedValue = "";
@@ -191,6 +193,17 @@ public partial class SInventory_UI_CustMasterEntry : System.Web.UI.Page
         return true;
     }
 
+    private DateTime? ParseNullableDate(string text)
+    {
+        DateTime parsedDate;
+        if (DateTime.TryParse(text, out parsedDate))
+        {
+            return parsedDate;
+        }
+
+        return null;
+    }
+
     protected void submitButton_Click1(object sender, EventArgs e)
     {
         if (Validation())
@@ -215,6 +228,7 @@ public partial class SInventory_UI_CustMasterEntry : System.Web.UI.Page
                 Addrees2 = addressTextBox2.Text,
                 CellNo = contactTextBox.Text,
                 City = cityTextBox.Text,
+                TradelicenseNo = tbxTradeLicenseNo.Text,
                 ConPerson = contactPersonTextBox.Text,
                 ShippingCond = shippingConditionTextBox.Text,
                 MarketId = Convert.ToInt32(marketDropDownList.SelectedValue),
@@ -224,7 +238,8 @@ public partial class SInventory_UI_CustMasterEntry : System.Web.UI.Page
                 CreateDate = DateTime.Now,
                 IsActive = true,
                 IsVatApplicable = isVatApplicable.Checked,
-                AITGLId = ddlAIT.SelectedValue != "" ? Convert.ToInt32(ddlAIT.SelectedValue) : 0
+                AITGLId = ddlAIT.SelectedValue != "" ? Convert.ToInt32(ddlAIT.SelectedValue) : 0,
+                TradeLicenseExpiryDate = ParseNullableDate(tbxTradeLicenseExpiryDate.Text)
 
             };
 

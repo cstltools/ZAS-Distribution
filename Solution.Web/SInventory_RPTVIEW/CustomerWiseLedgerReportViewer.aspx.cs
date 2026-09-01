@@ -22,24 +22,23 @@ public partial class SInventory_RPTVIEW_CustomerWiseLedgerReportViewer : System.
         //string reportType = Request.QueryString["reportType"];
 
         
-       var asmDataTable = new DataTable();
-       string parameter = Session["PRAM"].ToString();
+        var asmDataTable = new DataTable();
+        string parameter = Session["PRAM"].ToString();
 
-        string customer = Request.QueryString["customer"];
         string fromDate = Request.QueryString["fromDate"];
         string toDate = Request.QueryString["toDate"];
 
-        asmDataTable = aReportDal.GetCustomerWiseLedger(fromDate,toDate,customer,parameter).Copy();
+        asmDataTable = aReportDal.GetCustomerWiseLedger(fromDate,toDate,parameter).Copy();
 
         var ds = new DataSet();
 
         if (asmDataTable.Rows.Count > 0)
         {
-            asmDataTable.TableName = "CustomerWiseLedgerTable";
+            asmDataTable.TableName = "CustomerLedger";
             ds.Tables.Add(asmDataTable);
 
 
-            rptdoc.Load(ReportPath("crpCustomerWiseLedger.rpt"));
+            rptdoc.Load(ReportPath("rptCustomerLedgerNew.rpt"));
             rptdoc.SetDataSource(ds);
             crvCustMasterRpt.ReportSource = rptdoc;
             crvCustMasterRpt.DataBind();

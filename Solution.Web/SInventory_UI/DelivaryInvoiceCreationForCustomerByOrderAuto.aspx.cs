@@ -40,13 +40,13 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
     private bool Validation()
     {
 
-        DataTable aTable = aInvoiceBll.CheckChartOfAccount(custCodeTextBox.Text.Trim());
+        //DataTable aTable = aInvoiceBll.CheckChartOfAccount(custCodeTextBox.Text.Trim());
 
-        if (aTable.Rows.Count == 0)
-        {
-            showMessageBox("Customer does not exist in chart of accounts !!");
-            return false;
-        }
+        //if (aTable.Rows.Count == 0)
+        //{
+        //    showMessageBox("Customer does not exist in chart of accounts !!");
+        //    return false;
+        //}
 
         if (orderNoTextBox.Text == "")
         {
@@ -127,8 +127,7 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
             remarksTextBox.Text = dtinvoice.Rows[0]["Remarks"].ToString();
             invoiceNoHiddenField.Value = dtinvoice.Rows[0]["InvoiceNo"].ToString();
             //orderIdHiddenField.Value = dtinvoice.Rows[0]["OrderId"].ToString();
-            orderDateTextBox.Text = Convert.ToDateTime(dtinvoice.Rows[0]["OrderDate"].ToString())
-                .ToString("dd-MMM-yyyy");
+            orderDateTextBox.Text = Convert.ToDateTime(dtinvoice.Rows[0]["OrderDate"].ToString()).ToString("dd-MMM-yyyy");
             invoiceHiddenField.Value = invoiceId;
             gridLineItemGridView.DataSource = dtinvoice;
             gridLineItemGridView.DataBind();
@@ -144,9 +143,9 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
             {
                 ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("dQtyTextBox")).Text
                     = ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("tQtyTextBox")).Text;
-                ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("dQtyTextBox")).Enabled = false;
+                //((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("dQtyTextBox")).Enabled = false;
 
-                ((Label)gridLineItemGridView.Rows[i].Cells[15].FindControl("statusLabel")).Text = "Full";
+                //((Label)gridLineItemGridView.Rows[i].Cells[15].FindControl("statusLabel")).Text = "Full";
                 ((Label)gridLineItemGridView.Rows[i].Cells[15].FindControl("statusLabel")).ForeColor =
                     Color.Green;
                 ((DropDownList)gridLineItemGridView.Rows[i].Cells[17].FindControl("reasonReturnDropDownList"))
@@ -881,6 +880,11 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                             Clear();
                             showMessageBox("Delivery Invoice Save Successfully !!");
                         }
+                        else
+                        {
+                            Clear();
+                            showMessageBox("Delivery Invoice Save Successfully !!");
+                        }
                     }
                     else
                     {
@@ -1104,10 +1108,19 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                     Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[6].FindControl("qtyTextBox")).Text);
                 aInvoiceDetail.DiscountPercentage =
                     Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[9].FindControl("dpTextBox")).Text);
-                aInvoiceDetail.DiscountAmount =
-                    (Convert.ToDecimal(
-                        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) / aInvoiceDetail.Quantity) * Convert.ToDecimal(
-                        ((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox")).Text == "" ? 0.ToString() : ((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox")).Text);
+
+                aInvoiceDetail.DiscountAmount = (aInvoiceDetail.Quantity > 0)
+             ? ((string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) ? 0 : Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text))
+                / aInvoiceDetail.Quantity)
+                * (string.IsNullOrEmpty(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox")).Text) ? 0 : Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox")).Text))
+             : 0;
+
+
+
+                //aInvoiceDetail.DiscountAmount =
+                //    (Convert.ToDecimal(
+                //        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) / aInvoiceDetail.Quantity) * Convert.ToDecimal(
+                //        ((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox")).Text == "" ? 0.ToString() : ((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("dQtyTextBox")).Text);
                 aInvoiceDetail.BonusQuantity =
                     Convert.ToDecimal(
                         ((TextBox)gridLineItemGridView.Rows[i].Cells[12].FindControl("bQtyTextBox")).Text.Trim());
@@ -1167,6 +1180,7 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                     ((Label)gridLineItemGridView.Rows[i].Cells[15].FindControl("statusLabel")).Text;
 
                 DataTable dtdcinfo = aInvoiceBll.DCInfoWithDCId(gridLineItemGridView.DataKeys[i]["DCStoreId"].ToString());
+
                 if (dtdcinfo.Rows.Count > 0)
                 {
                     DCStockNew aDcStockNew = new DCStockNew();
@@ -1222,7 +1236,7 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
 
 
                aInvoiceBll.UpdateInvoiceDetail(aInvoiceDetail);
-                aInvoiceDetailsList.Add(aInvoiceDetail);
+               aInvoiceDetailsList.Add(aInvoiceDetail);
             }
 
 
@@ -1554,11 +1568,24 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                     ? Convert.ToDecimal(
                         ((TextBox) gridLineItemGridView.Rows[i].Cells[8].FindControl("tpVatTextBox")).Text)
                     : 0;
-                disTotal += (((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text != "")
-                    ? (Convert.ToDecimal(
-                        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) / Convert.ToDecimal(tbxMainQuantity.Text))
-                        * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text)
-                    : 0;
+                //disTotal += (((TextBox) gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text != "")
+                //    ? (Convert.ToDecimal(
+                //        ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text) / Convert.ToDecimal(tbxMainQuantity.Text))
+                //        * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text)
+                //    : 0;
+
+                decimal dpAmt = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text == ""
+    ? "0"
+    : ((TextBox)gridLineItemGridView.Rows[i].Cells[10].FindControl("dpAmtTextBox")).Text);
+
+                decimal mainQty = Convert.ToDecimal(string.IsNullOrWhiteSpace(tbxMainQuantity.Text)
+                    ? "0"
+                    : tbxMainQuantity.Text);
+
+                decimal safeDivision = mainQty > 0 ? dpAmt / mainQty : 0;
+
+                disTotal += safeDivision * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text);
+
                 gTotal += (((TextBox) gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox")).Text != "")
                     ? Convert.ToDecimal(((TextBox) gridLineItemGridView.Rows[i].Cells[11].FindControl("npTextBox")).Text)
                     : 0;
@@ -2615,9 +2642,23 @@ public partial class SInventory_UI_DelivaryInvoiceCreationForCustomerByOrderAuto
                 //                 ((Convert.ToDecimal(tbxDiscountAmount.Text) / Convert.ToDecimal(tbxMainQuantity.Text)) * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text));
                 //tbxDiscountAmount.Text = discountAmount.ToString(CultureInfo.InvariantCulture);
 
-                tbxNetPrice.Text = (((totalPrice - ((Convert.ToDecimal(tbxDiscountAmount.Text) / Convert.ToDecimal(tbxMainQuantity.Text)) * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text))) -
-                                     (Convert.ToDecimal(tbxSpecialDiscount.Text))) + Convert.ToDecimal(tbxTpVat.Text))
-                    .ToString(CultureInfo.InvariantCulture);
+                //tbxNetPrice.Text = (((totalPrice - ((Convert.ToDecimal(tbxDiscountAmount.Text) / Convert.ToDecimal(tbxMainQuantity.Text)) * Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? 0.ToString(CultureInfo.InvariantCulture) : tbxDeliveryQuantity.Text))) -
+                //                     (Convert.ToDecimal(tbxSpecialDiscount.Text))) + Convert.ToDecimal(tbxTpVat.Text))
+                //    .ToString(CultureInfo.InvariantCulture);
+
+   
+                decimal mainQuantity = Convert.ToDecimal(string.IsNullOrWhiteSpace(tbxMainQuantity.Text) ? "0" : tbxMainQuantity.Text);
+                decimal deliveryQuantity = Convert.ToDecimal(tbxDeliveryQuantity.Text == "" ? "0" : tbxDeliveryQuantity.Text);
+                decimal specialDiscount = Convert.ToDecimal(tbxSpecialDiscount.Text == "" ? "0" : tbxSpecialDiscount.Text);
+                decimal tpVat = Convert.ToDecimal(tbxTpVat.Text == "" ? "0" : tbxTpVat.Text);
+
+                decimal discountPerUnit = mainQuantity > 0 ? (discountAmount / mainQuantity) : 0;
+                decimal discountForDelivery = discountPerUnit * deliveryQuantity;
+
+                decimal netPrice = (totalPrice - discountForDelivery - specialDiscount) + tpVat;
+
+                tbxNetPrice.Text = netPrice.ToString(CultureInfo.InvariantCulture);
+
             }
         }
         else

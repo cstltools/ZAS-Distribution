@@ -52,13 +52,13 @@ namespace Library.BLL.SInventory_BLL
            finally
            { }
        }
-       public int DeleteProforma(string Invoice)
+       public int DeleteProforma(string Invoice, string userId)
        {
-           return aInvoiceReturn.DeleteProformaDal(Invoice);
+           return aInvoiceReturn.DeleteProformaDal(Invoice,userId);
        }
-       public int DeleteDeliveyInvoice(string Invoice)
+       public int DeleteDeliveyInvoice(string Invoice, string userId)
        {
-           return aInvoiceReturn.DeleteDeliveyInvoiceDal(Invoice);
+           return aInvoiceReturn.DeleteDeliveyInvoiceDal(Invoice, userId);
        }
        public DataTable LoadDetailID(string Invoice)
        {
@@ -77,6 +77,48 @@ namespace Library.BLL.SInventory_BLL
        public bool InvoiceDeletePosting(string invoiceNo)
        {
            return aInvoiceReturn.InvoiceDeletePosting(invoiceNo);
+       }
+
+       public bool CheckWHStockIn(string whStockInCode)
+       {
+           try
+           {
+               if (aInvoiceReturn.HasWHStockIn(whStockInCode))
+               {
+                   return true;
+               }
+               else
+               {
+                   return false;
+               }
+           }
+           catch (Exception ex)
+           {
+               throw ex;
+           }
+           finally
+           { }
+       }
+
+       public bool CheckSampleInvoice(string sampleinvoiceCode)
+       {
+           try
+           {
+               if (aInvoiceReturn.CheckSampleInvoice(sampleinvoiceCode))
+               {
+                   return true;
+               }
+               else
+               {
+                   return false;
+               }
+           }
+           catch (Exception ex)
+           {
+               throw ex;
+           }
+           finally
+           { }
        }
     }
 }

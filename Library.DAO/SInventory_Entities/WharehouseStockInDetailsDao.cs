@@ -19,5 +19,6 @@ namespace Library.DAO.SInventory_Entities
         public Decimal TotalAmount { get; set; }
         public Int32 WHStockOutDetailID { get; set; }
         public Int32 ReceiveId { get; set; }
+        public Int32 MaterialConversionMasterId { get; set; }
     }
 }

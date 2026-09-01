@@ -94,6 +94,11 @@ public partial class SInventory_UI_DestroyProductReport : System.Web.UI.Page
     {
         string parameter = "";
 
+        if (fromDateTextBox.Text != "" && toDateTextBox.Text != "")
+        {
+            parameter = parameter + " AND DP.ApproveDate BETWEEN '" + fromDateTextBox.Text.Trim() + "' AND '" + toDateTextBox.Text.Trim() + "'";
+        }
+
         if (dcDropDownList.SelectedValue != "")
         {
             parameter = parameter + " AND IUNT.ComUnitId = '" + dcDropDownList.SelectedValue + "'";

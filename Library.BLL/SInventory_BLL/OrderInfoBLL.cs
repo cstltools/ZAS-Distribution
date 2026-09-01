@@ -205,5 +205,11 @@ namespace Library.BLL.SInventory_BLL
         {
             return aOrderInfoDal.CheckCreditStatus(comId, customerCode);
         }
+
+
+        public DataTable LoadOrderDetails(string customerMasterId)
+        {
+            return aOrderInfoDal.OrderDetails(customerMasterId);
+        }
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Web;
 using Library.DAL.InternalCls;
 
 namespace Library.DAL.SInventory_DAL
@@ -30,10 +32,18 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetProductWiseNationalSales(string fDate, string tdate, string comId)
         {
+            string parameter = " AND PD.CompanyId IN ( SELECT DISTINCT CompanyId FROM tblUserCompanyUnit AS CU LEFT JOIN tblCompanyUnit AS CI ON CU.CompanyUnitId = CI.ComUnitId WHERE UserId = " + HttpContext.Current.Session["UserId"] + ")";
+
+            if (comId != "")
+            {
+                parameter = parameter + " AND PD.CompanyId = '" + comId + "'";
+                
+            }
+
             string query = @"SELECT NTP.ProductCode,PD.ProductName,PD.PackSize,SUM(NTP.DeliveryQuantity) AS SalesQuantity,SUM(NTP.Value) AS SalesValue FROM tblProduct AS PD 
 LEFT JOIN (SELECT INVD.ProductCode,INVD.DeliveryQuantity,(CASE WHEN INVD.DeliveryNetAmount > 0 THEN  INVD.DeliveryNetAmount  ELSE 0 END) Value FROM dbo.tblInvoice AS INV 
 LEFT JOIN dbo.tblInvoiceDetail AS INVD ON INVD.InvoiceId = INV.InvoiceId 
-WHERE INVD.DeliveryStatus IN ('Full','Partial') AND INVD.Quantity > 0 AND  INV.InvoiceDate BETWEEN '" + fDate + "' AND '" + tdate + "') AS NTP ON NTP.ProductCode = PD.ProductCode WHERE PD.CompanyId = " + comId + " GROUP BY NTP.ProductCode,PD.PackSize,PD.ProductName HAVING NTP.ProductCode IS NOT NULL ORDER BY NTP.ProductCode";
+WHERE INVD.DeliveryStatus IN ('Full','Partial') AND INVD.Quantity > 0 AND  INV.InvoiceDate BETWEEN '" + fDate + "' AND '" + tdate + "') AS NTP ON NTP.ProductCode = PD.ProductCode WHERE PD.CompanyId IS NOT NULL  " + parameter + " GROUP BY NTP.ProductCode,PD.PackSize,PD.ProductName HAVING NTP.ProductCode IS NOT NULL ORDER BY NTP.ProductCode";
 
             return aCommonInternalDAL.DataContainerDataTable(query, "SSIDB");
         }

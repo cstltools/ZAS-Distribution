@@ -24,7 +24,9 @@ public partial class SInventory_RPTVIEW_WingsWiseCollectionReportViewer : System
         string fromDate = Session["FromDate"].ToString();
         string toDate = Session["ToDate"].ToString();
 
-        asmDataTable = aReportDal.LoadWingsCollectionInfo(parameter,fromDate,toDate).Copy();
+        int userId = Convert.ToInt32(Session["UserId"]);
+
+        asmDataTable = aReportDal.LoadWingsCollectionInfo(parameter, fromDate, toDate).Copy();
 
         var ds = new DataSet();
 

@@ -22,22 +22,40 @@ namespace Library.BLL.SInventory_BLL
 
                 ClsPrimaryKeyFind aClsPrimaryKeyFind = new ClsPrimaryKeyFind();
                 aCustPayment.CustPayId = aClsPrimaryKeyFind.PrimaryKeyMax("CustPayId", "tblCustomerPay");
+
                 aCustPaymentDal.SaveCustPayment(aCustPayment);
+               
+                
+              // aCustPaymentDal.SaveFullInvoice(aCustPayment);
+                
                 foreach (var custPaymentDetail in aPaymentDetailList)
                 {
-                    custPaymentDetail.CustPayId = aCustPayment.CustPayId;
+                    // Check if exist
 
-                    if (SaveCustDetail(custPaymentDetail))
-                    {
-                        // Journal Posting
-                        aCustPaymentDal.PaymentJournalPosting(aCustPayment.CustPayId, custPaymentDetail.InvoiceId);
-                    }
-                    else
-                    {
-                        aCustPaymentDal.DeletePaymentMasterInfo(aCustPayment);
-                    }
+                    //DataTable aTable = new DataTable();
+                    //aTable = aCustPaymentDal.GetInvoiceExistOrNot(custPaymentDetail.InvoiceId);
 
-                    
+                    //if (aTable.Rows.Count == 0)
+                    //{
+                        // Save Master
+
+                        custPaymentDetail.CustPayId = aCustPayment.CustPayId;
+
+                        //Save Detail
+
+                        if (SaveCustDetail(custPaymentDetail))
+                        {
+                            // Journal Posting
+
+                            aCustPaymentDal.PaymentJournalPosting(aCustPayment.CustPayId, custPaymentDetail.InvoiceId);
+                        }
+                        else
+                        {
+                            aCustPaymentDal.DeletePaymentMasterInfo(aCustPayment);
+                        }
+                    //}
+
+
                 }
                 return true;
 
@@ -93,12 +111,21 @@ namespace Library.BLL.SInventory_BLL
             try
             {
 
+                // Validate Customer Payment by (InvoiceId & Amount & Date)
+
+                DataTable aTable = aCustPaymentDal.CheckCustomerPaymentExistOrNot(aCustPaymentDetail);
+
+
                 ClsPrimaryKeyFind aClsPrimaryKeyFind = new ClsPrimaryKeyFind();
 
-                aCustPaymentDetail.CustPayDetailId = aClsPrimaryKeyFind.PrimaryKeyMax("CustPayDetailId", "tblCustPayDetail");
-                aCustPaymentDal.SaveCustDetail(aCustPaymentDetail);
+                if (aTable.Rows.Count == 0)
+                {
 
-                return true;
+                    aCustPaymentDetail.CustPayDetailId = aClsPrimaryKeyFind.PrimaryKeyMax("CustPayDetailId","tblCustPayDetail");
+                    return aCustPaymentDal.SaveCustDetail(aCustPaymentDetail);
+                }
+
+                return false;
 
             }
             catch (Exception ex)

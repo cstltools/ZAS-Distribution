@@ -125,5 +125,35 @@ namespace Library.BLL.SInventory_BLL
         {
             return aProductDAL.NameExistOrNot(name);
         }
+
+        public void LoadRawMaterial(DropDownList ddl)
+        {
+            aProductDAL.LoadRawMaterial(ddl);
+        }
+
+        public DataTable GetPoductByCode(string productCode)
+        {
+            return aProductDAL.GetPoductByCode(productCode);
+        }
+
+        public bool BeleteRawDetailsById(int ProductId)
+        {
+            return aProductDAL.BeleteRawDetailsById(ProductId);
+        }
+
+        public bool SaveRawMaterialDetails(ProductRawMaterialDetailsDao productRawMaterialDetailsDao)
+        {
+            return aProductDAL.SaveRawMaterialDetails(productRawMaterialDetailsDao);    
+        }
+
+        public DataTable GetRawMaterialIsItem(string productId)
+        {
+            return aProductDAL.GetRawMaterialIsItem(productId);
+        }
+
+        public Int32 CretaeItem(Product aProduct)
+        {
+            return aProductDAL.CretaeItem(aProduct);
+        }
     }
 }

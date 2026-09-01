@@ -8,6 +8,56 @@
     <link href="../css/custom.css" rel="stylesheet" type="text/css" />
      <link rel="stylesheet" href="../css/style.css" type="text/css">
     <link rel="stylesheet" href="../css/colors/blue.css" id="colors" type="text/css">
+    
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.css" rel="stylesheet" />
+    
+    <style type="text/css">
+    /* Style the table to use Flexbox for inline layout */
+    #ContentPlaceHolder1_cbxTradeOrRecipe {
+        display: flex; /* Flexbox for horizontal alignment */
+        gap: 20px; /* Space between radio button groups */
+        align-items: center; /* Align items vertically */
+        justify-content: flex-start; /* Align items to the start */
+    }
+
+    /* Optional: Styling for labels */
+    #ContentPlaceHolder1_cbxTradeOrRecipe label {
+        margin-left: 5px; /* Space between the radio button and its label */
+        font-size: 14px; /* Font size for labels */
+        cursor: pointer; /* Add a pointer cursor to labels */
+    }
+
+    /* Optional: Style for radio buttons */
+    #ContentPlaceHolder1_cbxTradeOrRecipe input[type="radio"] {
+        cursor: pointer; /* Add pointer cursor */
+    }
+
+    .RawMaterials {
+
+            width:250px !important;
+            display: block;
+    width: 100%;
+    padding: .375rem 2.25rem .375rem .75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e);
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+            margin-bottom: 1px !important;
+        }
+
+</style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -256,6 +306,77 @@
                         <td class="TDRight" width="20%">
                             &nbsp;</td>
                     </tr>
+                    
+                    <tr>
+                        <td width="13%" class="TDLeft">&nbsp;
+                        </td>
+                        <td width="20%" class="TDRight">&nbsp;
+                        </td>
+                        <td width="13%" class="TDLeft">&nbsp;</td>
+                        <td width="20%" class="TDRight">
+
+                            <asp:RadioButtonList ID="cbxTradeOrRecipe"
+                                AutoPostBack="True"
+                                CellPadding="5"
+                                CellSpacing="5"
+                                RepeatColumns="2"
+                                RepeatDirection="Vertical"
+                                TextAlign="Right"
+                                OnSelectedIndexChanged="cbxTradeOrRecipe_Clicked"
+                                runat="server">
+                                
+                                 <asp:ListItem Value="Recipe"> Recipe </asp:ListItem>
+                                <asp:ListItem Value="Trade"> Trade </asp:ListItem>
+                               
+                               
+
+                            </asp:RadioButtonList>
+
+                        </td>
+                        <td width="13%" class="TDLeft">&nbsp;
+                        </td>
+                        <td width="20%" class="TDRight">&nbsp;
+                        </td>
+                    </tr>
+                    
+                    <tr >
+                        <td width="13%" class="TDLeft">&nbsp;
+                        </td>
+                        <td width="20%" class="TDRight">&nbsp;
+                        </td>
+                        <td width="13%" class="TDLeft" style="text-align: right; padding-right: 10px;">Raw Material Name:<span class="star-mark"> * </span></td>
+                        <td width="20%" class="TDRight">
+
+                             <asp:DropDownList ID="ddlRawMaterials"  runat="server"
+                                CssClass="DropDown RawMaterials">
+                            </asp:DropDownList>
+
+                        </td>
+                        <td width="13%" class="TDLeft">&nbsp;
+                        </td>
+                        <td width="20%" class="TDRight">&nbsp;
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">&nbsp;</td>
+                        <td class="TDRight" width="20%">&nbsp;</td>
+                        <td class="TDLeft" width="13%">&nbsp;</td>
+                        <td class="TDRight" width="20%">&nbsp;</td>
+
+                        <td class="TDLeft" width="13%">&nbsp;</td>
+                        <td class="TDRight" width="20%">&nbsp;</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="TDLeft" width="13%">&nbsp;</td>
+                        <td class="TDRight" width="20%">&nbsp;</td>
+                        <td class="TDLeft" width="13%">&nbsp;</td>
+                        <td class="TDRight" width="20%">&nbsp;</td>
+
+                        <td class="TDLeft" width="13%">&nbsp;</td>
+                        <td class="TDRight" width="20%">&nbsp;</td>
+                    </tr>
                     <tr>
                         <td class="TDLeft" width="13%">
                             &nbsp;</td>
@@ -362,10 +483,38 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+            
+            
+       
 
     </div>
 
     </div>
     </form>
+    
+    <script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+         <!-- Select2 Initialization Script -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".RawMaterials").select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+            $(".RawMaterials").select2({
+                placeholder: "Select an option",
+                allowClear: true
+            });
+        });
+    </script>
+
 </body>
 </html>

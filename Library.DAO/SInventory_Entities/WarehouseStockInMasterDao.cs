@@ -11,7 +11,7 @@ namespace Library.DAO.SInventory_Entities
         public String WHStockInCode { get; set; }
         public Int32 WarehouseId { get; set; }
         public DateTime WHStockInDate { get; set; }
-        public Int32 TotalQuantity { get; set; }
+        public Decimal TotalQuantity { get; set; }
         public Decimal TotalVat { get; set; }
         public Decimal TotalValue { get; set; }
         public String ChallanNo { get; set; }
