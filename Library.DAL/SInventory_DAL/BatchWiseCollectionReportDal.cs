@@ -75,9 +75,25 @@ namespace Library.DAL.SInventory_DAL
         } 
         
         
-        public DataTable MoneyReceiptById(string moneyReceitId)
+        // P1/PERF-10: MoneyReceiptId alone is not enough to authorize access --
+        // scope the lookup to invoices in a company unit the current user is
+        // assigned to via tblUserCompanyUnit, the same pattern already used by
+        // LoadMoneyReceipt below. A receipt whose invoice belongs to another
+        // company's unit is not returned (empty result), just like today's
+        // "No Data Found" path for a bad/missing id.
+        public DataTable MoneyReceiptById(string moneyReceitId, string userId)
         {
-            string query = @"SELECT 
+            // Convert.ToInt32 throws on anything non-numeric, so this stays
+            // safe from injection the same way every other id/userId argument
+            // in this class already is -- no new parameterization mechanism
+            // is introduced here (ExecuteAllSqlQueryByStoreProcedure, which
+            // aCommonInternalDal ultimately calls, takes a single dynamic-SQL
+            // string, not typed parameters; out of scope to change, see
+            // PERF-8 in the implementation report).
+            int moneyReceiptIdInt = Convert.ToInt32(moneyReceitId);
+            int userIdInt = Convert.ToInt32(userId);
+
+            string query = @"SELECT
                                
                                 MR.MoneyReceiptId,
 								CSTMR.CustomerName + '(' + CSTMR.CustomerCode + ')' AS CustomerName,
@@ -111,7 +127,9 @@ namespace Library.DAL.SInventory_DAL
                             LEFT JOIN tblEmpGeneralInfo EGM ON DM.EmpInfoId = EGM.EmpInfoId
                             LEFT JOIN tblUser AS USR ON CP.CreateBy = USR.LoginName
 							LEFT JOIN tblEmpGeneralInfo UEGM ON USR.EmpInfoId = UEGM.EmpInfoId
-                            WHERE MoneyReceiptId IS NOT NULL AND MoneyReceiptId = " + moneyReceitId + "  ORDER BY MR.MoneyReceiptId, CPD.CustPayDetailId";
+                            WHERE MoneyReceiptId IS NOT NULL AND MoneyReceiptId = " + moneyReceiptIdInt + @"
+                              AND INV.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userIdInt + @")
+                            ORDER BY MR.MoneyReceiptId, CPD.CustPayDetailId";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

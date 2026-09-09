@@ -89,79 +89,155 @@ namespace Library.DAL.SInventory_DAL
         }
 
 
+        // Whole-submission atomicity (P1-1/P1-3): Master + Detail + Journal
+        // Posting for every selected invoice line, plus the single Money
+        // Receipt insert covering them all, run inside ONE shared connection
+        // and transaction. Any hard failure rolls back everything -- there is
+        // no scenario where invoice 1 stays committed while invoice 2 fails,
+        // and no scenario where the payment/journal commit but the receipt
+        // does not. A duplicate-guard "skip" for an individual invoice line
+        // (its master insert returns 0, no exception) is NOT a hard failure
+        // and does not abort the submission -- that is existing, preserved
+        // business behavior. Returns 0 only when nothing new was submitted
+        // (every line was a duplicate-skip); throws on any genuine failure so
+        // the caller never reports success for a payment that was rolled back.
         public Int32 SaveCustPaymentNew2(CustPayment aCustPayment, List<CustPaymentDetail> aCustPaymentDetails)
         {
             Int32 status = 0;
-            bool allSaved = true;
-
             List<int> savedDetailIds = new List<int>();
 
-            foreach (var custPaymentDetail in aCustPaymentDetails)
+            aDbManager.CreateConnectionByConnectionStringKey("SolutionConnectionStringSSIDB");
+
+            try
             {
-                // Save a new Master for each Detail
-
-                aCustPayment.InvoiceIdForValidation = custPaymentDetail.InvoiceId;
-
-                aCustPayment.CustomerMasterId = custPaymentDetail.CustomerMasterId;
-                aCustPayment.BatchId = custPaymentDetail.BatchId;
-                aCustPayment.PayType = custPaymentDetail.PayType;
-
-                aCustPayment.PaymentAmount = (custPaymentDetail.PaymentAmount != null ? custPaymentDetail.PaymentAmount : 0) +
-                                            (custPaymentDetail.AIT != null ? custPaymentDetail.AIT : 0) +
-                                            (custPaymentDetail.Discount != null ? custPaymentDetail.Discount : 0);
-
-
-                int custPayId = SaveCustomerPaymentMaster(aCustPayment);
-
-                if (custPayId > 0)
+                foreach (var custPaymentDetail in aCustPaymentDetails)
                 {
+                    // Save a new Master for each Detail
+
+                    aCustPayment.InvoiceIdForValidation = custPaymentDetail.InvoiceId;
+
+                    aCustPayment.CustomerMasterId = custPaymentDetail.CustomerMasterId;
+                    aCustPayment.BatchId = custPaymentDetail.BatchId;
+                    aCustPayment.PayType = custPaymentDetail.PayType;
+
+                    aCustPayment.PaymentAmount = (custPaymentDetail.PaymentAmount != null ? custPaymentDetail.PaymentAmount : 0) +
+                                                (custPaymentDetail.AIT != null ? custPaymentDetail.AIT : 0) +
+                                                (custPaymentDetail.Discount != null ? custPaymentDetail.Discount : 0);
+
+                    int custPayId = SaveCustomerPaymentMasterTx(aCustPayment);
+
+                    if (custPayId <= 0)
+                    {
+                        // Duplicate-payment guard fired for this invoice line --
+                        // existing behavior: skip it, keep processing the rest.
+                        continue;
+                    }
+
                     // Assign the new master to the detail
 
                     custPaymentDetail.CustPayId = custPayId;
 
-                    int detailResult = SaveCustomerPaymentDetail(custPaymentDetail);
+                    int detailResult = SaveCustomerPaymentDetailTx(custPaymentDetail);
 
                     if (detailResult <= 0)
                     {
-                        // Rollback just this pair
-
-                        DeletePaymentMasterInfoNew(custPayId);
-                        allSaved = false;
-                        break;
+                        // Genuine failure (or an exact-duplicate detail row) --
+                        // abort the entire submission. A rollback undoes the
+                        // master insert above; no compensating delete needed.
+                        throw new InvalidOperationException(
+                            "Payment detail could not be saved for InvoiceId " + custPaymentDetail.InvoiceId + ".");
                     }
 
-                    // Journal Posting
-                    PaymentJournalPosting(custPayId, custPaymentDetail.InvoiceId);
+                    // Journal Posting -- any real failure throws (the stored
+                    // procedure now wraps its body in TRY/CATCH + RAISERROR),
+                    // which aborts the whole submission below.
+                    PaymentJournalPostingTx(custPayId, custPaymentDetail.InvoiceId);
 
                     // Track detail for receipt
                     savedDetailIds.Add(detailResult);
                 }
 
-
-            }
-
-            if (savedDetailIds.Count > 0)
-            {
-                string detailIdsCsv = string.Join(",", savedDetailIds);
-
-                var parameters = new List<SqlParameter>()
+                if (savedDetailIds.Count > 0)
                 {
-                    new SqlParameter("@MoneyReceiptDate", aCustPayment.PaymentDate != DateTime.MinValue ? (object)aCustPayment.PaymentDate : DateTime.Now),
-                    new SqlParameter("@BatchId", aCustPayment.BatchId > 0 ? (object)aCustPayment.BatchId : DBNull.Value),
-                    new SqlParameter("@CustomerMasterId", aCustPayment.CustomerMasterId > 0 ? (object)aCustPayment.CustomerMasterId : DBNull.Value),
-                    new SqlParameter("@CustPayDetailsId", detailIdsCsv),
-                    new SqlParameter("@CreateBy", aCustPayment.CreateBy)
-                };
+                    string detailIdsCsv = string.Join(",", savedDetailIds);
 
-                int moneyReceiptId = aInternalDal.SaveAction("sp_MRCP_MoneyReceiptMasterInsert", parameters, "@MoneyReceiptID");
+                    var parameters = new List<SqlParameter>()
+                    {
+                        new SqlParameter("@MoneyReceiptDate", aCustPayment.PaymentDate != DateTime.MinValue ? (object)aCustPayment.PaymentDate : DateTime.Now),
+                        new SqlParameter("@BatchId", aCustPayment.BatchId > 0 ? (object)aCustPayment.BatchId : DBNull.Value),
+                        new SqlParameter("@CustomerMasterId", aCustPayment.CustomerMasterId > 0 ? (object)aCustPayment.CustomerMasterId : DBNull.Value),
+                        new SqlParameter("@CustPayDetailsId", detailIdsCsv),
+                        new SqlParameter("@CreateBy", aCustPayment.CreateBy)
+                    };
 
-                if (moneyReceiptId > 0)
-                {
+                    int moneyReceiptId = aDbManager.SaveActionStrict("sp_MRCP_MoneyReceiptMasterInsert", parameters, "@MoneyReceiptID");
+
+                    if (moneyReceiptId <= 0)
+                    {
+                        // The receipt insert's own duplicate guard was removed
+                        // (see the P1 migration) since it is now redundant with
+                        // the payment-level guards above -- so getting 0 here
+                        // means something genuinely went wrong. Do not report a
+                        // successful payment with no receipt.
+                        throw new InvalidOperationException("Money receipt could not be created for this payment.");
+                    }
+
                     status = moneyReceiptId;
                 }
+
+                aDbManager.CloseConnection();
+            }
+            catch
+            {
+                aDbManager.RollbackAndClose();
+                throw;
             }
 
             return status;
+        }
+
+        private int SaveCustomerPaymentMasterTx(CustPayment aPayment)
+        {
+            List<SqlParameter> aSqlParameters = new List<SqlParameter>();
+
+            aSqlParameters.Add(new SqlParameter("@CustomerMasterId", aPayment.CustomerMasterId > 0 ? aPayment.CustomerMasterId : 0));
+            aSqlParameters.Add(new SqlParameter("@BatchId", aPayment.BatchId > 0 ? aPayment.BatchId : 0));
+            aSqlParameters.Add(new SqlParameter("@PaymentDate", aPayment.PaymentDate != DateTime.MinValue ? (object)aPayment.PaymentDate : DBNull.Value));
+            aSqlParameters.Add(new SqlParameter("@PaymentAmount", aPayment.PaymentAmount > 0 ? (object)aPayment.PaymentAmount : DBNull.Value));
+            aSqlParameters.Add(new SqlParameter("@PayType", !string.IsNullOrEmpty(aPayment.PayType) ? (object)aPayment.PayType : DBNull.Value));
+            aSqlParameters.Add(new SqlParameter("@PaymentRemarks", !string.IsNullOrEmpty(aPayment.PaymentRemarks) ? (object)aPayment.PaymentRemarks : DBNull.Value));
+            aSqlParameters.Add(new SqlParameter("@RefNo", !string.IsNullOrEmpty(aPayment.RefNo) ? (object)aPayment.RefNo : DBNull.Value));
+            aSqlParameters.Add(new SqlParameter("@RefDate", aPayment.RefDate.HasValue ? (object)aPayment.RefDate.Value : DBNull.Value));
+            aSqlParameters.Add(new SqlParameter("@CreateBy", aPayment.CreateBy));
+            aSqlParameters.Add(new SqlParameter("@InvoiceIdForValidation", aPayment.InvoiceIdForValidation));
+
+            return aDbManager.SaveActionStrict("sp_PMNT_CustomerPaymentMasterInsert", aSqlParameters, "@CustPayId");
+        }
+
+        private int SaveCustomerPaymentDetailTx(CustPaymentDetail aPaymentDetail)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
+            aSqlParameterList.Add(new SqlParameter("@CustPayId", aPaymentDetail.CustPayId));
+            aSqlParameterList.Add(new SqlParameter("@InvoiceId", aPaymentDetail.InvoiceId));
+            aSqlParameterList.Add(new SqlParameter("@PaymentAmount", aPaymentDetail.PaymentAmount > 0 ? (object)aPaymentDetail.PaymentAmount : 0));
+            aSqlParameterList.Add(new SqlParameter("@BankAccId", aPaymentDetail.BankAccId > 0 ? (object)aPaymentDetail.BankAccId : 0));
+            aSqlParameterList.Add(new SqlParameter("@CashAccId", aPaymentDetail.CashAccId > 0 ? (object)aPaymentDetail.CashAccId : 0));
+            aSqlParameterList.Add(new SqlParameter("@Remarks", !string.IsNullOrEmpty(aPaymentDetail.Remarks) ? (object)aPaymentDetail.Remarks : DBNull.Value));
+            aSqlParameterList.Add(new SqlParameter("@AIT", aPaymentDetail.AIT > 0 ? (object)aPaymentDetail.AIT : 0));
+            aSqlParameterList.Add(new SqlParameter("@Discount", aPaymentDetail.Discount > 0 ? (object)aPaymentDetail.Discount : 0));
+
+            return aDbManager.SaveActionStrict("sp_PMNT_CustomerPaymentDetailInsert", aSqlParameterList, "@CustPayDetailId");
+        }
+
+        private void PaymentJournalPostingTx(int custPayId, int invoiceId)
+        {
+            List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
+
+            aSqlParameterList.Add(new SqlParameter("@CustPayId", custPayId));
+            aSqlParameterList.Add(new SqlParameter("@InvoiceId", invoiceId));
+
+            aDbManager.ExecuteActionStrict("sp_Sales_CustomerPaymentPosting", aSqlParameterList);
         }
 
 

@@ -474,7 +474,7 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                    ? Convert.ToInt32(key["CustomerMasterId"])
                    : 0;
 
-                detail.CustomerMasterId = !string.IsNullOrWhiteSpace(Convert.ToString(key["BatchId"]))
+                detail.BatchId = !string.IsNullOrWhiteSpace(Convert.ToString(key["BatchId"]))
                   ? Convert.ToInt32(key["BatchId"])
                   : 0;
 
@@ -509,39 +509,41 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
 
 
-           moneyReceiptId = aTranscationDal.SaveCustPaymentNew2(aCustPayment, aCustPaymentDetails);
-
-
-           if (moneyReceiptId > 0)
+           try
            {
+               moneyReceiptId = aTranscationDal.SaveCustPaymentNew2(aCustPayment, aCustPaymentDetails);
 
-               // Get Money Receipt Details
-
-               DataTable aTable = aTranscationDal.GetMoneyReceiptDetails(moneyReceiptId);
-
-               if (aTable.Rows.Count > 0)
+               if (moneyReceiptId > 0)
                {
-                   invTextBox.Text = aTable.Rows[0].Field<string>("MoneyReceiptNo");
-                   rptInvoiceId.Text = moneyReceiptId.ToString(CultureInfo.InvariantCulture);
-               }
 
-               ShowMessageBox("✅ Data saved successfully.");
-               Clear();
+                   // Get Money Receipt Details
+
+                   DataTable aTable = aTranscationDal.GetMoneyReceiptDetails(moneyReceiptId);
+
+                   if (aTable.Rows.Count > 0)
+                   {
+                       invTextBox.Text = aTable.Rows[0].Field<string>("MoneyReceiptNo");
+                       rptInvoiceId.Text = moneyReceiptId.ToString(CultureInfo.InvariantCulture);
+                   }
+
+                   ShowMessageBox("✅ Data saved successfully.");
+                   Clear();
+               }
+               else
+               {
+                   // Nothing new was submitted -- every selected invoice line
+                   // matched an existing recent payment (duplicate guard).
+                   // No receipt was created, so none is shown here.
+                   ShowMessageBox("⚠️ This payment already appears to be recorded (submitted moments ago). No new receipt was created.");
+                   Clear();
+               }
            }
-           else
+           catch (Exception)
            {
-               // Get Money Receipt Details
-
-               DataTable aTable = aTranscationDal.GetMoneyReceiptByUser(Session["LoginName"].ToString());
-
-               if (aTable.Rows.Count > 0)
-               {
-                   invTextBox.Text = aTable.Rows[0].Field<string>("MoneyReceiptNo");
-                   rptInvoiceId.Text = aTable.Rows[0].Field<int>("MoneyReceiptId").ToString();
-               }
-
-               ShowMessageBox("❌ Data Already Exist. Please print & check !");
-               Clear();
+               // A hard failure occurred and the whole submission was rolled
+               // back -- nothing was saved. Leave the entered data on screen
+               // so the user can retry instead of losing their input.
+               ShowMessageBox("❌ Payment could not be saved due to an error. Nothing was recorded. Please try again.");
            }
 
         }

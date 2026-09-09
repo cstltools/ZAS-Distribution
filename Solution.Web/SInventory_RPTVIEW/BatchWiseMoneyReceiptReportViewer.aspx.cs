@@ -22,14 +22,17 @@ public partial class SInventory_RPTVIEW_BatchWiseCollectionReportViewer : System
 
 
         string payId = Session["MoneyReceiptId"].ToString();
-      
+        string userId = Session["UserId"].ToString();
 
         //DataTable mainTable = aSheetBll.BatchWiseTopSheet(companyId, delManId, batchId, invDate).Copy();
         //DataTable detailTable = aSheetBll.BatchWiseTopSheetDetail(companyId, delManId, batchId, invDate).Copy();
 
         //DataTable mainTable = aReportDal.BatchWiseCollection(batchId, batchCreationDate).Copy();
 
-        DataTable mainTable = aReportDal.MoneyReceiptById(payId).Copy();
+        // P1/PERF-10: scoped to the current user's company unit(s) so a
+        // receipt belonging to another company cannot be viewed just by
+        // varying MoneyReceiptId (see BatchWiseCollectionReportDal.MoneyReceiptById).
+        DataTable mainTable = aReportDal.MoneyReceiptById(payId, userId).Copy();
 
         if (mainTable.Rows.Count > 0)
         {

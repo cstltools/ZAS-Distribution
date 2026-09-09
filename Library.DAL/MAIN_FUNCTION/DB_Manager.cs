@@ -33,6 +33,24 @@ namespace Library.DAL.MAIN_FUNCTION
             }
         }
 
+        // Opens the connection/transaction using a named connection string from
+        // web.config (via DatabaseFactory, the same resolution ClsCommonInternalDAL
+        // uses) instead of DB_Connection's own hardcoded DB_Authentication values.
+        // This guarantees callers that need a real shared transaction across
+        // several DAL calls actually land on the same database as every other
+        // call in that flow, rather than whatever DB_Authentication happens to
+        // point at on a given machine.
+        internal void CreateConnectionByConnectionStringKey(string connectionStringKey)
+        {
+            database = DatabaseFactory.CreateDatabase(connectionStringKey);
+            dbConnection = database.CreateConnection();
+            if (dbConnection.State != ConnectionState.Open)
+            {
+                dbConnection.Open();
+                dbTransaction = dbConnection.BeginTransaction();
+            }
+        }
+
         internal void CloseConnection()
         {
             if (dbConnection.State == ConnectionState.Open)
@@ -40,6 +58,22 @@ namespace Library.DAL.MAIN_FUNCTION
                 if (dbTransaction != null)
                 {
                     dbTransaction.Commit();
+                    dbTransaction.Dispose();
+                }
+
+                dbConnection.Close();
+            }
+        }
+
+        // Rolls back and closes the connection if still open. Safe to call from
+        // a catch block regardless of whether the failure already closed things.
+        internal void RollbackAndClose()
+        {
+            if (dbConnection != null && dbConnection.State == ConnectionState.Open)
+            {
+                if (dbTransaction != null)
+                {
+                    dbTransaction.Rollback();
                     dbTransaction.Dispose();
                 }
 
@@ -158,6 +192,48 @@ namespace Library.DAL.MAIN_FUNCTION
                 ActionStatus = false;
             }
             return ActionStatus;
+        }
+
+        // Strict variants used by callers that manage their own shared
+        // transaction and need to tell "genuine DB failure" apart from
+        // "stored procedure returned 0 rows" -- unlike SaveAction/UpdateAction/
+        // DeleteAction above, these do NOT swallow exceptions. A real error
+        // propagates to the caller so it can roll back and report failure
+        // instead of silently continuing as if nothing happened.
+        internal int SaveActionStrict(string StoreProcedureName, List<SqlParameter> SqlParameterlist,
+            string PrimaryKeyParameter)
+        {
+            return ExecuteNonQueryActionStrict(StoreProcedureName, SqlParameterlist, PrimaryKeyParameter, true);
+        }
+
+        internal void ExecuteActionStrict(string StoreProcedureName, List<SqlParameter> SqlParameterlist)
+        {
+            ExecuteNonQueryActionStrict(StoreProcedureName, SqlParameterlist, string.Empty, false);
+        }
+
+        private int ExecuteNonQueryActionStrict(string StoreProcedureName, List<SqlParameter> SqlParameterlist,
+            string PrimaryKeyParameter, bool IsPrimaryKey)
+        {
+            int pk = 0;
+
+            dbCommand = database.GetStoredProcCommand(StoreProcedureName);
+            dbCommand.CommandTimeout = 12000;
+            dbCommand.Parameters.Clear();
+            dbCommand.Parameters.AddRange(SqlParameterlist.ToArray());
+
+            if (IsPrimaryKey)
+            {
+                database.AddOutParameter(dbCommand, PrimaryKeyParameter, DbType.Int32, 10);
+                int rows = database.ExecuteNonQuery(dbCommand, dbTransaction);
+                pk = rows > 0 ? int.Parse(dbCommand.Parameters[PrimaryKeyParameter].Value.ToString()) : 0;
+            }
+            else
+            {
+                database.ExecuteNonQuery(dbCommand, dbTransaction);
+            }
+
+            dbCommand.Parameters.Clear();
+            return pk;
         }
 
         internal DataTable GetDataTableAction(string StoreProcedureName)
