@@ -141,24 +141,28 @@ namespace Library.DAL.SInventory_DAL
            string query = @"select * from tblRequisition LEFT JOIN tblCompanyInfo ON tblRequisition.CompanyId = tblCompanyInfo.CompanyId  where (Submit is null or Submit = '') and (CreatePicking is not null or CreatePicking != '')";
            return aCommonInternalDal.DataContainerDataTable(query,"SSIDB");
        }
-       public DataTable GetAllNonPickReqDAL()
+       public DataTable GetAllNonPickReqDAL(int? year)
        {
 //           const string query = @"SELECT * FROM tblRequisition AS REQ
-//                                   INNER JOIN tblCompanyInfo AS CI ON REQ.CompanyId = CI.CompanyId 
+//                                   INNER JOIN tblCompanyInfo AS CI ON REQ.CompanyId = CI.CompanyId
 //                                   INNER JOIN tblCompanyUnit AS CU ON REQ.ComUnitId = CU.ComUnitId
-//                                   where CreatePicking is null or CreatePicking = ''"; 
+//                                   where CreatePicking is null or CreatePicking = ''";
 
-           const string query = @"SELECT DISTINCT REQ.ReqId,CompanyCode,CompanyName,CU.ComUnitId,CU.ComUnitCode,CU.ComUnitName, ReqNo, ReqDate, CreatePicking FROM tblRequisition AS REQ
+           string query = @"SELECT DISTINCT REQ.ReqId,CompanyCode,CompanyName,CU.ComUnitId,CU.ComUnitCode,CU.ComUnitName, ReqNo, ReqDate, CreatePicking FROM tblRequisition AS REQ
            LEFT JOIN tblRequsitionChild AS RQD ON REQ.ReqId = RQD.ReqId
            INNER JOIN (SELECT ProductCode,WH.WarehouseId,SUM(Quantity) AS CurrentStockQty FROM tblCentralStore AS CS
            LEFT JOIN tblWHStockInDetail AS WD ON CS.MigoDetailID = WD.WHStockInDetailID
            LEFT JOIN tblWHStockInMaster AS WH ON WD.WHStockInMasterID = WH.WHStockInMasterID
-           GROUP BY ProductCode,WH.WarehouseId HAVING SUM(Quantity) > 0) AS CS ON RQD.ProductCode = CS.ProductCode AND REQ.WarehouseId = CS.WarehouseId 
-           INNER JOIN dbo.tblUnitPrice U ON RQD.ProductCode = U.ProductCode 
-           INNER JOIN tblCompanyInfo AS CI ON REQ.CompanyId = CI.CompanyId 
+           GROUP BY ProductCode,WH.WarehouseId) AS CS ON RQD.ProductCode = CS.ProductCode AND REQ.WarehouseId = CS.WarehouseId
+           INNER JOIN dbo.tblUnitPrice U ON RQD.ProductCode = U.ProductCode
+           INNER JOIN tblCompanyInfo AS CI ON REQ.CompanyId = CI.CompanyId
            INNER JOIN tblCompanyUnit AS CU ON REQ.ComUnitId = CU.ComUnitId
-           WHERE REQ.ReqId IS NOT NULL AND ISNULL(CurrentStockQty,0) > 0 AND CreatePicking IS NULL  ORDER BY REQ.ReqId DESC";
-           return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+           WHERE REQ.ReqId IS NOT NULL AND CreatePicking IS NULL AND (@Year IS NULL OR YEAR(REQ.ReqDate) = @Year)
+           ORDER BY REQ.ReqId DESC";
+
+           List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+           aSqlParameterlist.Add(new SqlParameter("@Year", (object)year ?? DBNull.Value));
+           return aCommonInternalDal.DataContainerDataTable(query, aSqlParameterlist, "SSIDB");
        }
 
        public DataTable GetRequisitionView()

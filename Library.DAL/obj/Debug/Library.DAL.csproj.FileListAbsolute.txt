@@ -529,3 +529,14 @@ D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Debug\Library.DAL
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Debug\Library..61D7EBAF.Up2Date
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Debug\Library.DAL.dll
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Debug\Library.DAL.pdb
+d:\Projects\Zas Distribution\Library.DAL\bin\Debug\Library.DAL.dll
+d:\Projects\Zas Distribution\Library.DAL\bin\Debug\Library.DAL.pdb
+d:\Projects\Zas Distribution\Library.DAL\bin\Debug\Library.DAO.dll
+d:\Projects\Zas Distribution\Library.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+d:\Projects\Zas Distribution\Library.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+d:\Projects\Zas Distribution\Library.DAL\bin\Debug\Library.DAO.pdb
+d:\Projects\Zas Distribution\Library.DAL\obj\Debug\Library.DAL.dll
+d:\Projects\Zas Distribution\Library.DAL\obj\Debug\Library.DAL.pdb
+D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.DAL.dll
+D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.DAL.pdb
+D:\Projects\Zas Distribution\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache

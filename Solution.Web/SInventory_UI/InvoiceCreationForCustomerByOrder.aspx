@@ -501,7 +501,8 @@
                         <td class="TDLeft" width="13%"></td>
                         <td class="TDRight" width="20%">
                             <asp:Button ID="saveButton" runat="server" Text="Invoice Generate"
-                                OnClick="saveButton_Click1" />
+                                OnClick="saveButton_Click1" UseSubmitBehavior="False"
+                                OnClientClick="if (this.disabled) return false; this.disabled = true; this.value = 'Processing...';" />
                             <asp:ModalPopupExtender ID="ModalPopupExtender10" runat="server" TargetControlID="HiddenField10"
                                 PopupControlID="pnlModal" BackgroundCssClass="modalBackground">
                             </asp:ModalPopupExtender>
@@ -636,7 +637,18 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
 
     <script type="text/javascript">
-        
+        // The save button disables itself on click (double-submit guard). If an async postback
+        // dies on the server the UpdatePanel never re-renders, so unlock the button here instead
+        // of leaving it stuck on "Processing...". Registered first so a later handler that throws
+        // (select2 needs jQuery, which is not always loaded) cannot stop it running.
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function (sender, args) {
+            if (!args.get_error()) return;
+            var b = document.getElementById('<%= saveButton.ClientID %>');
+            if (b) { b.disabled = false; b.value = 'Invoice Generate'; }
+            var p = document.getElementById('UpdateProgress1');
+            if (p) { p.style.display = 'none'; }
+        });
+
         $(document).ready(function () {
             $(".deliveryMan").select2({
                 placeholder: "Select an option",

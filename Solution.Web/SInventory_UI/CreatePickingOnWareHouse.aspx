@@ -27,13 +27,13 @@
                     </tr>
                     <tr>
                         <td class="TDLeft" width="13%">
-                            &nbsp;</td>
+                            Year</td>
                         <td class="TDRight" width="20%">
-                            &nbsp;</td>
+                            <asp:TextBox ID="yearTextBox" runat="server" MaxLength="4"></asp:TextBox></td>
                         <td class="TDLeft" width="13%">
                             &nbsp;</td>
                         <td class="TDRight" width="20%">
-                            &nbsp;</td>
+                            <asp:Button ID="searchButton" runat="server" Text="Search" OnClick="searchButton_Click" /></td>
                         <td class="TDLeft" width="13%">
                             &nbsp;</td>
                         <td class="TDRight" width="20%">

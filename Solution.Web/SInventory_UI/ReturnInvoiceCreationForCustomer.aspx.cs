@@ -653,6 +653,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         {
             int invId = SaveInvoice();
             SaveInvoiceDetail(invId);
+            rptInvoiceId.Text = invId.ToString();
             Clear();
             showMessageBox("Create Invoice");
         }
@@ -902,7 +903,8 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
     }
     protected void printButton_Click(object sender, EventArgs e)
     {
-        string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invTextBox.Text.Trim());
+        string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invTextBox.Text.Trim())
+            + "&invoiceId=" + Server.UrlEncode(rptInvoiceId.Text.Trim());
         // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
         string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
         ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);

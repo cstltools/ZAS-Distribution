@@ -45,6 +45,10 @@ namespace Library.DAL.SInventory_DAL
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+        public DataTable LoadOrderForOrderCreation(List<SqlParameter> aSqlParameterList)
+        {
+            return aCommonInternalDal.GetDataTableAction("sp_LoadOrderForOrderCreation", aSqlParameterList, "SSIDB");
+        }
         public DataTable LoadOrderForOrderCreation(string parameter)
         {
             string query = @"SELECT ODR.ComUnitId,ManufacId,OrderId,ODR.CustomerMasterId,UNT.ComUnitName,OrderCode,SubmissionDate,ODR.CustomerCode,

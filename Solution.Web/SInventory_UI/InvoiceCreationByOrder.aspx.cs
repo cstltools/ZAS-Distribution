@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Web;
@@ -22,10 +23,42 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
             if (Session["MarketId"] !=null)
             {
                 marketDropDownList.SelectedValue = Session["MarketId"].ToString();
-                //GridView();
-                
             }
         }
+    }
+
+    // showMessages=false: page load e chup chap skip kore, button click e alert dey
+    private void LoadGrid(bool showMessages)
+    {
+        if (Session["UserType"] == null || Session["UserType"].ToString() == "")
+        {
+            Response.Redirect("Login.aspx");
+            return;
+        }
+
+        if (Session["UserType"].ToString() == "Admin")
+        {
+            GridView(GenerateParameter());
+            return;
+        }
+
+        if (orderDateTextBox.Text == "")
+        {
+            if (showMessages) ShowMessageBox("Order date is required !!!");
+            return;
+        }
+        if (manufacDropDownList.SelectedValue == "")
+        {
+            if (showMessages) ShowMessageBox("Please select company !!!");
+            return;
+        }
+        if (salesCenterDropDownList.SelectedValue == "")
+        {
+            if (showMessages) ShowMessageBox("Please select DC !!!");
+            return;
+        }
+
+        GridView(GenerateParameter());
     }
 
     public void DropDownlist()
@@ -100,7 +133,17 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
         DataTable aTable = new DataTable();
         if (Session["MarketId"] !=null)
         {
-            aTable = aOrderInfoBll.LoadOrderForOrderCreation(Session["MarketId"].ToString());
+            var parameters = new List<SqlParameter>
+            {
+                new SqlParameter("@CompanyId", DBNull.Value),
+                new SqlParameter("@ComUnitId", DBNull.Value),
+                new SqlParameter("@AreaId", DBNull.Value),
+                new SqlParameter("@TerritoryId", DBNull.Value),
+                new SqlParameter("@MarketId", Session["MarketId"].ToString()),
+                new SqlParameter("@SubmissionDate", DBNull.Value),
+                new SqlParameter("@CustomerMasterId", DBNull.Value)
+            };
+            aTable = aOrderInfoBll.LoadOrderForOrderCreation(parameters);
             if (aTable.Rows.Count>0)
             {
                 marketDropDownList.SelectedValue = Session["MarketId"].ToString();
@@ -113,9 +156,9 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
         
     }
 
-    public void GridView(string parametr)
+    public void GridView(List<SqlParameter> parameters)
     {
-        DataTable aTable = aOrderInfoBll.LoadOrderForOrderCreation(parametr);
+        DataTable aTable = aOrderInfoBll.LoadOrderForOrderCreation(parameters);
 
         if (aTable.Rows.Count > 0)
         {
@@ -150,64 +193,19 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
         }
     }
 
-    public string GenerateParameter()
+    public List<SqlParameter> GenerateParameter()
     {
-        string param = "";
+        var parameters = new List<SqlParameter>();
 
-        if (manufacDropDownList.SelectedIndex != 0)
-        {
-            param = param + "  AND UNT.CompanyId='" + manufacDropDownList.SelectedValue + "' ";
+        parameters.Add(new SqlParameter("@CompanyId", (object)(manufacDropDownList.SelectedIndex != 0 ? manufacDropDownList.SelectedValue : null) ?? DBNull.Value));
+        parameters.Add(new SqlParameter("@ComUnitId", (object)(salesCenterDropDownList.SelectedIndex > 0 ? salesCenterDropDownList.SelectedValue : null) ?? DBNull.Value));
+        parameters.Add(new SqlParameter("@AreaId", (object)(areaDropDownList.SelectedIndex > 0 ? areaDropDownList.SelectedValue : null) ?? DBNull.Value));
+        parameters.Add(new SqlParameter("@TerritoryId", (object)(territoryDropDownList.SelectedIndex > 0 ? territoryDropDownList.SelectedValue : null) ?? DBNull.Value));
+        parameters.Add(new SqlParameter("@MarketId", (object)(marketDropDownList.SelectedIndex > 0 ? marketDropDownList.SelectedValue : null) ?? DBNull.Value));
+        parameters.Add(new SqlParameter("@SubmissionDate", (object)(orderDateTextBox.Text != string.Empty ? orderDateTextBox.Text : null) ?? DBNull.Value));
+        parameters.Add(new SqlParameter("@CustomerMasterId", (object)(custDropDownList.SelectedIndex > 0 ? custDropDownList.SelectedValue : null) ?? DBNull.Value));
 
-        }
-        if (salesCenterDropDownList.SelectedIndex > 0)
-        {
-            param = param + " AND UNT.ComUnitId='" + salesCenterDropDownList.SelectedValue + "'";
-        }
-
-        if (areaDropDownList.SelectedIndex > 0)
-        {
-            param = param + " AND ODR.AreaId='" + areaDropDownList.SelectedValue + "'";
-        }
-       
-        if (territoryDropDownList.SelectedIndex > 0)
-        {
-            param = param + " AND ODR.TerritoryId='" + territoryDropDownList.SelectedValue + "'";
-        }
-
-        if (marketDropDownList.SelectedIndex > 0)
-        {
-            param = param + " AND ODR.MarketId='" + marketDropDownList.SelectedValue + "'";
-        }
-
-        if (orderDateTextBox.Text !=string.Empty)
-        {
-            param = param + " AND ODR.SubmissionDate='" + orderDateTextBox.Text + "'";
-        }
-
-        if (custDropDownList.SelectedIndex > 0)
-        {
-            param = param + " AND ODR.CustomerMasterId='" + custDropDownList.SelectedValue + "'";
-        }
-
-
-//        param = param + @" AND (
-//    CASE 
-//        WHEN TermOfPayment = 'Credit' THEN
-//            CASE 
-//                WHEN ISNULL(LimitAmount, 0) = 0 THEN 0  -- No limit set No permission
-//                WHEN 
-//                    (ISNULL(GrossValue, 0) + ISNULL(Due, 0) <= ISNULL(LimitAmount, 0)) AND
-//                    (ISNULL(DayLimit, 0) = 0 OR DATEDIFF(day, InvoiceDate, GETDATE()) <= ISNULL(DayLimit, 0))
-//                THEN 1
-//                ELSE 0
-//            END
-//        ELSE 1
-//    END
-//) = 1";
-
-        
-
-        return param;
+        return parameters;
     }
 
     private void ShowMessageBox(string message)
@@ -220,47 +218,7 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-
-        if (Session["UserType"].ToString() != "")
-        {
-            if (Session["UserType"].ToString() != "Admin")
-            {
-                if (orderDateTextBox.Text != "")
-                {
-                    if (manufacDropDownList.SelectedValue != "")
-                    {
-                        if (salesCenterDropDownList.SelectedValue != "")
-                        {
-                            GridView(GenerateParameter());
-                        }
-                        else
-                        {
-                            ShowMessageBox("Please select DC !!!");
-                        }
-                    }
-                    else
-                    {
-                        ShowMessageBox("Please select company !!!");
-                    }
-                }
-                else
-                {
-                    ShowMessageBox("Order date is required !!!");
-                }
-            }
-            else
-            {
-                GridView(GenerateParameter());
-            }
-        }
-        else
-        {
-            Response.Redirect("Login.aspx");
-        }
-
-
-        
-       
+        LoadGrid(true);
     }
     protected void areaDropDownList_OnSelectedIndexChanged(object sender, EventArgs e)
     {

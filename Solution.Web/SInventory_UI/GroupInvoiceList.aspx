@@ -264,6 +264,9 @@
                                         <ItemTemplate>
                                             <asp:LinkButton ID="invoiceButton" runat="server" Text="Preview Invoice &gt; &gt; &gt;" ForeColor="#DE751F"
                                                 OnClick="invoiceButton_Click" />
+                                            &nbsp;|&nbsp;
+                                            <asp:HyperLink ID="downloadExcelHyperLink" runat="server" Text="Download Excel" ForeColor="#DE751F"
+                                                Target="_blank" />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     

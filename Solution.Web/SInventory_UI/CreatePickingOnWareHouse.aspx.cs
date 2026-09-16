@@ -15,13 +15,25 @@ public partial class SInventory_UI_CreatePickingOnWareHouse : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
+            yearTextBox.Text = DateTime.Now.Year.ToString();
             LoadGrid();
         }
     }
     private void LoadGrid()
     {
-        aDataTable = aRequisitionBll.GetAllNonPickReq();
+        int? year = null;
+        int parsedYear;
+        if (int.TryParse(yearTextBox.Text.Trim(), out parsedYear))
+        {
+            year = parsedYear;
+        }
+
+        aDataTable = aRequisitionBll.GetAllNonPickReq(year);
         viewReqGridView.DataSource = aDataTable;
         viewReqGridView.DataBind();
+    }
+    protected void searchButton_Click(object sender, EventArgs e)
+    {
+        LoadGrid();
     }
 }

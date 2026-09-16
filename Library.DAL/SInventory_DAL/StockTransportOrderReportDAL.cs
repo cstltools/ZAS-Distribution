@@ -40,11 +40,11 @@ namespace Library.DAL.SInventory_DAL
       //}
       public DataTable StockTransportOrderReportDetailData(string reqId)
       {
-          string query = @"SELECT DISTINCT RC.ReqId,RC.ProductCode,(RC.ProductName+' '+RC.PackSize) AS ProductName ,RC.CaseQty,ST.BatchNo,ST.PickingQty AS Quantity,ST.PriceAmount,ST.VATAmount,ST.TotalPriceAmount,ST.PickingQty,PD.ProductId, SUOM.StockUOMName, ST.ExpDate 
+          string query = @"SELECT RC.ReqId,RC.ProductCode,(RC.ProductName+' '+RC.PackSize) AS ProductName ,RC.CaseQty,ST.BatchNo,ST.PickingQty AS Quantity,ST.PriceAmount,ST.VATAmount,ST.TotalPriceAmount,ST.PickingQty,PD.ProductId, SUOM.StockUOMName, ST.ExpDate
                            FROM dbo.tblRequsitionChild RC
                            INNER JOIN dbo.tblProduct AS PD ON PD.ProductCode = RC.ProductCode
                            INNER JOIN dbo.tblStockUOM AS SUOM ON SUOM.StockUOMId = PD.StockUOMId
-                           LEFT JOIN dbo.tblStockInTransfar ST ON RC.ReqChildId = ST.ReqChildId WHERE  RC.ReqId ='" + reqId.Trim() + "' ";
+                           LEFT JOIN dbo.tblStockInTransfar ST ON RC.ReqChildId = ST.ReqChildId WHERE  RC.ReqId ='" + reqId.Trim() + "' ORDER BY RC.ProductCode ASC";
           //string query = @"SELECT ST.ReqId,ST.ProductCode,(ST.ProductName+' '+ST.PackSize) as ProductName ,RC.CaseQty,RC.BatchNo,ST.Quantity,ST.PriceAmount,ST.VATAmount, " +
           //                  " ST.TotalPriceAmount,ST.PickingQty FROM dbo.tblRequsitionChild RC " +
           //                  " left JOIN dbo.tblStockInTransfar ST ON RC.ReqChildId = ST.ReqChildId "+

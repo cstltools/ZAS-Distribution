@@ -568,5 +568,35 @@ LEFT JOIN (SELECT InvoiceId,SUM(DeliveryNetAmount) AS TotalDelivery FROM tblInvo
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+
+        public void LoadInvoiceForPaymentDelete(DropDownList ddl, string comUnitId, string marketId)
+        {
+            string query = @"SELECT DISTINCT INV.InvoiceId,
+                             CST.CustomerCode + ' : ' + CST.CustomerName + ' [' + ISNULL(INV.DelivaryInvoiceNo, INV.InvoiceNo) + ']' AS InvoiceText
+                             FROM dbo.tblInvoice AS INV
+                             INNER JOIN dbo.tblCustMaster AS CST ON INV.CustomerMasterId = CST.CustomerMasterId
+                             WHERE INV.ComUnitId = '" + comUnitId + "' AND CST.MarketId = '" + marketId + @"'
+                             AND EXISTS (SELECT 1 FROM dbo.tblCustPayDetail AS PD WHERE PD.InvoiceId = INV.InvoiceId)";
+            aCommonInternalDal.LoadDropDownValueWithoutDataBase(ddl, "InvoiceText", "InvoiceId", query);
+        }
+
+        public DataTable GetPaymentDetailListByInvoiceId(string invoiceId)
+        {
+            string query = @"SELECT PD.CustPayDetailId, PD.CustPayId,
+                             ISNULL(INV.DelivaryInvoiceNo, INV.InvoiceNo) AS InvoiceNo,
+                             PD.PaymentAmount, CP.PaymentDate, PD.PaymentRemarks AS Remarks
+                             FROM dbo.tblCustPayDetail AS PD
+                             INNER JOIN dbo.tblCustomerPay AS CP ON PD.CustPayId = CP.CustPayId
+                             INNER JOIN dbo.tblInvoice AS INV ON PD.InvoiceId = INV.InvoiceId
+                             WHERE PD.InvoiceId = '" + invoiceId + @"'
+                             ORDER BY CP.PaymentDate";
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
+        public DataTable GetPaymentDetailCountByCustPayId(string custPayId)
+        {
+            string query = @"SELECT COUNT(*) AS Cnt FROM dbo.tblCustPayDetail WHERE CustPayId = '" + custPayId + "'";
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
     }
 }

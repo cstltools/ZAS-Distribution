@@ -164,10 +164,10 @@ namespace Library.BLL.SInventory_BLL
           return aRequisitionDal.GetAllNonSubmitReqDAL();
       }
 
-      public DataTable GetAllNonPickReq()
+      public DataTable GetAllNonPickReq(int? year)
       {
 
-          return aRequisitionDal.GetAllNonPickReqDAL();
+          return aRequisitionDal.GetAllNonPickReqDAL(year);
       }
       public bool DeleteRequisition(string reqId)
       {

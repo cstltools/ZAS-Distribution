@@ -48,3 +48,16 @@ D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.BLL\bin\Release\Library.D
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.BLL\obj\Release\Library.BLL.csprojResolveAssemblyReference.cache
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.BLL\obj\Release\Library.BLL.dll
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.BLL\obj\Release\Library.BLL.pdb
+D:\Projects\Zas Distribution\Library.BLL\bin\Release\Library.BLL.dll
+D:\Projects\Zas Distribution\Library.BLL\bin\Release\Library.BLL.pdb
+D:\Projects\Zas Distribution\Library.BLL\bin\Release\Library.DAL.dll
+D:\Projects\Zas Distribution\Library.BLL\bin\Release\Library.DAO.dll
+D:\Projects\Zas Distribution\Library.BLL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Projects\Zas Distribution\Library.BLL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Projects\Zas Distribution\Library.BLL\bin\Release\Library.DAL.pdb
+D:\Projects\Zas Distribution\Library.BLL\bin\Release\Library.DAO.pdb
+D:\Projects\Zas Distribution\Library.BLL\obj\Release\Library.BLL.csproj.AssemblyReference.cache
+D:\Projects\Zas Distribution\Library.BLL\obj\Release\Library.BLL.csproj.CoreCompileInputs.cache
+D:\Projects\Zas Distribution\Library.BLL\obj\Release\Library..6B42F545.Up2Date
+D:\Projects\Zas Distribution\Library.BLL\obj\Release\Library.BLL.dll
+D:\Projects\Zas Distribution\Library.BLL\obj\Release\Library.BLL.pdb

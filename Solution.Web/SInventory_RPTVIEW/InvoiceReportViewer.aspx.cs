@@ -23,15 +23,20 @@ public partial class SInventory_RPTVIEW_InvoiceReportViewer : System.Web.UI.Page
         {
             string invNo = Server.UrlDecode(Request.QueryString["InvNo"]);
 
-            string invoiceId = Server.UrlDecode(Request.QueryString["invoiceId"]);
+            string invoiceIdRaw = Server.UrlDecode(Request.QueryString["invoiceId"]);
 
-            // If invoiceId is null or empty, assign it a default value of "0"
-
-            if (string.IsNullOrEmpty(invoiceId))
+            // A missing/invalid invoiceId used to silently fall back to "0", which never matches
+            // a real invoice and rendered a blank report with no error. Fail loudly instead.
+            int invoiceIdValue;
+            if (string.IsNullOrEmpty(invoiceIdRaw) || !int.TryParse(invoiceIdRaw, out invoiceIdValue) || invoiceIdValue <= 0)
             {
-                invoiceId = "0";
+                Response.Clear();
+                Response.Write("<div style=\"font-family:sans-serif;color:#a00;padding:20px;\">Unable to print invoice: Invoice ID is missing or invalid.</div>");
+                Response.Flush();
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+                return;
             }
-
+            string invoiceId = invoiceIdValue.ToString();
 
             string invColl = aInvoiceBll.InvoiceNoCollectionFormate(invNo);
             //string customer = Session["customer"].ToString();

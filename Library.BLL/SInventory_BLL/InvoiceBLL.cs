@@ -44,6 +44,11 @@ public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
         {
             return aInvoiceDal.GroupInvoiceMainDataForReport2(invNo);
         }
+
+        public DataTable GroupInvoiceHtmlReportDataBLL(string invNo)
+        {
+            return aInvoiceDal.GroupInvoiceHtmlReportData(invNo);
+        }
         public bool SaveConsumerCustomer(ConsumerCustomerDAO aConsumerCustomerDao,out int id)
         {
             ClsPrimaryKeyFind aClsPrimaryKeyFind = new ClsPrimaryKeyFind();
@@ -130,12 +135,12 @@ public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
         }
         public bool SaveInvoiceConsumer(Invoice aInvoice, out int invoiceId, out string invoiceNo)
         {
-            invoiceId = aClsPrimaryKeyFind.PrimaryKeyMax("invoiceId", "tblInvoice");
-            aInvoice.InvoiceId = invoiceId;
             invoiceNo = InvoiceNoGenerator(aInvoice.ComUnitId, aInvoice.ComUnitCode);
             aInvoice.InvoiceNo = invoiceNo;
 
-            return aInvoiceDal.SaveDataForInvoiceConsumer(aInvoice);
+            invoiceId = aInvoiceDal.SaveDataForInvoiceConsumer(aInvoice);
+            aInvoice.InvoiceId = invoiceId;
+            return invoiceId > 0;
         }
         public void LoadDeliveryMan(DropDownList aDropDownList)
         {
@@ -193,10 +198,17 @@ public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
         }
         public bool SaveInvoiceDetails(List<InvoiceDetail> aInvoiceList,string comUnitId)
         {
-            
+            if (aInvoiceList == null || aInvoiceList.Count == 0)
+            {
+                return false;
+            }
+
             foreach (var invoiceDetail in aInvoiceList)
             {
-                UpdateDCStock(invoiceDetail, comUnitId);
+                if (!UpdateDCStock(invoiceDetail, comUnitId))
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -215,7 +227,7 @@ public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
         {
             return aInvoiceDal.UpdateOrder(status, id);
         }
-        private void UpdateDCStock(InvoiceDetail aInvoiceDetail, string comUnitId)
+        private bool UpdateDCStock(InvoiceDetail aInvoiceDetail, string comUnitId)
         {
             DataTable aTableBatchQty = new DataTable();
             aTableBatchQty = aInvoiceDal.BatchWiseProductQty(aInvoiceDetail.ProductCode, comUnitId);
@@ -289,20 +301,25 @@ public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
 
                 if (restQty < 0 || restBonusQtyBool==true)
                 {
-                   
+
                     restQty1 = restQty;
 
+                    bool insertedFullBatch;
                     if (restBonusQtyBool == true)
                     {
-                        InvoiceDetailInsertBLL(aTableBatchQty, i, 0, restBonusQtyOverFlow, aInvoiceDetail, comUnitId,dCStoreId);
+                        insertedFullBatch = InvoiceDetailInsertBLL(aTableBatchQty, i, 0, restBonusQtyOverFlow, aInvoiceDetail, comUnitId,dCStoreId);
                     }
                     else
                     {
-                        InvoiceDetailInsertBLL(aTableBatchQty, i, stockQty - bonusQty, bonusQty, aInvoiceDetail, comUnitId,dCStoreId);
+                        insertedFullBatch = InvoiceDetailInsertBLL(aTableBatchQty, i, stockQty - bonusQty, bonusQty, aInvoiceDetail, comUnitId,dCStoreId);
                     }
-                    aInvoiceDal.UpdateDCStoreQuantity(dCStoreId, 0);
+                    // This batch is being fully drained, so the deducted amount is its whole current stock.
+                    if (!insertedFullBatch || !aInvoiceDal.UpdateDCStoreQuantity(dCStoreId, stockQty))
+                    {
+                        return false;
+                    }
                     bonusQty = 0;
-                 
+
                 }
                 else
                 {
@@ -312,14 +329,20 @@ public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
                         resQt = restQty1;
                         qty = resQt*-1;
                     }
-                   
-                    InvoiceDetailInsertBLL(aTableBatchQty, i, qty, bonusQty, aInvoiceDetail, comUnitId,dCStoreId);
-                    aInvoiceDal.UpdateDCStoreQuantity(dCStoreId, restQty);
-                    break;
+
+                    decimal deductQty = stockQty - restQty;
+                    if (!InvoiceDetailInsertBLL(aTableBatchQty, i, qty, bonusQty, aInvoiceDetail, comUnitId,dCStoreId) ||
+                        !aInvoiceDal.UpdateDCStoreQuantity(dCStoreId, deductQty))
+                    {
+                        return false;
+                    }
+                    return true;
                 }
             }
+            // Ran out of batches before the requested quantity was fully allocated - not enough stock.
+            return false;
         }
-        private void InvoiceDetailInsertBLL(DataTable aTableBatchQty, int index, decimal qty, decimal bonusQty, InvoiceDetail aInvoiceDetail, string comUnitId,string dcstoreId)
+        private bool InvoiceDetailInsertBLL(DataTable aTableBatchQty, int index, decimal qty, decimal bonusQty, InvoiceDetail aInvoiceDetail, string comUnitId,string dcstoreId)
         {
             DataTable ProductInfoDataTable = new DataTable();
             ProductInfoDataTable = ProductInfo(comUnitId, aInvoiceDetail.ProductCode);
@@ -388,7 +411,7 @@ public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
             aDetailForInsert.InvoiceId = aInvoiceDetail.InvoiceId;
             aDetailForInsert.DCStoreId = Convert.ToInt32(dcstoreId);
 
-            aInvoiceDal.SaveDataForInvoiceDetails(aDetailForInsert);
+            return aInvoiceDal.SaveDataForInvoiceDetails(aDetailForInsert);
         }
         private void ReturnInvoiceDetailInsertBLL(DataTable aTableBatchQty, int index, decimal qty, decimal bonusQty, InvoiceDetail aInvoiceDetail, string comUnitId, string dcstoreId)
         {

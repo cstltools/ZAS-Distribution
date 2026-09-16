@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -454,31 +455,75 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
     }
     protected void saveButton_Click(object sender, EventArgs e)
     {
-        if (Validation())
+        if (!Validation())
         {
-            if (hdCustomerMasterId.Value ==string.Empty)
-            {
-                hdCustomerMasterId.Value = ConsumeCustomer().ToString();
-                
-                CustomerMasterInfoDal aCustomerMasterDAL = new CustomerMasterInfoDal();
-
-                aCustomerMasterDAL.CreateGlOfCustomer(Convert.ToInt32(hdCustomerMasterId.Value));
-            }
-            //OrderSave();
-            int invId = SaveInvoice();
-            SaveInvoiceDetail(invId);
-            aInvoiceBll.UpdateInvoiceDetailConsumer(invId.ToString());
-            aInvoiceBll.UpdateInvoiceConsumer(invId.ToString());
-
-            // Journal Posting
-
-            if (aInvoiceBll.PostDeliveryConfFullJournal(invId))
-            {
-                Clear();
-                showMessageBox("Create Invoice");
-            }
-            
+            return;
         }
+
+        // Walk-in customer creation is intentionally left outside the transaction below,
+        // matching existing behavior - it is not part of the invoice/stock atomicity this
+        // fix addresses.
+        if (hdCustomerMasterId.Value == string.Empty)
+        {
+            hdCustomerMasterId.Value = ConsumeCustomer().ToString();
+
+            CustomerMasterInfoDal aCustomerMasterDAL = new CustomerMasterInfoDal();
+
+            aCustomerMasterDAL.CreateGlOfCustomer(Convert.ToInt32(hdCustomerMasterId.Value));
+        }
+
+        int invId = 0;
+
+        try
+        {
+            // Self-created order + self-approval, Invoice Master, Invoice Details, Stock,
+            // delivery/journal updates must commit together or not at all - same pattern as
+            // InvoiceCreationForCustomerByOrder.aspx.cs's saveButton_Click1.
+            TransactionOptions options = new TransactionOptions
+            {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted,
+                Timeout = TimeSpan.FromMinutes(5)
+            };
+
+            using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, options))
+            {
+                invId = SaveInvoice();
+
+                if (invId <= 0)
+                {
+                    showMessageBox("Invoice could not be created. Please try again. If it keeps failing, contact IT.");
+                    return;
+                }
+
+                if (!SaveInvoiceDetail(invId))
+                {
+                    showMessageBox("Invoice items could not be saved. Nothing was saved, please generate the invoice again.");
+                    return;
+                }
+
+                aInvoiceBll.UpdateInvoiceDetailConsumer(invId.ToString());
+                aInvoiceBll.UpdateInvoiceConsumer(invId.ToString());
+
+                if (!aInvoiceBll.PostDeliveryConfFullJournal(invId))
+                {
+                    showMessageBox("Invoice could not be posted. Nothing was saved, please generate the invoice again.");
+                    return;
+                }
+
+                scope.Complete();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Nothing to undo - the TransactionScope rolled back on the way out.
+            showMessageBox("Invoice generate failed: " + ex.Message);
+            return;
+        }
+
+        // Committed. Everything below is display only.
+        rptInvoiceId.Text = invId.ToString();
+        Clear();
+        showMessageBox("Create Invoice");
     }
 
     public void UpdateDeliveryInfo()
@@ -634,11 +679,11 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                 aInvoiceDetailsList.Add(aInvoiceDetail);
             }
 
-            aInvoiceBll.SaveInvoiceDetails(aInvoiceDetailsList, hdComUnitId.Value);
-            
+            return aInvoiceBll.SaveInvoiceDetails(aInvoiceDetailsList, hdComUnitId.Value);
         }
 
-        return true;
+        // No line items - a master with zero details must not be reported as a successful save.
+        return false;
     }
 
     private int SaveInvoice()
@@ -723,7 +768,8 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
     }
     protected void printButton_Click(object sender, EventArgs e)
     {
-        string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invTextBox.Text.Trim());
+        string url = "../SInventory_RPTVIEW/InvoiceReportViewer.aspx?InvNo=" + Server.UrlEncode(invTextBox.Text.Trim())
+            + "&invoiceId=" + Server.UrlEncode(rptInvoiceId.Text.Trim());
         // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
         string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
         ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);

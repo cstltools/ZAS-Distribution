@@ -42,3 +42,14 @@ D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Release\Library.D
 d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Release\Library.DAL.csproj.AssemblyReference.cache
 d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Release\Library.DAL.csproj.CoreCompileInputs.cache
 d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAL\obj\Release\Library..61D7EBAF.Up2Date
+D:\Projects\Zas Distribution\Library.DAL\bin\Release\Library.DAL.dll
+D:\Projects\Zas Distribution\Library.DAL\bin\Release\Library.DAL.pdb
+D:\Projects\Zas Distribution\Library.DAL\bin\Release\Library.DAO.dll
+D:\Projects\Zas Distribution\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Projects\Zas Distribution\Library.DAL\bin\Release\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Projects\Zas Distribution\Library.DAL\bin\Release\Library.DAO.pdb
+D:\Projects\Zas Distribution\Library.DAL\obj\Release\Library.DAL.csproj.AssemblyReference.cache
+D:\Projects\Zas Distribution\Library.DAL\obj\Release\Library.DAL.csproj.CoreCompileInputs.cache
+D:\Projects\Zas Distribution\Library.DAL\obj\Release\Library..61D7EBAF.Up2Date
+D:\Projects\Zas Distribution\Library.DAL\obj\Release\Library.DAL.dll
+D:\Projects\Zas Distribution\Library.DAL\obj\Release\Library.DAL.pdb

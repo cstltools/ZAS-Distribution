@@ -262,5 +262,20 @@ namespace Library.BLL.SInventory_BLL
         {
             aCustPaymentDal.LoadCashAccount(ddlCash,companyId);
         }
+
+        public void LoadInvoiceForPaymentDelete(DropDownList ddl, string comUnitId, string marketId)
+        {
+            aCustPaymentDal.LoadInvoiceForPaymentDelete(ddl, comUnitId, marketId);
+        }
+
+        public DataTable GetPaymentDetailListByInvoiceId(string invoiceId)
+        {
+            return aCustPaymentDal.GetPaymentDetailListByInvoiceId(invoiceId);
+        }
+
+        public DataTable GetPaymentDetailCountByCustPayId(string custPayId)
+        {
+            return aCustPaymentDal.GetPaymentDetailCountByCustPayId(custPayId);
+        }
     }
 }

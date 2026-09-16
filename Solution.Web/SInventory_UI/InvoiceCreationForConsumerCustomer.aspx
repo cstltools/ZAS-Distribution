@@ -458,6 +458,7 @@
                         </td>
                         <td class="TDRight" width="20%">
                             <asp:TextBox ID="invTextBox" runat="server" CssClass="TextBox"></asp:TextBox>
+                            <asp:Label ID="rptInvoiceId" runat="server" Visible="False" CssClass="TextBox"></asp:Label>
                         </td>
                         <td class="TDLeft" width="13%">
                             <asp:Button ID="printButton" runat="server" OnClick="printButton_Click" Text="Print" />

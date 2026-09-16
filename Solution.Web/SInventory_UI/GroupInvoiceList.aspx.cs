@@ -79,6 +79,13 @@ public partial class SInventory_UI_GroupInvoiceList : System.Web.UI.Page
 
             CheckBox chk = (CheckBox)e.Row.FindControl("chkSelect");
 
+            HyperLink downloadExcelHyperLink = (HyperLink)e.Row.FindControl("downloadExcelHyperLink");
+            if (downloadExcelHyperLink != null)
+            {
+                downloadExcelHyperLink.NavigateUrl = "../SInventory_RPTVIEW/GroupInvoiceReport.aspx?groupInvoiceNo=" +
+                    Server.UrlEncode(groupInvoiceNo) + "&format=excel";
+            }
+
             if (!string.IsNullOrEmpty(groupInvoiceNo))
             {
                 // Row already grouped
@@ -167,18 +174,8 @@ public partial class SInventory_UI_GroupInvoiceList : System.Web.UI.Page
         // Retrieve the values of InvoiceNo and InvoiceId from the DataKeys of the GridView
         string GroupInvoiceNo = invoiceGridView.DataKeys[rowindex]["GroupInvoiceNo"].ToString();
 
-        // Call the method to show the report popup
-
-        string pram = "";
-
-        Session["paydetailId"] = "";
-        Session["paydetailId"] = GroupInvoiceNo;
-
-        //GroupInvoiceReportViewer
-
-
-        string url = "../SInventory_RPTVIEW/GroupInvoiceReportViewer.aspx";
-        // string fullURL = "window.open('" + url + "', '_blank', 'height=600,width=900,status=yes,toolbar=no,menubar=no,location=no,scrollbars=yes,resizable=no,titlebar=no' );";
+        // Open the HTML-based Group Invoice report (replaces the old Crystal Report popup)
+        string url = "../SInventory_RPTVIEW/GroupInvoiceReport.aspx?groupInvoiceNo=" + Server.UrlEncode(GroupInvoiceNo);
         string fullURL = "var Mleft = (screen.width/2)-(950/2);var Mtop = (screen.height/2)-(700/2);window.open( '" + url + "', null, 'height=700,width=950,status=yes,toolbar=no,addressbar=no, scrollbars=yes,menubar=no,location=no,top=\'+Mtop+\', left=\'+Mleft+\'' );";
         ScriptManager.RegisterStartupScript(this, typeof(string), "OPEN_WINDOW", fullURL, true);
     }

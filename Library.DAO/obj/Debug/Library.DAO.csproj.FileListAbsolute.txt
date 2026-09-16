@@ -306,3 +306,10 @@ D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Debug\Library.DAO
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Debug\Library.DAO.csproj.CoreCompileInputs.cache
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Debug\Library.DAO.dll
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Debug\Library.DAO.pdb
+d:\Projects\Zas Distribution\Library.DAO\bin\Debug\Library.DAO.dll
+d:\Projects\Zas Distribution\Library.DAO\bin\Debug\Library.DAO.pdb
+d:\Projects\Zas Distribution\Library.DAO\obj\Debug\Library.DAO.dll
+d:\Projects\Zas Distribution\Library.DAO\obj\Debug\Library.DAO.pdb
+D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.DAO.dll
+D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.DAO.pdb
+D:\Projects\Zas Distribution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache

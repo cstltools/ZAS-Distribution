@@ -41,3 +41,9 @@ D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Release\Library.D
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Release\Library.DAO.pdb
 d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Release\Library.DAO.csproj.AssemblyReference.cache
 d:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.DAO\obj\Release\Library.DAO.csproj.CoreCompileInputs.cache
+D:\Projects\Zas Distribution\Library.DAO\bin\Release\Library.DAO.dll
+D:\Projects\Zas Distribution\Library.DAO\bin\Release\Library.DAO.pdb
+D:\Projects\Zas Distribution\Library.DAO\obj\Release\Library.DAO.csproj.AssemblyReference.cache
+D:\Projects\Zas Distribution\Library.DAO\obj\Release\Library.DAO.csproj.CoreCompileInputs.cache
+D:\Projects\Zas Distribution\Library.DAO\obj\Release\Library.DAO.dll
+D:\Projects\Zas Distribution\Library.DAO\obj\Release\Library.DAO.pdb

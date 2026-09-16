@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Transactions;
 using Library.BLL.SInventory_BLL;
 using Library.CrystalReports.SInventory_DS;
 using Library.DAO.SInventory_Entities;
@@ -970,8 +970,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
     protected void showMessageBox(string message)
     {
         string sScript;
-        message = message.Replace("'", "\'");
-        sScript = String.Format("alert('{0}');", message);
+        sScript = String.Format("alert('{0}');", HttpUtility.JavaScriptStringEncode(message));
         ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", sScript, true);
     }
 
@@ -1393,103 +1392,73 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
 
     protected void saveButton_Click1(object sender, EventArgs e)
     {
-        if (Validation())
+        if (!Validation())
         {
-            if (OrderExists(orderHiddenField.Value) == false)
+            return;
+        }
+
+        if (OrderExists(orderIdHiddenField.Value))
+        {
+            showMessageBox("Invoice already Generated !!");
+            return;
+        }
+
+        int invId = 0;
+
+        try
+        {
+            // Master + details + stock + order status must commit together or not at all.
+            // ReadCommitted (not the Serializable default) to avoid range locks on tblDCStore.
+            TransactionOptions options = new TransactionOptions
             {
+                IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted,
+                Timeout = TimeSpan.FromMinutes(5)
+            };
+
+            using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, options))
+            {
+                invId = aInvoiceBll.SaveInvoiceMater(PrepareMasterData());
+
+                if (invId <= 0)
                 {
-                    try
-                    {
-                        int invId = aInvoiceBll.SaveInvoiceMater(PrepareMasterData());
-
-                        if (invId > 0)
-                        {
-                            bool dtl = SaveInvoiceDetail(invId);
-
-                            if (dtl)
-                            {
-
-                               
-
-                                OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
-
-                                aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
-                                Clear();
-
-                                DataTable aTable = aInvoiceBll.GetInvoiceNoById(invId);
-
-                                if (aTable.Rows.Count > 0)
-                                {
-
-                                    invTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
-                                    rptInvoiceId.Text = invId.ToString();
-
-                                    showMessageBox("Proforma Invoice Created Successsfully!!");
-                                    //ModalPopupExtender10.Show();
-
-                                    
-                                }
-
-                                // Journal Posting
-
-                                //if (aInvoiceBll.PostJournal(invId))
-                                //{
-                                //    OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
-                                //    aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
-                                //    Clear();
-
-                                //    DataTable aTable = aInvoiceBll.GetInvoiceNoById(invId);
-
-                                //    if (aTable.Rows.Count > 0)
-                                //    {
-                                //        invoiceNoTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
-                                //        showMessageBox("Proforma Invoice Created Successsfully!!");
-                                //        //ModalPopupExtender10.Show();
-
-                                //        invTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
-                                //    }
-                                //}
-                                //else
-                                //{
-                                //    OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
-                                //    aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
-                                //    Clear();
-
-                                //    DataTable aTable = aInvoiceBll.GetInvoiceNoById(invId);
-
-                                //    if (aTable.Rows.Count > 0)
-                                //    {
-                                //        invoiceNoTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
-                                //        showMessageBox("Proforma Invoice Created Successsfully!!");
-                                //        //ModalPopupExtender10.Show();
-
-                                //        invTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
-                                //    }
-                                //}
-
-                            }
-                            else
-                            {
-                                aInvoiceBll.DeleteInvoice(orderIdHiddenField.Value);
-                                Clear();
-                                showMessageBox("Internet Connection Error 503 Service Unavailable");
-
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        aInvoiceBll.DeleteInvoice(orderIdHiddenField.Value);
-                        Clear();
-                        showMessageBox("Internet Connection Error 503 Service Unavailable");
-                    }
+                    // sp_I_InvoiceMaster returns 0 when the same OrderNo was invoiced in the last
+                    // 60 seconds, when the generated InvoiceNo already exists, or when SaveAction
+                    // swallowed a SQL error. Leaving the scope without Complete() rolls everything back.
+                    showMessageBox("Invoice could not be created. This order may have just been invoiced - please wait a minute, reload the order and try again. If it keeps failing, contact IT.");
+                    return;
                 }
-            }
-            else
-            {
-                showMessageBox("Invoice already Generated !!");
+
+                if (!SaveInvoiceDetail(invId))
+                {
+                    showMessageBox("Invoice items could not be saved. Nothing was saved, please generate the invoice again.");
+                    return;
+                }
+
+                OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
+                aOrderInfoBll.UpdateInvoiceStatus(orderIdHiddenField.Value);
+
+                scope.Complete();
             }
         }
+        catch (Exception ex)
+        {
+            // Nothing to undo - the TransactionScope rolled back on the way out.
+            showMessageBox("Invoice generate failed: " + ex.Message);
+            return;
+        }
+
+        // Committed. Everything below is display only.
+        Clear();
+
+        DataTable aTable = aInvoiceBll.GetInvoiceNoById(invId);
+
+        if (aTable.Rows.Count > 0)
+        {
+            invTextBox.Text = aTable.Rows[0].Field<string>("InvoiceNo");
+            rptInvoiceId.Text = invId.ToString();
+        }
+
+        showMessageBox("Proforma Invoice Created Successsfully!!");
     }
 
     
@@ -1532,7 +1501,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
     {
         if (Validation())
         {
-            if (OrderExists(orderHiddenField.Value) == false)
+            if (OrderExists(orderIdHiddenField.Value) == false)
             {
                 {
                     try
@@ -1561,7 +1530,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                             }
                             else
                             {
-                                aInvoiceBll.DeleteInvoice(orderIdHiddenField.Value);
+                               // aInvoiceBll.DeleteInvoice(orderIdHiddenField.Value);
                                 Clear();
                                 showMessageBox("Internet  error code 1231!! Please generate Invoice again!");
                                
@@ -1570,7 +1539,7 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                     }
                     catch (Exception)
                     {
-                        aInvoiceBll.DeleteInvoice(orderIdHiddenField.Value);
+                      //  aInvoiceBll.DeleteInvoice(orderIdHiddenField.Value);
                         Clear();
                         showMessageBox("Internet error code 1231 !! Please generate Invoice again! ");
                     }
@@ -1667,10 +1636,17 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                 }
             }
 
-            aInvoiceBll.SaveInvoiceDetails(aInvoiceDetailsList, hdComUnitId.Value);
+            // Every row can end up skipped as zero-stock/Undelivered above - an empty list must not
+            // be reported as a successful save (that's a master with no details).
+            if (aInvoiceDetailsList.Count == 0)
+            {
+                return false;
+            }
+
+            return aInvoiceBll.SaveInvoiceDetails(aInvoiceDetailsList, hdComUnitId.Value);
         }
 
-        return true;
+        return false;
     }
 
     private int SaveInvoice()

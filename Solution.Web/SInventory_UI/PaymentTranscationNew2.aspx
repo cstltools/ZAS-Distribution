@@ -722,7 +722,7 @@
                                 Enabled="False"
                                 
                                 OnClick="saveButton_ClickNew"
-                                OnClientClick="return confirm('Are you sure you want to Save ?');"
+                                OnClientClick="return preventDoubleClick(this);"
                                
                                 Text="Submit Payment"
                                 CssClass="button-margin-right"

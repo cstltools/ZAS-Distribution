@@ -4,7 +4,6 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mime;
-using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -27,6 +26,15 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             //SetPaymentDivStatus();
             SaveButtonVisibility();
         }
+    }
+
+    // ponytail: single centralized null-safe Session accessor -- avoids
+    // NullReferenceException on every Session[key].ToString() call site
+    // (expired/missing session), see Phase 1 item 2.
+    private string GetSessionString(string key)
+    {
+        object value = Session[key];
+        return value != null ? value.ToString() : null;
     }
 
     private void Clear()
@@ -130,6 +138,39 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             dtSelected.Columns.Add("CustomerMasterId", typeof(string)); // New Column
         }
 
+        // Set batchId to "0" if batchDropDownList has no selection; otherwise use the value.
+        // Same value applies to every row selected in this one Add-to-Grid click.
+        string batchId = string.IsNullOrWhiteSpace(batchDropDownList.SelectedValue) ? "0" : batchDropDownList.SelectedValue;
+
+        // Safely extract CustomerMasterId
+        string customerMasterId = string.IsNullOrWhiteSpace(hdCustomerId.Value) ? "0" : hdCustomerId.Value;
+
+        // Phase 2 item 4: sp_MRCP_MoneyReceiptMasterInsert takes a single
+        // @BatchId/@CustomerMasterId for the whole submission -- one Money
+        // Receipt = one batch/customer. Reject mixing batches/customers
+        // across Add-to-Grid clicks in the same submission instead of
+        // silently attributing everything to whichever batch/customer was
+        // selected last (see PaymentTranscationDal.SaveCustPaymentNew2).
+        if (dtSelected.Rows.Count > 0)
+        {
+            DataRow firstSelectedRow = dtSelected.Rows[0];
+
+            if (firstSelectedRow.Field<string>("BatchId") != batchId ||
+                firstSelectedRow.Field<string>("CustomerMasterId") != customerMasterId)
+            {
+                ShowMessageBox("This payment already has invoices from a different batch/customer. Please submit or clear the current selection before adding invoices from another batch or customer.");
+                return;
+            }
+        }
+
+        // Phase 2 item 5: validate the whole pass into a local buffer first.
+        // dtSelected/ViewState is only mutated after every checked row in
+        // this click has passed validation, so a mid-pass failure can no
+        // longer silently discard rows already validated earlier in the
+        // same pass (matches the atomic, stop-and-report pattern the
+        // Submit-flow Validation() method already uses on this page).
+        List<object[]> rowsToAdd = new List<object[]>();
+
         foreach (GridViewRow row in orderGridView.Rows)
         {
             CheckBox chk = row.FindControl("chkSelect") as CheckBox;
@@ -137,12 +178,6 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             if (chk != null && chk.Checked)
             {
                 string invoiceId = orderGridView.DataKeys[row.RowIndex]["InvoiceId"].ToString();
-
-               // Set batchId to "0" if hdCustomerId.Value is null or empty; otherwise, use the value
-                string batchId = string.IsNullOrWhiteSpace(batchDropDownList.SelectedValue) ? "0" : batchDropDownList.SelectedValue;
-               
-               // Safely extract CustomerMasterId from DataKeys
-               string customerMasterId = string.IsNullOrWhiteSpace(hdCustomerId.Value) ? "0" : hdCustomerId.Value;
 
                 string invoiceNo = row.Cells[2].Text;
 
@@ -196,17 +231,23 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
                 // Prevent duplicates
 
-                bool exists = dtSelected.AsEnumerable().Any(r => r.Field<string>("InvoiceId") == invoiceId);
+                bool exists = dtSelected.AsEnumerable().Any(r => r.Field<string>("InvoiceId") == invoiceId)
+                    || rowsToAdd.Any(r => (string)r[0] == invoiceId);
 
                 if (!exists)
                 {
-                    dtSelected.Rows.Add(invoiceId, invoiceNo, paymentAmount, remarks,
+                    rowsToAdd.Add(new object[] { invoiceId, invoiceNo, paymentAmount, remarks,
                         bankAccId, bankAccountName,
                         cashAccId, cashAccountName,
                         payType, ait, discount,
-                        batchId, customerMasterId); // Add new values here
+                        batchId, customerMasterId });
                 }
             }
+        }
+
+        foreach (object[] newRow in rowsToAdd)
+        {
+            dtSelected.Rows.Add(newRow);
         }
 
         ViewState["SelectedOrders"] = dtSelected;
@@ -447,12 +488,38 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             aCustPayment.RefNo = refNameTextBox.Text;
             aCustPayment.PaymentRemarks = tbxRemarks.Text;
 
-            if (refDtTextBox.Text != "")
+            if (!string.IsNullOrWhiteSpace(refDtTextBox.Text))
             {
-                aCustPayment.RefDate = Convert.ToDateTime(refDtTextBox.Text);
+                // refDtTextBox is free-typed (CalendarExtender only, no format
+                // enforcement) -- parse safely instead of Convert.ToDateTime,
+                // which throws FormatException on bad input and used to abort
+                // the whole postback before the grid state was ever touched.
+                DateTime refDate;
+                bool validRefDate = DateTime.TryParseExact(
+                    refDtTextBox.Text.Trim(),
+                    new[] { "dd-MMM-yyyy", "d-MMM-yyyy" },
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out refDate);
+
+                if (!validRefDate)
+                {
+                    ShowMessageBox("Please enter a valid Reference Date (format: dd-MMM-yyyy).");
+                    return;
+                }
+
+                aCustPayment.RefDate = refDate;
             }
 
-            aCustPayment.CreateBy = Session["LoginName"].ToString();
+            string createBy = GetSessionString("LoginName");
+
+            if (string.IsNullOrEmpty(createBy))
+            {
+                ShowMessageBox("Your session has expired. Please log in again.");
+                return;
+            }
+
+            aCustPayment.CreateBy = createBy;
 
 
             // Details Data
@@ -553,208 +620,6 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
     }
 
-    protected void saveButton_Click(object sender, EventArgs e)
-    {
-        if (Validation())
-        {
-            CustomerMaster aCustomerMaster;
-
-            //CustPayment aCustPayment = new CustPayment();
-            //aCustPayment.CustomerMasterId = Convert.ToInt32(customerDropDownList.SelectedValue); 
-
-            //aCustPayment.PaymentDate = Convert.ToDateTime(paymentDtTextBox.Text);
-            //aCustPayment.PaymentAmount = Convert.ToDecimal(paymentAmountTextBox.Text);
-            //aCustPayment.PayType = payTypeDDL.SelectedItem.Text;
-            //aCustPayment.RefNo = refNameTextBox.Text;
-            //if (refDtTextBox.Text!="")
-            //{
-            //   aCustPayment.RefDate = Convert.ToDateTime(refDtTextBox.Text);
-            //}
-            //aCustPayment.CreateBy = Session["LoginName"].ToString();
-            //aCustPayment.CreateDate = DateTime.Now;
-
-            bool status = false;
-
-
-            List<PaymentTranscationDetailDao> aCustPaymentDetails;
-
-            for (int i = 0; i < orderGridView.Rows.Count; i++)
-            {
-                CheckBox ChkBoxRows = (CheckBox)orderGridView.Rows[i].Cells[0].FindControl("chkSelect");
-                TextBox payAmountTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("payAmountTextBox");
-                TextBox remarksTextBox = (TextBox)orderGridView.Rows[i].Cells[7].FindControl("remarksTextBox");
-
-                decimal prevamount = 0;
-                if (orderGridView.Rows[i].Cells[7].Text != "&nbsp;")
-                {
-                    prevamount = Convert.ToDecimal(orderGridView.Rows[i].Cells[7].Text);
-                }
-
-                if (ChkBoxRows.Checked)
-                {
-
-                    DataTable dtdata = aTranscationDal.ValidationDoble(orderGridView.DataKeys[i]["InvoiceId"].ToString());
-
-                    if (dtdata.Rows.Count > 0)
-                    {
-                        ShowMessageBox("Wait 5 minute to entry payment against same invoice !!!");
-
-                    }
-                    else
-                    {
-                        PaymentTranscationMasterDao aCustPayment = new PaymentTranscationMasterDao();
-
-                        if (payTypeDDL.SelectedValue == 2.ToString(CultureInfo.InvariantCulture))
-                        {
-                            CreditAdjustmentDao adjustmentDao = new CreditAdjustmentDao();
-
-                            InvoiceBLL aInvoiceBll = new InvoiceBLL();
-
-
-
-                            DataTable companyInfo = aInvoiceBll.GetCompanyIdByInvoice(orderGridView.DataKeys[i]["InvoiceId"].ToString());
-
-                            if (companyInfo.Rows.Count > 0)
-                            {
-                                adjustmentDao.CustomerMasterId = Convert.ToInt32(orderGridView.DataKeys[i]["CustomerMasterId"].ToString());
-                                adjustmentDao.CompanyId = Convert.ToInt32(companyInfo.Rows[0]["CompanyId"]);
-                                adjustmentDao.InvoiceId = Convert.ToInt32(orderGridView.DataKeys[i]["InvoiceId"].ToString());
-                                if ((Convert.ToDecimal(payAmountTextBox.Text) + prevamount) ==
-                                Convert.ToDecimal(orderGridView.Rows[i].Cells[5].Text))
-                                {
-                                    decimal totalamount = 0;
-                                    totalamount = (Convert.ToDecimal(payAmountTextBox.Text));
-                                    adjustmentDao.Amount = totalamount * -1;
-                                }
-                                else
-                                {
-                                    decimal totalamount = 0;
-                                    totalamount = (Convert.ToDecimal(payAmountTextBox.Text));
-                                    adjustmentDao.Amount = totalamount * -1;
-                                }
-
-                                adjustmentDao.ReturnDate = Convert.ToDateTime(paymentDtTextBox.Text);
-                                adjustmentDao.EntryBy = Session["LoginName"].ToString();
-                                adjustmentDao.EntryDate = DateTime.Now;
-                            }
-
-                            aInvoiceBll.SaveCreditAdjustmentInfo(adjustmentDao);
-
-                        }
-
-                        //aCustPayment.CustomerMasterId = Convert.ToInt32(customerDropDownList.SelectedValue);
-                        var dataKey = orderGridView.DataKeys[i];
-                        if (dataKey != null)
-                            aCustPayment.CustomerMasterId = Convert.ToInt32(dataKey[1].ToString());
-                        aCustPayment.PaymentDate = Convert.ToDateTime(paymentDtTextBox.Text);
-                        aCustPayment.PaymentAmount = Convert.ToDecimal(paymentAmountTextBox.Text);
-                        //aCustPayment.PayType = payTypeDDL.SelectedItem.Text;
-                        aCustPayment.RefNo = refNameTextBox.Text;
-                        if (refDtTextBox.Text != "")
-                        {
-                            aCustPayment.RefDate = Convert.ToDateTime(refDtTextBox.Text);
-                        }
-                        aCustPayment.CreateBy = Session["LoginName"].ToString();
-                        aCustPayment.CreateDate = DateTime.Now;
-
-
-                        if (payAmountTextBox.Text.Trim() != "")
-                        {
-                            if ((Convert.ToDecimal(payAmountTextBox.Text) + prevamount) ==
-                            Convert.ToDecimal(orderGridView.Rows[i].Cells[7].Text))
-                            {
-                                decimal totalamount = 0;
-                                totalamount = (Convert.ToDecimal(payAmountTextBox.Text) + prevamount);
-
-                                aCustPayment.InvPaymentAmount = totalamount;
-                                aCustPayment.PaymentStatus = "Full";
-                                //aCustPaymentBll.UpdateInvoicePaymentAmount(totalamount.ToString(), "Full",
-                                //    orderGridView.DataKeys[i][0].ToString());
-                            }
-                            else
-                            {
-                                decimal totalamount = 0;
-                                totalamount = (Convert.ToDecimal(payAmountTextBox.Text) + prevamount);
-
-                                aCustPayment.InvPaymentAmount = totalamount;
-                                aCustPayment.PaymentStatus = "Partial";
-
-                                //aCustPaymentBll.UpdateInvoicePaymentAmount(totalamount.ToString(), "Partial",
-                                //    orderGridView.DataKeys[i][0].ToString());
-                            }
-                        }
-
-                        
-
-                        aCustPaymentDetails = new List<PaymentTranscationDetailDao>();
-
-                        PaymentTranscationDetailDao aCustPaymentDetail = new PaymentTranscationDetailDao();
-                        {
-                            aCustPaymentDetail.InvoiceId = Convert.ToInt32(orderGridView.DataKeys[i]["InvoiceId"].ToString());
-
-                            if (payAmountTextBox.Text.Trim() != "")
-                            {
-                                aCustPaymentDetail.PaymentAmount = Convert.ToDecimal(payAmountTextBox.Text);
-                            }
-                            else
-                            {
-                                aCustPaymentDetail.PaymentAmount = 0;
-                            }
-                            
-                            aCustPaymentDetail.Remarks = remarksTextBox.Text;
-
-
-                            DropDownList ddlBank = (DropDownList)orderGridView.Rows[i].Cells[0].FindControl("ddlBank");
-                            DropDownList ddlCash = (DropDownList)orderGridView.Rows[i].Cells[0].FindControl("ddlCash");
-
-                            TextBox aiTextBox = (TextBox)orderGridView.Rows[i].Cells[0].FindControl("aitTextBox");
-                            TextBox disTextBox = (TextBox)orderGridView.Rows[i].Cells[0].FindControl("discountTextBox");
-
-                            if (ddlBank.SelectedValue != "")
-                            {
-                                aCustPaymentDetail.BankAccId = Convert.ToInt32(ddlBank.SelectedValue);
-                                aCustPayment.PayType = "Bank";
-                            }
-
-                            if (ddlCash.SelectedValue != "")
-                            {
-                                aCustPaymentDetail.CashAccId = Convert.ToInt32(ddlCash.SelectedValue);
-                                aCustPayment.PayType = "Cash";
-                            }
-
-                            if (aiTextBox.Text != "")
-                            {
-                                aCustPaymentDetail.AIT = Convert.ToDecimal(aiTextBox.Text.Trim());
-                            }
-
-                            if (disTextBox.Text != "")
-                            {
-                                aCustPaymentDetail.Discount = Convert.ToDecimal(disTextBox.Text.Trim());
-                            }
-
-
-                        };
-
-                        aCustPaymentDetails.Add(aCustPaymentDetail);
-
-                        status = aTranscationDal.SaveCustPayment(aCustPayment, aCustPaymentDetails);
-                    }
-                }
-
-               
-            }
-
-            if (status)
-            {
-                ShowMessageBox("Data Saved Successfully !!!!!");
-                Clear();
-            }
-
-            Thread.Sleep(2000);         
-        }
-
-
-    }
     protected void payAmountTextBox_TextChanged(object sender, EventArgs e)
     {
         TextBox qtyTextBox = (TextBox)sender;
@@ -809,9 +674,17 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             totalamount = totalamount + Convert.ToDecimal((discountAmountTextBox.Text));
         }
 
-        string amount = orderGridView.Rows[i].Cells[8].Text.Trim();
+        // Read the real underlying Due value from DataKeys ("Due", see the
+        // orderGridView DataKeyNames in the .aspx) instead of re-parsing the
+        // rendered cell text -- a DB NULL due amount renders as "&nbsp;" and
+        // used to throw FormatException on Convert.ToDecimal. NULL due is
+        // treated as 0 due (standard convention).
+        object dueValue = orderGridView.DataKeys[i]["Due"];
+        decimal dueAmount = (dueValue == null || dueValue == DBNull.Value)
+            ? 0
+            : Convert.ToDecimal(dueValue);
 
-        if (totalamount > Convert.ToDecimal(amount))
+        if (totalamount > dueAmount)
         {
              ShowMessageBox("Total Amount Must Be less than or Equel to due Amount !!");
              textBox.Text = "";
@@ -874,12 +747,13 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             {
                 if (singleCustomerTextBox.Text != "" && hdCustomerId.Value != "")
                 {
-                    if (Session["UserType"].ToString() != "")
+                    string userType = GetSessionString("UserType");
+                    if (!string.IsNullOrEmpty(userType))
                     {
-                        if (Session["UserType"].ToString() != "Admin")
+                        if (userType != "Admin")
                         {
                             dt = aCustPaymentBll.LoadInvoiceByCustomerByUser(hdCustomerId.Value,
-                                Session["UserId"].ToString(), dcDropDownList.SelectedValue);
+                                GetSessionString("UserId"), dcDropDownList.SelectedValue);
 
                             if (dt.Rows.Count > 0)
                             {
@@ -929,12 +803,13 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                 if (batchDropDownList.SelectedValue != "")
                 {
 
-                    if (Session["UserType"].ToString() != "")
+                    string userType2 = GetSessionString("UserType");
+                    if (!string.IsNullOrEmpty(userType2))
                     {
-                        if (Session["UserType"].ToString() != "Admin")
+                        if (userType2 != "Admin")
                         {
                             dt = aCustPaymentBll.LoadInvoiceNewByUser(batchDropDownList.SelectedValue,
-                                customerDropDownList.SelectedValue, Session["UserId"].ToString());
+                                customerDropDownList.SelectedValue, GetSessionString("UserId"));
 
                             if (dt.Rows.Count > 0)
                             {
@@ -966,6 +841,10 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                             }
                         }
                     }
+                    else
+                    {
+                        ShowMessageBox("Your session has expired. Please log in again.");
+                    }
 
                 }
             }
@@ -981,7 +860,7 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
 
 
-                if (Session["UserType"].ToString() == "Admin")
+                if (GetSessionString("UserType") == "Admin")
                 {
                     orderGridView.Columns[16].Visible = true;
                 }
@@ -1043,16 +922,21 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
             {
                 OrderInfoBLL aOrderInfoBll = new OrderInfoBLL();
 
-                if (Session["UserType"].ToString() != "")
+                string userType3 = GetSessionString("UserType");
+                if (!string.IsNullOrEmpty(userType3))
                 {
-                    if (Session["UserType"].ToString() != "Admin")
+                    if (userType3 != "Admin")
                     {
-                        aOrderInfoBll.BatchNoLoadByUser(batchDropDownList, dateTextBox.Text, delDropDownList.SelectedValue, Session["UserId"].ToString());
+                        aOrderInfoBll.BatchNoLoadByUser(batchDropDownList, dateTextBox.Text, delDropDownList.SelectedValue, GetSessionString("UserId"));
                     }
                     else
                     {
                         aOrderInfoBll.BatchNoLoad(batchDropDownList, dateTextBox.Text, delDropDownList.SelectedValue);
                     }
+                }
+                else
+                {
+                    ShowMessageBox("Your session has expired. Please log in again.");
                 }
 
                 //aOrderInfoBll.BatchNoLoad(batchDropDownList, manufacDropDownList.SelectedValue, dateTextBox.Text, delDropDownList.SelectedValue);
@@ -1191,6 +1075,15 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         if (singleCustomerTextBox.Text.Contains(':'))
         {
             string[] data = singleCustomerTextBox.Text.Split(':');
+
+            if (data.Length < 4)
+            {
+                hdCustomerId.Value = "";
+                singleCustomerTextBox.Text = "";
+                ShowMessageBox("Invalid Customer Info !!");
+                return;
+            }
+
             singleCustomerTextBox.Text = data[1];
             hdCustomerId.Value = data[3];
 
@@ -1320,11 +1213,12 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
         if (manufacDropDownList.SelectedValue != "")
         {
-            if (Session["UserType"].ToString() != "")
+            string userType4 = GetSessionString("UserType");
+            if (!string.IsNullOrEmpty(userType4))
             {
-                if (Session["UserType"].ToString() != "Admin")
+                if (userType4 != "Admin")
                 {
-                    aOtherStockActionBLL.LoadDcInformationByUser(dcDropDownList, manufacDropDownList.SelectedValue, Session["UserId"].ToString());
+                    aOtherStockActionBLL.LoadDcInformationByUser(dcDropDownList, manufacDropDownList.SelectedValue, GetSessionString("UserId"));
                     payTypeDDL.SelectedValue = "";
                     ddlBank.Items.Clear();
                     ddlCash.Items.Clear();

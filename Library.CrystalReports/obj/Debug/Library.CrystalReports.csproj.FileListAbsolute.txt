@@ -206,3 +206,6 @@ F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.CrystalReports\obj\Debug\
 F:\02. Projects In hand 2022\ZAS NEW\ZAS Sales\Library.CrystalReports\obj\Debug\Library.CrystalReports.pdb
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.CrystalReports\obj\Debug\Library.CrystalReports.csproj.AssemblyReference.cache
 D:\01. My_project_folder\ZAS Sales_30_DEC_2025\Library.CrystalReports\obj\Debug\Library.CrystalReports.csproj.CoreCompileInputs.cache
+d:\Projects\Zas Distribution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csprojResolveAssemblyReference.cache
+D:\Projects\Zas Distribution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csproj.AssemblyReference.cache
+D:\Projects\Zas Distribution\Library.CrystalReports\obj\Debug\Library.CrystalReports.csproj.CoreCompileInputs.cache

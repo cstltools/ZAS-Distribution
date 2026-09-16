@@ -61,6 +61,7 @@
     <Compile Include="MAIN_FUNCTION\DB_Connection.cs" />
     <Compile Include="MAIN_FUNCTION\DB_Manager.cs" />
     <Compile Include="InternalCls\ClsCommonInternalDAL.cs" />
+    <Compile Include="InternalCls\ClsErrorLogger.cs" />
     <Compile Include="InternalCls\ClsPrimaryKeyFind.cs" />
     <Compile Include="MAIN_FUNCTION\DB_Names.cs" />
     <Compile Include="PanalCls\PanalClsDAL.cs" />

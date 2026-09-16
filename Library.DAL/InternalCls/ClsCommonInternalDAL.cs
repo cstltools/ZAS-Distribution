@@ -350,6 +350,7 @@ namespace Library.DAL.InternalCls
             }
             catch (Exception ex)
             {
+                ClsErrorLogger.Log("SaveDataByInsertCommandWithIdentity", queryString, ex);
                 throw ex;
             }
         }
@@ -661,7 +662,7 @@ namespace Library.DAL.InternalCls
             }
             catch (Exception ex)
             {
-
+                ClsErrorLogger.Log("UpdateAction", StoreProcedureName, ex);
                 ActionStatus = false;
             }
 
@@ -807,6 +808,7 @@ namespace Library.DAL.InternalCls
             }
             catch (Exception ex)
             {
+                ClsErrorLogger.Log("SaveAction", StoreProcedureName, ex);
                 pk = 0;
             }
             return pk;

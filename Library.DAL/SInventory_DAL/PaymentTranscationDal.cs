@@ -497,8 +497,12 @@ LEFT JOIN dbo.tblPaymentTranscationDetail ON tblPaymentTranscationDetail.CustPay
 
         public DataTable GetCashGlByUnitId(string unitId)
         {
-            string query = @"SELECT ISNULL(CashGlId,0) AS CashGlId FROM tblCompanyUnit WHERE ComUnitId = " + unitId;
-            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+            string query = @"SELECT ISNULL(CashGlId,0) AS CashGlId FROM tblCompanyUnit WHERE ComUnitId = @ComUnitId";
+
+            List<SqlParameter> aSqlParameters = new List<SqlParameter>();
+            aSqlParameters.Add(new SqlParameter("@ComUnitId", unitId));
+
+            return aCommonInternalDal.DataContainerDataTable(query, aSqlParameters, "SSIDB");
         }
 
 

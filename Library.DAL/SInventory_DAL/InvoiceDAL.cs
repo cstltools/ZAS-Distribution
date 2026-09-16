@@ -164,6 +164,106 @@ LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductD
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
+        // Dedicated to the HTML Group Invoice report (SInventory_RPTVIEW/GroupInvoiceReport.aspx).
+        // Same per-constituent-invoice grain as GroupInvoiceMainDataForReport2, but DeliveryManInfo/
+        // EmpGeneralInfo/CustMaster are LEFT JOINed (with NULL-safe fallbacks) instead of INNER JOINed,
+        // so an invoice with a missing/orphaned delivery-man or customer link is never silently dropped
+        // from the report's line items or totals. Crystal's GroupInvoiceMainDataForReport2 /
+        // GroupInvoiceDetailDataForReport2 are left untouched.
+        public DataTable GroupInvoiceHtmlReportData(string invNo)
+        {
+            string query = @"
+        SELECT
+            INV.GroupInvoiceNo,
+            CONVERT(DATE, INV.GroupInvoiceDate, 101) AS InvoiceDate,
+            ISNULL(CSTMR.CustomerCode, 'N/A') AS CustomerCode,
+            ISNULL(CSTMR.CustomerName, 'N/A') AS CustomerName,
+            ISNULL(CSTMR.Address, '') AS Address,
+            ISNULL(CSTMR.Addrees2, '') AS Addrees2,
+            ISNULL(CSTMR.TermOfPayment, 'N/A') AS TermOfPayment,
+            ISNULL(MKT.MarketName, 'N/A') AS MarketName,
+            ISNULL(EGI.EmpName, 'N/A') AS DeliveryPersonName,
+            ISNULL(EGI.CellNumber, 'N/A') AS DeliveryPersonPhNo,
+            INV.Remarks,
+            INV.PONumber,
+            ISNULL(U.UserName, 'N/A') AS PreparedBy,
+            INV.InvoiceNo,
+            INV.OrderNo,
+            CONVERT(DATE, ODR.SubmissionDate, 101) AS OrderDate,
+            IVD.ProductCode,
+            IVD.ProductName AS Product,
+            PD.Description AS GenericName,
+            SUM(IVD.Quantity) AS Quantity,
+            SUM(IVD.BonusQuantity) AS BonusQuantity,
+            SUM(IVD.Quantity) + SUM(IVD.BonusQuantity) AS TotalQuantity,
+            IVD.UnitPrice,
+            IVD.UnitVatAmount,
+            SUM(IVD.TotalPrice) AS TotalPrice,
+            IVD.TotalPriceVatAmount,
+            (IVD.DiscountPercentage + ISNULL(DS.DiscountPercentage, 0)) AS DiscountPercentage,
+            SUM(IVD.DiscountAmount + IVD.SpecialAmount) AS DiscountAmount,
+            SUM(IVD.NetAmount) AS NetAmount,
+            IVD.PackSize
+        FROM tblInvoice AS INV
+        LEFT JOIN tblUser AS U
+            ON INV.UserId = U.UserId
+        LEFT JOIN tblOrder AS ODR
+            ON INV.OrderId = ODR.OrderId
+        LEFT JOIN tblInvoiceDetail AS IVD
+            ON INV.InvoiceId = IVD.InvoiceId
+        LEFT JOIN tblProduct AS PD
+            ON IVD.ProductCode = PD.ProductCode
+        LEFT JOIN dbo.tblDeliveryManInfo AS DLV
+            ON DLV.DeliveryManId = INV.DeliveryManId
+        LEFT JOIN dbo.tblEmpGeneralInfo AS EGI
+            ON EGI.EmpInfoId = DLV.EmpInfoId
+        LEFT JOIN dbo.tblCustMaster AS CSTMR
+            ON CSTMR.CustomerMasterId = INV.CustomerMasterId
+        LEFT JOIN tblMarket AS MKT
+            ON CSTMR.MarketId = MKT.MarketId
+        LEFT JOIN (
+            SELECT CustomerMasterId, ProductId, DiscountPercentage
+            FROM tblProductDiscount
+            WHERE IsActive = 1
+              AND ActionStatus = 'Accepted'
+        ) AS DS
+            ON DS.CustomerMasterId = INV.CustomerMasterId
+           AND DS.ProductId = PD.ProductId
+        WHERE INV.GroupInvoiceNo = '" + invNo.Trim() + @"'
+        GROUP BY
+            INV.GroupInvoiceNo,
+            CONVERT(DATE, INV.GroupInvoiceDate, 101),
+            CSTMR.CustomerCode,
+            CSTMR.CustomerName,
+            CSTMR.Address,
+            CSTMR.Addrees2,
+            CSTMR.TermOfPayment,
+            MKT.MarketName,
+            EGI.EmpName,
+            EGI.CellNumber,
+            INV.Remarks,
+            INV.PONumber,
+            U.UserName,
+            INV.InvoiceNo,
+            INV.OrderNo,
+            CONVERT(DATE, ODR.SubmissionDate, 101),
+            IVD.ProductCode,
+            IVD.ProductName,
+            PD.Description,
+            IVD.UnitPrice,
+            IVD.UnitVatAmount,
+            IVD.TotalPriceVatAmount,
+            IVD.DiscountPercentage,
+            DS.DiscountPercentage,
+            IVD.PackSize
+        ORDER BY
+            INV.InvoiceNo,
+            IVD.ProductCode
+        OPTION (MAXDOP 1)";
+
+            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        }
+
         public int GenerateGroupInvoiceNo(string InvoiceNo)
         {
             List<SqlParameter> aSqlParameterList = new List<SqlParameter>();
@@ -290,49 +390,37 @@ LEFT JOIN (SELECT CustomerMasterId,ProductId,DiscountPercentage FROM tblProductD
 
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
-        public bool SaveDataForInvoiceConsumer(Invoice aInvoice)
+        public int SaveDataForInvoiceConsumer(Invoice aInvoice)
         {
-            string insertQuery = @" INSERT INTO dbo.tblInvoice " +
-                " (    InvoiceId , " +
-     "     InvoiceNo , " +
-       "    InvoiceDate , " +
-       "    OrderNo , " +
-       "    OrderDate , " +
-       "    CustomerMasterId , " +
-       "    ComUnitId , " +
-     //   "   MiaId , " +
-        "   PaymentTypeId , " +
-        "   TpTotal , " +
-        "   TpDiscount , " +
-        "   TpVat , " +
-        "   TpGrandTotal , " +
-        "   UserId, " +
-        "   OrderId, " +
-        "   TotalSpecialAmount " +
-      //   "   OldTradePolicy, " +
-        //  "   ProductOffer,Remarks,DeliveryManId" +
-      "   ) " +
-      " VALUES  ( '" + aInvoice.InvoiceId + "' , " +
-       "    '" + aInvoice.InvoiceNo + "' , " +
-      "    '" + aInvoice.InvoiceDate + "' , " +
-      "     '" + aInvoice.OrderNo + "' , " +
-      "     '" + aInvoice.OrderDate + "' , " +
-      "     '" + aInvoice.CustomerMasterId + "' , " +
-       "    '" + aInvoice.ComUnitId + "' , " +
-      // "    '" + aInvoice.MiaId + "' , " +
-      "     '" + aInvoice.PaymentTypeId + "' , " +
-      "    '" + aInvoice.TpTotal + "' , " +
-      "     '" + aInvoice.TpDiscount + "' , " +
-      "     '" + aInvoice.TpVat + "' , " +
-       "    '" + aInvoice.TpGrandTotal + "' , " +
-       "    '" + aInvoice.UserId + "' , " +
-       "    '" + aInvoice.OrderId + "' , " +
-        "    '" + aInvoice.TotalSpecialAmount + "'  " +
-     //     "    '" + aInvoice.OldTradePolicy + "' , " +
-       //"    '" + aInvoice.ProductOffer + "','" + aInvoice.Remarks + "','" + aInvoice.DeliveryManId + "'" +
-      "   ) ";
+            // tblInvoice.InvoiceId is a live IDENTITY+PK column - do not insert an explicit value
+            // (that throws Msg 8101). Let SQL Server assign it and read it back via SCOPE_IDENTITY(),
+            // the same pattern already used by SaveOrderMaster/SaveOrderDetail in this same file.
+            List<SqlParameter> aSqlParameterlist = new List<SqlParameter>();
+            aSqlParameterlist.Add(new SqlParameter("@InvoiceNo", aInvoice.InvoiceNo));
+            aSqlParameterlist.Add(new SqlParameter("@InvoiceDate", aInvoice.InvoiceDate));
+            aSqlParameterlist.Add(new SqlParameter("@OrderNo", aInvoice.OrderNo));
+            aSqlParameterlist.Add(new SqlParameter("@OrderDate", aInvoice.OrderDate));
+            aSqlParameterlist.Add(new SqlParameter("@CustomerMasterId", aInvoice.CustomerMasterId));
+            aSqlParameterlist.Add(new SqlParameter("@ComUnitId", aInvoice.ComUnitId));
+            aSqlParameterlist.Add(new SqlParameter("@PaymentTypeId", aInvoice.PaymentTypeId));
+            aSqlParameterlist.Add(new SqlParameter("@TpTotal", aInvoice.TpTotal));
+            aSqlParameterlist.Add(new SqlParameter("@TpDiscount", aInvoice.TpDiscount));
+            aSqlParameterlist.Add(new SqlParameter("@TpVat", aInvoice.TpVat));
+            aSqlParameterlist.Add(new SqlParameter("@TpGrandTotal", aInvoice.TpGrandTotal));
+            aSqlParameterlist.Add(new SqlParameter("@UserId", aInvoice.UserId));
+            aSqlParameterlist.Add(new SqlParameter("@OrderId", aInvoice.OrderId));
+            aSqlParameterlist.Add(new SqlParameter("@TotalSpecialAmount", aInvoice.TotalSpecialAmount));
 
-            return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
+            string insertQuery = @"INSERT INTO dbo.tblInvoice
+                (   InvoiceNo, InvoiceDate, OrderNo, OrderDate, CustomerMasterId, ComUnitId,
+                    PaymentTypeId, TpTotal, TpDiscount, TpVat, TpGrandTotal, UserId, OrderId, TotalSpecialAmount
+                )
+                VALUES
+                (   @InvoiceNo, @InvoiceDate, @OrderNo, @OrderDate, @CustomerMasterId, @ComUnitId,
+                    @PaymentTypeId, @TpTotal, @TpDiscount, @TpVat, @TpGrandTotal, @UserId, @OrderId, @TotalSpecialAmount
+                )";
+
+            return aCommonInternalDal.SaveDataByInsertCommandWithIdentity(insertQuery, aSqlParameterlist, "SSIDB");
         }
 
         public bool SaveDataForReturnInvoice(Invoice aInvoice)
@@ -796,10 +884,16 @@ LEFT JOIN dbo.tblOrderDetail ON dbo.tblOrder.OrderId = dbo.tblOrderDetail.OrderI
             string query = "SELECT * FROM dbo.tblDCStore WHERE DCStoreId='"+dcstoreId+"'";
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
-        public void UpdateDCStoreQuantity(string dCStoreId, decimal Quantity)
+        // Atomic decrement: the WHERE clause re-checks stock in the same statement as the write,
+        // so a concurrent invoice against the same batch can never push StockQty negative.
+        // Returns false (0 rows affected) when the batch no longer has enough stock - caller must
+        // treat that as "insufficient stock" and fail the invoice, not silently continue.
+        public bool UpdateDCStoreQuantity(string dCStoreId, decimal deductQty)
         {
-            string updateQuery = @"UPDATE tblDCStore SET StockQty='" + Quantity + "' WHERE DCStoreId='" + dCStoreId.Trim() + "'  ";
-            aCommonInternalDal.UpdateDataByUpdateCommand(updateQuery, "SSIDB");
+            string qtyLiteral = deductQty.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            string updateQuery = @"UPDATE tblDCStore SET StockQty = StockQty - " + qtyLiteral +
+                " WHERE DCStoreId='" + dCStoreId.Trim() + "' AND StockQty >= " + qtyLiteral;
+            return aCommonInternalDal.UpdateDataByUpdateCommand(updateQuery, "SSIDB");
         }
       //  public bool DCStockInDAL(DCStockNew aDcStockNew)
       //  {
@@ -1612,12 +1706,11 @@ where I.TpTotal>0 AND I.DelivaryInvoiceNo IS NULL    and I.InvoiceDate between '
 
         public DataTable InvoiceNumberDAL(string SC, int delman, string parameter)
         {
-            string query = @" select
-                                     distinct  
-                                     stuff((
-                                     select ',' + INV.InvoiceNo
-                                     from tblInvoice INV
-                                      where INV.InvoiceNo = InvoiceNo  " + parameter + " order by INV.InvoiceNo for xml path('') ),1,1,'') as InvoiceNO from tblInvoice   group by InvoiceNo ";
+            string query = @" SELECT
+                                     STUFF((
+                                     SELECT ',' + INV.InvoiceNo
+                                     FROM tblInvoice INV
+                                      WHERE 1=1 " + parameter + " ORDER BY INV.InvoiceNo FOR XML PATH('') ),1,1,'') AS InvoiceNO";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -28,6 +29,11 @@ namespace Library.BLL.SInventory_BLL
         public DataTable LoadOrderForOrderCreation(string parameter)
         {
             return aOrderInfoDal.LoadOrderForOrderCreation(parameter);
+        }
+
+        public DataTable LoadOrderForOrderCreation(List<SqlParameter> aSqlParameterList)
+        {
+            return aOrderInfoDal.LoadOrderForOrderCreation(aSqlParameterList);
         }
 
         public void LoadMarketOrderWise(DropDownList ddl, string comunitId)

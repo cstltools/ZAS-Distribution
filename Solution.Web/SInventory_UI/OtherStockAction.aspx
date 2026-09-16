@@ -143,7 +143,8 @@
                                 BackColor="#339933" />
                             <%--<asp:Button ID="printButton" runat="server" OnClick="refreshButton_Click" Text="Refresh" />--%>
                             <%--OnClick="searchButton_Click"--%>
-                            <asp:Button ID="submitButton0" runat="server" OnClick="submitButton0_OnClick" Text="Submit" />
+                            <asp:Button ID="submitButton0" runat="server" OnClick="submitButton0_OnClick" Text="Submit"
+                                OnClientClick="this.disabled=true; Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function(){document.getElementById('<%=submitButton0.ClientID%>').disabled=false;});" />
                         </td>
                         <td width="13%" class="TDLeft">
                             &nbsp;
