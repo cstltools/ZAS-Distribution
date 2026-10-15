@@ -259,7 +259,7 @@ public partial class SInventory_UI_ProductDiscountEntry : System.Web.UI.Page
             string[] cust = customerNameTextBox1.Text.Split(':');
             customerNameTextBox1.Text = cust[1];
             customerTextBox.Text = cust[0];
-            custIdHiddenField.Value = cust[2];
+            custIdHiddenField.Value = cust[cust.Length - 1]; // GetCustomernew returns Code:Name:(Region...):Id
         }
         
         

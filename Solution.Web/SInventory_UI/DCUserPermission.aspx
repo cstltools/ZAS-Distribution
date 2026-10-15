@@ -215,6 +215,14 @@
             });
         });
 
+        // A second async postback would abort the pending one and submit the stale DOM
+        // (previous user's ticks under the newly selected user). Refuse it instead.
+        Sys.WebForms.PageRequestManager.getInstance().add_initializeRequest(function (sender, args) {
+            if (sender.get_isInAsyncPostBack()) {
+                args.set_cancel(true);
+            }
+        });
+
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
             $(".userName").select2({
                 placeholder: "Select an option",

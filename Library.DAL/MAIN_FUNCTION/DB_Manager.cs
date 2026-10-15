@@ -53,15 +53,20 @@ namespace Library.DAL.MAIN_FUNCTION
 
         internal void CloseConnection()
         {
-            if (dbConnection.State == ConnectionState.Open)
+            if (dbConnection != null && dbConnection.State == ConnectionState.Open)
             {
-                if (dbTransaction != null)
+                try
                 {
-                    dbTransaction.Commit();
-                    dbTransaction.Dispose();
+                    if (dbTransaction != null)
+                    {
+                        dbTransaction.Commit();
+                        dbTransaction.Dispose();
+                    }
                 }
-
-                dbConnection.Close();
+                finally
+                {
+                    dbConnection.Close(); // a failed Commit must not leak the pooled connection
+                }
             }
         }
 
@@ -90,7 +95,7 @@ namespace Library.DAL.MAIN_FUNCTION
             {
 
                 dbCommand = database.GetStoredProcCommand(StoreProcedureName);
-                dbCommand.CommandTimeout = 12000;
+                dbCommand.CommandTimeout = 60;
                 dbCommand.Parameters.Clear();
                 dbCommand.Parameters.AddRange(SqlParameterlist.ToArray());
                 if (IsPrimaryKey)
@@ -125,11 +130,8 @@ namespace Library.DAL.MAIN_FUNCTION
             catch (Exception ex)
             {
                 dbCommand.Parameters.Clear();
-                if (dbTransaction != null)
-                {
-                    dbTransaction.Rollback();
-                }
-                dbConnection.Close();
+                try { RollbackAndClose(); }
+                catch { if (dbConnection != null) dbConnection.Close(); }
             }
             return pk;
         }
@@ -211,13 +213,29 @@ namespace Library.DAL.MAIN_FUNCTION
             ExecuteNonQueryActionStrict(StoreProcedureName, SqlParameterlist, string.Empty, false);
         }
 
+        // Raw parameterized SQL inside the shared transaction; returns the first
+        // column of the first row (e.g. SCOPE_IDENTITY / @@ROWCOUNT). Throws on error.
+        internal object ExecuteScalarSqlStrict(string sql, List<SqlParameter> SqlParameterlist)
+        {
+            dbCommand = database.GetSqlStringCommand(sql);
+            dbCommand.CommandTimeout = 60;
+            dbCommand.Parameters.Clear();
+            if (SqlParameterlist != null)
+            {
+                dbCommand.Parameters.AddRange(SqlParameterlist.ToArray());
+            }
+            object result = database.ExecuteScalar(dbCommand, dbTransaction);
+            dbCommand.Parameters.Clear();
+            return result;
+        }
+
         private int ExecuteNonQueryActionStrict(string StoreProcedureName, List<SqlParameter> SqlParameterlist,
             string PrimaryKeyParameter, bool IsPrimaryKey)
         {
             int pk = 0;
 
             dbCommand = database.GetStoredProcCommand(StoreProcedureName);
-            dbCommand.CommandTimeout = 12000;
+            dbCommand.CommandTimeout = 60;
             dbCommand.Parameters.Clear();
             dbCommand.Parameters.AddRange(SqlParameterlist.ToArray());
 

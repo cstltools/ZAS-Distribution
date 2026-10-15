@@ -1,0 +1,2 @@
+D:\Projects\Zas Distribution\Library.CrystalReports\obj\Release\Library.CrystalReports.csproj.AssemblyReference.cache
+D:\Projects\Zas Distribution\Library.CrystalReports\obj\Release\Library.CrystalReports.csproj.CoreCompileInputs.cache

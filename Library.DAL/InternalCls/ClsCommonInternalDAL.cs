@@ -284,7 +284,9 @@ namespace Library.DAL.InternalCls
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
                 dbCommand.CommandTimeout = 360000000;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
-                dataReader = db.ExecuteReader(dbCommand);
+                // Buffer + close the connection now: no caller disposes the reader, so a live
+                // SqlDataReader leaked one pooled connection (and its locks) per call.
+                using (IDataReader live = db.ExecuteReader(dbCommand)) { DataTable buf = new DataTable(); buf.Load(live); dataReader = buf.CreateDataReader(); }
                 return dataReader;
             }
             catch (Exception ex)
@@ -305,7 +307,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionStringSSIDB");
                 //dbCommand = db.GetSqlStringCommand(queryString);
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
-                dbCommand.CommandTimeout = 360000000;
+                dbCommand.CommandTimeout = 120;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
                 dataContain = db.ExecuteDataSet(dbCommand).Tables[0];
                 return dataContain;
@@ -329,7 +331,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionString" + dataBaseName);
                 using (dbCommand = db.GetSqlStringCommand(queryString + ";select @ID=SCOPE_IDENTITY()"))
                 {
-                    dbCommand.CommandTimeout = 12000;
+                    dbCommand.CommandTimeout = 60;
                     dbCommand.Parameters.Clear();
                     dbCommand.Parameters.AddRange(aSqlParameterlist.ToArray());
                     db.AddOutParameter(dbCommand, "@ID", DbType.Int32, 20);
@@ -367,7 +369,9 @@ namespace Library.DAL.InternalCls
                 dbCommand = db.GetSqlStringCommand(queryString);
                 dbCommand.Parameters.Clear();
                 dbCommand.Parameters.AddRange(aSqlParameterlist.ToArray());
-                dataReader = db.ExecuteReader(dbCommand);
+                // Buffer + close the connection now: no caller disposes the reader, so a live
+                // SqlDataReader leaked one pooled connection (and its locks) per call.
+                using (IDataReader live = db.ExecuteReader(dbCommand)) { DataTable buf = new DataTable(); buf.Load(live); dataReader = buf.CreateDataReader(); }
                 dbCommand.Parameters.Clear();
                 return dataReader;
             }
@@ -467,7 +471,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionStringSSIDB");
                 //dbCommand = db.GetSqlStringCommand(queryString);
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
-                dbCommand.CommandTimeout = 360000000;
+                dbCommand.CommandTimeout = 60;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
                 if (db.ExecuteNonQuery(dbCommand) > 0)
                 {
@@ -494,7 +498,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionStringSSIDB");
                 //dbCommand = db.GetSqlStringCommand(queryString);
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
-                dbCommand.CommandTimeout = 360000000;
+                dbCommand.CommandTimeout = 60;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
                 if (db.ExecuteNonQuery(dbCommand) > 0)
                 {
@@ -596,7 +600,9 @@ namespace Library.DAL.InternalCls
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
                 dbCommand.CommandTimeout = 360000000;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
-                dataReader = db.ExecuteReader(dbCommand);
+                // Buffer + close the connection now: no caller disposes the reader, so a live
+                // SqlDataReader leaked one pooled connection (and its locks) per call.
+                using (IDataReader live = db.ExecuteReader(dbCommand)) { DataTable buf = new DataTable(); buf.Load(live); dataReader = buf.CreateDataReader(); }
                 return dataReader;
             }
             catch (Exception ex)
@@ -617,7 +623,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionString" + dataBaseName);
                 //dbCommand = db.GetSqlStringCommand(queryString);
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
-                dbCommand.CommandTimeout = 360000000;
+                dbCommand.CommandTimeout = 120;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
                 dataContain = db.ExecuteDataSet(dbCommand).Tables[0];
                 return dataContain;
@@ -637,7 +643,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionString" + dataBaseName);
                 //dbCommand = db.GetSqlStringCommand(queryString);
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
-                dbCommand.CommandTimeout = 360000000;
+                dbCommand.CommandTimeout = 60;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
                 if (db.ExecuteNonQuery(dbCommand) > 0)
                 {
@@ -679,7 +685,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionString" + dataBaseName);
                 //dbCommand = db.GetSqlStringCommand(queryString);
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
-                dbCommand.CommandTimeout = 360000000;
+                dbCommand.CommandTimeout = 60;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
                 if (db.ExecuteNonQuery(dbCommand) > 0)
                 {
@@ -708,7 +714,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionStringSSIDB");
                 //dbCommand = db.GetSqlStringCommand(queryString);
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
-                dbCommand.CommandTimeout = 360000000;
+                dbCommand.CommandTimeout = 60;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
                 if (db.ExecuteNonQuery(dbCommand) > 0)
                 {
@@ -737,7 +743,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionString" + dataBaseName);
                 //dbCommand = db.GetSqlStringCommand(queryString);
                 dbCommand = db.GetStoredProcCommand("ExecuteAllSqlQueryByStoreProcedure");
-                dbCommand.CommandTimeout = 360000000;
+                dbCommand.CommandTimeout = 60;
                 db.AddInParameter(dbCommand, "Query", DbType.String, queryString);
                 if (db.ExecuteNonQuery(dbCommand) > 0)
                 {
@@ -768,7 +774,7 @@ namespace Library.DAL.InternalCls
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionString" + dataBaseName);
                 using (dbCommand = db.GetStoredProcCommand(sp))
                 {
-                    dbCommand.CommandTimeout = 360000000;
+                    dbCommand.CommandTimeout = 60;
                     dbCommand.Parameters.Clear();
                     dbCommand.Parameters.AddRange(aSqlParameterlist.ToArray());
 
@@ -825,7 +831,7 @@ namespace Library.DAL.InternalCls
 
                 db = DatabaseFactory.CreateDatabase("SolutionConnectionString" + "SSIDB");
                 dbCommand = db.GetStoredProcCommand(StoreProcedureName);
-                dbCommand.CommandTimeout = 12000;
+                dbCommand.CommandTimeout = 60;
                 dbCommand.Parameters.Clear();
                 dbCommand.Parameters.AddRange(SqlParameterlist.ToArray());
                 if (IsPrimaryKey)

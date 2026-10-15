@@ -25,7 +25,6 @@ public partial class SInventory_RPTVIEW_GroupInvoiceReport : System.Web.UI.Page
     private class InvoiceSection
     {
         public string ReferenceNo;
-        public string HeaderKey;
         public string CustomerCode, CustomerName, Address, TermOfPayment, MarketName,
             DeliveryPersonName, DeliveryPersonPhNo, PONumber, OrderNo, OrderDate, PreparedBy, Remarks;
         public List<DataRow> Lines = new List<DataRow>();
@@ -106,9 +105,6 @@ public partial class SInventory_RPTVIEW_GroupInvoiceReport : System.Web.UI.Page
                     PreparedBy = Convert.ToString(row["PreparedBy"]),
                     Remarks = Convert.ToString(row["Remarks"]),
                 };
-                current.HeaderKey = string.Join("|", current.CustomerCode, current.CustomerName, current.Address,
-                    current.TermOfPayment, current.MarketName, current.DeliveryPersonName, current.DeliveryPersonPhNo,
-                    current.PONumber, current.OrderNo, current.OrderDate);
                 result.Add(current);
             }
             current.Lines.Add(row);
@@ -122,15 +118,13 @@ public partial class SInventory_RPTVIEW_GroupInvoiceReport : System.Web.UI.Page
         string invoiceDateDisplay = FormatDate(lineData.Rows[0]["InvoiceDate"]);
 
         var sb = new StringBuilder();
-        string previousHeaderKey = null;
+
+        // Sold To / Payment / Order header prints once for the whole Group Invoice, not per
+        // constituent invoice section — matches ExportExcel's layout below.
+        sb.Append(RenderHeaderBlock(sections[0], groupInvoiceNoDisplay, invoiceDateDisplay));
 
         foreach (var section in sections)
         {
-            if (section.HeaderKey != previousHeaderKey)
-            {
-                sb.Append(RenderHeaderBlock(section, groupInvoiceNoDisplay, invoiceDateDisplay));
-                previousHeaderKey = section.HeaderKey;
-            }
             sb.Append(RenderInvoiceSection(section));
         }
 

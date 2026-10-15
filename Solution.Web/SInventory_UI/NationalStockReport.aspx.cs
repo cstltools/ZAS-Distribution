@@ -75,7 +75,8 @@ public partial class SInventory_UI_NationalStockReport : System.Web.UI.Page
                                 " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '394' THEN 'Esha Enterprise'" +
                                 " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '389' THEN 'Z A S Industries'" +
                                 " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '396' THEN 'Dermal-Devision-1'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '398' THEN 'ZAS Rare Deasese'" +                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '399' THEN 'ZAS Nutrition-IV'" +
+                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '398' THEN 'ZAS Rare Deasese'" +
+                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '399' THEN 'ZAS Nutrition-IV'" +
                                 " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '411' THEN 'ZAS Named Patient Access'" +
                                 " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '412' THEN 'ZAS Biotech'" +
                                 " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '413' THEN 'ZAS Anesthesia'" +

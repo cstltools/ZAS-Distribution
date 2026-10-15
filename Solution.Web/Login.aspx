@@ -41,7 +41,5 @@
         <input type="submit" value="Log in" />--%>
         </form>
     </div>
-    <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
-    <script src="LoginAssets/js/index.js"></script>
 </body>
 </html>

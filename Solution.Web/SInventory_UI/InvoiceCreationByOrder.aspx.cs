@@ -32,7 +32,7 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
     {
         if (Session["UserType"] == null || Session["UserType"].ToString() == "")
         {
-            Response.Redirect("Login.aspx");
+            RedirectClient("Login.aspx");
             return;
         }
 
@@ -124,7 +124,7 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
         rowindex = currentRow.RowIndex;
 
         Session["OrderId"] = orderGridView.DataKeys[rowindex]["OrderId"].ToString();
-        Response.Redirect("InvoiceCreationForCustomerByOrder.aspx");
+        RedirectClient("InvoiceCreationForCustomerByOrder.aspx");
 
     }
 
@@ -206,6 +206,14 @@ public partial class SInventory_UI_InvoiceCreationByOrder : System.Web.UI.Page
         parameters.Add(new SqlParameter("@CustomerMasterId", (object)(custDropDownList.SelectedIndex > 0 ? custDropDownList.SelectedValue : null) ?? DBNull.Value));
 
         return parameters;
+    }
+
+    // Response.Redirect() during an UpdatePanel async postback breaks the client-side
+    // partial-page parser (Sys.WebForms.PageRequestManagerParserErrorException); redirect
+    // via script instead so it survives a partial postback.
+    private void RedirectClient(string url)
+    {
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "redirect", "window.location='" + url + "';", true);
     }
 
     private void ShowMessageBox(string message)

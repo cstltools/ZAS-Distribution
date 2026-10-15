@@ -36,9 +36,9 @@ public partial class HTMLReport_ProformaHTMLReport : System.Web.UI.Page
             loadGridView.DataSource = mainDataTable;
             loadGridView.DataBind();
 
-            for (int i = 0; i < loadGridView.Rows.Count; i++)
+            foreach (DataRow row in mainDataTable.Rows)
             {
-                value = value + Convert.ToDecimal(loadGridView.Rows[i].Cells[18].Text.Trim());
+                value = value + Convert.ToDecimal(row["ClosingStockValue"]);
             }
         }
         else

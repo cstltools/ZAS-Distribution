@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -26,29 +27,40 @@ namespace Library.DAL.SInventory_DAL
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
 
-        public bool SaveDCUserPermissionInfo(UserCompanyUnitDao aUserCompanyUnitDao)
+        // One atomic batch: removes unticked DCs and adds newly ticked ones. Existing rows are
+        // left untouched so their CWHPermission/NationalReportPermission flags survive a re-save.
+        public bool SaveDCUserPermissions(int userId, List<int> companyUnitIds)
         {
-            string query = @"INSERT INTO tblUserCompanyUnit (UserId,CompanyUnitId,CWHPermission,NationalReportPermission) VALUES ('" + aUserCompanyUnitDao.UserId + "' , '"
-                + aUserCompanyUnitDao.CompanyUnitId + "','" + aUserCompanyUnitDao.CWHPermission + "','" + aUserCompanyUnitDao.NationalReportPermission + "')";
-            return aCommonInternalDal.SaveDataByInsertCommand(query, "SSIDB");
-        }
+            var parameters = new List<SqlParameter> { new SqlParameter("@UserId", userId) };
+            var names = new List<string>();
+            for (int i = 0; i < companyUnitIds.Count; i++)
+            {
+                names.Add("@Unit" + i);
+                parameters.Add(new SqlParameter("@Unit" + i, companyUnitIds[i]));
+            }
 
-        public DataTable CheckPermissionInfoAlreadyExistOrNot(UserCompanyUnitDao aUserCompanyUnitDao)
-        {
-            string query = @"SELECT * FROM tblUserCompanyUnit WHERE UserId = '" + aUserCompanyUnitDao.UserId + "' AND CompanyUnitId = '" + aUserCompanyUnitDao.CompanyUnitId + "' AND CWHPermission = '" + aUserCompanyUnitDao.CWHPermission + "' AND NationalReportPermission = '" + aUserCompanyUnitDao.NationalReportPermission + "'";
-            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
-        }
+            string idList = string.Join(",", names);
+            string valueRows = string.Join(",", names.Select(n => "(" + n + ")"));
 
-        public bool DeletePermissionInfo(string userId)
-        {
-            string query = @"DELETE FROM tblUserCompanyUnit WHERE UserId = '" + userId + "'";
-            return aCommonInternalDal.DeleteDataByDeleteCommand(query, "SSIDB");
+            string query = @"SET XACT_ABORT ON;
+                BEGIN TRAN;
+                DELETE FROM tblUserCompanyUnit WHERE UserId = @UserId AND CompanyUnitId NOT IN (" + idList + @");
+                DELETE u FROM tblUserCompanyUnit u WHERE u.UserId = @UserId AND EXISTS
+                    (SELECT 1 FROM tblUserCompanyUnit d WHERE d.UserId = u.UserId AND d.CompanyUnitId = u.CompanyUnitId AND d.UserComId < u.UserComId);
+                INSERT INTO tblUserCompanyUnit (UserId, CompanyUnitId, CWHPermission, NationalReportPermission)
+                SELECT @UserId, v.Id, 0, 0 FROM (VALUES " + valueRows + @") AS v(Id)
+                WHERE NOT EXISTS (SELECT 1 FROM tblUserCompanyUnit u WHERE u.UserId = @UserId AND u.CompanyUnitId = v.Id);
+                COMMIT;";
+
+            aCommonInternalDal.SaveDataByInsertCommand(query, parameters, "SSIDB");
+            return true; // zero affected rows means nothing changed, still a successful save; failures throw
         }
 
         public DataTable GetDCUserPermissionById(string userId)
         {
-            string query = @"SELECT * FROM tblUserCompanyUnit WHERE UserId = '" + userId + "'";
-            return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+            string query = @"SELECT * FROM tblUserCompanyUnit WHERE UserId = @UserId";
+            var parameters = new List<SqlParameter> { new SqlParameter("@UserId", userId) };
+            return aCommonInternalDal.DataContainerDataTable(query, parameters, "SSIDB");
         }
     }
 }

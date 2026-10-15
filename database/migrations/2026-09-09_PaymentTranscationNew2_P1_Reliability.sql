@@ -199,7 +199,7 @@ BEGIN
         (
             @SpotPurchaseCode,
             @CustomerMasterId,
-            @PaymentDate,
+            CAST(GETDATE() AS DATE),
             @PaymentAmount,
             @PayType,
             @RefNo,

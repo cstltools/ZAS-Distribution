@@ -1561,12 +1561,6 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
         {
             for (int i = 0; i < gridLineItemGridView.Rows.Count; i++)
             {
-                OrderInfoBLL aOrderInfoBll=new OrderInfoBLL();
-                DataTable dtdiscount =
-                aOrderInfoBll.ProductDiscount(
-                    ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text,
-                    hdCustomerMasterId.Value, invDateTextBox.Text);
-
                 InvoiceDetail aInvoiceDetail = new InvoiceDetail();
                 aInvoiceDetail.ProductCode =
                     ((TextBox) gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text;
@@ -1613,9 +1607,6 @@ public partial class SInventory_UI_InvoiceCreationForCustomer : System.Web.UI.Pa
                 decimal tqty = 0;
                 tqty = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[14].FindControl("tQtyTextBox")).Text);
                 cstock = Convert.ToDecimal(((TextBox)gridLineItemGridView.Rows[i].Cells[3].FindControl("currentStockTextBox")).Text);
-                DataTable dtdata = aInvoiceBll.LoadProductQty(orderIdHiddenField.Value,
-                ((TextBox)gridLineItemGridView.Rows[i].Cells[1].FindControl("codeTextBox")).Text);
-                //tqty = Convert.ToDecimal(dtdata.Rows[0][0].ToString());
                 /////SMC Low Order Method /////
                 //if (tqty>cstock)
                 //{

@@ -203,7 +203,7 @@
                             <asp:AutoCompleteExtender ID="customerTextBox_AutoCompleteExtender" runat="server"
                                 CompletionListCssClass="autocomplete_completionListElement" CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                 CompletionListItemCssClass="autocomplete_listItem" CompletionSetCount="10" DelimiterCharacters=""
-                                EnableCaching="true" Enabled="True" MinimumPrefixLength="1" ServiceMethod="GetCustomernew"
+                                EnableCaching="true" Enabled="True" MinimumPrefixLength="1" ServiceMethod="GetCustomernewByMo"
                                 ServicePath="SInventoryWebService.asmx" ShowOnlyCurrentWordInCompletionListItem="true"
                                 TargetControlID="customerNameTextBox1" UseContextKey="True">
                             </asp:AutoCompleteExtender>

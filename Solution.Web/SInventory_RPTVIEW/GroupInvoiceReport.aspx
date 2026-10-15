@@ -16,9 +16,10 @@
         }
 
         .page {
-            width: 210mm; min-height: 297mm; margin: 20px auto; background: #fff; padding: 10mm;
+            width: 210mm; min-height: 297mm; margin: 20px auto; background: #fff; padding: 1in 10mm; /* 1in header + footer gap */
             border: 1px solid #ccc; box-shadow: 0 0 6px rgba(0,0,0,.2);
         }
+        .page.pdf-mode { padding: 0 10mm; } /* PDF export adds the 1in gap per page itself */
 
         /* --- "Invoice" title: centered dotted box, matches the original Crystal banner --- */
         .invoice-title-wrap { text-align: center; margin-bottom: 10px; }
@@ -54,7 +55,7 @@
         table.product-table td.right, table.product-table th.right { text-align: right; }
         table.product-table td.prod-name { text-align: left; }
         table.product-table th.vert, table.product-table td.vert {
-            writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; white-space: nowrap; width: 5%;
+            writing-mode: vertical-rl; text-align: center; white-space: nowrap; width: 5%;
         }
         table.product-table tr.subtotal-row td, table.product-table tr.grand-total-row td { background: #f2f2f2; }
         table.grand-total-table { margin-top: 4px; }
@@ -73,7 +74,7 @@
 
         @page {
             size: A4 portrait;
-            margin: 10mm;
+            margin: 1in 10mm; /* 1in header + footer gap on every printed page */
             /* CSS Paged Media page numbering, per spec. Not rendered by mainstream browsers today
                (Chrome/Firefox print engines do not implement @page margin boxes) — included as a
                standards-based best effort per the "where technically possible" requirement; this is
@@ -83,7 +84,7 @@
         @media print {
             .report-toolbar { display: none !important; }
             body { background: #fff; }
-            .page { border: none; box-shadow: none; margin: 0; width: auto; min-height: auto; }
+            .page { border: none; box-shadow: none; margin: 0; width: auto; min-height: auto; padding: 0 10mm; }
             .ref-block { page-break-inside: avoid; }
         }
     </style>
@@ -127,31 +128,28 @@
             var el = document.getElementById('reportArea');
             var fileName = document.getElementById('pdfFileNameHidden').value || 'GroupInvoice.pdf';
 
+            el.classList.add('pdf-mode');
             html2canvas(el, { scale: 2 }).then(function (canvas) {
-                var jsPdf = window.jspdf.jsPDF;
-                var pdf = new jsPdf('p', 'mm', 'a4');
+                el.classList.remove('pdf-mode');
+                var pdf = new window.jspdf.jsPDF('p', 'mm', 'a4');
                 var pageWidth = pdf.internal.pageSize.getWidth();
-                var pageHeight = pdf.internal.pageSize.getHeight();
-                var imgData = canvas.toDataURL('image/png');
-                var imgHeight = canvas.height * pageWidth / canvas.width;
+                var margin = 25.4; // 1 inch header + footer gap on every page
+                var pxPerMm = canvas.width / pageWidth;
+                var slicePx = Math.floor((pdf.internal.pageSize.getHeight() - 2 * margin) * pxPerMm);
 
-                // 1mm tolerance so a leftover sliver just past a page boundary doesn't emit an
-                // almost-blank trailing page.
-                var heightLeft = imgHeight;
-                var position = 0;
-
-                pdf.addImage(imgData, 'PNG', 0, position, pageWidth, imgHeight);
-                heightLeft -= pageHeight;
-
-                while (heightLeft > 1) {
-                    position = heightLeft - imgHeight;
-                    pdf.addPage();
-                    pdf.addImage(imgData, 'PNG', 0, position, pageWidth, imgHeight);
-                    heightLeft -= pageHeight;
+                for (var y = 0; y < canvas.height - 1; y += slicePx) {
+                    var h = Math.min(slicePx, canvas.height - y);
+                    var slice = document.createElement('canvas');
+                    slice.width = canvas.width;
+                    slice.height = h;
+                    slice.getContext('2d').drawImage(canvas, 0, y, canvas.width, h, 0, 0, canvas.width, h);
+                    if (y > 0) pdf.addPage();
+                    pdf.addImage(slice.toDataURL('image/png'), 'PNG', 0, margin, pageWidth, h / pxPerMm);
                 }
 
                 pdf.save(fileName);
             }).catch(function () {
+                el.classList.remove('pdf-mode');
                 alert('Could not generate the PDF. Please try Print instead.');
             });
         }

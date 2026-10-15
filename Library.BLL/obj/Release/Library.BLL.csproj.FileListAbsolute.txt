@@ -61,3 +61,5 @@ D:\Projects\Zas Distribution\Library.BLL\obj\Release\Library.BLL.csproj.CoreComp
 D:\Projects\Zas Distribution\Library.BLL\obj\Release\Library..6B42F545.Up2Date
 D:\Projects\Zas Distribution\Library.BLL\obj\Release\Library.BLL.dll
 D:\Projects\Zas Distribution\Library.BLL\obj\Release\Library.BLL.pdb
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\34757a0c-c16e-415c-b70e-3cf8199a7bac\scratchpad\out\Library.BLL.dll
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\34757a0c-c16e-415c-b70e-3cf8199a7bac\scratchpad\out\Library.BLL.pdb

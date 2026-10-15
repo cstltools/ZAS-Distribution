@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
 using Library.DAL.InternalCls;
+using Library.DAL.MAIN_FUNCTION;
 using Library.DAO.SInventory_Entities;
 
 namespace Library.DAL.SInventory_DAL
@@ -92,6 +93,51 @@ WHERE DL.IsActive = 1 ORDER BY JobLocationName ASC";
         {
             string updateQuery = @"UPDATE tblInvoice SET BatchId='" + batchId + "' WHERE InvoiceId='" + invoiceId + "' AND ISNULL(BatchId,0) = 0";
             aCommonInternalDal.UpdateDataByUpdateCommand(updateQuery, "SSIDB");
+        }
+
+        // Batch insert + batch code + invoice assignment in ONE transaction.
+        // Any failure (or an invoice already batched by someone else) rolls everything back.
+        public int SaveInvoiceBatchWithInvoices(InvoiceBatchDAO aInvoiceBatchDao, IList<int> invoiceIds)
+        {
+            DB_Manager aDbManager = new DB_Manager();
+            aDbManager.CreateConnectionByConnectionStringKey("SolutionConnectionStringSSIDB");
+            try
+            {
+                List<SqlParameter> insertParams = new List<SqlParameter>();
+                insertParams.Add(new SqlParameter("@BatchNo", aInvoiceBatchDao.BatchNo));
+                insertParams.Add(new SqlParameter("@CompanyId", aInvoiceBatchDao.CompanyId));
+                insertParams.Add(new SqlParameter("@Date", aInvoiceBatchDao.Date));
+                insertParams.Add(new SqlParameter("@DeliveryManId", aInvoiceBatchDao.DeliveryManId));
+
+                int batchId = Convert.ToInt32(aDbManager.ExecuteScalarSqlStrict(
+                    @"INSERT INTO dbo.tblInvoiceBatch (BatchNo, CompanyId, Date, DeliveryManId)
+                      VALUES (@BatchNo, @CompanyId, @Date, @DeliveryManId);
+                      SELECT CAST(SCOPE_IDENTITY() AS int);", insertParams));
+
+                aDbManager.ExecuteActionStrict("sp_Save_BatchCode", new List<SqlParameter> { new SqlParameter("@BatchId", batchId) });
+
+                // ids are ints (no injection); 500 per statement keeps each UPDATE short
+                int updated = 0;
+                for (int i = 0; i < invoiceIds.Count; i += 500)
+                {
+                    string ids = string.Join(",", invoiceIds.Skip(i).Take(500).Select(x => x.ToString()).ToArray());
+                    updated += Convert.ToInt32(aDbManager.ExecuteScalarSqlStrict(
+                        "UPDATE dbo.tblInvoice SET BatchId=" + batchId + " WHERE InvoiceId IN (" + ids + ") AND ISNULL(BatchId,0) = 0; SELECT @@ROWCOUNT;", null));
+                }
+
+                if (updated != invoiceIds.Count)
+                {
+                    throw new InvalidOperationException("Some selected invoices are already in another batch. Please reload and try again.");
+                }
+
+                aDbManager.CloseConnection();
+                return batchId;
+            }
+            catch
+            {
+                aDbManager.RollbackAndClose();
+                throw;
+            }
         }
 
         public DataTable GetInvoiceBatchId(string batchId)

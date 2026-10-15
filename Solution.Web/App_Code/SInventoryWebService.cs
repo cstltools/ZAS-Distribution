@@ -262,29 +262,43 @@ public class SInventoryWebService : System.Web.Services.WebService
         }
         return items;
     }
-    [WebMethod(EnableSession = true)]
+    // EnableSession=false on purpose: with session on, every autocomplete
+    // keystroke held the ASP.NET session lock for the whole query, and the
+    // AutoPostBack after picking a customer queued behind them (spinner hang).
+    [WebMethod(EnableSession = false)]
     [System.Web.Script.Services.ScriptMethod]
     public string[] GetCustomernew(string prefixText)
     {
-        string param = "";
-        if (Session["MOParam"] != null)
-        {
-            param = Session["MOParam"].ToString();
-        }
-        string sql = "";
+        return CustomerSearch(prefixText, "");
+    }
 
-        sql = @"SELECT DISTINCT tblCustMaster.CustomerCode+':'+tblCustMaster.CustomerName + ':( Region- ' + tblRegion.RegionName + '; Area - ' + tblArea.AreaName + '; Territory - ' + tblTerritory.TerritoryName + '; Market - ' +tblMarket.MarketName +' )'  +':'+CONVERT(NVARCHAR(MAX),tblCustMaster.CustomerMasterId)Cust FROM dbo.tblCustMaster
+    // Only for pages that set Session["MOParam"] (ProductDiscountEntry,
+    // ProductQuotedPriceSetup). Everyone else uses GetCustomernew.
+    [WebMethod(EnableSession = true)]
+    [System.Web.Script.Services.ScriptMethod]
+    public string[] GetCustomernewByMo(string prefixText)
+    {
+        string param = Session["MOParam"] != null ? Session["MOParam"].ToString() : "";
+        return CustomerSearch(prefixText, param);
+    }
+
+    private string[] CustomerSearch(string prefixText, string param)
+    {
+        // MIO / DC tables sit in an EXISTS, not in the FROM: joining them
+        // multiplied every customer by its MIOs x DC mappings and the old
+        // DISTINCT over that hit the 30s SQL timeout on short prefixes.
+        // 'param' (MO filter) still sees the same table names inside EXISTS.
+        string sql = @"SELECT TOP (20) tblCustMaster.CustomerCode+':'+tblCustMaster.CustomerName + ':( Region- ' + tblRegion.RegionName + '; Area - ' + tblArea.AreaName + '; Territory - ' + tblTerritory.TerritoryName + '; Market - ' +tblMarket.MarketName +' )'  +':'+CONVERT(NVARCHAR(MAX),tblCustMaster.CustomerMasterId)Cust FROM dbo.tblCustMaster
             INNER JOIN dbo.tblMarket ON tblMarket.MarketId = tblCustMaster.MarketId
             INNER JOIN dbo.tblTerritory ON tblTerritory.TerritoryId = tblMarket.TerritoryId
-            INNER JOIN dbo.tblMIOInfo ON tblMIOInfo.TerritoryId = tblTerritory.TerritoryId 
-			INNER JOIN dbo.tblArea ON tblArea.AreaId = tblTerritory.AreaId
+            INNER JOIN dbo.tblArea ON tblArea.AreaId = tblTerritory.AreaId
             INNER JOIN tblRegion ON tblArea.RegionId = tblRegion.RegionId
-			INNER JOIN dbo.tblDcWiseAreaInfo ON tblDcWiseAreaInfo.AreaId = tblArea.AreaId
-			INNER JOIN dbo.tblCompanyUnit  ON dbo.tblDcWiseAreaInfo.DCId=dbo.tblCompanyUnit.ComUnitId
-            INNER JOIN dbo.tblEmpGeneralInfo ON dbo.tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId WHERE tblCustMaster.IsActive = 1 AND tblCustMaster.CustomerCode+':'+tblCustMaster.CustomerName+':'+CONVERT(NVARCHAR(MAX),tblCustMaster.CustomerMasterId) 
-			LIKE  @prefixText " + param + "";
-
-
+            WHERE tblCustMaster.IsActive = 1 AND (tblCustMaster.CustomerCode LIKE @prefixText OR tblCustMaster.CustomerName LIKE @prefixText)
+            AND EXISTS (SELECT 1 FROM dbo.tblMIOInfo
+                        INNER JOIN dbo.tblEmpGeneralInfo ON dbo.tblMIOInfo.EmployeeId=dbo.tblEmpGeneralInfo.EmpInfoId
+                        INNER JOIN dbo.tblDcWiseAreaInfo ON tblDcWiseAreaInfo.AreaId = tblArea.AreaId
+                        INNER JOIN dbo.tblCompanyUnit ON dbo.tblDcWiseAreaInfo.DCId=dbo.tblCompanyUnit.ComUnitId
+                        WHERE tblMIOInfo.TerritoryId = tblTerritory.TerritoryId " + param + ")";
 
         SqlDataAdapter da = new SqlDataAdapter(sql, strConnectionString);
         da.SelectCommand.Parameters.Add("@prefixText", System.Data.SqlDbType.VarChar, 50).Value = "%" + prefixText + "%";

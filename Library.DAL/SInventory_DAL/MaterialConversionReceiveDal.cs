@@ -30,7 +30,7 @@ namespace Library.DAL.SInventory_DAL
             aSqlParameterList.Add(new SqlParameter("@Param", param));
 
             string queryStr = @"SELECT  DISTINCT CD.MaterialConversionDetailId,CM.MaterialConversionMasterId,FG.ProductCode,FG.ProductId,FG.ProductName,FG.PackSize,CM.CostPerUnit, 0 AS Vat,
-            CAST(BS.Trans_Qty*-1 AS INT) FinalOutputQuantityInt,CM.TotalCostOfThisBatch,MAP.RawMaterialId,Batch_No, Mfg_Date, Exp_Date  FROM CSTL_ERPDB..tbl_MC_MaterialConversionMaster AS CM
+            CAST(BS.Trans_Qty*-1 AS INT) FinalOutputQuantityInt,CAST(BS.Trans_Qty*-1 AS INT) * CM.CostPerUnit AS TotalCostOfThisBatch,MAP.RawMaterialId,Batch_No, Mfg_Date, Exp_Date  FROM CSTL_ERPDB..tbl_MC_MaterialConversionMaster AS CM
 			LEFT JOIN CSTL_ERPDB..tbl_MC_ProductionUnit AS PUNT ON CM.ProductionUnitId = PUNT.ProductionUnitId
             INNER JOIN CSTL_ERPDB..tbl_MC_RecipeMaster AS RCM ON CM.RecipeSetupMasterId = RCM.RecipeSetupMasterId
             LEFT JOIN CSTL_ERPDB..tblCompanyInfo AS CI ON CM.BusinessUnitId = CI.CompanyId

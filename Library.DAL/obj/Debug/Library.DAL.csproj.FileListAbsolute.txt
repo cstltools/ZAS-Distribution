@@ -539,4 +539,10 @@ d:\Projects\Zas Distribution\Library.DAL\obj\Debug\Library.DAL.dll
 d:\Projects\Zas Distribution\Library.DAL\obj\Debug\Library.DAL.pdb
 D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.DAL.dll
 D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.DAL.pdb
-D:\Projects\Zas Distribution\Library.DAL\obj\Debug\Library.DAL.csprojResolveAssemblyReference.cache
+D:\Projects\Zas Distribution\Library.DAL\obj\Debug\Library.DAL.csproj.AssemblyReference.cache
+D:\Projects\Zas Distribution\Library.DAL\obj\Debug\Library.DAL.csproj.CoreCompileInputs.cache
+D:\Projects\Zas Distribution\Library.DAL\obj\Debug\Library..61D7EBAF.Up2Date
+C:\Users\towsi\AppData\Local\Temp\zasbuild\Library.DAL.dll
+C:\Users\towsi\AppData\Local\Temp\zasbuild\Library.DAL.pdb
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\fa3c9e4e-7ce9-47e0-894d-99e5cb99ca3c\scratchpad\out\Library.DAL.dll
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\fa3c9e4e-7ce9-47e0-894d-99e5cb99ca3c\scratchpad\out\Library.DAL.pdb

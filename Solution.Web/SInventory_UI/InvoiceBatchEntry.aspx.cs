@@ -16,6 +16,10 @@ public partial class SInventory_UI_InvoiceBatchEntry : System.Web.UI.Page
     InvoiceBatchBLL aInvoiceBatchBll=new InvoiceBatchBLL();
     protected void Page_Load(object sender, EventArgs e)
     {
+        // UpdatePanel async postback default is 90s; IIS request default is 110s
+        ScriptManager.GetCurrent(this).AsyncPostBackTimeout = 600;
+        Server.ScriptTimeout = 600;
+
         if (!IsPostBack)
         {
             DropDownList();
@@ -102,27 +106,33 @@ public partial class SInventory_UI_InvoiceBatchEntry : System.Web.UI.Page
                 DeliveryManId = Convert.ToInt32(delManDropDownList.SelectedValue)
             };
 
-            int id = aInvoiceBatchBll.SaveInvoiceBatch(aBatchDao);
+            List<int> selectedIds = new List<int>();
+            for (int i = 0; i < loadGridView.Rows.Count; i++)
+            {
+                CheckBox ChkBoxRows = (CheckBox)loadGridView.Rows[i].Cells[1].FindControl("chkSelect");
+                if (ChkBoxRows.Checked)
+                {
+                    selectedIds.Add(Convert.ToInt32(loadGridView.DataKeys[i][0]));
+                }
+            }
 
-            //New Code
+            int id;
+            try
+            {
+                // batch + batch code + invoices: one transaction, all or nothing
+                id = aInvoiceBatchBll.SaveInvoiceBatchWithInvoices(aBatchDao, selectedIds);
+            }
+            catch (Exception ex)
+            {
+                ShowMessageBox("Save failed, nothing was saved. " + ex.Message.Replace("'", " ").Replace("\r", " ").Replace("\n", " "));
+                return;
+            }
 
-            bool ststus = aInvoiceBatchBll.UpdateBachCodeById(id);
-           
             if (id > 0)
             {
                 ViewReportButton(id);
                 batchIdHiddenField.Value = id.ToString(CultureInfo.InvariantCulture);
                 dateHiddenField.Value = dateTextBox.Text.Trim();
-
-                for (int i = 0; i < loadGridView.Rows.Count; i++)
-                {
-                    CheckBox ChkBoxRows = (CheckBox)loadGridView.Rows[i].Cells[1].FindControl("chkSelect");
-                    if (ChkBoxRows.Checked)
-                    {
-                        aInvoiceBatchBll.UpdateInvoiceBatchId(loadGridView.DataKeys[i][0].ToString(),id.ToString());
-                        
-                    }
-                }
                 ShowMessageBox("Data Saved Successfully");
                 Clear();
             }

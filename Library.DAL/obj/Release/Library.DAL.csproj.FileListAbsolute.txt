@@ -53,3 +53,5 @@ D:\Projects\Zas Distribution\Library.DAL\obj\Release\Library.DAL.csproj.CoreComp
 D:\Projects\Zas Distribution\Library.DAL\obj\Release\Library..61D7EBAF.Up2Date
 D:\Projects\Zas Distribution\Library.DAL\obj\Release\Library.DAL.dll
 D:\Projects\Zas Distribution\Library.DAL\obj\Release\Library.DAL.pdb
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\34757a0c-c16e-415c-b70e-3cf8199a7bac\scratchpad\out\Library.DAL.dll
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\34757a0c-c16e-415c-b70e-3cf8199a7bac\scratchpad\out\Library.DAL.pdb

@@ -858,4 +858,11 @@ d:\Projects\Zas Distribution\Library.BLL\obj\Debug\Library.BLL.dll
 d:\Projects\Zas Distribution\Library.BLL\obj\Debug\Library.BLL.pdb
 D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.BLL.dll
 D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.BLL.pdb
-D:\Projects\Zas Distribution\Library.BLL\obj\Debug\Library.BLL.csprojResolveAssemblyReference.cache
+D:\Projects\Zas Distribution\Library.BLL\bin\Debug\Microsoft.Practices.ObjectBuilder2.dll
+D:\Projects\Zas Distribution\Library.BLL\obj\Debug\Library.BLL.csproj.AssemblyReference.cache
+D:\Projects\Zas Distribution\Library.BLL\obj\Debug\Library.BLL.csproj.CoreCompileInputs.cache
+D:\Projects\Zas Distribution\Library.BLL\obj\Debug\Library..6B42F545.Up2Date
+C:\Users\towsi\AppData\Local\Temp\zasbuild\Library.BLL.dll
+C:\Users\towsi\AppData\Local\Temp\zasbuild\Library.BLL.pdb
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\fa3c9e4e-7ce9-47e0-894d-99e5cb99ca3c\scratchpad\out\Library.BLL.dll
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\fa3c9e4e-7ce9-47e0-894d-99e5cb99ca3c\scratchpad\out\Library.BLL.pdb

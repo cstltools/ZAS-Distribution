@@ -476,7 +476,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <asp:ScriptManager ID="ScriptManager1" runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="180">
     </asp:ScriptManager>
     <!-- Wrapper / Start -->
     <div id="custom-container">

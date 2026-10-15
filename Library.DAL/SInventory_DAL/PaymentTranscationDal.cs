@@ -163,7 +163,8 @@ namespace Library.DAL.SInventory_DAL
 
                     var parameters = new List<SqlParameter>()
                     {
-                        new SqlParameter("@MoneyReceiptDate", aCustPayment.PaymentDate != DateTime.MinValue ? (object)aCustPayment.PaymentDate : DateTime.Now),
+                        new SqlParameter("@MoneyReceiptDate", DateTime.Today),
+                       // new SqlParameter("@MoneyReceiptDate", aCustPayment.PaymentDate != DateTime.MinValue ? (object)aCustPayment.PaymentDate : DateTime.Now),
                         new SqlParameter("@BatchId", aCustPayment.BatchId > 0 ? (object)aCustPayment.BatchId : DBNull.Value),
                         new SqlParameter("@CustomerMasterId", aCustPayment.CustomerMasterId > 0 ? (object)aCustPayment.CustomerMasterId : DBNull.Value),
                         new SqlParameter("@CustPayDetailsId", detailIdsCsv),

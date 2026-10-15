@@ -47,3 +47,5 @@ D:\Projects\Zas Distribution\Library.DAO\obj\Release\Library.DAO.csproj.Assembly
 D:\Projects\Zas Distribution\Library.DAO\obj\Release\Library.DAO.csproj.CoreCompileInputs.cache
 D:\Projects\Zas Distribution\Library.DAO\obj\Release\Library.DAO.dll
 D:\Projects\Zas Distribution\Library.DAO\obj\Release\Library.DAO.pdb
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\34757a0c-c16e-415c-b70e-3cf8199a7bac\scratchpad\out\Library.DAO.dll
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\34757a0c-c16e-415c-b70e-3cf8199a7bac\scratchpad\out\Library.DAO.pdb

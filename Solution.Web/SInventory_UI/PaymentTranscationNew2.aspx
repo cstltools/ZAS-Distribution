@@ -263,8 +263,13 @@
         
         function preventDoubleClick(btn) {
             if (confirm('Are you sure you want to Save ?')) {
-                btn.disabled = true;
-                btn.value = 'Please wait...'; // optional visual feedback
+                // disabling the button synchronously here would cancel the
+                // postback itself (a disabled submit control never fires) --
+                // defer it so the async postback is already dispatched first.
+                setTimeout(function () {
+                    btn.disabled = true;
+                    btn.value = 'Please wait...';
+                }, 0);
                 return true;
             } else {
                 return false;
@@ -377,7 +382,7 @@
                             <asp:AutoCompleteExtender ID="customerTextBox_AutoCompleteExtender" runat="server"
                                 CompletionListCssClass="autocomplete_completionListElement" CompletionListHighlightedItemCssClass="autocomplete_highlightedListItem"
                                 CompletionListItemCssClass="autocomplete_listItem" CompletionSetCount="10" DelimiterCharacters=""
-                                EnableCaching="true" Enabled="True" MinimumPrefixLength="1" ServiceMethod="GetCustomernew"
+                                EnableCaching="true" Enabled="True" MinimumPrefixLength="3" CompletionInterval="500" ServiceMethod="GetCustomernew"
                                 ServicePath="SInventoryWebService.asmx" ShowOnlyCurrentWordInCompletionListItem="true"
                                 TargetControlID="singleCustomerTextBox">
                             </asp:AutoCompleteExtender>
@@ -927,6 +932,21 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.4/select2.min.js"></script>
 
     <script type="text/javascript">
+
+        // Submit disables itself on click. If the async postback dies (timeout / server error)
+        // the UpdatePanel never re-renders, so unlock it instead of leaving "Please wait..." forever.
+        // Registered first so a later handler that throws (select2) cannot stop it running.
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function (sender, args) {
+            if (!args.get_error()) return;
+            var b = document.getElementById('<%= saveButton.ClientID %>');
+            if (b) { b.disabled = false; b.value = 'Submit Payment'; }
+            // UpdateProgress hides itself in a later endRequest handler; if select2's handler
+            // throws first that never runs and the overlay keeps covering the page.
+            var p = document.getElementById('progress');
+            if (p) { p.style.display = 'none'; }
+            args.set_errorHandled(true);
+            alert('The server took too long or failed. Please check Money Receipt / payment list before submitting again to avoid a duplicate.');
+        });
 
         $(document).ready(function () {
             $(".deliveryMan").select2({

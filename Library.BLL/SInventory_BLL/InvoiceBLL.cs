@@ -352,7 +352,8 @@ public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
             vatper = Convert.ToDecimal(ProductInfoDataTable.Rows[0]["VATPercentage"].ToString());
             InvoiceDetail aDetailForInsert = new InvoiceDetail();
 
-            aDetailForInsert.InvoiceDetailId = aClsPrimaryKeyFind.PrimaryKeyMax("InvoiceDetailId", "tblInvoiceDetail");
+            // InvoiceDetailId is IDENTITY (SaveDataForInvoiceDetails never inserts it); the old
+            // MAX()+1 lookup only serialized every concurrent invoice save on tblInvoiceDetail.
             aDetailForInsert.ProductCode = aInvoiceDetail.ProductCode;
             aDetailForInsert.ProductName = aInvoiceDetail.ProductName;
             aDetailForInsert.PackSize = aInvoiceDetail.PackSize;
@@ -423,7 +424,8 @@ public DataTable GroupInvoiceDetailDataForReportBLL2(string invNo)
 
             InvoiceDetail aDetailForInsert = new InvoiceDetail();
 
-            aDetailForInsert.InvoiceDetailId = aClsPrimaryKeyFind.PrimaryKeyMax("InvoiceDetailId", "tblInvoiceDetail");
+            // InvoiceDetailId is IDENTITY (SaveDataForInvoiceDetails never inserts it); the old
+            // MAX()+1 lookup only serialized every concurrent invoice save on tblInvoiceDetail.
             aDetailForInsert.ProductCode = aInvoiceDetail.ProductCode;
             aDetailForInsert.ProductName = aInvoiceDetail.ProductName;
             aDetailForInsert.PackSize = aInvoiceDetail.PackSize;

@@ -145,24 +145,6 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         // Safely extract CustomerMasterId
         string customerMasterId = string.IsNullOrWhiteSpace(hdCustomerId.Value) ? "0" : hdCustomerId.Value;
 
-        // Phase 2 item 4: sp_MRCP_MoneyReceiptMasterInsert takes a single
-        // @BatchId/@CustomerMasterId for the whole submission -- one Money
-        // Receipt = one batch/customer. Reject mixing batches/customers
-        // across Add-to-Grid clicks in the same submission instead of
-        // silently attributing everything to whichever batch/customer was
-        // selected last (see PaymentTranscationDal.SaveCustPaymentNew2).
-        if (dtSelected.Rows.Count > 0)
-        {
-            DataRow firstSelectedRow = dtSelected.Rows[0];
-
-            if (firstSelectedRow.Field<string>("BatchId") != batchId ||
-                firstSelectedRow.Field<string>("CustomerMasterId") != customerMasterId)
-            {
-                ShowMessageBox("This payment already has invoices from a different batch/customer. Please submit or clear the current selection before adding invoices from another batch or customer.");
-                return;
-            }
-        }
-
         // Phase 2 item 5: validate the whole pass into a local buffer first.
         // dtSelected/ViewState is only mutated after every checked row in
         // this click has passed validation, so a mid-pass failure can no
@@ -243,6 +225,16 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                         batchId, customerMasterId });
                 }
             }
+        }
+
+        // ponytail: one receipt = one DB transaction over every row (SaveCustPaymentNew2:
+        // master + detail + journal posting per invoice). Cap the row count so a single
+        // submit cannot hold accounting locks for minutes; raise once posting is cheaper.
+        const int MaxInvoicesPerReceipt = 10;
+        if (dtSelected.Rows.Count + rowsToAdd.Count > MaxInvoicesPerReceipt)
+        {
+            ShowMessageBox(string.Format("A single payment can include at most {0} invoices. Please submit this payment first, then add the remaining invoices as a new payment.", MaxInvoicesPerReceipt));
+            return;
         }
 
         foreach (object[] newRow in rowsToAdd)
@@ -472,6 +464,13 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         {
             // Master Data
 
+            // The whole build-and-save runs inside one try: before this, the
+            // Convert.* calls below sat outside it, so a bad input value
+            // escaped as an HTTP 500 and the user only saw the generic
+            // "server took too long or failed" alert instead of a message.
+            try
+            {
+
             CustPayment aCustPayment = new CustPayment();
 
             aCustPayment.CustomerMasterId = !string.IsNullOrEmpty(hdCustomerId.Value)
@@ -576,8 +575,6 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
 
 
 
-           try
-           {
                moneyReceiptId = aTranscationDal.SaveCustPaymentNew2(aCustPayment, aCustPaymentDetails);
 
                if (moneyReceiptId > 0)
@@ -604,14 +601,21 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                    ShowMessageBox("⚠️ This payment already appears to be recorded (submitted moments ago). No new receipt was created.");
                    Clear();
                }
-           }
-           catch (Exception)
-           {
-               // A hard failure occurred and the whole submission was rolled
-               // back -- nothing was saved. Leave the entered data on screen
-               // so the user can retry instead of losing their input.
-               ShowMessageBox("❌ Payment could not be saved due to an error. Nothing was recorded. Please try again.");
-           }
+
+            }
+            catch (FormatException)
+            {
+                // A field could not be parsed (date or amount). Nothing was
+                // attempted against the database.
+                ShowMessageBox("Please check the Payment Date and Payment Amount fields -- one of them has an invalid value. Nothing was saved.");
+            }
+            catch (Exception)
+            {
+                // A hard failure occurred and the whole submission was rolled
+                // back -- nothing was saved. Leave the entered data on screen
+                // so the user can retry instead of losing their input.
+                ShowMessageBox("❌ Payment could not be saved due to an error. Nothing was recorded. Please try again.");
+            }
 
         }
 

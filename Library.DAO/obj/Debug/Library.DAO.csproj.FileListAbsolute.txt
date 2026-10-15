@@ -312,4 +312,9 @@ d:\Projects\Zas Distribution\Library.DAO\obj\Debug\Library.DAO.dll
 d:\Projects\Zas Distribution\Library.DAO\obj\Debug\Library.DAO.pdb
 D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.DAO.dll
 D:\Projects\Zas Distribution\_buildcheck\Solution.Web\Library.DAO.pdb
-D:\Projects\Zas Distribution\Library.DAO\obj\Debug\Library.DAO.csprojResolveAssemblyReference.cache
+C:\Users\towsi\AppData\Local\Temp\zasbuild\Library.DAO.dll
+C:\Users\towsi\AppData\Local\Temp\zasbuild\Library.DAO.pdb
+d:\Projects\Zas Distribution\Library.DAO\obj\Debug\Library.DAO.csproj.AssemblyReference.cache
+d:\Projects\Zas Distribution\Library.DAO\obj\Debug\Library.DAO.csproj.CoreCompileInputs.cache
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\fa3c9e4e-7ce9-47e0-894d-99e5cb99ca3c\scratchpad\out\Library.DAO.dll
+C:\Users\towsi\AppData\Local\Temp\claude\d--Projects-Zas-Distribution\fa3c9e4e-7ce9-47e0-894d-99e5cb99ca3c\scratchpad\out\Library.DAO.pdb

@@ -55,6 +55,14 @@ namespace Library.BLL.SInventory_BLL
             
         }
 
+        public int SaveInvoiceBatchWithInvoices(InvoiceBatchDAO aInvoiceBatchDao, IList<int> invoiceIds)
+        {
+            DataTable dtdata = GetBatchNo(aInvoiceBatchDao.CompanyId.ToString(),
+                aInvoiceBatchDao.DeliveryManId.ToString(), aInvoiceBatchDao.Date.ToString());
+            aInvoiceBatchDao.BatchNo = Convert.ToInt32(dtdata.Rows[0][0].ToString());
+            return aInvoiceBatchDal.SaveInvoiceBatchWithInvoices(aInvoiceBatchDao, invoiceIds);
+        }
+
         public DataTable LoadBatchInfo(string batchId)
         {
            return aInvoiceBatchDal.GetInvoiceBatchId(batchId);

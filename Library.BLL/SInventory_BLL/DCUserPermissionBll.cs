@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -23,31 +23,10 @@ namespace Library.BLL.SInventory_BLL
             return aDcUserPermissionDal.GetDCList();
         }
 
-        public bool LoadDCUserPermissionDataForSave(List<UserCompanyUnitDao> aPermissionDaoList, string userId)
+        public bool SaveDCUserPermissions(int userId, List<int> companyUnitIds)
         {
-            bool status = false;
-
-            aDcUserPermissionDal.DeletePermissionInfo(userId);
-
-            foreach (UserCompanyUnitDao aUserCompanyUnitDao in aPermissionDaoList)
-            {
-                status = aDcUserPermissionDal.SaveDCUserPermissionInfo(aUserCompanyUnitDao);
-            }
-
-            return status;
+            return aDcUserPermissionDal.SaveDCUserPermissions(userId, companyUnitIds);
         }
-
-        //private bool CheckInfoAlreadyExistOrNot(UserCompanyUnitDao aUserCompanyUnitDao)
-        //{
-        //    DataTable aDataTable = aDcUserPermissionDal.CheckPermissionInfoAlreadyExistOrNot(aUserCompanyUnitDao);
-
-        //    if (aDataTable.Rows.Count > 0)
-        //    {
-        //        aDcUserPermissionDal.DeletePermissionInfo(aUserCompanyUnitDao);
-        //    }
-
-        //    return true;
-        //}
 
         public DataTable LoadDCUserPermissionById(string userId)
         {

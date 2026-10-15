@@ -22,24 +22,135 @@ namespace Library.DAL.SInventory_DAL
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
         // Sales Report 
+
         public DataTable SalesReportDAl(string districtId, DateTime fromDate, DateTime toDate)
         {
+            string fromDateStr = fromDate.ToString("yyyy-MM-dd");
+            string toDateStr = toDate.ToString("yyyy-MM-dd");
+            string filterParam = "";
 
-            string query = @"SELECT CU.ComUnitCode,CU.ComUnitName,C.CustomerCode,C.CustomerName,I.OrderNo,CONVERT(VARCHAR,I.OrderDate,103) as OrderDate,I.InvoiceNo,
-                         CONVERT(VARCHAR,I.InvoiceDate,103)  InvoiceDate,I.DelivaryInvoiceNo, CONVERT(VARCHAR,I.InvoiceDate,103) UpdateDate,ID.ProductCode,ID.ProductName,
-                         ID.PackSize,ID.BatchNo,CONVERT(VARCHAR,DS.ExpDate,103) ExpDate,ID.DeliveryQuantity,DeliveryNetAmount,
-                         DeliveryTotalPriceVatAmount,DeliveryDiscountAmount,ID.DelivarySpecialAmount,C.AreaCode,C.AreaName as DistrictCode,C.TerritoryCode, C.TerritoryName,EGI.EmpMasterCode AS MiaCode , C.RegionCode,C.Address MarketCode,C.Address MarketName
-                         FROM dbo.tblInvoice I  with(nolock)
-                         INNER JOIN dbo.tblInvoiceDetail ID ON ID.InvoiceId = I.InvoiceId 
-                         INNER JOIN dbo.tblCompanyUnit CU ON CU.ComUnitId = I.ComUnitId
-                         INNER JOIN View_CustomerMaster C ON C.CustomerMasterId = I.CustomerMasterId
-                         INNER JOIN dbo.tblDCStore DS ON DS.DCStoreId = ID.DCStoreId 
-						 INNER JOIN dbo.tblMIOInfo AS MIO ON I.MiaId = MIO.MIOId
-						 INNER JOIN dbo.tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId
-                         WHERE ID.DeliveryStatus IN ('Full','Partial') " + districtId + " and I.InvoiceDate BETWEEN '" + fromDate + "' and '" + toDate + "'";
+            if (!string.IsNullOrWhiteSpace(districtId))
+            {
+                string trimmed = districtId.Trim();
+                int unitId;
+                if (int.TryParse(trimmed, out unitId))
+                {
+                    if (unitId > 0)
+                    {
+                        filterParam = " AND I.ComUnitId = " + unitId;
+                    }
+                }
+                else
+                {
+                    if (!trimmed.StartsWith("AND ", StringComparison.OrdinalIgnoreCase) && !trimmed.StartsWith("WHERE ", StringComparison.OrdinalIgnoreCase))
+                    {
+                        filterParam = " AND " + trimmed;
+                    }
+                    else
+                    {
+                        filterParam = " " + trimmed;
+                    }
+                }
+            }
+
+            string query = @";WITH CTE_Invoices AS (
+    SELECT 
+        I.InvoiceId,
+        I.InvoiceNo,
+        I.InvoiceDate,
+        I.OrderNo,
+        I.OrderDate,
+        I.ComUnitId,
+        I.CustomerMasterId,
+        I.MiaId,
+        I.DelivaryInvoiceNo,
+        I.UpdateDate
+    FROM dbo.tblInvoice I WITH (NOLOCK)
+    INNER JOIN dbo.tblCompanyUnit CU WITH (NOLOCK) ON CU.ComUnitId = I.ComUnitId
+    WHERE I.InvoiceDate BETWEEN '" + fromDateStr + @" 00:00:00' AND '" + toDateStr + @" 23:59:59' " + filterParam + @"
+)
+SELECT 
+    CU.ComUnitCode AS DepotCode,
+    CU.ComUnitName AS DepotName,
+    INV.OrderNo,
+    CONVERT(VARCHAR(10), INV.OrderDate, 23) AS OrderDate,
+    C.CustomerCode,
+    C.CustomerName,
+    C.CategoryName AS CustomerType,
+    C.MarketCode,
+    C.MarketName,
+    C.TerritoryCode,
+    C.TerritoryName,
+    C.AreaCode,
+    C.AreaName,
+    C.RegionCode,
+    C.RegionName,
+    EGI.EmpMasterCode AS MiaCode,
+    EGI.EmpName AS MiaName,
+    ID.ProductCode,
+    ID.ProductName,
+    ID.PackSize,
+    ID.BatchNo,
+    CONVERT(VARCHAR(10), ISNULL(ID.ExpDate, DS.ExpDate), 23) AS ExpDate,
+    ISNULL(ID.UnitPrice, 0) AS UnitPrice,
+    INV.InvoiceNo,
+    CONVERT(VARCHAR(10), INV.InvoiceDate, 23) AS InvoiceDate,
+    ISNULL(ID.Quantity, 0) AS InvoicedQty,
+    ISNULL(ID.TotalPrice, ISNULL(ID.Quantity, 0) * ISNULL(ID.UnitPrice, 0)) AS InvoiceGrossAmount,
+    ISNULL(ID.DiscountAmount, 0) AS InvoiceTradeDiscount,
+    ISNULL(ID.SpecialAmount, 0) AS InvoiceSpecialDiscount,
+    ISNULL(ID.TotalPriceVatAmount, 0) AS InvoiceVATAmount,
+    ISNULL(ID.NetAmount, 0) AS InvoiceNetAmount,
+    CASE 
+        WHEN ISNULL(ID.DeliveryStatus, '') IN ('Full', 'Partial') THEN ID.DeliveryStatus
+        WHEN ISNULL(ID.DeliveryStatus, '') = 'Reject' THEN 'Reject'
+        ELSE 'In-Transit'
+    END AS DeliveryStatus,
+    CASE 
+        WHEN ISNULL(ID.DeliveryStatus, '') IN ('Full', 'Partial') THEN 0
+        ELSE DATEDIFF(DAY, INV.InvoiceDate, GETDATE())
+    END AS TransitAgingDays,
+    CASE 
+        WHEN ISNULL(ID.DeliveryStatus, '') IN ('Full', 'Partial') THEN ISNULL(ID.Quantity, 0) - ISNULL(ID.DeliveryQuantity, 0)
+        ELSE ISNULL(ID.Quantity, 0)
+    END AS InTransitQty,
+    INV.DelivaryInvoiceNo AS DeliveryInvoiceNo,
+    CONVERT(VARCHAR(10), INV.UpdateDate, 23) AS DeliveryConfirmationDate,
+    ISNULL(ID.DeliveryQuantity, 0) AS DeliveredQty,
+    ISNULL(ID.DeliveryTotalPrice, ISNULL(ID.DeliveryQuantity, 0) * ISNULL(ID.UnitPrice, 0)) AS DeliveryGrossAmount,
+    ISNULL(ID.DeliveryDiscountAmount, 0) AS DeliveryTradeDiscount,
+    ISNULL(ID.DelivarySpecialAmount, 0) AS DeliverySpecialDiscount,
+    ISNULL(ID.DeliveryTotalPriceVatAmount, 0) AS DeliveryVATAmount,
+    ISNULL(ID.DeliveryNetAmount, 0) AS DeliveredNetAmount
+FROM CTE_Invoices INV
+INNER JOIN dbo.tblInvoiceDetail ID WITH (NOLOCK) ON ID.InvoiceId = INV.InvoiceId
+INNER JOIN dbo.tblCompanyUnit CU WITH (NOLOCK) ON CU.ComUnitId = INV.ComUnitId
+LEFT JOIN dbo.View_CustomerMaster C WITH (NOLOCK) ON C.CustomerMasterId = INV.CustomerMasterId
+LEFT JOIN dbo.tblDCStore DS WITH (NOLOCK) ON DS.DCStoreId = ID.DCStoreId
+LEFT JOIN dbo.tblMIOInfo MIO WITH (NOLOCK) ON INV.MiaId = MIO.MIOId
+LEFT JOIN dbo.tblEmpGeneralInfo EGI WITH (NOLOCK) ON MIO.EmployeeId = EGI.EmpInfoId
+ORDER BY INV.InvoiceDate DESC, INV.InvoiceId DESC, ID.InvoiceDetailId ASC;";
 
             return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
         }
+        // public DataTable SalesReportDAl(string districtId, DateTime fromDate, DateTime toDate)
+        // {
+
+        //     string query = @"SELECT CU.ComUnitCode,CU.ComUnitName,C.CustomerCode,C.CustomerName,I.OrderNo,CONVERT(VARCHAR,I.OrderDate,103) as OrderDate,I.InvoiceNo,
+        //                  CONVERT(VARCHAR,I.InvoiceDate,103)  InvoiceDate,I.DelivaryInvoiceNo, CONVERT(VARCHAR,I.InvoiceDate,103) UpdateDate,ID.ProductCode,ID.ProductName,
+        //                  ID.PackSize,ID.BatchNo,CONVERT(VARCHAR,DS.ExpDate,103) ExpDate,ID.DeliveryQuantity,DeliveryNetAmount,
+        //                  DeliveryTotalPriceVatAmount,DeliveryDiscountAmount,ID.DelivarySpecialAmount,C.AreaCode,C.AreaName as DistrictCode,C.TerritoryCode, C.TerritoryName,EGI.EmpMasterCode AS MiaCode , C.RegionCode,C.Address MarketCode,C.Address MarketName
+        //                  FROM dbo.tblInvoice I  with(nolock)
+        //                  INNER JOIN dbo.tblInvoiceDetail ID ON ID.InvoiceId = I.InvoiceId 
+        //                  INNER JOIN dbo.tblCompanyUnit CU ON CU.ComUnitId = I.ComUnitId
+        //                  INNER JOIN View_CustomerMaster C ON C.CustomerMasterId = I.CustomerMasterId
+        //                  INNER JOIN dbo.tblDCStore DS ON DS.DCStoreId = ID.DCStoreId 
+        //INNER JOIN dbo.tblMIOInfo AS MIO ON I.MiaId = MIO.MIOId
+        //INNER JOIN dbo.tblEmpGeneralInfo AS EGI ON MIO.EmployeeId = EGI.EmpInfoId
+        //                  WHERE ID.DeliveryStatus IN ('Full','Partial') " + districtId + " and I.InvoiceDate BETWEEN '" + fromDate + "' and '" + toDate + "'";
+
+        //     return aCommonInternalDal.DataContainerDataTable(query, "SSIDB");
+        // }
         // Sales Report 
         public DataTable SalesReportDAl(DateTime fromDate, DateTime toDate)
         {

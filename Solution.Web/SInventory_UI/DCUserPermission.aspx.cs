@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -83,36 +82,13 @@ public partial class SInventory_UI_DCUserPermission : System.Web.UI.Page
     {
         if (Validation())
         {
-            var aPermissionDaoList = new List<UserCompanyUnitDao>();
-            UserCompanyUnitDao aCompanyUnitDao;
+            List<int> companyUnitIds = dcCheckBoxList.Items.Cast<ListItem>()
+                .Where(item => item.Selected)
+                .Select(item => Convert.ToInt32(item.Value))
+                .Distinct()
+                .ToList();
 
-            Int32 checkCount = CountDCCheck();
-
-            for (int i = 0; i < dcCheckBoxList.Items.Count; i++)
-            {
-                if (dcCheckBoxList.Items[i].Selected)
-                {
-                    aCompanyUnitDao = new UserCompanyUnitDao();
-
-                    aCompanyUnitDao.CompanyUnitId = Convert.ToInt32(dcCheckBoxList.Items[i].Value);
-                    aCompanyUnitDao.UserId = Convert.ToInt32(userDropDownList.SelectedValue);
-
-                    //if (dcCheckBoxList.Items[i].Value == "15")
-                    //{
-                    //    aCompanyUnitDao.CWHPermission = true;
-                    //}
-
-                    //if (checkCount == 11)
-                    //{
-                    //    aCompanyUnitDao.NationalReportPermission = true;
-                    //}
-   
-                    aPermissionDaoList.Add(aCompanyUnitDao);
-                }
-
-            }
-
-            bool status = aDcUserPermissionBll.LoadDCUserPermissionDataForSave(aPermissionDaoList,userDropDownList.SelectedValue);
+            bool status = aDcUserPermissionBll.SaveDCUserPermissions(Convert.ToInt32(userDropDownList.SelectedValue), companyUnitIds);
 
             if (status)
             {
@@ -125,22 +101,6 @@ public partial class SInventory_UI_DCUserPermission : System.Web.UI.Page
             }
         }
     }
-
-    private int CountDCCheck()
-    {
-        Int32 checkCount = 0;
-
-        for (int i = 0; i < dcCheckBoxList.Items.Count; i++)
-        {
-            if (dcCheckBoxList.Items[i].Selected )
-            {
-                checkCount++;
-            }
-        }
-
-        return checkCount;
-    }
-
 
     private bool Validation()
     {

@@ -50,18 +50,24 @@ public partial class HTMLReport_SalesPerformanceReport : System.Web.UI.Page
 
             aDal.CreateConnection();
 
-            DataTable dt = aDal.GetSalesVsTargetReport_ProductWise(
-                companyId,
-                comUnitId,
-                regionId,
-                areaId,
-                territoryId,
-                mioId,
-                period,
-                year
-            );
-
-            aDal.CloseAllConnection();
+            DataTable dt;
+            try
+            {
+                dt = aDal.GetSalesVsTargetReport_ProductWise(
+                    companyId,
+                    comUnitId,
+                    regionId,
+                    areaId,
+                    territoryId,
+                    mioId,
+                    period,
+                    year
+                );
+            }
+            finally
+            {
+                aDal.CloseAllConnection(); // else an error leaks the connection + open transaction
+            }
 
             if (dt == null || dt.Rows.Count == 0)
             {
