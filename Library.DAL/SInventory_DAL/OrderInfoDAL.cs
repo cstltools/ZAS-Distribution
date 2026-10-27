@@ -321,13 +321,13 @@ END AS Permission
         }
         public void BatchNoLoad(DropDownList aDownList, string companyId, string date, string delmanId)
         {
-            string dc = @"SELECT * FROM dbo.tblInvoiceBatch WHERE CompanyId='" + companyId + "' AND Date='" + date + "' AND DeliveryManId='" + delmanId + "'";
+            string dc = @"SELECT BatchId, ISNULL(BatchCode, CONVERT(varchar, BatchNo)) AS BatchNo FROM dbo.tblInvoiceBatch WHERE CompanyId='" + companyId + "' AND Date='" + date + "' AND DeliveryManId='" + delmanId + "'";
             aCommonInternalDal.LoadDropDownValue(aDownList, "BatchNo", "BatchId", dc, "SSIDB");
         }
 
         public void BatchNoLoadByUser(DropDownList aDownList, string date, string delmanId,string userId)
         {
-            string dc = @"SELECT DISTINCT tblInvoiceBatch.BatchId,BatchNo FROM dbo.tblInvoiceBatch 
+            string dc = @"SELECT DISTINCT tblInvoiceBatch.BatchId,ISNULL(BatchCode, CONVERT(varchar, BatchNo)) AS BatchNo FROM dbo.tblInvoiceBatch 
                           INNER JOIN dbo.tblInvoice ON tblInvoice.BatchId = tblInvoiceBatch.BatchId WHERE Date='" + date + "' AND tblInvoiceBatch.DeliveryManId = " + delmanId + " AND tblInvoice.ComUnitId IN (SELECT CompanyUnitId FROM dbo.tblUserCompanyUnit WHERE UserId = " + userId + ")";
             aCommonInternalDal.LoadDropDownValue(aDownList, "BatchNo", "BatchId", dc, "SSIDB");
         }
@@ -335,7 +335,7 @@ END AS Permission
 
         public void BatchNoLoad(DropDownList aDownList, string date, string delmanId)
         {
-            string dc = @"SELECT * FROM dbo.tblInvoiceBatch WHERE Date='" + date + "' AND DeliveryManId='" + delmanId + "'";
+            string dc = @"SELECT BatchId, ISNULL(BatchCode, CONVERT(varchar, BatchNo)) AS BatchNo FROM dbo.tblInvoiceBatch WHERE Date='" + date + "' AND DeliveryManId='" + delmanId + "'";
             aCommonInternalDal.LoadDropDownValue(aDownList, "BatchNo", "BatchId", dc, "SSIDB");
         }
 

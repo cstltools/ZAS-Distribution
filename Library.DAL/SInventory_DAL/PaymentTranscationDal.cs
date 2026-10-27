@@ -105,6 +105,7 @@ namespace Library.DAL.SInventory_DAL
         {
             Int32 status = 0;
             List<int> savedDetailIds = new List<int>();
+            int firstInvoiceId = 0;
 
             aDbManager.CreateConnectionByConnectionStringKey("SolutionConnectionStringSSIDB");
 
@@ -155,6 +156,7 @@ namespace Library.DAL.SInventory_DAL
 
                     // Track detail for receipt
                     savedDetailIds.Add(detailResult);
+                    if (firstInvoiceId == 0) firstInvoiceId = custPaymentDetail.InvoiceId;
                 }
 
                 if (savedDetailIds.Count > 0)
@@ -181,6 +183,24 @@ namespace Library.DAL.SInventory_DAL
                         // means something genuinely went wrong. Do not report a
                         // successful payment with no receipt.
                         throw new InvalidOperationException("Money receipt could not be created for this payment.");
+                    }
+
+                    // Receipt no = RCPT-<ComUnitCode>-<serial>-dd-MM-yy; serial per depot per day (depot of the
+                    // first paid invoice). Overwrites the proc's number inside the same transaction.
+                    // ponytail: count-based serial, see InvoiceBatchDAL; mixed-depot receipts take the first invoice's depot
+                    object depotCode = aDbManager.ExecuteScalarSqlStrict(
+                        @"SELECT U.ComUnitCode FROM dbo.tblInvoice I INNER JOIN dbo.tblCompanyUnit U ON U.ComUnitId = I.ComUnitId
+                          WHERE I.InvoiceId = " + firstInvoiceId, null);
+                    if (depotCode != null && Convert.ToString(depotCode) != "")
+                    {
+                        string prefix = "RCPT-" + depotCode;
+                        string suffix = DateTime.Today.ToString("dd-MM-yy");
+                        int serial = Convert.ToInt32(aDbManager.ExecuteScalarSqlStrict(
+                            "SELECT COUNT(*) + 1 FROM dbo.tblMoneyReceipt WITH (UPDLOCK, HOLDLOCK) WHERE MoneyReceiptNo LIKE @pat",
+                            new List<SqlParameter> { new SqlParameter("@pat", prefix + "-%-" + suffix) }));
+                        aDbManager.ExecuteScalarSqlStrict(
+                            "UPDATE dbo.tblMoneyReceipt SET MoneyReceiptNo = @no WHERE MoneyReceiptId = " + moneyReceiptId,
+                            new List<SqlParameter> { new SqlParameter("@no", prefix + "-" + serial + "-" + suffix) });
                     }
 
                     status = moneyReceiptId;

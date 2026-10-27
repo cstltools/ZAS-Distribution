@@ -49,7 +49,11 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetBatchWiseTopSheet( int delManId, int batchId, DateTime invDate)
         {
-            string query = @"SELECT CSTMR.CustomerName,CI.ComUnitName AS CompanyName,INV.OrderNo,INV.OrderDate, INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, INVB.BatchNo,
+            // Depot = tblCompanyUnit, SR = tblMIOInfo via INV.MiaId. SerialNo restarts per Depot+SR (one number per invoice).
+            string query = @"SELECT CSTMR.CustomerName,CI.ComUnitName AS CompanyName,CI.ComUnitName AS Depot,
+                            ISNULL(SREGI.EmpMasterCode,'') AS SRCode, ISNULL(SREGI.EmpName,'N/A') AS SRName,
+                            DENSE_RANK() OVER (PARTITION BY CI.ComUnitName, ISNULL(SREGI.EmpName,'N/A') ORDER BY INV.InvoiceNo) AS SerialNo,
+                            INV.OrderNo,INV.OrderDate, INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, ISNULL(INVB.BatchCode, CONVERT(varchar, INVB.BatchNo)) AS BatchNo,
                             INVD.ProductCode, INVD.ProductName,  INVD.PackSize,ORD.Quantity AS OrderQty, INVD.TotalQuantity AS InvQty, INVD.UnitPrice, INVD.UnitVatAmount,
                             INVD.SpecialAmount, INVD.TotalPrice ,INVD.TotalPriceVatAmount, INVD.NetAmount FROM dbo.tblInvoice AS INV 
                             INNER JOIN dbo.tblInvoiceDetail AS INVD ON INVD.InvoiceId = INV.InvoiceId
@@ -60,7 +64,10 @@ namespace Library.DAL.SInventory_DAL
                             INNER JOIN dbo.tblCompanyUnit AS CI ON INV.ComUnitId = CI.ComUnitId
                             INNER JOIN dbo.tblInvoiceBatch AS INVB ON INVB.BatchId = INV.BatchId
                             INNER JOIN dbo.tblCustMaster AS CSTMR ON CSTMR.CustomerMasterId = INV.CustomerMasterId
-                            WHERE INV.DeliveryManId = '" + delManId + "' AND INV.BatchId = '" + batchId + "' AND INV.InvoiceDate = '" + invDate + "'";
+                            LEFT JOIN dbo.tblMIOInfo AS MIO ON MIO.MIOId = INV.MiaId
+                            LEFT JOIN dbo.tblEmpGeneralInfo AS SREGI ON SREGI.EmpInfoId = MIO.EmployeeId
+                            WHERE INV.DeliveryManId = '" + delManId + "' AND INV.BatchId = '" + batchId + "' AND INV.InvoiceDate = '" + invDate + @"'
+                            ORDER BY Depot, SRName, SerialNo, INV.InvoiceNo";
 
             return aInternalDal.DataContainerDataTable(query, "SSIDB");
 
@@ -68,7 +75,7 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable BatchWiseDeliveryTopSheet(int delManId, int batchId, DateTime invDate)
         {
-            string query = @"SELECT  CSTMR.CustomerName ,CI.ComUnitName AS CompanyName,INV.OrderNo,INV.OrderDate, INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, INVB.BatchNo,
+            string query = @"SELECT  CSTMR.CustomerName ,CI.ComUnitName AS CompanyName,INV.OrderNo,INV.OrderDate, INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, ISNULL(INVB.BatchCode, CONVERT(varchar, INVB.BatchNo)) AS BatchNo,
                             INVD.ProductCode, INVD.ProductName,  INVD.PackSize,ORD.Quantity AS OrderQty, INVD.Quantity AS InvQty,INVD.DeliveryQuantity, INVD.UnitPrice, INVD.UnitVatAmount,
                             INVD.DelivarySpecialAmount, INVD.DeliveryTotalPrice ,INVD.DeliveryTotalPriceVatAmount, INVD.DeliveryNetAmount FROM dbo.tblInvoice AS INV 
                             INNER JOIN dbo.tblInvoiceDetail AS INVD ON INVD.InvoiceId = INV.InvoiceId
@@ -97,7 +104,7 @@ namespace Library.DAL.SInventory_DAL
 
         public DataTable GetBatchWiseTopSheetDetail(int delManId, int batchId, DateTime invDate)
         {
-            string query = @"SELECT CI.CompanyName,INV.OrderNo,INV.OrderDate, INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, INVB.BatchNo,
+            string query = @"SELECT CI.CompanyName,INV.OrderNo,INV.OrderDate, INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, ISNULL(INVB.BatchCode, CONVERT(varchar, INVB.BatchNo)) AS BatchNo,
 INVD.ProductCode, INVD.ProductName,  INVD.PackSize,ORD.Quantity AS OrderQty, INVD.Quantity AS InvQty, INVD.UnitPrice, INVD.UnitVatAmount,
 INVD.SpecialAmount, INVD.TotalPrice ,INVD.TotalPriceVatAmount, INVD.NetAmount FROM dbo.tblInvoice AS INV 
 INNER JOIN dbo.tblInvoiceDetail AS INVD ON INVD.InvoiceId = INV.InvoiceId
@@ -114,7 +121,7 @@ INNER JOIN dbo.tblInvoiceBatch AS INVB ON INVB.BatchId = INV.BatchId
 
         public DataTable ReturnOnDeliveryReport(int delManId, int batchId, DateTime invDate)
         {
-            string query = @"SELECT CI.CompanyName,INV.OrderNo,INV.OrderDate, INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, INVB.BatchNo,
+            string query = @"SELECT CI.CompanyName,INV.OrderNo,INV.OrderDate, INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, ISNULL(INVB.BatchCode, CONVERT(varchar, INVB.BatchNo)) AS BatchNo,
                              INVD.ProductCode, INVD.ProductName,  INVD.PackSize,ORD.Quantity AS OrderQty, INVD.Quantity AS InvQty, INVD.UnitPrice, INVD.UnitVatAmount,
                              INVD.SpecialAmount, INVD.TotalPrice ,INVD.TotalPriceVatAmount, INVD.NetAmount FROM dbo.tblInvoice AS INV 
                              INNER JOIN dbo.tblInvoiceDetail AS INVD ON INVD.InvoiceId = INV.InvoiceId
@@ -132,7 +139,7 @@ INNER JOIN dbo.tblInvoiceBatch AS INVB ON INVB.BatchId = INV.BatchId
         public DataTable BatchWiseDeliveryReturnTopSheet(int delManId, int batchId, DateTime invDate)
         {
             string query = @"SELECT CSTMR.CustomerCode,CSTMR.CustomerName,CI.ComUnitName AS Depot, C.CompanyName,INV.OrderNo,INV.OrderDate, 
-                            INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, INVB.BatchNo,INVD.UnitPrice,
+                            INV.InvoiceNo, INV.InvoiceDate,EGI.EmpMasterCode,EGI.EmpName,EGI.CellNumber, ISNULL(INVB.BatchCode, CONVERT(varchar, INVB.BatchNo)) AS BatchNo,INVD.UnitPrice,
                             INVD.ProductCode, INVD.ProductName,  INVD.PackSize,(INVD.Quantity-INVD.DeliveryQuantity)Quantity,
                             (INVD.NetAmount-INVD.DeliveryNetAmount)Amount, INVD.ReturnReason FROM dbo.tblInvoice AS INV 
                             INNER JOIN dbo.tblInvoiceDetail AS INVD ON INVD.InvoiceId = INV.InvoiceId
