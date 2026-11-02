@@ -14,6 +14,10 @@
 --   4. Final filter: ClosingStock / ClosingStockValue compared with <> 0 instead of > 0
 --      so rows that are only negative still appear.
 --
+--   5. ClosingStockValue = ClosingStock * Landing Price (tblCentralStore.Avg_Rate, latest receive, as on Product Price Report)
+--      (FIX 6, see LedgerRate CTE). Old formula (OB + receive value - issue value, each via its
+--      own join) gave negative / 0 values while ClosingStock was right. Other columns unchanged.
+--
 -- NOT changed (needs data verification first):
 --   * SampleIssue: SUM(ST.Quantity * -1) — correct only if tblSampleIssueTranscation.Quantity
 --     is stored negative. Verify: SELECT TOP 5 Quantity FROM tblSampleIssueTranscation.
@@ -55,7 +59,7 @@ OB AS
             + (ISNULL(CTRS.VATPerUnit, 0) * ISNULL(OB.StockQty, 0))
         ) AS Value
     FROM dbo.tblDCStore_OpeningBalance OB WITH (NOLOCK)
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON OB.TempReceiveId = CTRS.ReceiveId
     WHERE
         OB.ComUnitId = @DcId
@@ -76,7 +80,7 @@ StoReceive AS
             + (ISNULL(CTRS.VATPerUnit, 0) * ISNULL(DCS.TotalQuantity, 0))
         ) AS Value
     FROM dbo.tblDCStore DCS WITH (NOLOCK)
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         DCS.ComUnitId = @DcId
@@ -119,7 +123,7 @@ ChallanReceive AS
             + (ISNULL(CTRS.VATPerUnit, 0) * ISNULL(DCS.TotalQuantity, 0))
         ) AS Value
     FROM dbo.tblDCStore DCS WITH (NOLOCK)
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         DCS.ComUnitId = @DcId
@@ -139,7 +143,7 @@ StockReceive AS
             + (ISNULL(CTRS.VATPerUnit, 0) * ISNULL(DCS.TotalQuantity, 0))
         ) AS Value
     FROM dbo.tblDCStore DCS WITH (NOLOCK)
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         DCS.ComUnitId = @DcId
@@ -156,13 +160,15 @@ Sales AS
         SUM(
             (ISNULL(CTRS.UnitPrice, 0) * ISNULL(ID.DeliveryQuantity, 0))
             + (ISNULL(CTRS.VATPerUnit, 0) * ISNULL(ID.DeliveryQuantity, 0))
-        ) AS Value
+        ) AS Value,
+        -- invoice Grand Total basis: sum of line NP (DeliveryNetAmount)
+        SUM(ISNULL(ID.DeliveryNetAmount, 0)) AS InvoiceValue
     FROM dbo.tblInvoiceDetail ID WITH (NOLOCK)
     INNER JOIN dbo.tblInvoice I WITH (NOLOCK)
         ON ID.InvoiceId = I.InvoiceId
     INNER JOIN dbo.tblDCStore DCS WITH (NOLOCK)
         ON DCS.DCStoreId = ID.DCStoreId
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         I.ComUnitId = @DcId
@@ -186,7 +192,7 @@ Bonus AS
         ON ID.InvoiceId = I.InvoiceId
     INNER JOIN dbo.tblDCStore DCS WITH (NOLOCK)
         ON DCS.DCStoreId = ID.DCStoreId
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         I.ComUnitId = @DcId
@@ -210,7 +216,7 @@ ProductBonus AS
         ON ID.InvoiceId = I.InvoiceId
     INNER JOIN dbo.tblDCStore DCS WITH (NOLOCK)
         ON DCS.DCStoreId = ID.DCStoreId
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         I.ComUnitId = @DcId
@@ -234,7 +240,7 @@ SalesInTransit AS
         ON ID.InvoiceId = I.InvoiceId
     INNER JOIN dbo.tblDCStore DCS WITH (NOLOCK)
         ON DCS.DCStoreId = ID.DCStoreId
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         I.ComUnitId = @DcId
@@ -258,7 +264,7 @@ ChallanIssue AS
         ON CD.ChalanId = CI.ChalanId
     INNER JOIN dbo.tblDCStore DCS WITH (NOLOCK)
         ON DCS.DCStoreId = CD.DCStoreId
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         CI.FromComUnitId = @DcId
@@ -282,7 +288,7 @@ ChallanTransit AS
         ON CD.ChalanId = CI.ChalanId
     INNER JOIN dbo.tblDCStore DCS WITH (NOLOCK)
         ON DCS.DCStoreId = CD.DCStoreId
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         CI.FromComUnitId = @DcId
@@ -306,7 +312,7 @@ FreezeRestricted AS
     FROM dbo.tblDCStoreFreeze F WITH (NOLOCK)
     INNER JOIN dbo.tblDCStore DCS WITH (NOLOCK)
         ON DCS.DCStoreId = F.DCStoreId
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         F.ComUnitId = @DcId
@@ -330,7 +336,7 @@ FreezeBlocked AS
     FROM dbo.tblDCStoreFreeze F WITH (NOLOCK)
     INNER JOIN dbo.tblDCStore DCS WITH (NOLOCK)
         ON DCS.DCStoreId = F.DCStoreId
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         F.ComUnitId = @DcId
@@ -358,7 +364,7 @@ SampleIssue AS
         ON ST.IssueDetailId = SMPD.OrderDetailId
     INNER JOIN dbo.tblDCStore DCS WITH (NOLOCK)
         ON DCS.DCStoreId = ST.DCStoreId
-    INNER JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
+    LEFT JOIN dbo.tblCentralStore CTRS WITH (NOLOCK)
         ON DCS.TempReceiveId = CTRS.ReceiveId
     WHERE
         SMPI.ActionStatus = 'Accepted'
@@ -366,6 +372,31 @@ SampleIssue AS
         AND SMPI.ComUnitId = @DcId
     GROUP BY
         SMPD.ProductCode
+),
+
+-- FIX 6: Closing value = ClosingStock * Landing Price, the same rate the Product Price Report
+-- (WeaightedAVG_Report / sp_INV_WeightedAverage_Report) shows: tblCentralStore.Avg_Rate of the
+-- latest receive (MAX ReceiveId) per company + product. Opening (OB CTE) and qty logic untouched.
+-- ponytail: latest rate overall, not as-of @ToDate (same as the price report); add a
+-- ReceiveDate <= @ToDate filter if historical-month valuation must use that month's rate.
+LedgerRate AS
+(
+    SELECT
+        PB.ProductCode,
+        ISNULL(CS.Avg_Rate, 0) AS Rate
+    FROM ProductBase PB
+    LEFT JOIN
+    (
+        SELECT cs1.ProductCode, cs1.Avg_Rate
+        FROM dbo.tblCentralStore cs1 WITH (NOLOCK)
+        INNER JOIN
+        (
+            SELECT ProductCode, MAX(ReceiveId) AS MaxReceiveId
+            FROM dbo.tblCentralStore WITH (NOLOCK)
+            WHERE Company_Id = @CompanyId
+            GROUP BY ProductCode
+        ) x ON x.ProductCode = cs1.ProductCode AND x.MaxReceiveId = cs1.ReceiveId
+    ) CS ON CS.ProductCode = PB.ProductCode
 ),
 
 RawData AS
@@ -398,12 +429,16 @@ RawData AS
         ISNULL(CT.Value, 0) AS ChallanTransitValue,
 
         ISNULL(SL.Value, 0) AS SalesValue,
+        ISNULL(SL.InvoiceValue, 0) AS IssuedToSalesValue,
         ISNULL(PBNS.Value, 0) AS ProductBonusValue,
         ISNULL(CI.Value, 0) AS ChallanIssueValue,
         ISNULL(SI.Value, 0) AS SampleIssueValue,
         ISNULL(BN.Value, 0) AS BonusValue,
-        ISNULL(SIT.Value, 0) AS SalesTransitValue
+        ISNULL(SIT.Value, 0) AS SalesTransitValue,
+        ISNULL(LR.Rate, 0) AS LedgerRate
     FROM ProductBase PB
+    LEFT JOIN LedgerRate LR
+        ON LR.ProductCode = PB.ProductCode
     LEFT JOIN OB
         ON OB.ProductCode = PB.ProductCode
     LEFT JOIN StoReceive SR
@@ -454,6 +489,7 @@ FinalData AS
         IntransitWHB2B,
         SalesInTransit,
         IssuedToSales,
+        IssuedToSalesValue,
         IssuedToBonus,
         IssuedToProductBonus,
         IssuedToAreaOfficeInterTransfer,
@@ -514,23 +550,13 @@ FinalData AS
 
         -- FIX 3: ABS removed — negative means issued value exceeded received value,
         -- which the reader must see, not have flipped positive
-        (
+        -- FIX 6: closing qty * landing price, see LedgerRate
+        CAST(
             (
-                OBValue
-                + ReceiveValue
-                + NonTransReceiveValue
-                + ChallanReceiveValue
-                + ChallanTransitValue
-            )
-            -
-            (
-                SalesValue
-                + ProductBonusValue
-                + ChallanIssueValue
-                + SampleIssueValue
-                + BonusValue
-                + SalesTransitValue
-            )
+                (OpeningStock + ReceiveFromCentralWarehouse + ReturnQty + ReceiveFromAreaOfficeInterTransfer + IntransitWHB2B)
+                -
+                (IssuedToSales + IssuedToProductBonus + IssuedToAreaOfficeInterTransfer + SampleIssue + IssuedToBonus + SalesInTransit)
+            ) * LedgerRate AS DECIMAL(18,2)
         ) AS ClosingStockValue
     FROM RawData
 )

@@ -445,9 +445,9 @@ namespace Library.BLL.SInventory_BLL
 
                   aRequisitionDal.UpdateTempReceiveId();
 
-                  // Weighted Avg (Disabled as per user request to not maintain DC Store WAC)
+                  // Weighted Avg (re-enabled 2026-10-21: sales deductions post to this ledger, receipts must too)
 
-                  // var stat = aRequisitionDal.ProcessWeightedAverage(DCStoreId);
+                  aRequisitionDal.ProcessWeightedAverage(DCStoreId);
               }
           }
 

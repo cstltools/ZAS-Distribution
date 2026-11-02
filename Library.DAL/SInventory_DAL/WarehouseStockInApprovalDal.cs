@@ -112,6 +112,21 @@ WHERE WHSM.Status = 'Posted' ORDER BY EntryDate DESC";
             return aCommonInternalDal.SaveDataByInsertCommand(insertQuery, "SSIDB");
         }
 
+        // Details whose Price is outside [1/2x, 2x] of the product's last central-store rate.
+        // Reference skips UnitPrice <= 1 rows (opening placeholders 1.00 / 0.50 / 0.01).
+        public DataTable GetPriceOutliers(int stockInMasterId)
+        {
+            const string query = @"SELECT P.ProductCode, D.Price, R.RefRate
+FROM tblWHStockInDetail D
+INNER JOIN tblProduct P ON P.ProductId = D.ProductId
+CROSS APPLY (SELECT TOP 1 ISNULL(CS.Avg_Rate, CS.UnitPrice) RefRate FROM tblCentralStore CS
+             WHERE CS.ProductId = D.ProductId AND CS.UnitPrice > 1 ORDER BY CS.ReceiveId DESC) R
+WHERE D.WHStockInMasterID = @MasterId AND R.RefRate > 0
+  AND (D.Price > 2 * R.RefRate OR D.Price < R.RefRate / 2)";
+            var parameters = new List<SqlParameter> { new SqlParameter("@MasterId", stockInMasterId) };
+            return aCommonInternalDal.DataContainerDataTable(query, parameters, "SSIDB");
+        }
+
         public bool PostJournal(int stockInMasterId)
         {
             List<SqlParameter> aSqlParameterList = new List<SqlParameter>();

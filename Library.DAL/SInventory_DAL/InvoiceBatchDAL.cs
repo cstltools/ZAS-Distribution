@@ -128,26 +128,16 @@ WHERE DL.IsActive = 1 ORDER BY JobLocationName ASC";
                     throw new InvalidOperationException("Some selected invoices are already in another batch. Please reload and try again.");
                 }
 
-                // BatchCode = <ComUnitCode>-<serial>-dd-MM-yy; serial per depot per day, restarts daily
-                string depot = Convert.ToString(aDbManager.ExecuteScalarSqlStrict(
-                    @"SELECT CAST(COUNT(DISTINCT U.ComUnitId) AS varchar(10)) + '|' + ISNULL(MIN(U.ComUnitCode), '')
-                      FROM dbo.tblInvoice I INNER JOIN dbo.tblCompanyUnit U ON U.ComUnitId = I.ComUnitId
-                      WHERE I.BatchId = " + batchId, null));
-                string[] parts = depot.Split('|');
-                if (parts[0] != "1" || parts[1] == "")
-                {
-                    throw new InvalidOperationException("Selected invoices must belong to one depot only.");
-                }
-
+                // BatchCode = <serial>-dd-MM-yy; one serial sequence for all batches of the day, restarts daily
                 string suffix = aInvoiceBatchDao.Date.ToString("dd-MM-yy");
-                // ponytail: serial = count of today's codes (UPDLOCK serialises racers); a deleted batch could repeat a serial, use MAX if batches get deleted
+                // ponytail: serial = count of that day's codes (UPDLOCK serialises racers); a deleted batch could repeat a serial, use MAX if batches get deleted
                 int serial = Convert.ToInt32(aDbManager.ExecuteScalarSqlStrict(
                     "SELECT COUNT(*) + 1 FROM dbo.tblInvoiceBatch WITH (UPDLOCK, HOLDLOCK) WHERE BatchCode LIKE @pat",
-                    new List<SqlParameter> { new SqlParameter("@pat", parts[1] + "-%-" + suffix) }));
+                    new List<SqlParameter> { new SqlParameter("@pat", "[0-9]%-" + suffix) }));
 
                 aDbManager.ExecuteScalarSqlStrict(
                     "UPDATE dbo.tblInvoiceBatch SET BatchCode = @code WHERE BatchId = " + batchId,
-                    new List<SqlParameter> { new SqlParameter("@code", parts[1] + "-" + serial + "-" + suffix) });
+                    new List<SqlParameter> { new SqlParameter("@code", serial + "-" + suffix) });
 
                 aDbManager.CloseConnection();
                 return batchId;

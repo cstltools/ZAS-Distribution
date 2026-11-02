@@ -66,6 +66,11 @@ namespace Library.BLL.SInventory_BLL
             return approvalDal.GetLoadWarehouseStockInInfo(stockInMasterId);
         }
 
+        public DataTable PriceOutliers(int stockInMasterId)
+        {
+            return approvalDal.GetPriceOutliers(stockInMasterId);
+        }
+
         public bool PostJournal(int stockInMasterId)
         {
             return approvalDal.PostJournal(stockInMasterId);

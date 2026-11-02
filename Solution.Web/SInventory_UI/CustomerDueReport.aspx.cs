@@ -62,7 +62,7 @@ public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
 
         if (fromDateTextBox.Text.Trim() != "" && toDateTextBox.Text.Trim() == "")
         {
-            param = param + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate => '" + fromDateTextBox.Text.Trim() + "'";
+            param = param + " WHERE DeliveryInvoiceStatus IN ('Full','Partial') AND INV.InvoiceDate  >= '" + fromDateTextBox.Text.Trim() + "'";
         }
 
         if (fromDateTextBox.Text.Trim() == "" && toDateTextBox.Text.Trim() != "")
@@ -392,7 +392,7 @@ public partial class SInventory_UI_CustomerDueReport : System.Web.UI.Page
 
         if (fromDateTextBox.Text.Trim() != "" && toDateTextBox.Text.Trim() == "")
         {
-            param2 = param2 + " AND CP.PaymentDate => '" + fromDateTextBox.Text.Trim() + "'";
+            param2 = param2 + " AND CP.PaymentDate  >= '" + fromDateTextBox.Text.Trim() + "'";
         }
 
         if (fromDateTextBox.Text.Trim() == "" && toDateTextBox.Text.Trim() != "")

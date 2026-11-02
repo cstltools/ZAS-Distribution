@@ -86,6 +86,7 @@
                         <td width="13%" class="TDLeft">
                         </td>
                         <td width="20%" class="TDRight">
+                            <asp:CheckBox ID="overridePriceCheckBox" runat="server" Text="Override price check (approve even if price is >2x / <1/2 of last central store rate)" />
                         </td>
                     </tr>
                     <tr>

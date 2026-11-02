@@ -945,7 +945,7 @@
             var p = document.getElementById('progress');
             if (p) { p.style.display = 'none'; }
             args.set_errorHandled(true);
-            alert('The server took too long or failed. Please check Money Receipt / payment list before submitting again to avoid a duplicate.');
+            alert('The server took too long or failed. Please check Money Receipt / payment list before submitting again to avoid a duplicate.\n\nDetail: ' + args.get_error().message);
         });
 
         $(document).ready(function () {

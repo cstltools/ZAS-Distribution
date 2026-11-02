@@ -230,7 +230,7 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         // ponytail: one receipt = one DB transaction over every row (SaveCustPaymentNew2:
         // master + detail + journal posting per invoice). Cap the row count so a single
         // submit cannot hold accounting locks for minutes; raise once posting is cheaper.
-        const int MaxInvoicesPerReceipt = 10;
+        const int MaxInvoicesPerReceipt = 40;
         if (dtSelected.Rows.Count + rowsToAdd.Count > MaxInvoicesPerReceipt)
         {
             ShowMessageBox(string.Format("A single payment can include at most {0} invoices. Please submit this payment first, then add the remaining invoices as a new payment.", MaxInvoicesPerReceipt));
@@ -609,11 +609,12 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
                 // attempted against the database.
                 ShowMessageBox("Please check the Payment Date and Payment Amount fields -- one of them has an invalid value. Nothing was saved.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // A hard failure occurred and the whole submission was rolled
                 // back -- nothing was saved. Leave the entered data on screen
                 // so the user can retry instead of losing their input.
+                try { System.IO.File.AppendAllText(Server.MapPath("~/App_Data/DatabaseErrors.log"), string.Format("{0:yyyy-MM-dd HH:mm:ss.fff}\tOperation=PaymentSubmit\tRows={1}\t{2}\r\n", DateTime.Now, selectedOrderGridView.Rows.Count, ex)); } catch { }
                 ShowMessageBox("❌ Payment could not be saved due to an error. Nothing was recorded. Please try again.");
             }
 
@@ -1131,9 +1132,10 @@ public partial class SInventory_UI_PaymentTranscation : System.Web.UI.Page
         {
             DataTable aTable = aCustPaymentBll.GetCreditBalanceInfo(hdCustomerId.Value);
 
-            if (aTable.Rows.Count > 0)
+            // SUM can be NULL, and Amount may not be a decimal column; Field<decimal> threw on both
+            if (aTable.Rows.Count > 0 && aTable.Rows[0]["Balance"] != DBNull.Value)
             {
-                totalBalance.Text = aTable.Rows[0].Field<decimal>("Balance").ToString(CultureInfo.InvariantCulture);
+                totalBalance.Text = Convert.ToDecimal(aTable.Rows[0]["Balance"]).ToString(CultureInfo.InvariantCulture);
             }
             else
             {

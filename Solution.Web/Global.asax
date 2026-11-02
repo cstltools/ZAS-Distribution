@@ -17,7 +17,14 @@
     void Application_Error(object sender, EventArgs e) 
     { 
         // Code that runs when an unhandled error occurs
-
+        // ponytail: plain file log so async-postback 500s ("unknown error") can be diagnosed; swap for a real logger if one is added
+        try
+        {
+            Exception ex = Server.GetLastError();
+            System.IO.File.AppendAllText(Server.MapPath("~/App_Data/errors.log"),
+                DateTime.Now + " " + Request.Url + Environment.NewLine + ex + Environment.NewLine + Environment.NewLine);
+        }
+        catch { }
     }
 
     void Session_Start(object sender, EventArgs e) 

@@ -139,6 +139,8 @@ public partial class SInventory_UI_WarehouseStockInApproval : System.Web.UI.Page
 
         if (statusRadioButtonList.SelectedItem.Text != "Reject")
         {
+            var blocked = new System.Text.StringBuilder();
+
             for (int i = 0; i < loadGridView.Rows.Count; i++)
             {
 
@@ -150,8 +152,19 @@ public partial class SInventory_UI_WarehouseStockInApproval : System.Web.UI.Page
 
                     aMasterDao.WHStockInMasterID = Convert.ToInt32(loadGridView.DataKeys[i][0].ToString());
 
-
-                    aMasterDao.WHStockInMasterID = Convert.ToInt32(loadGridView.DataKeys[i][0].ToString());
+                    // Price guard: a unit price > 2x or < 1/2 of the product's last central-store rate
+                    // is almost always an entry error and would pollute the weighted average.
+                    if (!overridePriceCheckBox.Checked)
+                    {
+                        DataTable outliers = approvalBll.PriceOutliers(aMasterDao.WHStockInMasterID);
+                        if (outliers.Rows.Count > 0)
+                        {
+                            foreach (DataRow r in outliers.Rows)
+                                blocked.AppendFormat("\\nMaster {0}: product {1} price {2:0.00} vs last rate {3:0.00}",
+                                    aMasterDao.WHStockInMasterID, r["ProductCode"], r["Price"], r["RefRate"]);
+                            continue;
+                        }
+                    }
 
                     
                     aMasterDao.Status = "Approved";
@@ -184,7 +197,10 @@ public partial class SInventory_UI_WarehouseStockInApproval : System.Web.UI.Page
                 }
             }
 
-            ShowMessageBox("Stock Approved Successfully!!");
+            if (blocked.Length > 0)
+                ShowMessageBox("NOT approved - price deviates >2x from last central store rate. Fix the entry (Reject + re-enter) or tick Override to approve anyway:" + blocked);
+            else
+                ShowMessageBox("Stock Approved Successfully!!");
         }
 
         else

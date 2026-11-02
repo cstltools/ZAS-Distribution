@@ -64,7 +64,7 @@
         <span style="color: #b8860b;">Import Excel</span>
         <br />
         <br />
-        <asp:GridView ID="loadGridView" runat="server" AutoGenerateColumns="False" CssClass="responstable">
+        <asp:GridView ID="loadGridView" runat="server" AutoGenerateColumns="False" CssClass="responstable" ShowFooter="True" FooterStyle-Font-Bold="True">
             <Columns>
                 <%--<asp:BoundField DataField="ComUnitCode" HeaderText="DC Code"></asp:BoundField>
                 <asp:BoundField DataField="ComUnitName" HeaderText="DC Name" />--%>
@@ -82,6 +82,7 @@
                 <asp:BoundField DataField="TotalReceived" HeaderText="Total Received" />
                 <asp:BoundField DataField="TotalStock" HeaderText="Total Stock" />
                 <asp:BoundField DataField="IssuedToSales" HeaderText="Issued To Sales" />
+                <asp:BoundField DataField="IssuedToSalesValue" HeaderText="Issued To Sales Value" DataFormatString="{0:N2}" />
                 <asp:BoundField DataField="IssuedToBonus" HeaderText="Issued To Bonus" />
                 <asp:BoundField DataField="SampleIssue" HeaderText="Sample Issue" />
                 <asp:BoundField DataField="SalesInTransit" HeaderText="In-Transit (Sales)" />
@@ -117,7 +118,7 @@
     
     <br />
     
-    <div class="box" >
+    <div class="box" style="display:none">
             <span style="font-size: 18px; font-weight: bold;">Total Value: </span> <asp:Label ID="totalReceiveableLabel" CssClass="currency" runat="server"></asp:Label>
         </div>
 
