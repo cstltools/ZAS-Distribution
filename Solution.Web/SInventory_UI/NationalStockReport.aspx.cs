@@ -52,42 +52,9 @@ public partial class SInventory_UI_NationalStockReport : System.Web.UI.Page
 
         if (companyNameDropDownList.SelectedValue != "")
         {
-            pram = pram + " AND CASE WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '371' THEN 'ZAS Dermal' " +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '372' THEN 'ZAS Critical Care' " +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '373' THEN 'ZAS Ophthalmic'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '379' THEN 'ZAS Active'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '375' THEN 'ZAS Dental ( Clinic )'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '381' THEN 'ZAS Dental ( Lab  )'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '377' THEN 'ZAS Gloves & Instruments'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '376' THEN 'ZAS Gyno'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '378' THEN 'ZAS Nutrition'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '374' THEN 'ZAS Onco' " +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '382' THEN 'ZAS OTC'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '383' THEN 'ZAS NOC'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '384' THEN 'ZAS Baby Care'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '385' THEN 'ZAS Neurology'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '386' THEN 'ZAS Hematology'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '387' THEN 'Aqvida Bangladesh'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '391' THEN 'Z A S Nutrition'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '392' THEN 'ZAS I V F'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '393' THEN 'ZAS Bioplasma'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '397' THEN 'ZAS Distribution Sales & Marketing'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '394' THEN 'Esha Enterprise'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '389' THEN 'Z A S Industries'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '396' THEN 'Dermal-Devision-1'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '398' THEN 'ZAS Rare Deasese'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '399' THEN 'ZAS Nutrition-IV'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '411' THEN 'ZAS Named Patient Access'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '412' THEN 'ZAS Biotech'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '413' THEN 'ZAS Anesthesia'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '414' THEN 'Pharma Parts  International'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '415' THEN 'ZAS Dermatology'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '416' THEN 'ZAS Pharma LTD ( New )'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '388' THEN 'ZAS Pharma Ltd.'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '417' THEN 'ZAS Regenerative'" +
-                                " WHEN SUBSTRING(vTblTotal.ProductCode, 1, 3) = '418' THEN 'ZAS Cardiology'" +
-                                " ELSE ''" +
-                                " END = '" + companyNameDropDownList.SelectedItem.Text + "'";
+            int companyId;
+            if (!int.TryParse(companyNameDropDownList.SelectedValue, out companyId)) companyId = 0;
+            pram = pram + " AND vTblTotal.ProductCode IN (SELECT ProductCode FROM tblProduct WHERE CompanyId = " + companyId + ")";
         }
 
         return pram;
